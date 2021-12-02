@@ -2,14 +2,11 @@
 #ifndef ARA_EXEC_DETERMINISTIC_CLIENT_H_
 #define ARA_EXEC_DETERMINISTIC_CLIENT_H_
 
-
-
 #include <cstdint>
 #include <chrono>
 #include <vector>
 #include "worker_runnable.h"
-
-
+#include <string>
 namespace ara
 {
     namespace exec
@@ -49,7 +46,13 @@ namespace ara
          */
         class DeterministicClient
         {
-            public:
+        private:
+            // location of FIFO to communicate between EM & SM
+            const std::string fifo_l = "deterministic_client_fifo";
+            // index of File descriptor
+            int fd;
+
+        public:
             //using TimeStamp = std::chrono::time_point<ara::core::SteadyClock>;
             using TimeStamp = std::chrono::time_point<std::chrono::system_clock>;
             // using Worker = ara::exec::WorkerRunnable;
@@ -73,7 +76,6 @@ namespace ara
             * Blocks and returns with a process control value when 
             * the next activation is triggered by the Runtime.
             */
-            
 
             // SWS_EM_02216
             /**
@@ -82,7 +84,7 @@ namespace ara
              * 
              * \return      ActivationReturnType.
              */
-            ara::core::Result<ActivationReturnType> WaitForActivation () noexcept;
+            /* ara::core::Result<ActivationReturnType> */ std::string WaitForActivation() noexcept;
             //ActivationReturnType WaitForNextActivation () const noexcept;
 
             // SWS_EM_02220
@@ -101,7 +103,7 @@ namespace ara
              * \return void
              */
             template <typename ValueType, typename Container>
-            void RunWorkerPool (WorkerRunnable< ValueType > &runnableObj, Container &container) noexcept;
+            void RunWorkerPool(WorkerRunnable<ValueType> &runnableObj, Container &container) noexcept;
 
             // SWS_EM_02225
             /**
@@ -112,13 +114,13 @@ namespace ara
              * \return uint64_t     uint64_t 64 bit uniform distributed pseudo random
              *                      number
              */
-            uint64_t GetRandom()  noexcept;
+            uint64_t GetRandom() noexcept;
 
-            void SetRandomSeed (uint64_t seed) noexcept;
+            void SetRandomSeed(uint64_t seed) noexcept;
 
-            ara::core::Result<TimeStamp> GetActivationTime () noexcept;
+            /*ara::core::Result<TimeStamp>*/ std::string GetActivationTime() noexcept;
 
-            ara::core::Result<TimeStamp> GetNextActivationTime () noexcept;
+            /*ara::core::Result<TimeStamp>*/ std::string GetNextActivationTime() noexcept;
 
             // SWS_EM_02230
             /**

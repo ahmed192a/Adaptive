@@ -1,10 +1,10 @@
 #ifndef ARA_EXEC_EXECUTION_CLIENT_H_
 #define ARA_EXEC_EXECUTION_CLIENT_H_
 
-
-
 #include <cstdint>
-#include "ara/core/result.h"
+#include <string>
+// #include <iostream>
+// #include "ara/core/result.h"
 
 namespace ara
 {
@@ -27,6 +27,10 @@ namespace ara
          */
         class ExecutionClient
         {
+            // location of FIFO to communicate between EM & SM
+            const std::string fifo_l = "execution_client_fifo";
+            // index of File descriptor
+            int fd;
 
             // SWS_EM_02030
             /**
@@ -50,7 +54,7 @@ namespace ara
              *                  an ErrorCode containing either one of the specified
              *                  errors or a void-value.
              */
-            ara::core::Result<void> ReportExecutionState(ExecutionState state) const noexcept;
+            /*ara::core::Result<void>*/ void ReportExecutionState(ExecutionState state) const noexcept;
         };
     } // namespace exec
 

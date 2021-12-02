@@ -11,7 +11,7 @@ namespace ara
          * 
          */
         //enum class ExecErrc : ara::core::ErrorDomain::CodeType {...};
-        enum class ExecErrc : ara::core::ErrorDomain::CodeType
+        enum class ExecErrc //: ara::core::ErrorDomain::CodeType
         {
             kGeneralError = 1,       /*< Some unspecified error occurred */
             kInvalidArguments = 2,   /*< Invalid argument was passed */
@@ -28,7 +28,7 @@ namespace ara
          * \brief Defines a class for exceptions to be thrown by the Execution Management.
          * 
          */
-        class ExecException : public ara::core::Exception
+        class ExecException //: public ara::core::Exception
         {
             // SWS_EM_02283
             /**
@@ -36,7 +36,7 @@ namespace ara
              * 
              * \param[in] errorCode     The error code.
              */
-            explicit ExecException(ara::core::ErrorCode errorCode) noexcept;
+            // explicit ExecException(ara::core::ErrorCode errorCode) noexcept;
         };
 
         // SWS_EM_02290
@@ -46,7 +46,7 @@ namespace ara
          * \return ara::core::ErrorDomain const&    Return a reference to the global ExecErrorDomain
          *                                          object.
          */
-        ara::core::ErrorDomain const &GetExecErrorDomain() noexcept;
+        // ara::core::ErrorDomain const &GetExecErrorDomain() noexcept;
 
         // SWS_EM_02291
         /**
@@ -57,7 +57,7 @@ namespace ara
          * 
          * \return ara::core::ErrorCode     An ErrorCode object.
          */
-        ara::core::ErrorCode MakeErrorCode(ara::exec::ExecErrc code, ara::core::ErrorDomain::SupportDataType data) noexcept;
+        // ara::core::ErrorCode MakeErrorCode(ara::exec::ExecErrc code, ara::core::ErrorDomain::SupportDataType data) noexcept;
 
         // SWS_EM_02284
         /**
@@ -66,7 +66,7 @@ namespace ara
          * 0x8000’0000’0000’0300ULL
          * 
          */
-        class ExecErrorDomain final : public ara::core::ErrorDomain
+        class ExecErrorDomain final //: public ara::core::ErrorDomain
         {
             // SWS_EM_02286
             /**
@@ -81,7 +81,7 @@ namespace ara
              * 
              * \return char const*  The name of the error domain.
              */
-            char const *Name() const noexcept override;
+            // char const *Name() const noexcept override;
 
             // SWS_EM_02288
             /**
@@ -91,7 +91,7 @@ namespace ara
              * 
              * \return char const*      The message associated with the error code.
              */
-            char const *Message(CodeType errorCode) const noexcept override;
+            // char const *Message(CodeType errorCode) const noexcept override;
 
             // SWS_EM_02289
             /**
@@ -99,7 +99,7 @@ namespace ara
              * 
              * \param[in] errorCode     The error to throw.
              */
-            void ThrowAsException(ara::core::ErrorCode const &errorCode) const noexcept(false) override;
+            // void ThrowAsException(ara::core::ErrorCode const &errorCode) const noexcept(false) override;
         };
     } // namespace exec
 
