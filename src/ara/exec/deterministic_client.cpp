@@ -36,7 +36,8 @@ namespace ara
         template <typename ValueType, typename Container>
         void RunWorkerPool(WorkerRunnable<ValueType> &runnableObj, Container &container) noexcept
         {
-            // TO DO : This part is sequential, it needs to be converted to parallel with fork()
+
+            // TO DO : This part is sequential, it needs to be converted to parallel with fork() - exev()
             int count = 0;
             auto c = container.begin();
             while (c != container.end())
@@ -49,8 +50,9 @@ namespace ara
         ActivationReturnType WaitForActivation() noexcept
         {
             // Blocks and returns with a process control value when the next activation is triggered by the Runtime
-            char state[5];
-            read(fd, state, 5 * sizeof(char));
+            ActivationReturnType state;
+            read(fd, state, sizeof(ActivationReturnType));
+            return state;
         }
         uint64_t GetRandom() noexcept
         {
