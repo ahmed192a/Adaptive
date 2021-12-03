@@ -2,9 +2,13 @@
 #include "sys/stat.h"
 #include "sys/types.h"
 #include "errno.h"
+#include "unistd.h"
 #include <fcntl.h>
 #include "utility"
 #include <vector>
+// number of thread which depends on the number of core
+std::array<ara::exec::WorkerThread, 4> workers;
+
 namespace ara
 {
     namespace exec
@@ -32,35 +36,36 @@ namespace ara
         template <typename ValueType, typename Container>
         void RunWorkerPool(WorkerRunnable<ValueType> &runnableObj, Container &container) noexcept
         {
-            //std::array<WorkerThread, 4> workers;
-            // template <typename C>
-            // void DeterministicClient::RunWorkerPool(WorkerRunnable<typename C::value_type> &w, C &container) noexcept
-            // {
+            // TO DO : This part is sequential, it needs to be converted to parallel with fork()
             int count = 0;
             auto c = container.begin();
             while (c != container.end())
             {
-                w.Run(*c++, workers[count++]);
+                runnableObj.Run(*c++, workers[count++]);
                 count %= workers.size();
             }
-            // }
         }
 
-        /*ara::core::Result<ActivationReturnType>*/ std::string WaitForActivation() noexcept
+        ActivationReturnType WaitForActivation() noexcept
         {
+            // Blocks and returns with a process control value when the next activation is triggered by the Runtime
+            char state[5];
+            read(fd, state, 5 * sizeof(char));
         }
         uint64_t GetRandom() noexcept
         {
-                }
+            return lrand48();
+        }
         void SetRandomSeed(uint64_t seed) noexcept
         {
+            srand48(seed);
         }
 
-        /*ara::core::Result<DeterministicClient::TimeStamp>*/ std::string GetActivationTime() noexcept
+        DeterministicClient::TimeStamp > GetActivationTime() noexcept
         {
         }
 
-        /*ara::core::Result<DeterministicClient::TimeStamp>*/ std::string GetNextActivationTime() noexcept
+        DeterministicClient::TimeStamp > GetNextActivationTime() noexcept
         {
         }
 

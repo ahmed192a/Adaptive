@@ -3,12 +3,13 @@
 #include "sys/types.h"
 #include "errno.h"
 #include <fcntl.h>
+#include "unistd.h"
 
 namespace ara
 {
     namespace exec
     {
-        ExecutionClient::ExecutionClient()
+        ExecutionClient::ExecutionClient() noexcept
         {
             // opens the Execution Management communication channel for reporting the Execution State
             if (mkfifo(fifo_l, 0777) == -1)

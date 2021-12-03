@@ -1,9 +1,7 @@
-
-
 #ifndef ARA_EXEC_WORKER_RUNNABLE_H_
 #define ARA_EXEC_WORKER_RUNNABLE_H_
 
-#include "ara/exec/worker_thread.h"
+#include "worker_thread.h"
 
 namespace ara
 {

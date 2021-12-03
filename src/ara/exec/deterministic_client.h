@@ -1,4 +1,3 @@
-
 #ifndef ARA_EXEC_DETERMINISTIC_CLIENT_H_
 #define ARA_EXEC_DETERMINISTIC_CLIENT_H_
 
@@ -7,6 +6,7 @@
 #include <vector>
 #include "worker_runnable.h"
 #include <string>
+#include <array>
 namespace ara
 {
     namespace exec
@@ -48,7 +48,7 @@ namespace ara
         {
         private:
             // location of FIFO to communicate between EM & SM
-            const std::string fifo_l = "deterministic_client_fifo";
+            char fifo_l[30] = "deterministic_client_fifo";
             // index of File descriptor
             int fd;
 
@@ -71,31 +71,31 @@ namespace ara
              */
             ~DeterministicClient() noexcept;
 
-            //SWS_EM_02217
-            /**
-            * Blocks and returns with a process control value when 
-            * the next activation is triggered by the Runtime.
-            */
-
-            // SWS_EM_02216
+            // SWS_EM_02217
             /**
              * Blocks and returns with a process control value when the next activation is triggered by the
              * Runtime.
              * 
-             * \return      ActivationReturnType.
+             * \return      ara::core::Result< ActivationReturnType >    process control value or error
              */
-            /* ara::core::Result<ActivationReturnType> */ std::string WaitForActivation() noexcept;
-            //ActivationReturnType WaitForNextActivation () const noexcept;
+            ActivationReturnType WaitForActivation() noexcept;
 
-            // SWS_EM_02220
+            // SWS_EM_02221
             /**
-             * Uses a worker pool to call a method Worker::workerRunnable (...) for every element of the
-             * container. The sequential iteration is guaranteed by using the container++ operator. The API
-             * guarantees that no other iteration scheme is used .
+             * Run a deterministic worker pool.
+             * Uses a pool of Deterministic workers to call a method WorkerRunnable::Run for every element
+             * of the container. The sequential iteration is guaranteed by using the container’s increment
+             * operator. The API provides the guarantee that no other iteration scheme is used.
+             * This function shall not participate in overload resolution unless unless ValueType is compatible
+             * with Container::value_type.
              * 
-             * \param[in]   runnableObj     Object that provides a method called
-             *                              worker-Runnable (...), which will be called on every
-             *                              container element
+             * \tparam ValueType            Element type Container
+             * 
+             * \tparam Container            Container for which method WorkerRunnable::Run is invoked for each element
+             * 
+             * \param[in]   runnableObj     Object derived from WorkerRunnable that provides
+             *                              a method called Run(...), which will be called on
+             *                              every container element
              * \param[in]   container       C++ container which supports a standard iterator
              *                              interface with - begin() - end() - operator*()
              *                              operator++
@@ -116,36 +116,46 @@ namespace ara
              */
             uint64_t GetRandom() noexcept;
 
+            // SWS_EM_02226
+            /**
+             * Seed random number generator used for redundantly executed deterministic clients.
+             * 
+             * \param[in] uint64_t     
+             */
             void SetRandomSeed(uint64_t seed) noexcept;
 
-            /*ara::core::Result<TimeStamp>*/ std::string GetActivationTime() noexcept;
-
-            /*ara::core::Result<TimeStamp>*/ std::string GetNextActivationTime() noexcept;
-
-            // SWS_EM_02230
+            // SWS_EM_02231
             /**
-             * This provides the timestamp that represents the point in time when the activation was triggered
-             * by \DeterministicClient::WaitForNextActivation() with return value kRun. Subsequent calls
-             * within an activation cycle will always provide the same value. The same value will also be
-             * provided within redundantly executed Processes .
+             * @brief 
+             * TimeStamp of activation point.
+             * This method provides the timestamp that represents the point in time when the activation was
+             * triggered by DeterministicClient::WaitForNextActivation() with return value kRun. Subsequent
+             * calls within an activation cycle will always provide the same value. The same value will also be
+             * provided within redundantly executed Processes
              * 
-             * \param       TimeStamp   DIRECTION NOT DEFINED
              * 
              * \return      ActivationTimeStampReturnType
+             * 
+             * \exception   noexcept 
              */
+            TimeStamp GetActivationTime() noexcept;
             //ActivationTimeStampReturnType GetActivationTime(TimeStamp) const noexcept;
 
-            // SWS_EM_02235
+            // SWS_EM_02236
             /**
-             * This provides the timestamp that represents the point in time when the next activation will be
-             * triggered by \ARApiRef{DeterministicClient::WaitForNextActivation}() with return value kRun.
+             * @brief 
+             * Timestamp of next activation point.
+             * 
+             * This method provides the timestamp that represents the point in time when the next activation
+             * will be triggered by DeterministicClient::WaitForNextActivation() with return value kRun.
              * Subsequent calls within an activation cycle will always provide the same value. The same value
-             * will also be provided within redundantly executed RefES{Process} .
+             * will also be provided within redundantly executed Process
              * 
-             * \param       TimeStamp   DIRECTION NOT DEFINED
              * 
-             * \return      ActivationTimeStampReturnType
+             * \return      <ara::core::Result< TimeStamp >      TimeStamp of next activation cycle
              */
+            TimeStamp GetNextActivationTime() noexcept;
+
             //ActivationTimeStampReturnType GetNextActivationTime(TimeStamp) const noexcept;
         };
     } // namespace exec

@@ -5,7 +5,6 @@
 #include <string>
 // #include <iostream>
 // #include "ara/core/result.h"
-
 namespace ara
 {
     namespace exec
@@ -28,7 +27,7 @@ namespace ara
         class ExecutionClient
         {
             // location of FIFO to communicate between EM & SM
-            const std::string fifo_l = "execution_client_fifo";
+            char fifo_l[30] = "execution_client_fifo";
             // index of File descriptor
             int fd;
 
