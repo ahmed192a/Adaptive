@@ -4,6 +4,7 @@
 
 #include <string>
 #include "future.h"
+#include "result.h"
 
 
 namespace ara

@@ -1,3 +1,5 @@
+#include <cstdint>
+#include "function_group.h"
 
 namespace ara
 {

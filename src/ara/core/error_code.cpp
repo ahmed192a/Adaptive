@@ -16,7 +16,6 @@ namespace ara
 		 * \param data  optional vendor-specific supplementary error context data
 		 */
 
-		//NOTE"KASSEM": USE THE 3 PARAMETER CONSTRACTOR TO AVOID ERRORS
 		template <typename EnumT>
 		constexpr ErrorCode::ErrorCode(EnumT e, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
 		{
@@ -100,5 +99,59 @@ namespace ara
 		{
 			throw this->codeType;
 		}
+
+        // SWS_CORE_00571
+        /**
+         * \brief Global operator== for ErrorCode.
+         *
+         * Two ErrorCode instances compare equal if the results of their Value() and Domain() functions
+         * are equal. The result of SupportData() is not considered for equality.
+         *
+         * \param[in] lhs   the left hand side of the comparison
+         * \param[in] rhs   the right hand side of the comparison
+         *
+         * \return true     if the two instances compare equal
+         * \return false    otherwise
+         */
+        constexpr bool operator==(ErrorCode const &lhs, ErrorCode const &rhs) noexcept
+        {
+        	bool result;
+        	if(( lhs.codeType == rhs.codeType ) && ( *(lhs.errorDomainPtr) == *(rhs.errorDomainPtr) ))
+        	{
+        		result = true;
+        	}
+        	else
+        	{
+        		result = false;
+        	}
+        	return result;
+        }
+
+        // SWS_CORE_00572
+        /**
+         * \brief Global operator!= for ErrorCode.
+         *
+         * Two ErrorCode instances compare equal if the results of their Value() and Domain() functions
+         * are equal. The result of SupportData() is not considered for equality.
+         *
+         * \param[in] lhs   the left hand side of the comparison
+         * \param[in] rhs   the right hand side of the comparison
+         *
+         * \return true     if the two instances compare not equal
+         * \return false    otherwise
+         */
+        constexpr bool operator!=(ErrorCode const &lhs, ErrorCode const &rhs) noexcept
+        {
+        	bool result;
+        	if(( lhs.codeType != rhs.codeType ) || ( *(lhs.errorDomainPtr) != *(rhs.errorDomainPtr) ))
+        	{
+        		result = true;
+        	}
+        	else
+        	{
+        		result = false;
+        	}
+        	return result;
+        }
 	}
 }
