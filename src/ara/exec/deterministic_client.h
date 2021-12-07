@@ -8,7 +8,7 @@
 #include <string>
 #include <array>
 #include <ctime>
-using namespace std::literals; // enables the usage of 24h, 1ms, 1s instead of
+    using namespace std::literals; // enables the usage of 24h, 1ms, 1s instead of
 
 namespace ara
 {
