@@ -1,0 +1,13 @@
+digraph "ara::core::ErrorDomain"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="ara::core::ErrorDomain",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Encapsulation of an error domain."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ara::core::CoreErrorDomain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classara_1_1core_1_1CoreErrorDomain.html",tooltip="An error domain for errors originating from the CORE Functional Cluster."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="ara::core::FutureErrorDomain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classara_1_1core_1_1FutureErrorDomain.html",tooltip="Error domain for errors originating from classes Future and Promise. ."];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ara::exec::ExecErrorDomain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classara_1_1exec_1_1ExecErrorDomain.html",tooltip="Defines a class representing the Execution Management error domain."];
+}
