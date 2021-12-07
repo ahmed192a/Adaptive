@@ -1,0 +1,159 @@
+\hypertarget{classara_1_1exec_1_1DeterministicClient}{}\doxysection{ara\+::exec\+::Deterministic\+Client Class Reference}
+\label{classara_1_1exec_1_1DeterministicClient}\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+
+
+{\ttfamily \#include $<$deterministic\+\_\+client.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_a54c8938efc035c2b635cc9cf1550e634}\label{classara_1_1exec_1_1DeterministicClient_a54c8938efc035c2b635cc9cf1550e634}} 
+using {\bfseries Time\+Stamp} = std\+::chrono\+::time\+\_\+point$<$ std\+::chrono\+::system\+\_\+clock $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_a7a2da45b3cdebcf15327e65de33449e0}{Deterministic\+Client}} () noexcept
+\item 
+\mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_ac6b29ff2d098fa55d575b2e46da6ffb2}{$\sim$\+Deterministic\+Client}} () noexcept
+\item 
+Activation\+Return\+Type \mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_a47b73ba84db4aba7684eccecbc6b9be6}{Wait\+For\+Activation}} () noexcept
+\item 
+{\footnotesize template$<$typename Value\+Type , typename Container $>$ }\\void \mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_ab25b7d2a49744b3e21ce133d070b74bc}{Run\+Worker\+Pool}} (\mbox{\hyperlink{classara_1_1exec_1_1WorkerRunnable}{Worker\+Runnable}}$<$ Value\+Type $>$ \&runnable\+Obj, Container \&container) noexcept
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_a5b56ebd3a6839c2116a746848210f937}{Get\+Random}} () noexcept
+\item 
+void \mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_a5a300f2f6d49582ca46239c6242e5c26}{Set\+Random\+Seed}} (uint64\+\_\+t seed) noexcept
+\item 
+Time\+Stamp \mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_a9f539d41223687b9d268cc4a0c7f84e1}{Get\+Activation\+Time}} () noexcept
+\begin{DoxyCompactList}\small\item\em Time\+Stamp of activation point. This method provides the timestamp that represents the point in time when the activation was triggered by Deterministic\+Client\+::\+Wait\+For\+Next\+Activation() with return value k\+Run. Subsequent calls within an activation cycle will always provide the same value. The same value will also be provided within redundantly executed Processes. \end{DoxyCompactList}\item 
+Time\+Stamp \mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient_ad1cdf77340e00d0f4b61b77c99d15852}{Get\+Next\+Activation\+Time}} () noexcept
+\begin{DoxyCompactList}\small\item\em Timestamp of next activation point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_adfdcf82209b0c0d42fba27a1a4ab3a34}\label{classara_1_1exec_1_1DeterministicClient_adfdcf82209b0c0d42fba27a1a4ab3a34}} 
+Time\+Stamp {\bfseries Activated}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to implement operations on Deterministic Client . 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_a7a2da45b3cdebcf15327e65de33449e0}\label{classara_1_1exec_1_1DeterministicClient_a7a2da45b3cdebcf15327e65de33449e0}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!DeterministicClient@{DeterministicClient}}
+\index{DeterministicClient@{DeterministicClient}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{DeterministicClient()}{DeterministicClient()}}
+{\footnotesize\ttfamily ara\+::exec\+::\+Deterministic\+Client\+::\+Deterministic\+Client (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Constructor for \mbox{\hyperlink{classara_1_1exec_1_1DeterministicClient}{Deterministic\+Client}} which opens the Execution Management communication channel (e.\+g. P\+O\+S\+IX F\+I\+FO) to access a wait point for cyclic execution, a worker pool, deterministic random numbers and time stamps . \mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_ac6b29ff2d098fa55d575b2e46da6ffb2}\label{classara_1_1exec_1_1DeterministicClient_ac6b29ff2d098fa55d575b2e46da6ffb2}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!````~DeterministicClient@{$\sim$DeterministicClient}}
+\index{````~DeterministicClient@{$\sim$DeterministicClient}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{$\sim$DeterministicClient()}{~DeterministicClient()}}
+{\footnotesize\ttfamily ara\+::exec\+::\+Deterministic\+Client\+::$\sim$\+Deterministic\+Client (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Destructor of the Deterministic Client instance . 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_a9f539d41223687b9d268cc4a0c7f84e1}\label{classara_1_1exec_1_1DeterministicClient_a9f539d41223687b9d268cc4a0c7f84e1}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!GetActivationTime@{GetActivationTime}}
+\index{GetActivationTime@{GetActivationTime}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{GetActivationTime()}{GetActivationTime()}}
+{\footnotesize\ttfamily Deterministic\+Client\+::\+Time\+Stamp ara\+::exec\+::\+Deterministic\+Client\+::\+Get\+Activation\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Time\+Stamp of activation point. This method provides the timestamp that represents the point in time when the activation was triggered by Deterministic\+Client\+::\+Wait\+For\+Next\+Activation() with return value k\+Run. Subsequent calls within an activation cycle will always provide the same value. The same value will also be provided within redundantly executed Processes. 
+
+\begin{DoxyReturn}{Returns}
+Activation\+Time\+Stamp\+Return\+Type
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em noexcept} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_ad1cdf77340e00d0f4b61b77c99d15852}\label{classara_1_1exec_1_1DeterministicClient_ad1cdf77340e00d0f4b61b77c99d15852}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!GetNextActivationTime@{GetNextActivationTime}}
+\index{GetNextActivationTime@{GetNextActivationTime}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{GetNextActivationTime()}{GetNextActivationTime()}}
+{\footnotesize\ttfamily Deterministic\+Client\+::\+Time\+Stamp ara\+::exec\+::\+Deterministic\+Client\+::\+Get\+Next\+Activation\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Timestamp of next activation point. 
+
+This method provides the timestamp that represents the point in time when the next activation will be triggered by Deterministic\+Client\+::\+Wait\+For\+Next\+Activation() with return value k\+Run. Subsequent calls within an activation cycle will always provide the same value. The same value will also be provided within redundantly executed Process
+
+\begin{DoxyReturn}{Returns}
+$<$ara\+::core\+::\+Result$<$ Time\+Stamp $>$ Time\+Stamp of next activation cycle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_a5b56ebd3a6839c2116a746848210f937}\label{classara_1_1exec_1_1DeterministicClient_a5b56ebd3a6839c2116a746848210f937}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!GetRandom@{GetRandom}}
+\index{GetRandom@{GetRandom}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{GetRandom()}{GetRandom()}}
+{\footnotesize\ttfamily uint64\+\_\+t ara\+::exec\+::\+Deterministic\+Client\+::\+Get\+Random (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+This returns ‘\+Deterministic’ random numbers. Deterministic’ means, that the returned random numbers are identical within redundant Deterministic\+Client\+::\+Wait\+For\+Next\+Activation() cycles, which are used within redundantly executed Process .
+
+\begin{DoxyReturn}{Returns}
+uint64\+\_\+t uint64\+\_\+t 64 bit uniform distributed pseudo random number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_ab25b7d2a49744b3e21ce133d070b74bc}\label{classara_1_1exec_1_1DeterministicClient_ab25b7d2a49744b3e21ce133d070b74bc}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!RunWorkerPool@{RunWorkerPool}}
+\index{RunWorkerPool@{RunWorkerPool}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{RunWorkerPool()}{RunWorkerPool()}}
+{\footnotesize\ttfamily template$<$typename Value\+Type , typename Container $>$ \\
+void ara\+::exec\+::\+Deterministic\+Client\+::\+Run\+Worker\+Pool (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classara_1_1exec_1_1WorkerRunnable}{Worker\+Runnable}}$<$ Value\+Type $>$ \&}]{runnable\+Obj,  }\item[{Container \&}]{container }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Run a deterministic worker pool. Uses a pool of Deterministic workers to call a method Worker\+Runnable\+::\+Run for every element of the container. The sequential iteration is guaranteed by using the container’s increment operator. The A\+PI provides the guarantee that no other iteration scheme is used. This function shall not participate in overload resolution unless unless Value\+Type is compatible with Container\+::value\+\_\+type.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Value\+Type} & Element type Container\\
+\hline
+{\em Container} & Container for which method Worker\+Runnable\+::\+Run is invoked for each element\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em runnable\+Obj} & Object derived from \mbox{\hyperlink{classara_1_1exec_1_1WorkerRunnable}{Worker\+Runnable}} that provides a method called Run(...), which will be called on every container element \\
+\hline
+\mbox{\texttt{ in}}  & {\em container} & C++ container which supports a standard iterator interface with -\/ begin() -\/ end() -\/ operator$\ast$() operator++\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_a5a300f2f6d49582ca46239c6242e5c26}\label{classara_1_1exec_1_1DeterministicClient_a5a300f2f6d49582ca46239c6242e5c26}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!SetRandomSeed@{SetRandomSeed}}
+\index{SetRandomSeed@{SetRandomSeed}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{SetRandomSeed()}{SetRandomSeed()}}
+{\footnotesize\ttfamily void ara\+::exec\+::\+Deterministic\+Client\+::\+Set\+Random\+Seed (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{seed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Seed random number generator used for redundantly executed deterministic clients.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em uint64\+\_\+t} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classara_1_1exec_1_1DeterministicClient_a47b73ba84db4aba7684eccecbc6b9be6}\label{classara_1_1exec_1_1DeterministicClient_a47b73ba84db4aba7684eccecbc6b9be6}} 
+\index{ara::exec::DeterministicClient@{ara::exec::DeterministicClient}!WaitForActivation@{WaitForActivation}}
+\index{WaitForActivation@{WaitForActivation}!ara::exec::DeterministicClient@{ara::exec::DeterministicClient}}
+\doxysubsubsection{\texorpdfstring{WaitForActivation()}{WaitForActivation()}}
+{\footnotesize\ttfamily Activation\+Return\+Type ara\+::exec\+::\+Deterministic\+Client\+::\+Wait\+For\+Activation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Blocks and returns with a process control value when the next activation is triggered by the Runtime.
+
+\begin{DoxyReturn}{Returns}
+ara\+::core\+::\+Result$<$ Activation\+Return\+Type $>$ process control value or error 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/ara/exec/deterministic\+\_\+client.\+h\item 
+src/ara/exec/deterministic\+\_\+client.\+cpp\end{DoxyCompactItemize}

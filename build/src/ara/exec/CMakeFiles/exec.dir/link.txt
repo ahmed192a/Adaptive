@@ -1,0 +1,2 @@
+/usr/bin/ar qc libexec.a  CMakeFiles/exec.dir/deterministic_client.cpp.o CMakeFiles/exec.dir/exec_error_domain.cpp.o CMakeFiles/exec.dir/execution_client.cpp.o
+/usr/bin/ranlib libexec.a

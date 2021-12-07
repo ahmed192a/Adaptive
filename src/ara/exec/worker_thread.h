@@ -1,5 +1,3 @@
-
-
 #ifndef ARA_EXEC_WORKER_THREAD_H_
 #define ARA_EXEC_WORKER_THREAD_H_
 #include <cstdint>

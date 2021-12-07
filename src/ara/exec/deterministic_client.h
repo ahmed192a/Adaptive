@@ -7,6 +7,9 @@
 #include "worker_runnable.h"
 #include <string>
 #include <array>
+#include <ctime>
+    using namespace std::literals; // enables the usage of 24h, 1ms, 1s instead of
+
 namespace ara
 {
     namespace exec
@@ -54,7 +57,11 @@ namespace ara
 
         public:
             //using TimeStamp = std::chrono::time_point<ara::core::SteadyClock>;
-            using TimeStamp = std::chrono::time_point<std::chrono::system_clock>;
+            
+            using TimeStamp = std::chrono::time_point<std::chrono::system_clock> ;
+
+            TimeStamp Activated;
+
             // using Worker = ara::exec::WorkerRunnable;
 
             // SWS_EM_02211

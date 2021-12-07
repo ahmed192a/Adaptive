@@ -9,11 +9,12 @@
 // number of thread which depends on the number of core
 std::array<ara::exec::WorkerThread, 4> workers;
 
+
 namespace ara
 {
     namespace exec
     {
-        DeterministicClient::DeterministicClient()
+        DeterministicClient::DeterministicClient() noexcept
         {
             // opens the Execution Management communication channel to access a wait point for cyclic execution
             if (mkfifo(fifo_l, 0777) == -1)
@@ -25,9 +26,9 @@ namespace ara
                 }
             }
             // get file discreptor
-            fd = open(fifo_l, O_WRONLY);
+            fd = open(fifo_l, O_RDONLY);
         }
-        DeterministicClient::~DeterministicClient()
+        DeterministicClient::~DeterministicClient() noexcept
         {
             // close file descriptor
             close(fd);
@@ -37,38 +38,50 @@ namespace ara
         void RunWorkerPool(WorkerRunnable<ValueType> &runnableObj, Container &container) noexcept
         {
 
-            // TO DO : This part is sequential, it needs to be converted to parallel with fork() - exev()
+            // TO DO : This part is sequential, it needs to be converted to parallel with fork() - exec()
             int count = 0;
+            int pid;
             auto c = container.begin();
             while (c != container.end())
             {
-                runnableObj.Run(*c++, workers[count++]);
+                pid = fork()
+                if(pid == 0){
+                    // execute each element in Container 
+                    runnableObj.Run(*c++, workers[count++]);
+                    return 0;
+                }
+                
                 count %= workers.size();
+
             }
         }
 
-        ActivationReturnType WaitForActivation() noexcept
+        ActivationReturnType DeterministicClient::WaitForActivation() noexcept
         {
             // Blocks and returns with a process control value when the next activation is triggered by the Runtime
-            ActivationReturnType state;
-            read(fd, state, sizeof(ActivationReturnType));
+            ara::exec::ActivationReturnType state;
+            
+            read(fd, &state, sizeof(state));
+            if(state == ActivationReturnType::kRun) DeterministicClient::Activated =  std::chrono::system_clock::now();
             return state;
         }
-        uint64_t GetRandom() noexcept
+        uint64_t DeterministicClient::GetRandom() noexcept
         {
             return lrand48();
         }
-        void SetRandomSeed(uint64_t seed) noexcept
+        void DeterministicClient::SetRandomSeed(uint64_t seed) noexcept
         {
             srand48(seed);
         }
 
-        DeterministicClient::TimeStamp > GetActivationTime() noexcept
+        DeterministicClient::TimeStamp DeterministicClient::GetActivationTime() noexcept
         {
+            return Activated;
         }
 
-        DeterministicClient::TimeStamp > GetNextActivationTime() noexcept
+        DeterministicClient::TimeStamp DeterministicClient::GetNextActivationTime() noexcept
         {
+            
         }
 
     } // namespace exec
