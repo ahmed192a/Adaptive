@@ -26,13 +26,13 @@ namespace ara
 		 * \return char const*  a null-terminated string
 		 */
 
-		char const* Exception::what() const noexcept
-		{
-			ErrorDomain::CodeType codeType = this->errorCode.codeType;
-			char codeTypeStr[33];
-			snprintf( codeTypeStr, 33, "%d", (int)codeType );
-			return "CodeType of error message: " + codeTypeStr;
-		}
+		// char const* Exception::what() const noexcept
+		// {
+		// 	ErrorDomain::CodeType codeType = this->errorCode.codeType;
+		// 	char codeTypeStr[33];
+		// 	snprintf( codeTypeStr, 33, "%d", (int)codeType );
+		// 	return "CodeType of error message: " + codeTypeStr;
+		// }
 
 		// SWS_CORE_00613
 		/**
@@ -41,10 +41,10 @@ namespace ara
 		 * \return ErrorCode const&     reference to the embedded ErrorCode
 		 */
 
-		ErrorCode::ErrorCode const& Exception::Error() const noexcept
-		{
-			return this->errorCode;
-		}
+		// ErrorCode::ErrorCode const& Exception::Error() const noexcept
+		// {
+		// 	return this->errorCode;
+		// }
 
 	}
 }

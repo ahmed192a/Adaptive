@@ -8,7 +8,7 @@
 #include <string>
 #include <array>
 #include <ctime>
-    using namespace std::literals; // enables the usage of 24h, 1ms, 1s instead of
+using namespace std::literals; // enables the usage of 24h, 1ms, 1s instead of
 
 namespace ara
 {
@@ -89,6 +89,7 @@ namespace ara
 
             // SWS_EM_02221
             /**
+             * @brief 
              * Run a deterministic worker pool.
              * Uses a pool of Deterministic workers to call a method WorkerRunnable::Run for every element
              * of the container. The sequential iteration is guaranteed by using the container’s increment

@@ -4,7 +4,7 @@
 
 #include "error_domain.h"
 #include "error_code.h"
-
+#include "exception.h"
 namespace ara
 {
     namespace core

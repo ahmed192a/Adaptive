@@ -4,8 +4,8 @@
 
 
 # Configuration directories and files
-SourceDirectory: /media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive
-BuildDirectory: /media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build
+SourceDirectory: /home/ahmed/Documents/Adaptive
+BuildDirectory: /home/ahmed/Documents/Adaptive/build
 
 # Where to place the cost data store
 CostDataFile: 
@@ -14,7 +14,7 @@ CostDataFile:
 Site: ahmed-Inspiron-5570
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
-BuildName: Linux-c++
+BuildName: Linux-x86_64-linux-gnu-g++-9
 
 # Subprojects
 LabelsForSubprojects: 
@@ -26,7 +26,7 @@ SubmitURL: http://
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive"
+ConfigureCommand: "/usr/bin/cmake" "/home/ahmed/Documents/Adaptive"
 MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}" -- -i
 DefaultCTestConfigurationType: Release
 
@@ -62,7 +62,7 @@ UpdateOptions:
 UpdateType: git
 
 # Compiler info
-Compiler: /usr/bin/c++
+Compiler: /bin/x86_64-linux-gnu-g++-9
 CompilerVersion: 9.3.0
 
 # Dynamic analysis (MemCheck)

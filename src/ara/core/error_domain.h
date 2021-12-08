@@ -2,13 +2,22 @@
 #ifndef ARA_CORE_ERROR_DOMAIN_H_
 #define ARA_CORE_ERROR_DOMAIN_H_
 
+
 #include <cstdint>
-#include "error_code.h"
+#include <exception>
+
 
 namespace ara
 {
     namespace core
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+        #endif
+        // forward declaration
+        class ErrorCode; 
+
         #define IMPLEMENTATION_DEFINED std::int32_t
 
         // SWS_CORE_00110
@@ -22,7 +31,7 @@ namespace ara
          */
         class ErrorDomain
         {
-
+            public:
             // SWS_CORE_00121
             /**
              * \brief Alias type for a unique ErrorDomain identifier type .
@@ -52,8 +61,7 @@ namespace ara
 
             //class attributes
             IdType idType;
-            CodeType codeType;
-            SupportDataType supportDataType;
+
 
             ErrorDomain(ErrorDomain const &)=delete;
 
@@ -88,14 +96,14 @@ namespace ara
              * \brief Copy assignment shall be disabled.
              * 
              */
-            ErrorDomain& operator=(ErrorDomain const &)=delete;
+            ErrorDomain& operator=(ErrorDomain const &) =delete;
 
             // SWS_CORE_00134
             /**
              * \brief Move assignment shall be disabled.
              * 
              */
-            ErrorDomain& operator=(ErrorDomain const &&)=delete;
+            ErrorDomain& operator=(ErrorDomain const &&)= delete;
 
             // SWS_CORE_00137
             /**
@@ -153,7 +161,7 @@ namespace ara
              * 
              * \return char const*      the text as a null-terminated string, never nullptr
              */
-            virtual char const * Message(CodeType errorCode) const noexcept=0;
+            virtual std::string Message(CodeType errorCode) const noexcept=0;
 
             // SWS_CORE_00154
             /**
@@ -162,10 +170,14 @@ namespace ara
              * This function will determine the appropriate exception type for the given ErrorCode and throw it.
              * The thrown exception will contain the given ErrorCode.
              * 
-             * \param[in] errorCode     the ErrorCode
+             * \param[in] errorCode     the ErrorCode to be thrown
+             * @remark if ARA_NO_EXCEPTIONS is defined, this function call will terminate.
              */
             virtual void ThrowAsException(ErrorCode const &errorCode) const noexcept(false) = 0;
         };
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     } // namespace core
     
 } // namespace ara

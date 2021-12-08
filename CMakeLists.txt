@@ -9,32 +9,51 @@ set(CMAKE_ENABLE_EXPORTS 1)
 include(CTest)
 option(build_tests "Build all the tests." ON)
 
+########################################################################
+#
+# Source Directories:
 
-add_executable(Adaptive_Platform main.cpp)
+set(source_ara_exec_dir
+  "${CMAKE_SOURCE_DIR}/src/ara/exec")
+set(source_ara_core_dir
+  "${CMAKE_SOURCE_DIR}/src/ara/core")
 
-add_subdirectory(src/ara/exec)
-add_subdirectory(src/ara/core)
 
-target_include_directories(
-    ${PROJECT_NAME} PUBLIC 
-    src/ara/core
-    src/ara/exec
-    
+
+file(GLOB_RECURSE SRC_FILES ${source_ara_exec_dir}/*.cpp)
+file(GLOB_RECURSE HED_FILES ${source_ara_exec_dir}/*.h)
+add_library(
+    ara_exec 
+    ${SRC_FILES}
+    ${HED_FILES}
     )
-    
-target_link_directories(
-    ${PROJECT_NAME} 
-    PUBLIC 
-    src/ara/core
-    src/ara/exec
-    
+set_target_properties(
+  ara_exec
+  PROPERTIES LINKER_LANGUAGE CXX
+)
+  
+file(GLOB_RECURSE CORE_SRC_FILES ${source_ara_core_dir}/*.cpp)
+file(GLOB_RECURSE CORE_HED_FILES ${source_ara_core_dir}/*.h)
+add_library(
+    ara_core 
+    ${ORE_SRC_FILES}
+    ${CORE_HED_FILES} 
     )
+set_target_properties(
+    ara_core
+    PROPERTIES LINKER_LANGUAGE CXX
+)
+  
+  
+    
+
+
+
 target_link_libraries(
-    ${PROJECT_NAME}
-    core
-    exec
-    
-    )
+  ara_core
+  ara_exec
+)
+
 
 
 #set(CPACK_PROJECT_NAME ${PROJECT_NAME})
@@ -42,6 +61,17 @@ target_link_libraries(
 #include(CPack)
 
 if(build_tests)
-    enable_testing()
+  enable_testing()
+  add_executable(
+    ara_unit_test
+    Testing/test_1.cpp
+  )
+  # target_link_libraries(
+  #   ara_unit_test
+  #   gtest_main
+  # )
+  include(GoogleTest)
+  gtest_discover_tests(ara_unit_test)
+
 
 endif()

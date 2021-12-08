@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive"
+CMAKE_SOURCE_DIR = /home/ahmed/Documents/Adaptive
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build"
+CMAKE_BINARY_DIR = /home/ahmed/Documents/Adaptive/build
 
 # Utility rule file for ExperimentalMemCheck.
 
@@ -71,6 +71,6 @@ CMakeFiles/ExperimentalMemCheck.dir/clean:
 .PHONY : CMakeFiles/ExperimentalMemCheck.dir/clean
 
 CMakeFiles/ExperimentalMemCheck.dir/depend:
-	cd "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive" "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive" "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build" "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build" "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalMemCheck.dir/DependInfo.cmake" --color=$(COLOR)
+	cd /home/ahmed/Documents/Adaptive/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ahmed/Documents/Adaptive /home/ahmed/Documents/Adaptive /home/ahmed/Documents/Adaptive/build /home/ahmed/Documents/Adaptive/build /home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalMemCheck.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ExperimentalMemCheck.dir/depend
 

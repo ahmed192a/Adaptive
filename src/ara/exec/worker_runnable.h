@@ -10,6 +10,7 @@ namespace ara
         template <typename ValueType>
         class WorkerRunnable
         {
+            public:
             virtual void Run(ValueType &element, ara::exec::WorkerThread &t) = 0;
         };
     } // namespace exec

@@ -1,4 +1,4 @@
-# Install script for directory: /media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive
+# Install script for directory: /home/ahmed/Documents/Adaptive
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -37,13 +37,6 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for each subdirectory.
-  include("/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec/cmake_install.cmake")
-  include("/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core/cmake_install.cmake")
-
-endif()
-
 if(CMAKE_INSTALL_COMPONENT)
   set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
 else()
@@ -52,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/ahmed/Documents/Adaptive/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

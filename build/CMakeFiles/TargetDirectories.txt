@@ -1,46 +1,34 @@
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/rebuild_cache.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/test.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/package_source.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/edit_cache.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyMemCheck.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyTest.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousConfigure.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousBuild.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyConfigure.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyMemoryCheck.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalTest.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousUpdate.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyUpdate.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalMemCheck.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalSubmit.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/Experimental.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousCoverage.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalConfigure.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/Continuous.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/Nightly.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlySubmit.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyStart.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalCoverage.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyCoverage.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalStart.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/package.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/NightlyBuild.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalBuild.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ExperimentalUpdate.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousStart.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousMemCheck.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousTest.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/ContinuousSubmit.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/Adaptive_Platform.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec/CMakeFiles/edit_cache.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec/CMakeFiles/test.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec/CMakeFiles/package_source.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec/CMakeFiles/rebuild_cache.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec/CMakeFiles/package.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec/CMakeFiles/exec.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core/CMakeFiles/edit_cache.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core/CMakeFiles/test.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core/CMakeFiles/rebuild_cache.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core/CMakeFiles/package.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core/CMakeFiles/package_source.dir
-/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core/CMakeFiles/core.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/rebuild_cache.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/test.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ara_core.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/edit_cache.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyMemCheck.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyTest.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousConfigure.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousBuild.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyConfigure.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyMemoryCheck.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalTest.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousUpdate.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ara_unit_test.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyUpdate.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalMemCheck.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalSubmit.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/Experimental.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousCoverage.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalConfigure.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/Continuous.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/Nightly.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlySubmit.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyStart.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalCoverage.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyCoverage.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalStart.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/NightlyBuild.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalBuild.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ExperimentalUpdate.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousStart.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousMemCheck.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousTest.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ContinuousSubmit.dir
+/home/ahmed/Documents/Adaptive/build/CMakeFiles/ara_exec.dir

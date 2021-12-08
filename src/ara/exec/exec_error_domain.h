@@ -1,10 +1,10 @@
 #ifndef ARA_EXEC_EXEC_ERROR_DOMAIN_H_
 #define ARA_EXEC_EXEC_ERROR_DOMAIN_H_
 
-#include "error_domain.h"
-#include "error_code.h"
-#include "exception.h"
-
+#include "../core/error_domain.h"
+#include "../core/error_code.h"
+#include "../core/exception.h"
+#include <cstdint>
 namespace ara
 {
 	namespace exec
@@ -49,6 +49,7 @@ namespace ara
 			 */
 			explicit ExecException(ara::core::ErrorCode errorCode) noexcept;
 			
+			
 
 			//SWS_EM_02290
 			/*
@@ -78,17 +79,19 @@ namespace ara
 		/**
 		 * \brief Defines a class representing the Execution Management error domain.
 		 * 
-		 * \uniqueId 0x8000’0000’0000’0202
+		 * \uniqueId 0x8000ï¿½0000ï¿½0000ï¿½0202
 		 * 
 		 */
 		class ExecErrorDomain final : public ara::core::ErrorDomain
 		{
+			using IdType = ara::core::ErrorDomain::IdType;
 			// SWS_EM_02286
 			/**
 			 * \brief Constructs a new ExecErrorDomain object
 			 * 
 			 */
-			ExecErrorDomain() noexcept;
+			explicit constexpr ExecErrorDomain(IdType id) noexcept;
+			// ExecErrorDomain(IdType id) noexcept = default;
 
 			// SWS_EM_02287
 			/**
@@ -106,7 +109,7 @@ namespace ara
 			 * 
 			 * \return char const*      The message associated with the error code.
 			 */
-			char const *Message(CodeType errorCode) const noexcept override;
+			std::string Message(CodeType errorCode) const noexcept override;
 
 			// SWS_EM_02289
 			/**

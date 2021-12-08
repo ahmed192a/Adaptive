@@ -1,11 +1,13 @@
 
 #ifndef ARA_CORE_EXCEPTION_H_
 #define ARA_CORE_EXCEPTION_H_
+#include <cstdint>
+#include <stdexcept>
+#include <map>
+#include <sstream>
+#include "error_code.h"
 
-#include <exception>
-#include "ara/core/error_code.h"
-
-namespace ara
+namespace ara 
 {
     namespace core
     {
@@ -16,15 +18,16 @@ namespace ara
          */
         class Exception : public std::exception
         {
+            ara::core::ErrorCode const mErrorCode;
         public:
-        	ErrorCode errorCode;
+        	// ErrorCode errorCode;
             // SWS_CORE_00611
             /**
              * \brief Construct a new Exception object with a specific ErrorCode.
              * 
              * \param[in] err   the ErrorCode
              */
-            explicit Exception(ErrorCode err) noexcept;
+            explicit Exception(ErrorCode &err) noexcept;
 
             // SWS_CORE_00612
             /**

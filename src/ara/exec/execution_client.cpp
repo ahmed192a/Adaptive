@@ -28,7 +28,7 @@ namespace ara
             // close file descriptor
             close(fd);
         }
-        void ExecutionClient::ReportExecutionState(ara::exec::ExecutionState state) const
+        void ExecutionClient::ReportExecutionState(ara::exec::ExecutionState state) const noexcept
         {
             if (write(fd, &state, sizeof(state)) == -1)
             {

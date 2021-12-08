@@ -3,8 +3,9 @@
 
 
 #include <string>
-#include "future.h"
-#include "result.h"
+// #include "error_code.h"
+#include "../core/future.h"
+#include "../core/result.h"
 
 
 namespace ara
@@ -17,6 +18,7 @@ namespace ara
          */
         class FunctionGroup
         {
+            public:
             using CtorToken = std::string;
 
             // SWS_EM_02264

@@ -1,6 +1,7 @@
 
 #include "error_code.h"
-
+#include "string"
+using namespace std;
 namespace ara
 {
 	namespace core
@@ -16,13 +17,13 @@ namespace ara
 		 * \param data  optional vendor-specific supplementary error context data
 		 */
 
-		template <typename EnumT>
-		constexpr ErrorCode::ErrorCode(EnumT e, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
-		{
-			this->codeType = e;
-			this->errorDomainPtr = nullptr;
-			this->supportDataType = data;
-		}
+		// template <typename EnumT>
+		// constexpr ErrorCode::ErrorCode(EnumT e, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
+		// {
+		// 	this->codeType = e;
+		// 	this->errorDomainPtr = nullptr;
+		// 	this->supportDataType = data;
+		// }
 
 		// SWS_CORE_00513
 		/**
@@ -32,12 +33,14 @@ namespace ara
 		 * \param domain    the ErrorDomain associated with value
 		 * \param data      optional vendor-specific supplementary error context data
 		 */
-		constexpr ErrorCode::ErrorCode(ErrorDomain::CodeType value, ErrorDomain const &domain, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
-		{
-			this->codeType = value;
-			this->errorDomainPtr = domain;
-			this->supportDataType = data;
-		}
+		// constexpr ErrorCode::ErrorCode(ErrorDomain::CodeType value,
+		// 					ErrorDomain const &domain, 
+		// 					ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
+		// {
+		// 	this->codeType = value;
+		// 	this->errorDomainPtr = nullptr;
+		// 	this->supportDataType = data;
+		// }
 
 		// SWS_CORE_00514
 		/**
@@ -47,7 +50,7 @@ namespace ara
 		 */
 		constexpr ErrorDomain::CodeType ErrorCode::Value() const noexcept
 		{
-			return this->codeType;
+			return this->mValue;
 		}
 
 		// SWS_CORE_00515
@@ -58,7 +61,7 @@ namespace ara
 		 */
 		constexpr ErrorDomain const& ErrorCode::Domain() const noexcept
 		{
-			return this->errorDomainPtr;
+			return *this->mDomain;
 		}
 
 		// SWS_CORE_00516
@@ -71,7 +74,7 @@ namespace ara
 		 */
 		constexpr ErrorDomain::SupportDataType ErrorCode::SupportData() const noexcept
 		{
-			return this->supportDataType;
+			return this->mSupportData;
 		}
 
 		// SWS_CORE_00518
@@ -80,10 +83,11 @@ namespace ara
 		 *
 		 * \return StringView   the error message text
 		 */
-		char* ErrorCode::Message() const noexcept
+		std::string ErrorCode::Message() const noexcept
 		{
-			char codeTypeStr[33];
-			snprintf( codeTypeStr, 33, "%d", (int)codeType );
+			// char codeTypeStr[33];
+			// snprintf( codeTypeStr, 33, "%d", (int)this->codeType );
+			string codeTypeStr = to_string(this->mValue);
 			return "CodeType of error message: " + codeTypeStr;
 		}
 
@@ -97,7 +101,7 @@ namespace ara
 		 */
 		void ErrorCode::ThrowAsException() const
 		{
-			throw this->codeType;
+			throw this->mValue;
 		}
 
         // SWS_CORE_00571
@@ -115,16 +119,7 @@ namespace ara
          */
         constexpr bool operator==(ErrorCode const &lhs, ErrorCode const &rhs) noexcept
         {
-        	bool result;
-        	if(( lhs.codeType == rhs.codeType ) && ( *(lhs.errorDomainPtr) == *(rhs.errorDomainPtr) ))
-        	{
-        		result = true;
-        	}
-        	else
-        	{
-        		result = false;
-        	}
-        	return result;
+        	return lhs.Domain() == rhs.Domain() && lhs.Value() == rhs.Value();
         }
 
         // SWS_CORE_00572
@@ -142,16 +137,7 @@ namespace ara
          */
         constexpr bool operator!=(ErrorCode const &lhs, ErrorCode const &rhs) noexcept
         {
-        	bool result;
-        	if(( lhs.codeType != rhs.codeType ) || ( *(lhs.errorDomainPtr) != *(rhs.errorDomainPtr) ))
-        	{
-        		result = true;
-        	}
-        	else
-        	{
-        		result = false;
-        	}
-        	return result;
+        	return lhs.Domain() != rhs.Domain() || lhs.Value() != rhs.Value();
         }
 	}
 }

@@ -1,37 +1,22 @@
 [
 {
-  "directory": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build",
-  "command": "/usr/bin/c++  -DAdaptive_Platform_EXPORTS -I\"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/core\" -I\"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/exec\"  -g   -std=gnu++14 -o CMakeFiles/Adaptive_Platform.dir/main.cpp.o -c \"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/main.cpp\"",
-  "file": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/main.cpp"
+  "directory": "/home/ahmed/Documents/Adaptive/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -Dara_unit_test_EXPORTS  -g   -std=gnu++14 -o CMakeFiles/ara_unit_test.dir/Testing/test_1.cpp.o -c /home/ahmed/Documents/Adaptive/Testing/test_1.cpp",
+  "file": "/home/ahmed/Documents/Adaptive/Testing/test_1.cpp"
 },
 {
-  "directory": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec",
-  "command": "/usr/bin/c++    -g   -std=gnu++14 -o CMakeFiles/exec.dir/deterministic_client.cpp.o -c \"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/exec/deterministic_client.cpp\"",
-  "file": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/exec/deterministic_client.cpp"
+  "directory": "/home/ahmed/Documents/Adaptive/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -std=gnu++14 -o CMakeFiles/ara_exec.dir/src/ara/exec/deterministic_client.cpp.o -c /home/ahmed/Documents/Adaptive/src/ara/exec/deterministic_client.cpp",
+  "file": "/home/ahmed/Documents/Adaptive/src/ara/exec/deterministic_client.cpp"
 },
 {
-  "directory": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec",
-  "command": "/usr/bin/c++    -g   -std=gnu++14 -o CMakeFiles/exec.dir/exec_error_domain.cpp.o -c \"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/exec/exec_error_domain.cpp\"",
-  "file": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/exec/exec_error_domain.cpp"
+  "directory": "/home/ahmed/Documents/Adaptive/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -std=gnu++14 -o CMakeFiles/ara_exec.dir/src/ara/exec/exec_error_domain.cpp.o -c /home/ahmed/Documents/Adaptive/src/ara/exec/exec_error_domain.cpp",
+  "file": "/home/ahmed/Documents/Adaptive/src/ara/exec/exec_error_domain.cpp"
 },
 {
-  "directory": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/exec",
-  "command": "/usr/bin/c++    -g   -std=gnu++14 -o CMakeFiles/exec.dir/execution_client.cpp.o -c \"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/exec/execution_client.cpp\"",
-  "file": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/exec/execution_client.cpp"
-},
-{
-  "directory": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core",
-  "command": "/usr/bin/c++    -g   -std=gnu++14 -o CMakeFiles/core.dir/error_code.cpp.o -c \"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/core/error_code.cpp\"",
-  "file": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/core/error_code.cpp"
-},
-{
-  "directory": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core",
-  "command": "/usr/bin/c++    -g   -std=gnu++14 -o CMakeFiles/core.dir/error_domain.cpp.o -c \"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/core/error_domain.cpp\"",
-  "file": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/core/error_domain.cpp"
-},
-{
-  "directory": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/src/ara/core",
-  "command": "/usr/bin/c++    -g   -std=gnu++14 -o CMakeFiles/core.dir/exception.cpp.o -c \"/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/core/exception.cpp\"",
-  "file": "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/src/ara/core/exception.cpp"
+  "directory": "/home/ahmed/Documents/Adaptive/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -std=gnu++14 -o CMakeFiles/ara_exec.dir/src/ara/exec/execution_client.cpp.o -c /home/ahmed/Documents/Adaptive/src/ara/exec/execution_client.cpp",
+  "file": "/home/ahmed/Documents/Adaptive/src/ara/exec/execution_client.cpp"
 }
 ]

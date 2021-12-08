@@ -3,7 +3,7 @@
 #define ARA_CORE_FUTURE_ERROR_DOMAIN_H_
 
 #include <cstdint>
-
+#include "exception.h"
 namespace ara
 {
     namespace core

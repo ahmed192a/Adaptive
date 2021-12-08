@@ -11,8 +11,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.16.3/CMakeCCompiler.cmake"
   "CMakeFiles/3.16.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.3/CMakeSystem.cmake"
-  "../src/ara/core/CMakeLists.txt"
-  "../src/ara/exec/CMakeLists.txt"
   "/usr/share/cmake-3.16/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.16/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.16/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
@@ -30,6 +28,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.16/Modules/Compiler/GNU-CXX.cmake"
   "/usr/share/cmake-3.16/Modules/Compiler/GNU.cmake"
   "/usr/share/cmake-3.16/Modules/DartConfiguration.tcl.in"
+  "/usr/share/cmake-3.16/Modules/GoogleTest.cmake"
   "/usr/share/cmake-3.16/Modules/Internal/CMakeCheckCompilerFlag.cmake"
   "/usr/share/cmake-3.16/Modules/Platform/Linux-GNU-C.cmake"
   "/usr/share/cmake-3.16/Modules/Platform/Linux-GNU-CXX.cmake"
@@ -48,12 +47,11 @@ set(CMAKE_MAKEFILE_OUTPUTS
 set(CMAKE_MAKEFILE_PRODUCTS
   "DartConfiguration.tcl"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
-  "src/ara/exec/CMakeFiles/CMakeDirectoryInformation.cmake"
-  "src/ara/core/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/ara_core.dir/DependInfo.cmake"
   "CMakeFiles/NightlyMemCheck.dir/DependInfo.cmake"
   "CMakeFiles/NightlyTest.dir/DependInfo.cmake"
   "CMakeFiles/ContinuousConfigure.dir/DependInfo.cmake"
@@ -62,6 +60,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/NightlyMemoryCheck.dir/DependInfo.cmake"
   "CMakeFiles/ExperimentalTest.dir/DependInfo.cmake"
   "CMakeFiles/ContinuousUpdate.dir/DependInfo.cmake"
+  "CMakeFiles/ara_unit_test.dir/DependInfo.cmake"
   "CMakeFiles/NightlyUpdate.dir/DependInfo.cmake"
   "CMakeFiles/ExperimentalMemCheck.dir/DependInfo.cmake"
   "CMakeFiles/ExperimentalSubmit.dir/DependInfo.cmake"
@@ -82,7 +81,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/ContinuousMemCheck.dir/DependInfo.cmake"
   "CMakeFiles/ContinuousTest.dir/DependInfo.cmake"
   "CMakeFiles/ContinuousSubmit.dir/DependInfo.cmake"
-  "CMakeFiles/Adaptive_Platform.dir/DependInfo.cmake"
-  "src/ara/exec/CMakeFiles/exec.dir/DependInfo.cmake"
-  "src/ara/core/CMakeFiles/core.dir/DependInfo.cmake"
+  "CMakeFiles/ara_exec.dir/DependInfo.cmake"
   )

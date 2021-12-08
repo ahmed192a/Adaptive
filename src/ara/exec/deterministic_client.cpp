@@ -7,8 +7,8 @@
 #include "utility"
 #include <vector>
 // number of thread which depends on the number of core
-std::array<ara::exec::WorkerThread, 4> workers;
-
+// std::array<ara::exec::WorkerThread, 4> workers;
+std::vector<ara::exec::WorkerThread>workers(4);
 
 namespace ara
 {
@@ -44,11 +44,11 @@ namespace ara
             auto c = container.begin();
             while (c != container.end())
             {
-                pid = fork()
+                pid = fork();
                 if(pid == 0){
                     // execute each element in Container 
                     runnableObj.Run(*c++, workers[count++]);
-                    return 0;
+                    return ;
                 }
                 
                 count %= workers.size();
@@ -81,7 +81,9 @@ namespace ara
 
         DeterministicClient::TimeStamp DeterministicClient::GetNextActivationTime() noexcept
         {
-            
+
+            // TO DO: This is wrong it need to return the next activation time
+            return Activated;
         }
 
     } // namespace exec

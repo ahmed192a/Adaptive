@@ -2,9 +2,12 @@
 #ifndef ARA_CORE_ERROR_CODE_H_
 #define ARA_CORE_ERROR_CODE_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "ara/core/error_domain.h"
+// #include <stdio.h>
+// #include <stdlib.h>
+#include "error_domain.h"
+// #include <string>
+#include <ostream>
+#include <cstdint>
 
 namespace ara
 {
@@ -18,18 +21,24 @@ namespace ara
          * specific to this error domain.
          * 
          */
-        class ErrorCode final
+        class ErrorCode 
         {
-        	//ErrorCode class attributes
+
+            using CodeType = ErrorDomain::CodeType;
+            using SupportDataType = ErrorDomain::SupportDataType;
+
+            //ErrorCode class attributes
         	/*
         	 * \codeType    		 a domain-specific error code value
              * \errorDomain  	     the ErrorDomain associated with value
              * \supportDataType      optional vendor-specific supplementary error context data
         	 */
-        	ErrorDomain::CodeType codeType;
-        	ErrorDomain& errorDomainPtr;
-        	ErrorDomain::SupportDataType supportDataType=ErrorDomain::SupportDataType();
-
+            private:
+            CodeType mValue;
+            SupportDataType mSupportData; 
+            ErrorDomain const* mDomain;  // non-owning pointer to the associated ErrorDomain
+            
+            public:
             // SWS_CORE_00512
             /**
              * \brief Construct a new ErrorCode instance with parameters.
@@ -41,9 +50,12 @@ namespace ara
              * \param e     a domain-specific error code value
              * \param data  optional vendor-specific supplementary error context data
              */
-            template <typename EnumT>
-            constexpr ErrorCode(EnumT e, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept;
-
+            template <typename EnumT, typename = typename std::enable_if<std::is_enum<EnumT>::value>::type>
+            constexpr ErrorCode(EnumT e, SupportDataType data = 0, char const* userMessage = nullptr) noexcept
+                // Call MakeErrorCode() unqualified, so the correct overload is found via ADL.
+                : ErrorCode(MakeErrorCode(e, data, userMessage))
+            {
+            }
             // SWS_CORE_00513
             /**
              * \brief Construct a new ErrorCode instance with parameters.
@@ -52,8 +64,14 @@ namespace ara
              * \param domain    the ErrorDomain associated with value
              * \param data      optional vendor-specific supplementary error context data
              */
-            constexpr ErrorCode(ErrorDomain::CodeType value, ErrorDomain const &domain, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept;
-
+            constexpr ErrorCode::ErrorCode(ErrorDomain::CodeType value,
+                    ErrorDomain const &domain, 
+                    ErrorDomain::SupportDataType data=0) noexcept
+                        : mValue(value)
+                    , mSupportData(data)
+                    , mDomain(&domain)
+                {
+                }
             // SWS_CORE_00514
             /**
              * \brief Return the raw error code value.
@@ -86,7 +104,7 @@ namespace ara
              * 
              * \return StringView   the error message text
              */
-            char* Message() const noexcept;
+            std::string Message() const noexcept;
 
             // SWS_CORE_00519
             /**
@@ -98,7 +116,7 @@ namespace ara
              */
             void ThrowAsException() const;
         };
-
+        
         // SWS_CORE_00571
         /**
          * \brief Global operator== for ErrorCode.
@@ -112,6 +130,7 @@ namespace ara
          * \return true     if the two instances compare equal
          * \return false    otherwise
          */
+        
         constexpr bool operator==(ErrorCode const &lhs, ErrorCode const &rhs) noexcept;
 
         // SWS_CORE_00572
@@ -128,6 +147,7 @@ namespace ara
          * \return false    otherwise
          */
         constexpr bool operator!=(ErrorCode const &lhs, ErrorCode const &rhs) noexcept;
+        
     } // namespace core
     
 } // namespace ara

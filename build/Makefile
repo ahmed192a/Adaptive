@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive"
+CMAKE_SOURCE_DIR = /home/ahmed/Documents/Adaptive
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build"
+CMAKE_BINARY_DIR = /home/ahmed/Documents/Adaptive/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -78,17 +78,6 @@ test/fast: test
 
 .PHONY : test/fast
 
-# Special rule for the target package_source
-package_source:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	/usr/bin/cpack --config ./CPackSourceConfig.cmake /media/ahmed/New\ Volume/study/4th\ computer/first\ term/Graduation\ project/Adaptive/build/CPackSourceConfig.cmake
-.PHONY : package_source
-
-# Special rule for the target package_source
-package_source/fast: package_source
-
-.PHONY : package_source/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -100,22 +89,11 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target package
-package: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
-	/usr/bin/cpack --config ./CPackConfig.cmake
-.PHONY : package
-
-# Special rule for the target package
-package/fast: package
-
-.PHONY : package/fast
-
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles" "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ahmed/Documents/Adaptive/build/CMakeFiles /home/ahmed/Documents/Adaptive/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/media/ahmed/New Volume/study/4th computer/first term/Graduation project/Adaptive/build/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ahmed/Documents/Adaptive/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -142,6 +120,19 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+#=============================================================================
+# Target rules for targets named ara_core
+
+# Build rule for target.
+ara_core: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ara_core
+.PHONY : ara_core
+
+# fast build rule for target.
+ara_core/fast:
+	$(MAKE) -f CMakeFiles/ara_core.dir/build.make CMakeFiles/ara_core.dir/build
+.PHONY : ara_core/fast
 
 #=============================================================================
 # Target rules for targets named NightlyMemCheck
@@ -246,6 +237,19 @@ ContinuousUpdate: cmake_check_build_system
 ContinuousUpdate/fast:
 	$(MAKE) -f CMakeFiles/ContinuousUpdate.dir/build.make CMakeFiles/ContinuousUpdate.dir/build
 .PHONY : ContinuousUpdate/fast
+
+#=============================================================================
+# Target rules for targets named ara_unit_test
+
+# Build rule for target.
+ara_unit_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ara_unit_test
+.PHONY : ara_unit_test
+
+# fast build rule for target.
+ara_unit_test/fast:
+	$(MAKE) -f CMakeFiles/ara_unit_test.dir/build.make CMakeFiles/ara_unit_test.dir/build
+.PHONY : ara_unit_test/fast
 
 #=============================================================================
 # Target rules for targets named NightlyUpdate
@@ -508,70 +512,125 @@ ContinuousSubmit/fast:
 .PHONY : ContinuousSubmit/fast
 
 #=============================================================================
-# Target rules for targets named Adaptive_Platform
+# Target rules for targets named ara_exec
 
 # Build rule for target.
-Adaptive_Platform: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Adaptive_Platform
-.PHONY : Adaptive_Platform
+ara_exec: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ara_exec
+.PHONY : ara_exec
 
 # fast build rule for target.
-Adaptive_Platform/fast:
-	$(MAKE) -f CMakeFiles/Adaptive_Platform.dir/build.make CMakeFiles/Adaptive_Platform.dir/build
-.PHONY : Adaptive_Platform/fast
+ara_exec/fast:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/build
+.PHONY : ara_exec/fast
 
-#=============================================================================
-# Target rules for targets named exec
+Testing/test_1.o: Testing/test_1.cpp.o
 
-# Build rule for target.
-exec: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 exec
-.PHONY : exec
-
-# fast build rule for target.
-exec/fast:
-	$(MAKE) -f src/ara/exec/CMakeFiles/exec.dir/build.make src/ara/exec/CMakeFiles/exec.dir/build
-.PHONY : exec/fast
-
-#=============================================================================
-# Target rules for targets named core
-
-# Build rule for target.
-core: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 core
-.PHONY : core
-
-# fast build rule for target.
-core/fast:
-	$(MAKE) -f src/ara/core/CMakeFiles/core.dir/build.make src/ara/core/CMakeFiles/core.dir/build
-.PHONY : core/fast
-
-main.o: main.cpp.o
-
-.PHONY : main.o
+.PHONY : Testing/test_1.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/Adaptive_Platform.dir/build.make CMakeFiles/Adaptive_Platform.dir/main.cpp.o
-.PHONY : main.cpp.o
+Testing/test_1.cpp.o:
+	$(MAKE) -f CMakeFiles/ara_unit_test.dir/build.make CMakeFiles/ara_unit_test.dir/Testing/test_1.cpp.o
+.PHONY : Testing/test_1.cpp.o
 
-main.i: main.cpp.i
+Testing/test_1.i: Testing/test_1.cpp.i
 
-.PHONY : main.i
+.PHONY : Testing/test_1.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/Adaptive_Platform.dir/build.make CMakeFiles/Adaptive_Platform.dir/main.cpp.i
-.PHONY : main.cpp.i
+Testing/test_1.cpp.i:
+	$(MAKE) -f CMakeFiles/ara_unit_test.dir/build.make CMakeFiles/ara_unit_test.dir/Testing/test_1.cpp.i
+.PHONY : Testing/test_1.cpp.i
 
-main.s: main.cpp.s
+Testing/test_1.s: Testing/test_1.cpp.s
 
-.PHONY : main.s
+.PHONY : Testing/test_1.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/Adaptive_Platform.dir/build.make CMakeFiles/Adaptive_Platform.dir/main.cpp.s
-.PHONY : main.cpp.s
+Testing/test_1.cpp.s:
+	$(MAKE) -f CMakeFiles/ara_unit_test.dir/build.make CMakeFiles/ara_unit_test.dir/Testing/test_1.cpp.s
+.PHONY : Testing/test_1.cpp.s
+
+src/ara/exec/deterministic_client.o: src/ara/exec/deterministic_client.cpp.o
+
+.PHONY : src/ara/exec/deterministic_client.o
+
+# target to build an object file
+src/ara/exec/deterministic_client.cpp.o:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/deterministic_client.cpp.o
+.PHONY : src/ara/exec/deterministic_client.cpp.o
+
+src/ara/exec/deterministic_client.i: src/ara/exec/deterministic_client.cpp.i
+
+.PHONY : src/ara/exec/deterministic_client.i
+
+# target to preprocess a source file
+src/ara/exec/deterministic_client.cpp.i:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/deterministic_client.cpp.i
+.PHONY : src/ara/exec/deterministic_client.cpp.i
+
+src/ara/exec/deterministic_client.s: src/ara/exec/deterministic_client.cpp.s
+
+.PHONY : src/ara/exec/deterministic_client.s
+
+# target to generate assembly for a file
+src/ara/exec/deterministic_client.cpp.s:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/deterministic_client.cpp.s
+.PHONY : src/ara/exec/deterministic_client.cpp.s
+
+src/ara/exec/exec_error_domain.o: src/ara/exec/exec_error_domain.cpp.o
+
+.PHONY : src/ara/exec/exec_error_domain.o
+
+# target to build an object file
+src/ara/exec/exec_error_domain.cpp.o:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/exec_error_domain.cpp.o
+.PHONY : src/ara/exec/exec_error_domain.cpp.o
+
+src/ara/exec/exec_error_domain.i: src/ara/exec/exec_error_domain.cpp.i
+
+.PHONY : src/ara/exec/exec_error_domain.i
+
+# target to preprocess a source file
+src/ara/exec/exec_error_domain.cpp.i:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/exec_error_domain.cpp.i
+.PHONY : src/ara/exec/exec_error_domain.cpp.i
+
+src/ara/exec/exec_error_domain.s: src/ara/exec/exec_error_domain.cpp.s
+
+.PHONY : src/ara/exec/exec_error_domain.s
+
+# target to generate assembly for a file
+src/ara/exec/exec_error_domain.cpp.s:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/exec_error_domain.cpp.s
+.PHONY : src/ara/exec/exec_error_domain.cpp.s
+
+src/ara/exec/execution_client.o: src/ara/exec/execution_client.cpp.o
+
+.PHONY : src/ara/exec/execution_client.o
+
+# target to build an object file
+src/ara/exec/execution_client.cpp.o:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/execution_client.cpp.o
+.PHONY : src/ara/exec/execution_client.cpp.o
+
+src/ara/exec/execution_client.i: src/ara/exec/execution_client.cpp.i
+
+.PHONY : src/ara/exec/execution_client.i
+
+# target to preprocess a source file
+src/ara/exec/execution_client.cpp.i:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/execution_client.cpp.i
+.PHONY : src/ara/exec/execution_client.cpp.i
+
+src/ara/exec/execution_client.s: src/ara/exec/execution_client.cpp.s
+
+.PHONY : src/ara/exec/execution_client.s
+
+# target to generate assembly for a file
+src/ara/exec/execution_client.cpp.s:
+	$(MAKE) -f CMakeFiles/ara_exec.dir/build.make CMakeFiles/ara_exec.dir/src/ara/exec/execution_client.cpp.s
+.PHONY : src/ara/exec/execution_client.cpp.s
 
 # Help Target
 help:
@@ -581,7 +640,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... package_source"
+	@echo "... ara_core"
 	@echo "... edit_cache"
 	@echo "... NightlyMemCheck"
 	@echo "... NightlyTest"
@@ -591,6 +650,7 @@ help:
 	@echo "... NightlyMemoryCheck"
 	@echo "... ExperimentalTest"
 	@echo "... ContinuousUpdate"
+	@echo "... ara_unit_test"
 	@echo "... NightlyUpdate"
 	@echo "... ExperimentalMemCheck"
 	@echo "... ExperimentalSubmit"
@@ -604,7 +664,6 @@ help:
 	@echo "... ExperimentalCoverage"
 	@echo "... NightlyCoverage"
 	@echo "... ExperimentalStart"
-	@echo "... package"
 	@echo "... NightlyBuild"
 	@echo "... ExperimentalBuild"
 	@echo "... ExperimentalUpdate"
@@ -612,12 +671,19 @@ help:
 	@echo "... ContinuousMemCheck"
 	@echo "... ContinuousTest"
 	@echo "... ContinuousSubmit"
-	@echo "... Adaptive_Platform"
-	@echo "... exec"
-	@echo "... core"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... ara_exec"
+	@echo "... Testing/test_1.o"
+	@echo "... Testing/test_1.i"
+	@echo "... Testing/test_1.s"
+	@echo "... src/ara/exec/deterministic_client.o"
+	@echo "... src/ara/exec/deterministic_client.i"
+	@echo "... src/ara/exec/deterministic_client.s"
+	@echo "... src/ara/exec/exec_error_domain.o"
+	@echo "... src/ara/exec/exec_error_domain.i"
+	@echo "... src/ara/exec/exec_error_domain.s"
+	@echo "... src/ara/exec/execution_client.o"
+	@echo "... src/ara/exec/execution_client.i"
+	@echo "... src/ara/exec/execution_client.s"
 .PHONY : help
 
 
