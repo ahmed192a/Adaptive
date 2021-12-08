@@ -40,7 +40,7 @@ Log::Log() noexcept{
 Log::~Log() noexcept{
     myFile_Handler.close();
 }
-void Log::Insert(LogType T, std::string data){
+void Log::Insert( std::string data, std::string from,LogType T = LogType::INFO){
 	switch(T){
 		case LogType::INFO:
 		myFile_Handler << "[INFO]\t";
@@ -53,7 +53,7 @@ void Log::Insert(LogType T, std::string data){
 	}
 
 	
-    myFile_Handler <<"["<<return_current_time_and_date()<<"]\t\t"<< data << endl;
+    myFile_Handler <<"["<<return_current_time_and_date()<<"]\t\t"<<from<<"\t"<< data << endl;
 
 }
 

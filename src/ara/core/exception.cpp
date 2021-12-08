@@ -9,7 +9,7 @@ namespace ara
 		/**
 		 * \brief Construct a new Exception object with a specific ErrorCode.
 		 *
-		 * \param[in] err   the ErrorCode
+		 * \param[in] err   the ErrorCode 
 		 */
 		explicit Exception::Exception(ErrorCode err) noexcept
 		{

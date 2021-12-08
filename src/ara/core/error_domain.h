@@ -5,7 +5,7 @@
 
 #include <cstdint>
 #include <exception>
-
+#include <string>
 
 namespace ara
 {

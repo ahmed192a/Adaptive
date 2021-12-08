@@ -2,6 +2,7 @@
 // #include "exec_error_domain.h"
 // #include <iostream>
 // #include "string"
+// using namespace std;
 // namespace ara
 // {
 // 	namespace exec
@@ -84,7 +85,7 @@
 // 		void ExecErrorDomain::ThrowAsException(ara::core::ErrorCode const &errorCode) const noexcept(false)
 // 		{
 // 			// ara::core::ErrorCode const errorCode;
-// 			ara::core::Exception exp(errorCode);
+// 			ara::core::Exception exp  (errorCode);
 // 			const char* c = exp.what();
 // 		}
 // 	}

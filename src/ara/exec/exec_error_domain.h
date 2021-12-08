@@ -5,6 +5,7 @@
 #include "../core/error_code.h"
 #include "../core/exception.h"
 #include <cstdint>
+#include <string>
 namespace ara
 {
 	namespace exec

@@ -29,7 +29,7 @@ public:
     // TimeStamp Activated;
     Log() noexcept;
     ~Log() noexcept;
-    void Insert(LogType T, std::string data);
+    void Insert(std::string data, std::string from, LogType T = LogType::INFO);
 
 };
 
