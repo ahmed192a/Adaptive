@@ -2,19 +2,19 @@ cmake_minimum_required(VERSION 3.0.0)
 project(Adaptive_Platform VERSION 0.1.0)
 
 
-configure_file(CMakeLists.txt.in external/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/external)
-if(result)
-    message(FATAL_ERROR "CMake step for externals failed: ${result}")
-endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/external)
-if(result)
-    message(FATAL_ERROR "Build step for externals failed: ${result}")
-endif()
+#configure_file(CMakeLists.txt.in external/CMakeLists.txt)
+#execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+#    RESULT_VARIABLE result
+#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/external)
+#if(result)
+#    message(FATAL_ERROR "CMake step for externals failed: ${result}")
+#endif()
+#execute_process(COMMAND ${CMAKE_COMMAND} --build .
+#    RESULT_VARIABLE result
+#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/external)
+#if(result)
+#    message(FATAL_ERROR "Build step for externals failed: ${result}")
+#endif()
 
 
 # This AUTOSAR Adaptive Platform requires C++14

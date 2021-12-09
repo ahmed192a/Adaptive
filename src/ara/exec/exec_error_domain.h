@@ -6,6 +6,7 @@
 #include "../core/exception.h"
 #include <cstdint>
 #include <string>
+
 namespace ara
 {
 	namespace exec
@@ -39,6 +40,7 @@ namespace ara
 		 */
 		class ExecException : public ara::core::Exception
 		{
+		public:
 			//ExecException will use ErrorCode Attribute in the Exception class
 			ara::core::ErrorCode errorCode;
 
@@ -91,6 +93,7 @@ namespace ara
 			 * \brief Constructs a new ExecErrorDomain object
 			 * 
 			 */
+		public:
 			explicit constexpr ExecErrorDomain(IdType id) noexcept;
 			// ExecErrorDomain(IdType id) noexcept = default;
 
@@ -118,7 +121,7 @@ namespace ara
 			 * 
 			 * \param[in] errorCode     The error to throw.
 			 */
-			void ThrowAsException(ara::core::ErrorCode const &errorCode) const noexcept(false) override;
+			void ThrowAsException(ara::core::ErrorCode &errorCode) const noexcept(false) override;
 		};
 	} // namespace exec
 

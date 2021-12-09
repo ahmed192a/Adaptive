@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <map>
 #include <sstream>
+#include <string>
 #include "error_code.h"
 
 namespace ara 
@@ -16,10 +17,11 @@ namespace ara
          * \brief Base type for all AUTOSAR exception types.
          * 
          */
-        class Exception : public std::exception
+        class Exception //: public std::exception
         {
-            ara::core::ErrorCode const mErrorCode;
         public:
+            ara::core::ErrorCode mErrorCode;
+
         	// ErrorCode errorCode;
             // SWS_CORE_00611
             /**
@@ -27,7 +29,7 @@ namespace ara
              * 
              * \param[in] err   the ErrorCode
              */
-            explicit Exception(ErrorCode &err) noexcept;
+            explicit Exception(ErrorCode &err) noexcept : mErrorCode(err){}
 
             // SWS_CORE_00612
             /**
@@ -38,7 +40,7 @@ namespace ara
              * 
              * \return char const*  a null-terminated string
              */
-            char const* what() const noexcept override;
+            std::string what() const noexcept;
 
             // SWS_CORE_00613
             /**

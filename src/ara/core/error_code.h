@@ -23,6 +23,7 @@ namespace ara
          */
         class ErrorCode 
         {
+        public:
 
             using CodeType = ErrorDomain::CodeType;
             using SupportDataType = ErrorDomain::SupportDataType;
@@ -33,12 +34,12 @@ namespace ara
              * \errorDomain  	     the ErrorDomain associated with value
              * \supportDataType      optional vendor-specific supplementary error context data
         	 */
-            private:
+
             CodeType mValue;
-            SupportDataType mSupportData; 
-            ErrorDomain const* mDomain;  // non-owning pointer to the associated ErrorDomain
+            SupportDataType mSupportData = 0;
+            ErrorDomain *mDomain = nullptr;  // non-owning pointer to the associated ErrorDomain
             
-            public:
+
             // SWS_CORE_00512
             /**
              * \brief Construct a new ErrorCode instance with parameters.
@@ -50,12 +51,16 @@ namespace ara
              * \param e     a domain-specific error code value
              * \param data  optional vendor-specific supplementary error context data
              */
-            template <typename EnumT, typename = typename std::enable_if<std::is_enum<EnumT>::value>::type>
+            /*template <typename EnumT, typename = typename std::enable_if<std::is_enum<EnumT>::value>::type>
             constexpr ErrorCode(EnumT e, SupportDataType data = 0, char const* userMessage = nullptr) noexcept
                 // Call MakeErrorCode() unqualified, so the correct overload is found via ADL.
                 : ErrorCode(MakeErrorCode(e, data, userMessage))
             {
-            }
+            }*/
+
+//			 template <typename EnumT>
+//			 constexpr ErrorCode(EnumT e, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept;
+
             // SWS_CORE_00513
             /**
              * \brief Construct a new ErrorCode instance with parameters.
@@ -64,14 +69,15 @@ namespace ara
              * \param domain    the ErrorDomain associated with value
              * \param data      optional vendor-specific supplementary error context data
              */
-            constexpr ErrorCode::ErrorCode(ErrorDomain::CodeType value,
-                    ErrorDomain const &domain, 
-                    ErrorDomain::SupportDataType data=0) noexcept
-                        : mValue(value)
-                    , mSupportData(data)
-                    , mDomain(&domain)
-                {
-                }
+//            constexpr ErrorCode(ErrorDomain::CodeType value,ErrorDomain *domain, ErrorDomain::SupportDataType data) noexcept;
+    		constexpr ErrorCode(ErrorDomain::CodeType value,ErrorDomain *domain, ErrorDomain::SupportDataType data) noexcept : mValue(value), mSupportData(data)
+    		{
+    			if(domain != nullptr)
+    			{
+    				this->mDomain = domain;
+    			}
+    		}
+
             // SWS_CORE_00514
             /**
              * \brief Return the raw error code value.
@@ -86,7 +92,12 @@ namespace ara
              * 
              * \return constexpr ErrorDomain const&     the ErrorDomain
              */
-            constexpr ErrorDomain const& Domain() const noexcept;
+//            constexpr ErrorDomain& Domain() const noexcept;
+    		constexpr ErrorDomain& Domain() const noexcept
+    		{
+    			ErrorDomain& ref = *mDomain;
+    			return ref;
+    		}
 
             // SWS_CORE_00516
             /**
@@ -115,6 +126,8 @@ namespace ara
              * 
              */
             void ThrowAsException() const;
+
+            constexpr void operator=(ErrorCode const &err) noexcept;
         };
         
         // SWS_CORE_00571

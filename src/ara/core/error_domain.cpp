@@ -13,11 +13,11 @@ namespace ara
 		 *
 		 */
 
-		ErrorDomain::ErrorDomain (IdType id) noexcept
+		constexpr ErrorDomain::ErrorDomain (IdType id) noexcept : idType(id)
 		{
-			this->ErrorDomain::idType = id;
 
 		}
+
 
         // SWS_CORE_00151
         /**
@@ -25,10 +25,12 @@ namespace ara
          *
          * \return constexpr IdType     the identifier
          */
+
 		constexpr ErrorDomain::IdType ErrorDomain::Id() const noexcept
 		{
 			return this->idType;
 		}
+
 
         // SWS_CORE_00137
         /**

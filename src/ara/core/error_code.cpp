@@ -16,14 +16,14 @@ namespace ara
 		 * \param e     a domain-specific error code value
 		 * \param data  optional vendor-specific supplementary error context data
 		 */
+		//NOT NEEDED
 
-		// template <typename EnumT>
-		// constexpr ErrorCode::ErrorCode(EnumT e, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
-		// {
-		// 	this->codeType = e;
-		// 	this->errorDomainPtr = nullptr;
-		// 	this->supportDataType = data;
-		// }
+//		template <typename EnumT>
+//		 constexpr ErrorCode::ErrorCode(EnumT e, ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
+//		 {
+//		 	this->mValue = e;
+//		 	this->mSupportData = data;
+//		 }
 
 		// SWS_CORE_00513
 		/**
@@ -33,14 +33,13 @@ namespace ara
 		 * \param domain    the ErrorDomain associated with value
 		 * \param data      optional vendor-specific supplementary error context data
 		 */
-		// constexpr ErrorCode::ErrorCode(ErrorDomain::CodeType value,
-		// 					ErrorDomain const &domain, 
-		// 					ErrorDomain::SupportDataType data=ErrorDomain::SupportDataType()) noexcept
-		// {
-		// 	this->codeType = value;
-		// 	this->errorDomainPtr = nullptr;
-		// 	this->supportDataType = data;
-		// }
+//		constexpr ErrorCode::ErrorCode(ErrorDomain::CodeType value,ErrorDomain *domain, ErrorDomain::SupportDataType data) noexcept : mValue(value), mSupportData(data)
+//		{
+//			if(domain != nullptr)
+//			{
+//				this->mDomain = domain;
+//			}
+//		}
 
 		// SWS_CORE_00514
 		/**
@@ -59,10 +58,12 @@ namespace ara
 		 *
 		 * \return constexpr ErrorDomain const&     the ErrorDomain
 		 */
-		constexpr ErrorDomain const& ErrorCode::Domain() const noexcept
-		{
-			return *this->mDomain;
-		}
+
+//		constexpr ErrorDomain& ErrorCode::Domain() const noexcept
+//		{
+//			ErrorDomain& ref = *mDomain;
+//			return ref;
+//		}
 
 		// SWS_CORE_00516
 		/**
@@ -103,6 +104,13 @@ namespace ara
 		{
 			throw this->mValue;
 		}
+
+        constexpr void ErrorCode::operator=(ErrorCode const &err) noexcept
+        {
+        	this->mValue = err.mValue;
+        	this->mSupportData = err.mSupportData;
+        	this->mDomain = err.mDomain;
+        }
 
         // SWS_CORE_00571
         /**

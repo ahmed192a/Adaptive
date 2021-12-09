@@ -15,13 +15,12 @@ enum class LogType : uint8_t
 
 class Log
 {
-private:
+public:
     // location of FIFO to communicate between EM & SM
     char fifo_l[30] = "Log_File.txt";
 
     ofstream myFile_Handler;
 
-public:
     //using TimeStamp = std::chrono::time_point<ara::core::SteadyClock>;
     
     // using TimeStamp = std::chrono::time_point<std::chrono::system_clock> ;
