@@ -8,7 +8,7 @@
 #include <vector>
 // number of thread which depends on the number of core
 // std::array<ara::exec::WorkerThread, 4> workers;
-std::vector<ara::exec::WorkerThread>workers(4);
+std::vector<ara::exec::WorkerThread> workers(4);
 
 namespace ara
 {
@@ -45,14 +45,14 @@ namespace ara
             while (c != container.end())
             {
                 pid = fork();
-                if(pid == 0){
-                    // execute each element in Container 
+                if (pid == 0)
+                {
+                    // execute each element in Container
                     runnableObj.Run(*c++, workers[count++]);
-                    return ;
+                    return;
                 }
-                
-                count %= workers.size();
 
+                count %= workers.size();
             }
         }
 
@@ -60,9 +60,10 @@ namespace ara
         {
             // Blocks and returns with a process control value when the next activation is triggered by the Runtime
             ara::exec::ActivationReturnType state;
-            
+
             read(fd, &state, sizeof(state));
-            if(state == ActivationReturnType::kRun) DeterministicClient::Activated =  std::chrono::system_clock::now();
+            if (state == ActivationReturnType::kRun)
+                DeterministicClient::Activated = std::chrono::system_clock::now();
             return state;
         }
         uint64_t DeterministicClient::GetRandom() noexcept
