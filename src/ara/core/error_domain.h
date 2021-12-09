@@ -7,6 +7,7 @@
 #include <exception>
 #include <string>
 
+
 namespace ara
 {
     namespace core
@@ -173,7 +174,7 @@ namespace ara
              * \param[in] errorCode     the ErrorCode to be thrown
              * @remark if ARA_NO_EXCEPTIONS is defined, this function call will terminate.
              */
-            virtual void ThrowAsException(ErrorCode const &errorCode) const noexcept(false) = 0;
+            virtual void ThrowAsException(ErrorCode &errorCode) const noexcept(false) = 0;
         };
         #if defined(__GNUC__)
         #pragma GCC diagnostic pop

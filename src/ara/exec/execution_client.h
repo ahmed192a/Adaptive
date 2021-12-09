@@ -31,6 +31,7 @@ namespace ara
             // index of File descriptor
             int fd;
 
+        public:
             // SWS_EM_02030
             /**
              * Constructor that creates the Execution Client. 

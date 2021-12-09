@@ -12,6 +12,7 @@ namespace ara
         {
             public:
             virtual void Run(ValueType &element, ara::exec::WorkerThread &t) = 0;
+            virtual ~WorkerRunnable();
         };
     } // namespace exec
 
