@@ -49,3 +49,8 @@ _deps
 build
 Doc
 [Bb][Uu][Ii][Ll][Dd]
+.metadata
+.setting*
+Debug
+
+
