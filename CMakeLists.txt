@@ -2,20 +2,6 @@ cmake_minimum_required(VERSION 3.0.0)
 project(Adaptive_Platform VERSION 0.1.0)
 
 
-#configure_file(CMakeLists.txt.in external/CMakeLists.txt)
-#execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-#    RESULT_VARIABLE result
-#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/external)
-#if(result)
-#    message(FATAL_ERROR "CMake step for externals failed: ${result}")
-#endif()
-#execute_process(COMMAND ${CMAKE_COMMAND} --build .
-#    RESULT_VARIABLE result
-#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/external)
-#if(result)
-#    message(FATAL_ERROR "Build step for externals failed: ${result}")
-#endif()
-
 
 # This AUTOSAR Adaptive Platform requires C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -23,8 +9,32 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_ENABLE_EXPORTS 1)
 
 include(CTest)
-option(build_tests "Build all the tests." OFF)
+option(build_tests "Build all the tests." ON)
 
+
+#https://discourse.cmake.org/t/better-way-to-work-by-modules-with-cmake-and-gtest-or-any-library/3699/3
+#message(STATUS "Fetching googletest")
+include(FetchContent)
+
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.11.0
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE)
+FetchContent_MakeAvailable(googletest)
+
+#message(STATUS "Fetching JSON library")
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+FetchContent_Declare(
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json
+        GIT_TAG v3.9.1
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE)
+FetchContent_MakeAvailable(json)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 ########################################################################
 #
 # Source Directories:
@@ -68,7 +78,14 @@ set_target_properties(
 target_link_libraries(
   ara_core
   ara_exec
+  
 )
+target_link_libraries(
+  ara_exec
+  nlohmann_json::nlohmann_json
+  
+)
+
 
 
 
@@ -80,14 +97,13 @@ if(build_tests)
   enable_testing()
   add_executable(
     ara_unit_test
-    Testing/test_1.cpp
+    hello_test.cc
   )
-  # target_link_libraries(
-  #   ara_unit_test
-  #   gtest_main
-  # )
+  target_link_libraries(
+    ara_unit_test
+    gtest_main
+  )
   include(GoogleTest)
   gtest_discover_tests(ara_unit_test)
-
 
 endif()

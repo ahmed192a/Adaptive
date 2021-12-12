@@ -3,8 +3,7 @@
 
 #include <memory>
 #include <nlohmann/json.hpp>
-#include <string>
-#include <vector>
+#include "manifest_parser_struct.h"
 
 namespace ara
 {
@@ -14,72 +13,6 @@ namespace ara
         {
 
             using json = nlohmann::json;
-
-            struct ExecutionManifest
-            {
-                struct Process
-                {
-                    struct StartupConfig
-                    {
-                        struct StartupOption
-                        {
-                            std::string kind{};
-                            std::string name{};
-                            std::string arg{};
-                            bool operator==(const StartupOption &) const noexcept;
-                            bool operator!=(const StartupOption &) const noexcept;
-                        };
-
-                        struct MachineInstanceRef
-                        {
-                            std::string function_group{};
-                            std::string mode{};
-                            bool operator==(const MachineInstanceRef &) const noexcept;
-                            bool operator!=(const MachineInstanceRef &) const noexcept;
-                        };
-
-                        std::vector<StartupOption> startup_options{};
-                        std::vector<MachineInstanceRef> machine_instance_refs{};
-                        bool operator==(const StartupConfig &) const noexcept;
-                        bool operator!=(const StartupConfig &) const noexcept;
-                    };
-
-                    std::string name{};
-                    std::vector<StartupConfig> startup_configs{};
-
-                    bool operator==(const Process &) const noexcept;
-                    bool operator!=(const Process &) const noexcept;
-                };
-
-                std::string manifest_id{};
-                std::vector<Process> processes{};
-
-                bool operator==(const ExecutionManifest &) const noexcept;
-                bool operator!=(const ExecutionManifest &) const noexcept;
-            };
-
-            struct MachineManifest
-            {
-                struct ModeDeclarationGroup
-                {
-                    struct ModeDeclaration
-                    {
-                        std::string mode{};
-                        bool operator==(const ModeDeclaration &) const noexcept;
-                        bool operator!=(const ModeDeclaration &) const noexcept;
-                    };
-
-                    std::string function_group_name{};
-                    std::vector<ModeDeclaration> mode_declarations{};
-                    bool operator==(const ModeDeclarationGroup &) const noexcept;
-                    bool operator!=(const ModeDeclarationGroup &) const noexcept;
-                };
-
-                std::string manifest_id{};
-                std::vector<ModeDeclarationGroup> mode_declaration_groups{};
-                bool operator==(const MachineManifest &) const noexcept;
-                bool operator!=(const MachineManifest &) const noexcept;
-            };
 
             class IManifestParser
             {
@@ -105,8 +38,53 @@ namespace ara
                     noexcept(false);
             };
 
+            namespace EMJsonKeys
+            {
+                const std::string kApplicationManifest = "Application_manifest";
+                const std::string kApplicationManifestId = "Application_manifest_id";
+                const std::string kProcess = "Process";
+                const std::string kProcessName = "Process_name";
+                const std::string kModeDependentStartupConfigs = "Mode_dependent_startup_configs";
+                const std::string kStartupOptions = "Startup_options";
+                const std::string kStartupOptionsOptionKind = "Option_kind";
+                const std::string kStartupOptionsOptionName = "Option_name";
+                const std::string kStartupOptionsOptionArg = "Option_arg";
+                const std::string kModeInMachineInstanceRefs = "Mode_in_machine_instance_refs";
+                const std::string kFunctionGroup = "Function_group";
+                const std::string kMode = "Mode";
+
+                const std::vector<std::string> kAsVector{kApplicationManifest,
+                                                            kApplicationManifestId,
+                                                            kProcess,
+                                                            kProcessName,
+                                                            kModeDependentStartupConfigs,
+                                                            kStartupOptions,
+                                                            kStartupOptionsOptionKind,
+                                                            kStartupOptionsOptionName,
+                                                            kStartupOptionsOptionArg,
+                                                            kModeInMachineInstanceRefs,
+                                                            kFunctionGroup,
+                                                            kMode};
+
+            } // namespace EMJsonKeys
+
+            namespace MMJsonKeys
+            {
+                const std::string kMachineManifest = "Machine_manifest";
+                const std::string kMachineManifestId = "Machine_manifest_id";
+                const std::string kModeDeclarationGroup = "Mode_declaration_group";
+                const std::string kFunctionGroupName = "Function_group_name";
+                const std::string kModeDeclarations = "Mode_declarations";
+                const std::string kMode = "Mode";
+
+                const std::vector<std::string> kAsVector{kMachineManifest, kMachineManifestId,
+                                                            kModeDeclarationGroup, kFunctionGroupName,
+                                                            kModeDeclarations, kMode};
+            } // namespace MMJsonKeys
+
         } // namespace parser
     }     // namespace exec
 } // namespace ara
 
 #endif // ARA_EXEC_PARSER_MANIFEST_PARSER_H_
+

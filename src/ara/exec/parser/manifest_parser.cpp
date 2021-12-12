@@ -12,148 +12,17 @@ namespace ara
         {
 
             using json = nlohmann::json;
-
-            bool ExecutionManifest::operator==(const ExecutionManifest &other) const noexcept
-            {
-                return (manifest_id == other.manifest_id) && (processes == other.processes);
-            }
-
-            bool ExecutionManifest::operator!=(const ExecutionManifest &other) const noexcept
-            {
-                return !(*this == other);
-            }
-
-            bool ExecutionManifest::Process::operator==(const Process &other) const noexcept
-            {
-                return (name == other.name) && (startup_configs == other.startup_configs);
-            }
-
-            bool ExecutionManifest::Process::operator!=(const Process &other) const noexcept
-            {
-                return !(*this == other);
-            }
-
-            bool ExecutionManifest::Process::StartupConfig::operator==(const StartupConfig &other) const
-                noexcept
-            {
-                return (startup_options == other.startup_options) &&
-                       (machine_instance_refs == other.machine_instance_refs);
-            }
-
-            bool ExecutionManifest::Process::StartupConfig::operator!=(const StartupConfig &other) const
-                noexcept
-            {
-                return !(*this == other);
-            }
-
-            bool ExecutionManifest::Process::StartupConfig::StartupOption::operator==(
-                const StartupOption &other) const noexcept
-            {
-                return (kind == other.kind) && (name == other.name) && (arg == other.arg);
-            }
-
-            bool ExecutionManifest::Process::StartupConfig::StartupOption::operator!=(
-                const StartupOption &other) const noexcept
-            {
-                return !(*this == other);
-            }
-
-            bool ExecutionManifest::Process::StartupConfig::MachineInstanceRef::operator==(
-                const MachineInstanceRef &other) const noexcept
-            {
-                return (function_group == other.function_group) && (mode == other.mode);
-            }
-
-            bool ExecutionManifest::Process::StartupConfig::MachineInstanceRef::operator!=(
-                const MachineInstanceRef &other) const noexcept
-            {
-                return !(*this == other);
-            }
-
-            bool MachineManifest::operator==(const MachineManifest &other) const noexcept
-            {
-                return (manifest_id == other.manifest_id) &&
-                       (mode_declaration_groups == other.mode_declaration_groups);
-            }
-
-            bool MachineManifest::operator!=(const MachineManifest &other) const noexcept
-            {
-                return !(*this == other);
-            }
-
-            bool MachineManifest::ModeDeclarationGroup::operator==(const ModeDeclarationGroup &other) const
-                noexcept
-            {
-                return (function_group_name == other.function_group_name) &&
-                       (mode_declarations == other.mode_declarations);
-            }
-
-            bool MachineManifest::ModeDeclarationGroup::operator!=(const ModeDeclarationGroup &other) const
-                noexcept
-            {
-                return !(*this == other);
-            }
-
-            bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator==(
-                const ModeDeclaration &other) const noexcept
-            {
-                return (mode == other.mode);
-            }
-
-            bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator!=(
-                const ModeDeclaration &other) const noexcept
-            {
-                return !(*this == other);
-            }
-
-            namespace
-            {
-                namespace EMJsonKeys
-                {
-                    const std::string kApplicationManifest = "Application_manifest";
-                    const std::string kApplicationManifestId = "Application_manifest_id";
-                    const std::string kProcess = "Process";
-                    const std::string kProcessName = "Process_name";
-                    const std::string kModeDependentStartupConfigs = "Mode_dependent_startup_configs";
-                    const std::string kStartupOptions = "Startup_options";
-                    const std::string kStartupOptionsOptionKind = "Option_kind";
-                    const std::string kStartupOptionsOptionName = "Option_name";
-                    const std::string kStartupOptionsOptionArg = "Option_arg";
-                    const std::string kModeInMachineInstanceRefs = "Mode_in_machine_instance_refs";
-                    const std::string kFunctionGroup = "Function_group";
-                    const std::string kMode = "Mode";
-
-                    const std::vector<std::string> kAsVector{kApplicationManifest,
-                                                             kApplicationManifestId,
-                                                             kProcess,
-                                                             kProcessName,
-                                                             kModeDependentStartupConfigs,
-                                                             kStartupOptions,
-                                                             kStartupOptionsOptionKind,
-                                                             kStartupOptionsOptionName,
-                                                             kStartupOptionsOptionArg,
-                                                             kModeInMachineInstanceRefs,
-                                                             kFunctionGroup,
-                                                             kMode};
-
-                } // namespace EMJsonKeys
-
-                namespace MMJsonKeys
-                {
-                    const std::string kMachineManifest = "Machine_manifest";
-                    const std::string kMachineManifestId = "Machine_manifest_id";
-                    const std::string kModeDeclarationGroup = "Mode_declaration_group";
-                    const std::string kFunctionGroupName = "Function_group_name";
-                    const std::string kModeDeclarations = "Mode_declarations";
-                    const std::string kMode = "Mode";
-
-                    const std::vector<std::string> kAsVector{kMachineManifest, kMachineManifestId,
-                                                             kModeDeclarationGroup, kFunctionGroupName,
-                                                             kModeDeclarations, kMode};
-                } // namespace MMJsonKeys
-
-            } // anonymous namespace
-
+            /**
+             * @brief checks of the json object has the key value in its children. if it doesn't exist, it will return false
+             *          and if it exists, it will return true and get the json tree where key is the parent in put it in output_value
+             * 
+             * @tparam T            type of the output 
+             * @param json_obj      json object struct
+             * @param key           the value which we want to find in the children of json_obj
+             * @param output_value  the output json object if we found the key
+             * @return true 
+             * @return false 
+             */
             template <typename T>
             bool read_value(const json &json_obj, const std::string &key, T &output_value) noexcept
             {
@@ -174,7 +43,12 @@ namespace ara
                 output_value = tmp;
                 return true;
             }
-
+            /**
+             * @brief read the exection manifest file and checks if its valid then pasring its content into struct of type ExecutionManifest
+             * 
+             * @param path                  var contain the path of the file
+             * @return ExecutionManifest 
+             */
             ExecutionManifest ManifestParser::parse_execution_manifest(const std::string &path) noexcept(false)
             {
                 using namespace EMJsonKeys;
@@ -240,7 +114,12 @@ namespace ara
                 }
                 return man;
             }
-
+            /**
+             * @brief read the machine manifest file and checks if its valid then pasring its content into struct of type MachineManifest
+             * 
+             * @param path 
+             * @return MachineManifest 
+             */
             MachineManifest ManifestParser::parse_machine_manifest(const std::string &path) noexcept(false)
             {
                 using namespace MMJsonKeys;
@@ -277,7 +156,12 @@ namespace ara
                 }
                 return man;
             }
-
+            /**
+             * @brief read the mainfest file and convert it into json object
+             * 
+             * @param path 
+             * @return json 
+             */
             json ManifestParser::read_manifest_file(const std::string &path) noexcept(false)
             {
                 std::ifstream manifest_content(path, std::ifstream::binary);
@@ -304,7 +188,12 @@ namespace ara
                 manifest_content.close();
                 return manifest_json;
             }
-
+            /**
+             * @brief checks if the file is the requested manifest by checking the first child name to match the first json_key
+             * 
+             * @param json_obj 
+             * @param json_keys 
+             */
             void ManifestParser::validate_content(const json &json_obj,
                                                   const std::vector<std::string> &json_keys) const
                 noexcept(false)
@@ -325,3 +214,5 @@ namespace ara
         } // namespace parser
     }     // namespace exec
 } // namespace ara
+
+
