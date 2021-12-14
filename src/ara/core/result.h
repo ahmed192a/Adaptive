@@ -78,7 +78,7 @@ namespace ara
              * 
              * \param[in] other     the other instance
              */
-            Result(Result const &&other) noexcept(std:is_nothrow_move_constructible<T>::value &&std::is_nothrow_move_constructible<E>::value);
+            Result(Result const &&other) noexcept(std::is_nothrow_move_constructible<T>::value &&std::is_nothrow_move_constructible<E>::value);
 
             // SWS_CORE_00727
             /**
@@ -160,7 +160,7 @@ namespace ara
              * 
              * \return Result   a Result that contains an error
              */
-            template <typename.. Args>
+            template <typename... Args>
             static Result FromError(Args &&... args);
 
             // SWS_CORE_00741
@@ -428,7 +428,7 @@ namespace ara
              * \return SEE_BELOW    a new Result instance of the possibly transformed type
              */
             template <typename F>
-            auto Bind(F &&f) const -> SEE_BELOW;
+            auto Bind(F &&f) const;// -> SEE_BELOW;
         };
     
         // SWS_CORE_00801

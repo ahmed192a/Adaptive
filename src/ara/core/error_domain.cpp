@@ -26,10 +26,10 @@ namespace ara
          * \return constexpr IdType     the identifier
          */
 
-		constexpr ErrorDomain::IdType ErrorDomain::Id() const noexcept
-		{
-			return this->idType;
-		}
+		// constexpr ErrorDomain::IdType ErrorDomain::Id() const noexcept
+		// {
+		// 	return this->idType;
+		// }
 
 
         // SWS_CORE_00137
@@ -43,10 +43,10 @@ namespace ara
          * \return true         if other is equal to *this
          * \return false        otherwise
          */
-        constexpr bool ErrorDomain::operator==(ErrorDomain const &other) const noexcept
-        {
-        	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? true : false;
-        }
+        // constexpr bool ErrorDomain::operator==(ErrorDomain const &other) const noexcept
+        // {
+        // 	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? true : false;
+        // }
 
 
         // SWS_CORE_00138
@@ -58,10 +58,10 @@ namespace ara
          * \return true         if other is not equal to *this
          * \return false        otherwise
          */
-        constexpr bool ErrorDomain::operator!=(ErrorDomain const &other) const noexcept
-        {
-        	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? false : true;
-        }
+        // constexpr bool ErrorDomain::operator!=(ErrorDomain const &other) const noexcept
+        // {
+        // 	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? false : true;
+        // }
 
 	}
 }

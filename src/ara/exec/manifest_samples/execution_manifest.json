@@ -1,0 +1,34 @@
+{
+    "Execution_manifest": {
+        "Execution_manifest_id": "exec_id",
+        "Process": [
+            {
+                "Process_name": "Proc_1",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "filename",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "ExecutionDependencies": [
+                            {
+                                "Function_group": "MachineFG",
+                                "Mode": "Running"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "FG_1",
+                                "Mode": "on"
+                            }
+                        ]
+                    }
+                ]
+                
+            }
+        ]
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "Machine_manifest": {
+        "Machine_manifest_id": "mach_id",
+        "Mode_declaration_group": [
+            {
+                "Function_group_name": "MachineFG",
+                "Mode_declarations": [
+                    {
+                      "Mode": "off"
+                    },
+                    {
+                      "Mode": "Starting-up"
+                    },
+                    {
+                      "Mode": "Running"
+                    },
+                    {
+                      "Mode": "Shuttingdown"
+                    },
+                    {
+                      "Mode": "restart"
+                    }
+                ]
+            },
+            {
+                "Function_group_name": "ProcessState",
+                "Mode_declarations": [
+                    {
+                      "Mode": "idle"
+                    },
+                    {
+                      "Mode": "Starting"
+                    },
+                    {
+                      "Mode": "Running"
+                    },
+                    {
+                      "Mode": "terminating"
+                    },
+                    {
+                      "Mode": "terminated"
+                    }
+                ]
+            },
+            {
+                "Function_group_name": "FG_1",
+                "Mode_declarations": [
+                    {
+                      "Mode": "off"
+                    },
+                    {
+                      "Mode": "on"
+                    }
+                ]
+            }
+            
+        ]
+    }
+}

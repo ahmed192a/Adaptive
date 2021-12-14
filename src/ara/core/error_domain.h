@@ -106,29 +106,6 @@ namespace ara
              */
             ErrorDomain& operator=(ErrorDomain const &&)= delete;
 
-            // SWS_CORE_00137
-            /**
-             * \brief Compare for equality with another ErrorDomain instance.
-             * 
-             * Two ErrorDomain instances compare equal when their identifiers (returned by Id()) are equal.
-             * 
-             * \param[in] other     the other instance
-             * 
-             * \return true         if other is equal to *this
-             * \return false        otherwise
-             */
-            constexpr bool operator==(ErrorDomain const &other) const noexcept;
-
-            // SWS_CORE_00138
-            /**
-             * \brief Compare for non-equality with another ErrorDomain instance.
-             * 
-             * \param[in] other     the other instance
-             * 
-             * \return true         if other is not equal to *this
-             * \return false        otherwise
-             */
-            constexpr bool operator!=(ErrorDomain const &other) const noexcept;
 
             // SWS_CORE_00151
             /**
@@ -136,7 +113,9 @@ namespace ara
              * 
              * \return constexpr IdType     the identifier
              */
-            constexpr IdType Id() const noexcept;
+            constexpr IdType Id() const noexcept{
+                return this->idType;
+            }
 
             // SWS_CORE_00152
             /**
@@ -163,6 +142,36 @@ namespace ara
              * \return char const*      the text as a null-terminated string, never nullptr
              */
             virtual std::string Message(CodeType errorCode) const noexcept=0;
+
+            
+            // SWS_CORE_00137
+            /**
+             * \brief Compare for equality with another ErrorDomain instance.
+             * 
+             * Two ErrorDomain instances compare equal when their identifiers (returned by Id()) are equal.
+             * 
+             * \param[in] other     the other instance
+             * 
+             * \return true         if other is equal to *this
+             * \return false        otherwise
+             */
+            constexpr bool operator==(ErrorDomain const &other) const noexcept{
+                return (this->idType == other.Id());
+            }
+
+
+            // SWS_CORE_00138
+            /**
+             * \brief Compare for non-equality with another ErrorDomain instance.
+             * 
+             * \param[in] other     the other instance
+             * 
+             * \return true         if other is not equal to *this
+             * \return false        otherwise
+             */
+            constexpr bool operator!=(ErrorDomain const &other) const noexcept{
+                return (this->idType == other.Id());
+            }
 
             // SWS_CORE_00154
             /**

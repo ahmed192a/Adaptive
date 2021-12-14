@@ -40,8 +40,8 @@ namespace ara
 
             namespace EMJsonKeys
             {
-                const std::string kApplicationManifest = "Application_manifest";
-                const std::string kApplicationManifestId = "Application_manifest_id";
+                const std::string kApplicationManifest = "Execution_manifest";
+                const std::string kApplicationManifestId = "Execution_manifest_id";
                 const std::string kProcess = "Process";
                 const std::string kProcessName = "Process_name";
                 const std::string kModeDependentStartupConfigs = "Mode_dependent_startup_configs";
@@ -49,7 +49,8 @@ namespace ara
                 const std::string kStartupOptionsOptionKind = "Option_kind";
                 const std::string kStartupOptionsOptionName = "Option_name";
                 const std::string kStartupOptionsOptionArg = "Option_arg";
-                const std::string kModeInMachineInstanceRefs = "Mode_in_machine_instance_refs";
+                const std::string KExecutionDependencies = "ExecutionDependencies"; 
+                const std::string KFunctionGroupDependencies = "FunctionGroupDependencies";
                 const std::string kFunctionGroup = "Function_group";
                 const std::string kMode = "Mode";
 
@@ -62,7 +63,8 @@ namespace ara
                                                             kStartupOptionsOptionKind,
                                                             kStartupOptionsOptionName,
                                                             kStartupOptionsOptionArg,
-                                                            kModeInMachineInstanceRefs,
+                                                            KExecutionDependencies,
+                                                            KFunctionGroupDependencies,
                                                             kFunctionGroup,
                                                             kMode};
 
