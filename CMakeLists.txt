@@ -74,6 +74,11 @@ target_include_directories(
 )
 # get executable 
 add_executable(
+  process1
+  src/test_process.cpp
+)
+
+add_executable(
   ${PROJECT_NAME} 
   src/exec_main.cpp 
   )
@@ -81,6 +86,8 @@ target_link_libraries(
   ${PROJECT_NAME} 
   ara
 )
+
+
 
 # option for testing
 option(build_tests "Build all the tests.")

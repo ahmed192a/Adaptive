@@ -5,6 +5,17 @@
 #include <map>
 #include <utility>
 #include "manifest_parser.h"
+#include <string>
+#include <dirent.h>
+#include <filesystem>  // to get all files in certain dir
+
+
+#include "errno.h"
+#include "unistd.h"
+#include <fcntl.h>
+#include "utility"
+#include <sys/wait.h>
+
 using namespace ara::exec;
 using namespace ara::exec::parser;
 using namespace std;
@@ -75,7 +86,42 @@ void exec_init(vector<GLOB> & system_FG){
 }
 
 
+void run_process(){
+   int pid, status;
+   // first we fork the process
+   if (pid = fork()) {
+       // pid != 0: this is the parent process (i.e. our process)
+       waitpid(pid, &status, 0); // wait for the child to exit
+   } else {
+       /* pid == 0: this is the child process. now let's load the
+          "ls" program into this process and run it */
 
+       const char executable[] = "./process1";
+
+       // load it. there are more exec__ functions, try 'man 3 exec'
+       // execl takes the arguments as parameters. execv takes them as an array
+       // this is execl though, so:
+       //      exec         argv[0]  argv[1] end
+       execl(executable,executable,  NULL);
+
+       /* exec does not return unless the program couldn't be started. 
+          when the child process stops, the waitpid() above will return.
+       */
+
+
+   }
+   cout<<"\nstat : "<<status<<endl;
+   if(status/256 == 0){
+       cout<< "\nyaaa\n";
+   }
+   else if(status/256 == 1){
+       cout<<"\nnooo\n";
+   }
+   //return status; // this is the parent process again.
+    
+
+    //while ((wpid = wait(&status)) > 0); // this way, the father waits for all the child processes 
+}
 
 
 
@@ -91,12 +137,28 @@ int main(int, char**) {
     {
         cout<< gg[i].FG_name<<" with number of processes = "<< gg[i].processes.size()<<endl;
     }
+
     
-  
 
 
+    // code for getting the names of the files in certain dir (manifests)
+    cout<<"files in this DIR : \n";
+   struct dirent *entry = nullptr;
+    DIR *dp = nullptr;
+
+    dp = opendir( "manifest_samples/");
+    if (dp != nullptr) {
+        while ((entry = readdir(dp))){
+            if(entry->d_name[0]!='.'){
+                printf ("%s\n", entry->d_name);
+            }
+        }
+    }
+
+    closedir(dp);
 
 
+run_process();
 
 
 
