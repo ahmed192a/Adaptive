@@ -2,6 +2,7 @@
 #define ARA_EXEC_PARSER_MANIFEST_PARSER_class_H_
 
 #include <string>
+#include <vector>
 namespace ara
 {
     namespace exec

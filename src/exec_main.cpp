@@ -58,9 +58,20 @@ void exec_init(vector<GLOB> & system_FG){
 
         // push the process in vector 
         for(auto i = 0; i<EM.processes.size(); i++){
-            
+            for (auto j = 0; j < EM.processes[i].startup_configs.size(); j++)
+            {
+                for (auto h = 0; h < EM.processes[i].startup_configs[j].machine_instance_refs.size(); h++)
+                {
+                    for (auto n = 0; n < system_FG.size(); n++)
+                    {
+                        if(system_FG[n].FG_name == EM.processes[i].startup_configs[j].machine_instance_refs[h].function_group){
+                            system_FG[n].processes.push_back(EM.processes[i]);
+                            break;
+                        }
+                    }
+                }
+            }
         }
-        EM.processes[0].startup_configs[0].machine_instance_refs[0].function_group;
 }
 
 
@@ -75,31 +86,14 @@ int main(int, char**) {
     //system("ls");
     vector<GLOB> gg;
     exec_init(gg);
-    std::cout << "\n\nHello, world! we created "<<gg.size()<<" function groups xD \n\n";
-    vector<FunctionGroup > FG;
-    vector<FunctionGroupState> FGS;
-
-    // create function groups
-    for(int i = 0; i< FG_IDS.size();i++){
-        FG.push_back( FunctionGroup(FG_IDS[i]+""));
-        cout<<FG_IDS[i]+"\t"<<FG[i].Function_group_name<<endl;
-    } 
-
-    // create function groups state
-    for(int i = 0; i< FG_IDS.size();i++){
-        FGS.push_back(FunctionGroupState(FG_IDS[i]+"/off"));
-        cout<<FG_IDS[i]+"\t"<<FGS[i].Function_group_name<< "\t" << FGS[i].state<<endl;
+    std::cout << "\n\nHello, world! we created "<<gg.size()<<" function groups and  xD \n\n";
+    for (auto i = 0; i < gg.size(); i++)
+    {
+        cout<< gg[i].FG_name<<" with number of processes = "<< gg[i].processes.size()<<endl;
     }
+    
+  
 
-
-
-
-
-    // get processes
-    // 2D array col index
-    // 
-
-    // 
 
 
 
