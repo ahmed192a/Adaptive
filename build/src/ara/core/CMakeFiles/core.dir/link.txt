@@ -1,2 +1,0 @@
-/usr/bin/ar qc libcore.a  CMakeFiles/core.dir/error_code.cpp.o CMakeFiles/core.dir/error_domain.cpp.o CMakeFiles/core.dir/exception.cpp.o
-/usr/bin/ranlib libcore.a

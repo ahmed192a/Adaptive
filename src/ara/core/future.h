@@ -4,7 +4,8 @@
 
 #include <cstdint>
 #include "error_code.h"
-
+#include "result.h"
+#include <chrono>
 namespace ara
 {
     namespace core
@@ -191,7 +192,7 @@ namespace ara
              *                              continuation
              */
             template<typename F>
-            auto then(F &&func) -> Future<SEE_BELOW>;
+            auto then(F &&func) ;//-> Future<SEE_BELOW>;
 
             // SWS_CORE_00332
             /**
@@ -367,7 +368,7 @@ namespace ara
              *                              continuation
              */
             template<typename F>
-            auto then(F &&func) -> Future<SEE_BELOW>;
+            auto then(F &&func) ;//-> Future<SEE_BELOW>;
 
             // SWS_CORE_06232
             /**

@@ -43,8 +43,14 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-build/
-Doc/
-.vscode/
 
-[Bb][Uu][Ii][Ll][Dd]/
+
+.vscode
+build
+Doc
+[Bb][Uu][Ii][Ll][Dd]
+.metadata
+.setting*
+Debug
+
+

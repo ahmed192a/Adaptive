@@ -3,7 +3,8 @@
 #define ARA_CORE_UTILITY_H_
 
 #include <cstddef>
-
+#include "stdint.h"
+#define IMPEMENTATION_DEFINED uint8_t
 namespace ara
 {
     namespace core
@@ -181,8 +182,8 @@ namespace ara
          * \return true 
          * \return false    false
          */
-        template<typename T, std::size_t N>
-        constexpr bool empty(T const (&array)[N]) constexpr;
+        // template<typename T, std::size_t N>
+        // constexpr bool empty(T const (&array)[N]) constexpr;
 
         // SWS_CORE_04132
         /**

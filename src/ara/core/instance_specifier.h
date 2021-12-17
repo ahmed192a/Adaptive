@@ -1,7 +1,8 @@
 
 #ifndef ARA_CORE_INSTANCE_SPECIFIER_H_
 #define ARA_CORE_INSTANCE_SPECIFIER_H_
-
+#include "result.h"
+#include <string>
 namespace ara
 {
     namespace core
@@ -14,6 +15,7 @@ namespace ara
          */
         class InstanceSpecifier final
         {
+            using StringView = std::string;
             // SWS_CORE_08021
             /**
              * \brief throwing ctor from meta-model string

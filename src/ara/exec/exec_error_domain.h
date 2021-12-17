@@ -1,9 +1,11 @@
 #ifndef ARA_EXEC_EXEC_ERROR_DOMAIN_H_
 #define ARA_EXEC_EXEC_ERROR_DOMAIN_H_
 
-#include "error_domain.h"
-#include "error_code.h"
-#include "exception.h"
+#include "../core/error_domain.h"
+#include "../core/error_code.h"
+#include "../core/exception.h"
+#include <cstdint>
+#include <string>
 
 namespace ara
 {
@@ -38,6 +40,7 @@ namespace ara
 		 */
 		class ExecException : public ara::core::Exception
 		{
+		public:
 			//ExecException will use ErrorCode Attribute in the Exception class
 			ara::core::ErrorCode errorCode;
 
@@ -48,6 +51,7 @@ namespace ara
 			 * \param[in] errorCode     The error code.
 			 */
 			explicit ExecException(ara::core::ErrorCode errorCode) noexcept;
+			
 			
 
 			//SWS_EM_02290
@@ -78,17 +82,20 @@ namespace ara
 		/**
 		 * \brief Defines a class representing the Execution Management error domain.
 		 * 
-		 * \uniqueId 0x8000’0000’0000’0202
+		 * \uniqueId 0x8000ï¿½0000ï¿½0000ï¿½0202
 		 * 
 		 */
 		class ExecErrorDomain final : public ara::core::ErrorDomain
 		{
+			using IdType = ara::core::ErrorDomain::IdType;
 			// SWS_EM_02286
 			/**
 			 * \brief Constructs a new ExecErrorDomain object
 			 * 
 			 */
-			ExecErrorDomain() noexcept;
+		public:
+			explicit constexpr ExecErrorDomain(IdType id) noexcept;
+			// ExecErrorDomain(IdType id) noexcept = default;
 
 			// SWS_EM_02287
 			/**
@@ -106,7 +113,7 @@ namespace ara
 			 * 
 			 * \return char const*      The message associated with the error code.
 			 */
-			char const *Message(CodeType errorCode) const noexcept override;
+			std::string Message(CodeType errorCode) const noexcept override;
 
 			// SWS_EM_02289
 			/**
@@ -114,7 +121,7 @@ namespace ara
 			 * 
 			 * \param[in] errorCode     The error to throw.
 			 */
-			void ThrowAsException(ara::core::ErrorCode const &errorCode) const noexcept(false) override;
+			void ThrowAsException(ara::core::ErrorCode &errorCode) const noexcept(false) override;
 		};
 	} // namespace exec
 

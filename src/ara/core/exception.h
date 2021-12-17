@@ -1,11 +1,14 @@
 
 #ifndef ARA_CORE_EXCEPTION_H_
 #define ARA_CORE_EXCEPTION_H_
+#include <cstdint>
+#include <stdexcept>
+#include <map>
+#include <sstream>
+#include <string>
+#include "error_code.h"
 
-#include <exception>
-#include "ara/core/error_code.h"
-
-namespace ara
+namespace ara 
 {
     namespace core
     {
@@ -14,17 +17,19 @@ namespace ara
          * \brief Base type for all AUTOSAR exception types.
          * 
          */
-        class Exception : public std::exception
+        class Exception //: public std::exception
         {
         public:
-        	ErrorCode errorCode;
+            ara::core::ErrorCode mErrorCode;
+
+        	// ErrorCode errorCode;
             // SWS_CORE_00611
             /**
              * \brief Construct a new Exception object with a specific ErrorCode.
              * 
              * \param[in] err   the ErrorCode
              */
-            explicit Exception(ErrorCode err) noexcept;
+            explicit Exception(ErrorCode &err) noexcept : mErrorCode(err){}
 
             // SWS_CORE_00612
             /**
@@ -35,7 +40,7 @@ namespace ara
              * 
              * \return char const*  a null-terminated string
              */
-            char const* what() const noexcept override;
+            std::string what() const noexcept;
 
             // SWS_CORE_00613
             /**

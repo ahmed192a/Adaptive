@@ -13,12 +13,11 @@ namespace ara
 		 *
 		 */
 
-		ErrorDomain::ErrorDomain (IdType id) noexcept
+		constexpr ErrorDomain::ErrorDomain (IdType id) noexcept : idType(id)
 		{
-			this->ErrorDomain::idType = id;
-			this->ErrorDomain::codeType = 0;
-			this->ErrorDomain::supportDataType = 0;
+
 		}
+
 
         // SWS_CORE_00151
         /**
@@ -26,10 +25,12 @@ namespace ara
          *
          * \return constexpr IdType     the identifier
          */
-		ErrorDomain::IdType Id() noexcept
-		{
-			return ErrorDomain::idType;
-		}
+
+		// constexpr ErrorDomain::IdType ErrorDomain::Id() const noexcept
+		// {
+		// 	return this->idType;
+		// }
+
 
         // SWS_CORE_00137
         /**
@@ -42,10 +43,10 @@ namespace ara
          * \return true         if other is equal to *this
          * \return false        otherwise
          */
-        constexpr bool ErrorDomain::operator==(ErrorDomain const &other) const noexcept
-        {
-        	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? true : false;
-        }
+        // constexpr bool ErrorDomain::operator==(ErrorDomain const &other) const noexcept
+        // {
+        // 	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? true : false;
+        // }
 
 
         // SWS_CORE_00138
@@ -57,10 +58,10 @@ namespace ara
          * \return true         if other is not equal to *this
          * \return false        otherwise
          */
-        constexpr bool ErrorDomain::operator!=(ErrorDomain const &other) const noexcept
-        {
-        	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? false : true;
-        }
+        // constexpr bool ErrorDomain::operator!=(ErrorDomain const &other) const noexcept
+        // {
+        // 	return ( this->ErrorDomain::Id() == other.ErrorDomain::Id() ) ? false : true;
+        // }
 
 	}
 }

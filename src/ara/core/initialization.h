@@ -2,7 +2,7 @@
 #ifndef ARA_CORE_INITIALIZATION_H_
 #define ARA_CORE_INITIALIZATION_H_
 
-#include "ara/core/result.h"
+#include "result.h"
 
 namespace ara
 {

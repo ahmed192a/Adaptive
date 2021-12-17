@@ -1,5 +1,7 @@
 
 #include  "exception.h"
+#include <iostream>
+#include<sstream>
 
 namespace ara
 {
@@ -11,10 +13,11 @@ namespace ara
 		 *
 		 * \param[in] err   the ErrorCode
 		 */
-		explicit Exception::Exception(ErrorCode err) noexcept
-		{
-			this->errorCode = err;
-		}
+	//Defined in the header.
+//		Exception::Exception(ara::core::ErrorCode &err) noexcept
+//		{
+//			mErrorCode = err;
+//		}
 
 		// SWS_CORE_00612
 		/**
@@ -26,13 +29,15 @@ namespace ara
 		 * \return char const*  a null-terminated string
 		 */
 
-		char const* Exception::what() const noexcept
-		{
-			ErrorDomain::CodeType codeType = this->errorCode.codeType;
-			char codeTypeStr[33];
-			snprintf( codeTypeStr, 33, "%d", (int)codeType );
-			return "CodeType of error message: " + codeTypeStr;
-		}
+		 std::string Exception::what() const noexcept
+		 {
+		 	ErrorDomain::CodeType codeType = this->mErrorCode.mValue;
+		 	std::stringstream ss;
+		    ss<<codeType;
+		    std::string s;
+		    ss>>s;
+		 	return "CodeType of error message: " + s;
+		 }
 
 		// SWS_CORE_00613
 		/**
@@ -41,10 +46,10 @@ namespace ara
 		 * \return ErrorCode const&     reference to the embedded ErrorCode
 		 */
 
-		ErrorCode::ErrorCode const& Exception::Error() const noexcept
-		{
-			return this->errorCode;
-		}
+		 ErrorCode const& Exception::Error() const noexcept
+		 {
+		 	return this->mErrorCode;
+		 }
 
 	}
 }

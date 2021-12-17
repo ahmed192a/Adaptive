@@ -7,9 +7,10 @@ namespace ara
     {
         class WorkerThread
         {
+        public:
             WorkerThread();
-            virtual ~WorkerThread();
             uint64_t GetRandom() noexcept;
+            virtual ~WorkerThread();
         };
     } // namespace exec
 

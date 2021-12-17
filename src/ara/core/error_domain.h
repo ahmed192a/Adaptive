@@ -2,13 +2,23 @@
 #ifndef ARA_CORE_ERROR_DOMAIN_H_
 #define ARA_CORE_ERROR_DOMAIN_H_
 
+
 #include <cstdint>
-#include "error_code.h"
+#include <exception>
+#include <string>
+
 
 namespace ara
 {
     namespace core
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+        #endif
+        // forward declaration
+        class ErrorCode; 
+
         #define IMPLEMENTATION_DEFINED std::int32_t
 
         // SWS_CORE_00110
@@ -22,7 +32,7 @@ namespace ara
          */
         class ErrorDomain
         {
-
+            public:
             // SWS_CORE_00121
             /**
              * \brief Alias type for a unique ErrorDomain identifier type .
@@ -52,8 +62,7 @@ namespace ara
 
             //class attributes
             IdType idType;
-            CodeType codeType;
-            SupportDataType supportDataType;
+
 
             ErrorDomain(ErrorDomain const &)=delete;
 
@@ -88,38 +97,15 @@ namespace ara
              * \brief Copy assignment shall be disabled.
              * 
              */
-            ErrorDomain& operator=(ErrorDomain const &)=delete;
+            ErrorDomain& operator=(ErrorDomain const &) =delete;
 
             // SWS_CORE_00134
             /**
              * \brief Move assignment shall be disabled.
              * 
              */
-            ErrorDomain& operator=(ErrorDomain const &&)=delete;
+            ErrorDomain& operator=(ErrorDomain const &&)= delete;
 
-            // SWS_CORE_00137
-            /**
-             * \brief Compare for equality with another ErrorDomain instance.
-             * 
-             * Two ErrorDomain instances compare equal when their identifiers (returned by Id()) are equal.
-             * 
-             * \param[in] other     the other instance
-             * 
-             * \return true         if other is equal to *this
-             * \return false        otherwise
-             */
-            constexpr bool operator==(ErrorDomain const &other) const noexcept;
-
-            // SWS_CORE_00138
-            /**
-             * \brief Compare for non-equality with another ErrorDomain instance.
-             * 
-             * \param[in] other     the other instance
-             * 
-             * \return true         if other is not equal to *this
-             * \return false        otherwise
-             */
-            constexpr bool operator!=(ErrorDomain const &other) const noexcept;
 
             // SWS_CORE_00151
             /**
@@ -127,7 +113,9 @@ namespace ara
              * 
              * \return constexpr IdType     the identifier
              */
-            constexpr IdType Id() const noexcept;
+            constexpr IdType Id() const noexcept{
+                return this->idType;
+            }
 
             // SWS_CORE_00152
             /**
@@ -153,7 +141,37 @@ namespace ara
              * 
              * \return char const*      the text as a null-terminated string, never nullptr
              */
-            virtual char const * Message(CodeType errorCode) const noexcept=0;
+            virtual std::string Message(CodeType errorCode) const noexcept=0;
+
+            
+            // SWS_CORE_00137
+            /**
+             * \brief Compare for equality with another ErrorDomain instance.
+             * 
+             * Two ErrorDomain instances compare equal when their identifiers (returned by Id()) are equal.
+             * 
+             * \param[in] other     the other instance
+             * 
+             * \return true         if other is equal to *this
+             * \return false        otherwise
+             */
+            constexpr bool operator==(ErrorDomain const &other) const noexcept{
+                return (this->idType == other.Id());
+            }
+
+
+            // SWS_CORE_00138
+            /**
+             * \brief Compare for non-equality with another ErrorDomain instance.
+             * 
+             * \param[in] other     the other instance
+             * 
+             * \return true         if other is not equal to *this
+             * \return false        otherwise
+             */
+            constexpr bool operator!=(ErrorDomain const &other) const noexcept{
+                return (this->idType == other.Id());
+            }
 
             // SWS_CORE_00154
             /**
@@ -162,10 +180,14 @@ namespace ara
              * This function will determine the appropriate exception type for the given ErrorCode and throw it.
              * The thrown exception will contain the given ErrorCode.
              * 
-             * \param[in] errorCode     the ErrorCode
+             * \param[in] errorCode     the ErrorCode to be thrown
+             * @remark if ARA_NO_EXCEPTIONS is defined, this function call will terminate.
              */
-            virtual void ThrowAsException(ErrorCode const &errorCode) const noexcept(false) = 0;
+            virtual void ThrowAsException(ErrorCode &errorCode) const noexcept(false) = 0;
         };
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     } // namespace core
     
 } // namespace ara
