@@ -66,7 +66,7 @@ namespace ara
                 {
                     for (auto &process : processes)
                     {
-                        ExecutionManifest::Process proc{};
+                        Process proc{};
                         read_value(process, kProcessName, proc.name);
 
                         json startup_configs{};
@@ -74,14 +74,14 @@ namespace ara
                         {
                             for (auto &startup_config : startup_configs)
                             {
-                                ExecutionManifest::Process::StartupConfig config{};
+                                Process::StartupConfig config{};
 
                                 json startup_options{};
                                 if (read_value(startup_config, kStartupOptions, startup_options))
                                 {
                                     for (auto &startup_option : startup_options)
                                     {
-                                        ExecutionManifest::Process::StartupConfig::StartupOption option{};
+                                        Process::StartupConfig::StartupOption option{};
 
                                         read_value(startup_option, kStartupOptionsOptionKind, option.kind);
                                         read_value(startup_option, kStartupOptionsOptionName, option.name);
@@ -97,7 +97,7 @@ namespace ara
                                 {
                                     for (auto &machine_instance_ref : machine_instance_refs)
                                     {
-                                        ExecutionManifest::Process::StartupConfig::MachineInstanceRef
+                                        Process::StartupConfig::MachineInstanceRef
                                             mach_inst_ref{};
                                         read_value(machine_instance_ref, kFunctionGroup,
                                                    mach_inst_ref.function_group);
@@ -111,7 +111,7 @@ namespace ara
                                 {
                                     for (auto &machine_instance_ref : machine_instance_refs)
                                     {
-                                        ExecutionManifest::Process::StartupConfig::MachineInstanceRef
+                                        Process::StartupConfig::MachineInstanceRef
                                             mach_inst_ref{};
                                         read_value(machine_instance_ref, kFunctionGroup,
                                                    mach_inst_ref.function_group);

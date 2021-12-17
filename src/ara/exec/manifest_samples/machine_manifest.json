@@ -23,26 +23,6 @@
                 ]
             },
             {
-                "Function_group_name": "ProcessState",
-                "Mode_declarations": [
-                    {
-                      "Mode": "idle"
-                    },
-                    {
-                      "Mode": "Starting"
-                    },
-                    {
-                      "Mode": "Running"
-                    },
-                    {
-                      "Mode": "terminating"
-                    },
-                    {
-                      "Mode": "terminated"
-                    }
-                ]
-            },
-            {
                 "Function_group_name": "FG_1",
                 "Mode_declarations": [
                     {

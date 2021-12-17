@@ -15,6 +15,10 @@ namespace ara
          */
         class FunctionGroupState
         {
+            public:
+            std::string state = "run";
+            std::string Function_group_name ;
+            // FunctionGroup f ; 
             using CtorToken = std::string;
             // SWS_EM_02270
             /**

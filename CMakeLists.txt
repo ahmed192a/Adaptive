@@ -8,8 +8,8 @@ set(CMAKE_CXX_STANDARD 14)
 # Enable 'rdyamic' switch to export the executable's symbols for debugging
 set(CMAKE_ENABLE_EXPORTS 1)
 
-# option for testing
-option(build_tests "Build all the tests." OFF)
+
+
 
 ########################################################################
 #
@@ -53,21 +53,42 @@ add_library(
     ${SRC_FILES}
     ${HED_FILES}
     )
-set_target_properties(
-  ara
-  PROPERTIES LINKER_LANGUAGE CXX
-)
 
+# set_target_properties(
+#   ara
+#   PROPERTIES LINKER_LANGUAGE CXX
+# )
 target_link_libraries(
   ara
+  PUBLIC
   nlohmann_json::nlohmann_json
-  
 ) 
-# 
-add_executable(${PROJECT_NAME} main.cpp)
 
+target_include_directories(
+  ara 
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/core>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser>
+)
+# get executable 
+add_executable(
+  ${PROJECT_NAME} 
+  src/exec_main.cpp 
+  )
+target_link_libraries(
+  ${PROJECT_NAME} 
+  ara
+)
+
+# option for testing
+option(build_tests "Build all the tests.")
+set(build_tests ON)
+message(STATUS "print_all_variables------------------------------------------${build_tests}")
 
 if(build_tests)
+
   enable_testing()
   add_executable(
     ara_unit_test
@@ -77,5 +98,8 @@ if(build_tests)
     ara_unit_test
     gtest_main
     gmock_main
+    ara
+    
   )
+
 endif()

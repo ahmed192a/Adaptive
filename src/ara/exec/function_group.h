@@ -11,6 +11,7 @@
 #ifndef ARA_EXEC_FUNCTION_GROUP_H_
 #define ARA_EXEC_FUNCTION_GROUP_H_
 #include <string>
+#include <vector>
 //#include "manifest_parser_parser.h"
 namespace ara
 {
@@ -22,9 +23,10 @@ namespace ara
          */
         class FunctionGroup
         {
-            private:
-            std::string id= "FG_ID";
+
         public:
+            std::string Function_group_name;
+            std::string state = "run";
             using CtorToken = std::string;
 
             // SWS_EM_02264
@@ -48,7 +50,7 @@ namespace ara
              *              ara::exec::ExecErrc::kGeneralError      if any other error occurs
              */
             // ara::core::StringView ---> std::string
-            // $
+            // 
             static FunctionGroup::CtorToken Preconstruct(std::string metaModelIdentifier) noexcept;
 
             // SWS_EM_02265
@@ -59,7 +61,7 @@ namespace ara
              *
              * \note Please note that token is destructed during object construction!
              */
-            FunctionGroup(FunctionGroup::CtorToken &&token) noexcept;
+            FunctionGroup(FunctionGroup::CtorToken &&token) noexcept; 
 
             // SWS_EM_02266
             /**

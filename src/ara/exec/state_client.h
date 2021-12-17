@@ -72,7 +72,8 @@ namespace ara
              *
              * Thread-safe
              */
-            ara::core::Future<void> SetState(FunctionGroupState const &state) const noexcept;
+            // ara::core::Future<void> 
+            void SetState(FunctionGroupState const &state) const noexcept;
 
             // SWS_EM_02279
             /**
@@ -96,7 +97,8 @@ namespace ara
              *
              * Thread-safe
              */
-            ara::core::Future<void> GetInitialMachineStateTransitionResult() const noexcept;
+            // ara::core::Future<void> 
+            void GetInitialMachineStateTransitionResult() const noexcept;
         };
     } // namespace exec
 

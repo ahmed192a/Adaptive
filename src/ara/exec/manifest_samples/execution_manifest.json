@@ -3,7 +3,7 @@
         "Execution_manifest_id": "exec_id",
         "Process": [
             {
-                "Process_name": "Proc_1",
+                "Process_name": "SM",
                 "Mode_dependent_startup_configs": [
                     {
                         "Startup_options": [
@@ -15,7 +15,7 @@
                         ],
                         "ExecutionDependencies": [
                             {
-                                "Function_group": "MachineFG",
+                                "Process_name": "Proc_2",
                                 "Mode": "Running"
                             }
                         ],

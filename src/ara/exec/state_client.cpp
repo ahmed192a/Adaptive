@@ -25,16 +25,20 @@ namespace ara
             // close file descriptor
             close(fd);
         }
-        // ara::core::Future<void>  StateClient::SetState(FunctionGroupState const &state) const noexcept{
-        //     if (write(fd, &state, sizeof(state)) == -1)
-        //     {
-        //         // TO DO
-        //         // Log Error : counldn't send the state to fifo
-        //     }
-        // }
-        // ara::core::Future<void> StateClient::GetInitialMachineStateTransitionResult() const noexcept{
+
+        // ara::core::Future<void>
+        void StateClient::SetState(FunctionGroupState const &state) const noexcept{
+            if (write(fd, &state, sizeof(state)) == -1)
+            {
+                // TO DO
+                // Log Error : counldn't send the state to fifo
+            }
+        }
+        
+        // ara::core::Future<void> 
+        void StateClient::GetInitialMachineStateTransitionResult() const noexcept{
             
-        // }
+        }
 
 
     } // namespace exec
