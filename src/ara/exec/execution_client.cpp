@@ -5,23 +5,27 @@
 #include <fcntl.h>
 #include "unistd.h"
 
+#include <iostream>
 namespace ara
 {
     namespace exec
     {
         ExecutionClient::ExecutionClient() noexcept
         {
-            // opens the Execution Management communication channel for reporting the Execution State
-            if (mkfifo(fifo_l, 0777) == -1)
-            {
-                if (errno != EEXIST)
-                {
-                    // TO DO
-                    // Log Error : coundn't create fifo
-                }
-            }
+            // // opens the Execution Management communication channel for reporting the Execution State
+            // if (mkfifo(fifo_l, 0777) == -1)
+            // {
+            //     if (errno != EEXIST)
+            //     {
+            //         // TO DO
+            //         // Log Error : coundn't create fifo
+            //     }
+            // }
             // get file discreptor
             fd = open(fifo_l, O_WRONLY);
+            if(fd == -1) {
+                std::cout<< "[ERROR] => can't open fifo";
+            }
         }
         ExecutionClient::~ExecutionClient()
         {
@@ -30,6 +34,7 @@ namespace ara
         }
         void ExecutionClient::ReportExecutionState(ara::exec::ExecutionState state) const noexcept
         {
+            std::string m = "run";
             if (write(fd, &state, sizeof(state)) == -1)
             {
                 // TO DO

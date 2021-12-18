@@ -1,3 +1,3 @@
 #! /bin/sh
 
-./build.sh ; cd build ; ./Adaptive_Platform
+./build.sh ; cd build/src ; ./Adaptive_Platform

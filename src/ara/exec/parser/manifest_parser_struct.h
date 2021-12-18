@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include "../execution_client.h"
+#define  W_DIR "processes"
+
 namespace ara
 {
     namespace exec
@@ -43,12 +46,18 @@ namespace ara
                         bool operator==(const StartupConfig &) const noexcept;
                         bool operator!=(const StartupConfig &) const noexcept;
                     };
-
+                    std::vector<Process *> dep_process;
+                    int _pid=0;
+                    //ara::exec::ExecutionState current_state;
+                    std::string current_state;
                     std::string name{};
                     std::vector<StartupConfig> startup_configs{};
+                    StartupConfig *current_config = nullptr;
 
                     bool operator==(const Process &) const noexcept;
                     bool operator!=(const Process &) const noexcept;
+                    bool start();   // starting the process
+                    void terminate();   // used for terminating the process
                 };
             class ExecutionManifest
             {
