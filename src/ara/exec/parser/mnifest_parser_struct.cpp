@@ -1,7 +1,15 @@
 #include "manifest_parser_struct.h"
+#include <iostream>
+#include "errno.h"
+#include "unistd.h"
+#include <fcntl.h>
+#include <utility>
+#include <sys/wait.h>
+#include "sys/stat.h"
+#include <signal.h>
 
 using namespace ara::exec::parser;
-
+using namespace std;
 
 
 // Definitions of operators
@@ -23,6 +31,110 @@ bool Process::operator==(const Process &other) const noexcept
 bool Process::operator!=(const Process &other) const noexcept
 {
     return !(*this == other);
+}
+bool Process::start(){
+    if (_pid != 0) {
+        //TRACE_ERROR("EM: Invalid call for Start(): the process is already running");
+        cout<<"EM: Invalid call for Start(): the process is already running"<<endl;
+        return false;
+    }
+    //TRACE_INFO("EM: Starting executable " << executable_);
+    cout<<"EM: Starting executable "+name<<endl;
+
+    if (mkfifo("processes/execution_client_fifo", 0666) == -1)
+    {
+        if (errno != EEXIST)
+        {
+            // TO DO
+            // Log Error : coundn't create fifo
+        }
+    }
+    int pid = fork();
+    if (pid < 0) {
+        //TRACE_ERROR("EM: fork() failed" << ", errno: " << errno);
+        cout<<"EM: fork() failed" << ", errno: " << errno<<endl;
+        return false;
+    }
+    if (pid == 0) {
+        // The child process
+
+        // Change working directory to application root
+        if (chdir(W_DIR) != 0) {
+            //TRACE_FATAL("EM: chdir() failed for dir " << childWorkDir << ",errno: " << errno);
+            cout<<"EM(child): chdir() failed for dir " << W_DIR << ",errno: " << errno<<endl;
+        } else {
+            // Set environment variables
+            //for (const auto& variable : environment_) {
+            //    ::putenv(const_cast<char*>(variable.c_str()));  
+            //}
+
+            // Redirect terminal output for application to /var/redirected/<application_name_>
+            //utility::RedirectProcessOutput(("/var/redirected/"+name).c_str());
+
+
+            //cout<<"EM(child): in dir "<<get_current_dir_name()<<endl;
+            // Execute the executable with the specified arguments
+            char * args[]={
+                &name[0],
+                NULL
+            };
+            execve(args[0], &args[0],NULL);
+
+            // When execv() is successful, the current process is replaced by the child.
+            // Otherwise, the following code will be reached.
+            //TRACE_FATAL("EM: execv() failed for executable " << childPath<< ", errno: " << errno);
+            cout<<"EM(child): execv() failed for executable " << name.c_str() << ", errno: " << errno<<endl;
+        }
+
+
+        // Terminate the failed child process
+        std::abort();
+        return false;
+
+    } else if (pid > 0) {
+        // The parent process
+
+   
+        // get file discreptor
+        int fd = open("processes/execution_client_fifo", O_RDONLY);
+        if(fd == -1) {
+            cout<< "EM:[ERROR] => can't open fifo";
+        }else{
+            ara::exec::ExecutionState state;
+            if (read(fd, &state, sizeof(state)) == -1)
+            {
+                // TO DO
+                // Log Error : counldn't send the state to fifo
+            }
+            close(fd);
+            if(state == ara::exec::ExecutionState::kRunning) 
+            cout<<"EM: report succeed "<<(int) state<<endl;
+        }
+
+
+
+
+
+       // int status = 11;
+        //waitpid(pid, &status, 0);
+
+        //state_ = ProcessState::kStarting;
+        _pid = pid;
+
+        //TRACE_INFO("EM: Forked child ’" << executable_ << "’ with PID " <<_pid);
+        cout<<"EM: Forked child ’" << name << "’ with PID " <<_pid<<endl;
+        // The only successfull return
+        return true;
+
+    }
+    return false;
+}
+
+void Process::terminate(){
+    //  terminate seq of process
+    kill(_pid, SIGTERM);
+    wait(NULL);
+
 }
 
 bool Process::StartupConfig::operator==(const StartupConfig &other) const

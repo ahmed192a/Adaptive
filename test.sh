@@ -1,3 +1,3 @@
 #! /bin/sh
 
-cd build ; ./ara_unit_test
+cd build/src/test ; ./ara_unit_test

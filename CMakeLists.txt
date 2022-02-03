@@ -73,6 +73,16 @@ target_include_directories(
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser>
 )
 # get executable 
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
+add_executable(
+  process1
+  src/test_process.cpp
+)
+target_link_libraries(
+  process1
+  ara
+)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src)
 add_executable(
   ${PROJECT_NAME} 
   src/exec_main.cpp 
@@ -82,14 +92,18 @@ target_link_libraries(
   ara
 )
 
+
+
 # option for testing
 option(build_tests "Build all the tests.")
 set(build_tests OFF)
 message(STATUS "print_all_variables------------------------------------------${build_tests}")
 
 if(build_tests)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/test)
 
   enable_testing()
+ 
   add_executable(
     ara_unit_test
     Testing/hello_test.cpp
