@@ -53,6 +53,7 @@ namespace ara
                     std::string name{};
                     std::vector<StartupConfig> startup_configs{};
                     StartupConfig *current_config = nullptr;
+                    bool prun = false;
 
                     bool operator==(const Process &) const noexcept;
                     bool operator!=(const Process &) const noexcept;

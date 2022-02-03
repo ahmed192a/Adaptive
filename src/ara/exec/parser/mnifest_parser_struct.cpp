@@ -6,6 +6,7 @@
 #include <utility>
 #include <sys/wait.h>
 #include "sys/stat.h"
+#include <signal.h>
 
 using namespace ara::exec::parser;
 using namespace std;
@@ -62,29 +63,33 @@ bool Process::start(){
             //TRACE_FATAL("EM: chdir() failed for dir " << childWorkDir << ",errno: " << errno);
             cout<<"EM(child): chdir() failed for dir " << W_DIR << ",errno: " << errno<<endl;
         } else {
-        // Set environment variables
-        //for (const auto& variable : environment_) {
-        //    ::putenv(const_cast<char*>(variable.c_str()));  
-        //}
+            // Set environment variables
+            //for (const auto& variable : environment_) {
+            //    ::putenv(const_cast<char*>(variable.c_str()));  
+            //}
 
-        // Redirect terminal output for application to /var/redirected/<application_name_>
-        //utility::RedirectProcessOutput(("/var/redirected/"+name).c_str());
-
-
-        //cout<<"EM(child): in dir "<<get_current_dir_name()<<endl;
-        // Execute the executable with the specified arguments
-        execl(name.c_str(), name.c_str(),NULL);
-
-        // When execv() is successful, the current process is replaced by the child.
-        // Otherwise, the following code will be reached.
-        //TRACE_FATAL("EM: execv() failed for executable " << childPath<< ", errno: " << errno);
-        cout<<"EM(child): execv() failed for executable " << name.c_str() << ", errno: " << errno<<endl;
-    }
+            // Redirect terminal output for application to /var/redirected/<application_name_>
+            //utility::RedirectProcessOutput(("/var/redirected/"+name).c_str());
 
 
-    // Terminate the failed child process
-    std::abort();
-    return false;
+            //cout<<"EM(child): in dir "<<get_current_dir_name()<<endl;
+            // Execute the executable with the specified arguments
+            char * args[]={
+                &name[0],
+                NULL
+            };
+            execve(args[0], &args[0],NULL);
+
+            // When execv() is successful, the current process is replaced by the child.
+            // Otherwise, the following code will be reached.
+            //TRACE_FATAL("EM: execv() failed for executable " << childPath<< ", errno: " << errno);
+            cout<<"EM(child): execv() failed for executable " << name.c_str() << ", errno: " << errno<<endl;
+        }
+
+
+        // Terminate the failed child process
+        std::abort();
+        return false;
 
     } else if (pid > 0) {
         // The parent process
@@ -126,7 +131,10 @@ bool Process::start(){
 }
 
 void Process::terminate(){
-    // TO DO :: terminate seq of process
+    //  terminate seq of process
+    kill(_pid, SIGTERM);
+    wait(NULL);
+
 }
 
 bool Process::StartupConfig::operator==(const StartupConfig &other) const
