@@ -23,7 +23,7 @@ void PowerMode::event(PowerMode::PowerModeRespMsg &respMsg)noexcept
         //Do something..
         
     }
-    else if(respMsg == PowerModeRespMsg::NotSupported){
+    else if(respMsg == PowerModeRespMsg::Notsupported){
         //Do something..
         
     }
