@@ -1,29 +1,29 @@
 #include <PowerMode.h>
 using namespace ara::sm;
-void PowerMode::message(PowerMode::PowerModeMsg &msg)noexcept
+void PowerMode::message(PowerMode::PowerModeMsg &msg) noexcept
 {
-msg=On;
-msg=Off;
-msg=Suspend;
-
+    msg = On;
+    msg = Off;
+    msg = Suspend;
 }
 
-
-void PowerMode::event(PowerMode::PowerModeRespMsg &respMsg)noexcept
+void PowerMode::event(PowerMode::PowerModeRespMsg &respMsg) noexcept
 {
-   
-    if(respMsg == PowerModeRespMsg::Done){
-        //Do something..
-    }
-    else if(respMsg == PowerModeRespMsg::Failed){
-        //Do something..
 
+    if (respMsg == PowerModeRespMsg::Done)
+    {
+        // Do something..
     }
-    else if(respMsg == PowerModeRespMsg::Busy){
-        //Do something..
-        
+    else if (respMsg == PowerModeRespMsg::Failed)
+    {
+        // Do something..
     }
-    else if(respMsg == PowerModeRespMsg::Notsupported){
-        //Do something..
-        
+    else if (respMsg == PowerModeRespMsg::Busy)
+    {
+        // Do something..
     }
+    else if (respMsg == PowerModeRespMsg::Notsupported)
+    {
+        // Do something..
+    }
+}
