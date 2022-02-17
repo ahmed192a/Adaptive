@@ -32,7 +32,7 @@ namespace ara
             TriggerIn(T &state, TriggerHandler handler) : mTrigger(state, handler)
             {
             }
-            Trigger<T> GetTrigger() noexcept;
+            Trigger<T> GetTrigger() noexcept
             {
                 return mTrigger;
             }
