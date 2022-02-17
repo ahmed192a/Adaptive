@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include <functional>
-
+#include <vector>
 namespace ara
 {
     namespace sm

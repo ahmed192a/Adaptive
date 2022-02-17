@@ -33,7 +33,7 @@ Result UpdateRequest::StopUpdateSession(void) {
         // closing the active session
         activeSession = false;
         status = UpdateStatus::unactive;
-        return;        
+        //return;        
     }
 }
 
@@ -52,7 +52,7 @@ Result UpdateRequest::RequestUpdateSession(void) {
         // accepted the update request and openned an update session
         activeSession = true;
         status = UpdateStatus::acquired;
-        return;
+        //return;
     }       
 }
 
