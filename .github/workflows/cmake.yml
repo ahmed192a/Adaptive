@@ -40,8 +40,8 @@ jobs:
 
     - uses: langroodi/doxygenize@v1.6
       with:
-        doxygenconf: './Doc/Docyfile.conf'
-        htmloutput: './Doc/html/'
+        doxygenconf: './doc/Docyfile.conf'
+        htmloutput: './doc/html/'
         darkmode: true
     
 
