@@ -7,15 +7,15 @@
 /******************************************************
  * Name : TriggerInOut_{StateGroup}
  * NameSpace : ara::sm
- * 
+ *
  * Field : Notifier
  * Discribtion : State Management provides a service interface TriggerOut with a Notifier
  * HasGetter : True
  * HasNotifier : True
  * HasSetter : false
- * 
+ *
  * Field : Trigger
- * Discribtion :  each Adaptive Application can influence the behavior of 
+ * Discribtion :  each Adaptive Application can influence the behavior of
  * State Management by writing to the Trigger fields provided
  * (as part of the serviceinterface TriggerIn) by State Management
  * Type : Using Templats To provides it.
@@ -27,7 +27,7 @@ namespace ara
 {
     namespace sm
     {
-        
+
         template <typename T>
         class TriggerInOut
         {
@@ -36,18 +36,18 @@ namespace ara
             Notifier<T> mNotifier;
 
         public:
-        TriggerInOut(T &state, TriggerHandler handler) : mTrigger(state, handler),
-                                                                mNotifier(state)
-        {}
-        Trigger<T> &GetTrigger() noexcept
-        {
-          return mTrigger;
-        }
-        Notifier<T> &GetNotifier() noexcept
-        {
-         return mNotifier;
-        }
-           
+            TriggerInOut(T &state, TriggerHandler handler) : mTrigger(state, handler),
+                                                             mNotifier(state)
+            {
+            }
+            Trigger<T> &GetTrigger() noexcept
+            {
+                return mTrigger;
+            }
+            Notifier<T> &GetNotifier() noexcept
+            {
+                return mNotifier;
+            }
         };
     }
 }

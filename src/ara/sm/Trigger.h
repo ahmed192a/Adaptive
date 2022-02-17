@@ -20,11 +20,11 @@ namespace ara
 
         public:
             Trigger(T &state, TriggerHandler handler) : mState{state},
-                                                           mHandler{handler}
+                                                        mHandler{handler}
             {
             }
 
-        void Write(T state)
+            void Write(T state)
             {
                 if (mState != state)
                 {

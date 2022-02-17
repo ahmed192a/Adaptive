@@ -9,7 +9,7 @@
  * Name : TriggerIn_{StateGroup}
  * NameSpace : ara::sm
  * Field : Trigger
- * Discribtion :  each Adaptive Application can influence the behavior of 
+ * Discribtion :  each Adaptive Application can influence the behavior of
  * State Management by writing to the Trigger fields provided
  * (as part of the serviceinterface TriggerIn) by State Management
  * Type : Using Templats To provides it.
@@ -29,14 +29,13 @@ namespace ara
             Trigger<T> mTrigger;
 
         public:
-           
-       TriggerIn(T &state, TriggerHandler handler) : mTrigger(state, handler)
-       {}
-       Trigger<T> &GetTrigger() noexcept
-       {
+            TriggerIn(T &state, TriggerHandler handler) : mTrigger(state, handler)
+            {
+            }
+            Trigger<T> GetTrigger() noexcept;
+            {
                 return mTrigger;
-       }
-
+            }
         };
     }
 }

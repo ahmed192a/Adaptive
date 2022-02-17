@@ -11,6 +11,4 @@ void StateManager::init(void) {
     // /** initial communication with EM **/
     EM.GetInitialMachineStateTransitionResult();
 
-    
-
 }

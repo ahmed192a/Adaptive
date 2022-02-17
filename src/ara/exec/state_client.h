@@ -29,6 +29,7 @@ namespace ara
             char fifo_l[30] = "execution_client_fifo";
             // index of File descriptor
             int fd;
+            public:
             // SWS_EM_02276
             /**
              * \brief Constructor that creates StateClient instance

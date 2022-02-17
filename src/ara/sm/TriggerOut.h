@@ -25,12 +25,13 @@ namespace ara
             Notifier<T> mNotifier;
 
         public:
-            explicit TriggerOut (T &state) : mNotifier(state)
-        {}
-        Notifier<T> &GetNotifier() noexcept
-        {
-           return mNotifier;
-        }
+            explicit TriggerOut(T &state) : mNotifier(state)
+            {
+            }
+            Notifier<T> &GetNotifier() noexcept
+            {
+                return mNotifier;
+            }
         };
     }
 }

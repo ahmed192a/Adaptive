@@ -5,8 +5,7 @@
 #include <string>
 #include <vector>
 #include "sm_error_domain.h"
-#include "../core/result.h"
-
+#include "result.h"
 
 namespace ara {
     namespace sm {
@@ -103,7 +102,7 @@ namespace ara {
              */
 
 
-            Result PrepareUpdate(UpdateRequest::FunctionGroupListType functionGroupList);
+            errorDomains PrepareUpdate(UpdateRequest::FunctionGroupListType functionGroupList);
 
 
             /*

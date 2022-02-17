@@ -12,12 +12,12 @@ Result UpdateRequest::ResetMachine(void) {
     // - There is an active session
     // - The RequestUpdateSession() was not called successfully
     if((activeSession == true) || (status == UpdateStatus::unactive)) {
-        return errorDomains::kRejected;
+        //return errorDomains::kRejected;
     }
     else {
-        ara::exec::FunctionGroupState state;    
+       // ara::exec::FunctionGroupState state;    
         
-        StateManager::EM.SetState();
+        //StateManager::EM.SetState();
         StateManager::MachineFG.state = "Restart";
     }
 
@@ -26,7 +26,7 @@ Result UpdateRequest::ResetMachine(void) {
 Result UpdateRequest::StopUpdateSession(void) {
     if(status == UpdateStatus::unactive) {
         // RequestUpdateSession() was not called successfully
-        return errorDomains::kRejected;
+        //return errorDomains::kRejected;
     } 
     else 
     {
@@ -40,13 +40,13 @@ Result UpdateRequest::StopUpdateSession(void) {
 Result UpdateRequest::RequestUpdateSession(void) {
     if(activeSession == 1) {
         // There is another active update session
-        return errorDomains::kNotAllowedMultipleUpdateSessions; // error code
+        //return errorDomains::kNotAllowedMultipleUpdateSessions; // error code
     }
 
     // There is no active session currently
     if( StateManager::MachineFG.state != "Running") {
         // The Machine current status do not accept session activation
-        return errorDomains::kRejected;
+        //return errorDomains::kRejected;
     }
     else {
         // accepted the update request and openned an update session
@@ -56,14 +56,14 @@ Result UpdateRequest::RequestUpdateSession(void) {
     }       
 }
 
-Result UpdateRequest::PrepareUpdate(UpdateRequest::FunctionGroupListType functionGroupList) {
+errorDomains UpdateRequest::PrepareUpdate(UpdateRequest::FunctionGroupListType functionGroupList) {
     
     if (status == UpdateStatus::acquired) {
             for(int i = 0; i < functionGroupList.size(); i++) {
                 
                 
-                functionGroupList[i]
-                StateManager::EM.SetState(); // setting the states to "off" state            }
+                //functionGroupList[i]=StateManager::EM.SetState(); // setting the states to "off" state 
+               }           
 
     }
     else {
