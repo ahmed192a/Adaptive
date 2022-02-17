@@ -36,5 +36,11 @@ jobs:
       # working-directory: ${{github.workspace}}/build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-      
+      # Generate Doxygen code dodumentation and publish it to the GitHub Pages
+
+    - uses: langroodi/doxygenize@v1.6
+      with:
+        doxygenconf: './Docyfile'
+        htmloutput: './doc/html/'
+        darkmode: true
 
