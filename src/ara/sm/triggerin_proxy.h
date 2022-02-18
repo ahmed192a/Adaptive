@@ -2,7 +2,7 @@ namespace ara
 {
 namespace sm
 {
-namespace trigger_in
+namespace triggerin
 {
 namespace proxy
 {
@@ -13,7 +13,7 @@ namespace fields
     
 }
 namespace methods{}
-class Trigger_In_Skeleton
+class Trigger_In_Proxy
 {
     public:
    /* explicit TriggerInProxy()
