@@ -2,7 +2,7 @@ namespace ara
 {
 namespace sm
 {
-namespace trigger_in
+namespace triggerout
 {
 namespace proxy
 {
