@@ -13,7 +13,7 @@ namespace fields
     
 }
 namespace methods{}
-class Trigger_Out_Skeleton
+class Trigger_Out_Proxy
 {
     public:
    /* explicit TriggerOutProxy()
