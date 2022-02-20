@@ -60,7 +60,7 @@ error_kind Server::ListenServer(int no)
 	
 }
 
-error_kind Server:::AcceptServer()
+error_kind Server::AcceptServer()
 {
 	error_kind error = SUCCEEDED;
 	this->newsockfd = accept(this->sockfd,(struct sockaddr *)&this->cli_addr,&this->clientlen);
