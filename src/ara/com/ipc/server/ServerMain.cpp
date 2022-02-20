@@ -1,7 +1,7 @@
 
 
 #include <iostream>
-#include "CServer.h"
+#include "Server.h"
 #include <string>
 #include <cstring>
 using namespace std;
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     //std::string m;
     char buffer[256];
-    CServer s1(SOCK_STREAM);
+    Server s1(SOCK_STREAM);
     s1.OpenSocket(2020);
     s1.BindServer();
     s1.ListenServer(5); 
