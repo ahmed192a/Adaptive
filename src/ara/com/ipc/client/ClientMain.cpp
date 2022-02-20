@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string.h>
-#include "CClient.h"
+#include "Client.h"
 #include <unistd.h>
 #include  <chrono>
 #include <cstring>
