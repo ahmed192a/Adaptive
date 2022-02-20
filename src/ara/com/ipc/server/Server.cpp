@@ -6,7 +6,7 @@
 #include<errno.h>
 #include"Server.h"
 
-CServer::Server(int type)
+Server::Server(int type)
 {
 	
 	this->type=type;
@@ -15,7 +15,7 @@ CServer::Server(int type)
 
 error_kind Server::OpenSocket(int portno)
 {
-	error_kind error = SUCCESSED;
+	error_kind error = SUCCEEDED;
 	//create socket
 	this->sockfd = socket(AF_INET, type, 0);
 	if(this->sockfd < 0)
@@ -35,7 +35,7 @@ error_kind Server::OpenSocket(int portno)
 
 error_kind Server::BindServer()
 {
-	error_kind error = SUCCESSED;
+	error_kind error = SUCCEEDED;
 	int bindRet = bind(sockfd,(struct sockaddr *) &this->serv_addr,sizeof(this->serv_addr)); 
 	std::cout<<bindRet<<std::endl;
 	if(bindRet < 0)
@@ -49,7 +49,7 @@ error_kind Server::BindServer()
 
 error_kind Server::ListenServer(int no)
 {
-	error_kind error = SUCCESSED;
+	error_kind error = SUCCEEDED;
 	int lisret = listen(sockfd,no);
 	if(lisret < 0)
 	{
@@ -62,7 +62,7 @@ error_kind Server::ListenServer(int no)
 
 error_kind Server:::AcceptServer()
 {
-	error_kind error = SUCCESSED;
+	error_kind error = SUCCEEDED;
 	this->newsockfd = accept(this->sockfd,(struct sockaddr *)&this->cli_addr,&this->clientlen);
 	if(this->newsockfd < 0)
 	{
@@ -75,7 +75,7 @@ error_kind Server:::AcceptServer()
 
 error_kind Server::SendServer(char* msg)
 {
-	error_kind error = SUCCESSED;
+	error_kind error = SUCCEEDED;
 	ssize_t sndRet = send(this->newsockfd,msg,strlen(msg),0);
 	if(sndRet < 0)
 	{
@@ -90,7 +90,7 @@ error_kind Server::SendServer(char* msg)
 
 error_kind Server::ReceiveServer(char* data)
 {
-	error_kind error = SUCCESSED;
+	error_kind error = SUCCEEDED;
 	bzero(data,256);
 	std::cout<<this->newsockfd << "  "<< this->sockfd<<std::endl;
 	ssize_t rdRet = read(this->newsockfd,data,255);
