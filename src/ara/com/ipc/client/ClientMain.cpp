@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     //string m;
     char buffer[256];
     char hostbuffer[256];
-    CClient c1(SOCK_STREAM);
+    Client c1(SOCK_STREAM);
     c1.OpenSocket();
     bzero(hostbuffer,256);
 	int hostnameRet = gethostname(hostbuffer, sizeof(hostbuffer));
