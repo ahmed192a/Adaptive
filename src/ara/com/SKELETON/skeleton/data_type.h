@@ -14,10 +14,7 @@
 
 #include "../definitions.h"
 
-//#include </media/basmala/CA527F49527F38F1/F_Partition/faculty/4thComputer/graduation_project/ucm_client-130f87bff609ad78bbd4224a5781f9999ce36c01/includes/ara/core/future.h>
-//#include </media/basmala/CA527F49527F38F1/F_Partition/faculty/4thComputer/graduation_project/ucm_client-130f87bff609ad78bbd4224a5781f9999ce36c01/includes/ara/core/promise.h>
 
-//#include </media/basmala/CA527F49527F38F1/F_Partition/faculty/4thComputer/graduation_project/ucm_client-130f87bff609ad78bbd4224a5781f9999ce36c01/includes/ara/com/sample_ptr.h>
 
 #include <algorithm>
 #include <sstream>

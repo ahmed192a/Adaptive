@@ -27,6 +27,8 @@
 #include <map>
 #include <queue>
 #include <future>
+
+
 namespace ara
 {
     namespace com
@@ -35,6 +37,14 @@ namespace ara
         {
             namespace skeleton
             {
+
+                struct C_Info
+                {
+                    int process_id;
+                    char method_name[30];
+                    int param1;
+                    int param2;
+                };
                 class ServiceSkeleton : public ara::com::SKELETON::ServiceBase
                 {
                 public:
@@ -61,52 +71,69 @@ namespace ara
                     void init();
                     virtual void DispatchMethodCall(const std::shared_ptr<Message> msg, std::shared_ptr<int> binding) = 0;
 
-                    template <typename Class>
-                    void handle_call(Class& c, CServer& cserver,const struct C_Info& message, std::function<int ()> func)
+                template <typename Class, typename... Args>
+                 void HandleCall(Class& c,
+                    void (Class::*method)(),
+                    const struct C_Info& message,
+                    int binding
+                )
+                {
+                   // binding->HandleCall(c, method, msg);
+                    int result = method(message.param1);
+                    cserver.SendServer(&result, sizeof(int));
+                    cserver.ClientClose();
+                }
+
+
+                template <typename Class>
+                 void HandleCall(Class& c,
+                    void (Class::*method)(),
+                    const struct C_Info& message,
+                    CServer& cserver
+                )
+                {
+                   // binding->HandleCall(c, method, msg);
+                    int result = method();
+                    cserver.SendServer(&result, sizeof(int));
+                    cserver.ClientClose();
+                }
+
+                  template <typename Class, typename R>
+                    void HandleCall(Class &c,
+                                    std::future<R> (Class::*method)(),
+                                    const struct C_Info& message,
+                                    CServer& cserver)
                     {
-                        int result = func();
-                        cserver.SendServer(&result, sizeof(int));
-                        cserver.ClientClose();
+                        //binding->HandleCall(c, method, msg);
                     }
 
                     template <typename Class>
-                    void handle_call(Class& c, CServer& cserver,const struct C_Info& message, std::function<int ()> func)
+                    void HandleCall(Class &c,
+                                    std::future<void> (Class::*method)(),
+                                    const struct C_Info& message,
+                                    CServer& cserver)
                     {
-                        int result = func();
-                        cserver.SendServer(&result, sizeof(int));
-                        cserver.ClientClose();
+                        //binding->HandleCall(c, method, msg);
                     }
-                    template <typename Class>
-                    void handle_call(Class& c, CServer& cserver,const struct C_Info& message, std::function<int ()> func)
-                    {
-                        int result = func();
-                        cserver.SendServer(&result, sizeof(int));
-                        cserver.ClientClose();
-                    }               
 
-                    template <typename Class>
-                    void handle_call(Class& c, CServer& cserver,const struct C_Info& message, std::function<int ()> func)
+                    template <typename Class, typename... Args>
+                    void HandleCall(Class &c,
+                                    void (Class::*method)(Args...),
+                                    const struct C_Info& message,
+                                    CServer& cserver)
                     {
-                        int result = func();
-                        cserver.SendServer(&result, sizeof(int));
-                        cserver.ClientClose();
+                        //binding->HandleCall(c, method, msg, std::index_sequence_for<Args...>());
                     }
 
                     template <typename Class>
-                    void handle_call(Class& c, CServer& cserver,const struct C_Info& message, std::function<int ()> func)
+                    void HandleCall(Class &c,
+                                    void (Class::*method)(),
+                                    const struct C_Info& message,
+                                   CServer& cserver)
                     {
-                        int result = func();
-                        cserver.SendServer(&result, sizeof(int));
-                        cserver.ClientClose();
+                       // binding->HandleCall(c, method, msg);
                     }
 
-                    template <typename Class>
-                    void handle_call(Class& c, CServer& cserver,const struct C_Info& message, std::function<int ()> func)
-                    {
-                        int result = func();
-                        cserver.SendServer(&result, sizeof(int));
-                        cserver.ClientClose();
-                    }
 
                     template <typename T>
                     std::future<T> NoHandler()
