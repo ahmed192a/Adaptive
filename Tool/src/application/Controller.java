@@ -32,7 +32,7 @@ public class Controller
 		      }
 		      myReader.close();
 		      Main.Data = data;
-		      System.out.println(Main.Data);
+		      Main.Tree = ParseXML(Main.Data);
 	}
 	
 	public Node ParseXML(String Data) {
@@ -41,11 +41,47 @@ public class Controller
 		for(int Ptr = 0;Ptr < Data.length();Ptr++) {
 			if(Character.isWhitespace(Data.charAt(Ptr)))continue;
 			else if(Data.charAt(Ptr)=='<') {
-	
+				Ptr++;
+				if(Ptr==Data.length())return null;
+				else if(Data.charAt(Ptr) == '/'){
+					Ptr++;
+					String nextTag = get_tag(Data,Ptr);
+					if(current.getTag().equals(nextTag)) {
+						current = current.getParent();
+						Ptr+=nextTag.length();
+					}
+					else return null;
+				}
+				else {
+					String nextTag = get_tag(Data,Ptr);
+					Ptr+=nextTag.length();
+					if(hasChild(Data,Ptr+1)){
+						current = current.addNode(new Node(current,nextTag));
+					}
+					else {
+						int end = Ptr + 1;
+						for(; end+1!=Data.length() && Data.charAt(end+1)!='<'&& Data.charAt(end+1)!='>';end++);
+						if(end+1 == Data.length() || Data.charAt(end+1)=='>')return null;
+						String Val= Data.substring(Ptr+1, end+1);
+						Ptr = end;
+						current = current.addNode(new Node(current,nextTag,Val));
+					}
+				}
 			}
 			else return null;
 		}
-		return root;
+		if(current != root)return null;
+		else return root;
 	}
-	
+	private String get_tag(String Data,int start) {
+		int end = start;
+		for(;end+1!=Data.length() && Data.charAt(end+1)!='<' && Data.charAt(end+1)!='>';end++);
+		if(end + 1 == Data.length() || Data.charAt(end+1)=='<')return "ERROR";
+		return Data.substring(start,end+1);
+	}
+	private boolean hasChild(String Data,int pos) {
+		while(pos!=Data.length() && Character.isWhitespace(Data.charAt(pos)))pos++;
+		if(pos == Data.length() || Data.charAt(pos) == '<')return true;
+		else return false;
+	}	
 }	
