@@ -68,21 +68,20 @@ target_include_directories(
   ara 
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/core>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/sm>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/server>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/client>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/ipc>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/ipc/server>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/ipc/client>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/proxy_skeleton>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/skeleton>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/SOMEIP>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/SOMEIP/entry>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/SOMEIP/option>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/SOMEIP/helper>
-  
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/entry>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/option>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/helper>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/sm>  
 )
 # get executable 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
