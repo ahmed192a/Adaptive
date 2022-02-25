@@ -103,7 +103,7 @@ namespace ara
         // SWS_CORE_05290
         /**
          * \brief Create a new ErrorCode within CoreErrorDomain.
-         * This function is used internally by constructors of ErrorCode. It is usually not used directly by
+         * This function is used proxy_skeletonly by constructors of ErrorCode. It is usually not used directly by
          * users.
          * 
          * \param[in] code  the CoreErrorDomain-specific error code value 

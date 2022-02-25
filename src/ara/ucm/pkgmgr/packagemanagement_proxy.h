@@ -45,7 +45,7 @@ namespace ara
                  * @note . It is an instance of a C++ class local to the application/client, which uses the service.
                  *       . ref: 6.2 Proxy Class in exp_aracomAPI
                  * 
-                 * @todo inherit from ara::com::internal::proxy::ServiceProxy
+                 * @todo inherit from ara::com::proxy_skeleton::proxy::ServiceProxy
                  */
                 class PackageManagementProxy
                 {

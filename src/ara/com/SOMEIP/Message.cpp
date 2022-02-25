@@ -4,9 +4,10 @@ namespace ara
 {
     namespace com
     {
-        namespace entry
+        namespace SOMEIP_MESSAGE
         {
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept:Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode)noexcept:
+            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode):
+            Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode),
             GBMessageID{mID},GBlength{length},GBRequest_ID{rID},GBProtocol_Version{protocol_version},GBinterface_version{interface_version},GBMessageType{MType},GBReturnCode{Rcodr}
             {}
             Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept

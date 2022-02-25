@@ -13,7 +13,7 @@ namespace ara
 
         enum class errorDomains : uint16_t // shall be updated to ErrorCode or ErrorDomain **
         {
-            kRejected = 5,                        // Requested operation was rejected due to State Managements machines internal state.
+            kRejected = 5,                        // Requested operation was rejected due to State Managements machines proxy_skeleton state.
             kVerifyFailed = 6,                    // Verification step of update failed.
             kPrepareFailed = 7,                   // Preparation step of update failed.
             kRollbackFailed = 8,                  // Rollback step of update failed.

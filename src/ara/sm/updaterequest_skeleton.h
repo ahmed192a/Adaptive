@@ -17,7 +17,7 @@
 #include "functional"
 #include "CServer.h"
 #include <vector>
-#include "../../../SKELETON/skeleton/service_skeleton.h"
+#include "../../../proxy_skeleton/skeleton/service_skeleton.h"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ namespace sm
 {
 namespace update_request
 {
-namespace skeleton
+namespace proxy_skeleton
 {
 namespace events
 {
@@ -64,7 +64,7 @@ struct C_Info
 
 //class Service_skeleton;
 
-class update_request_Skeleton : public ara::com::SKELETON::skeleton::ServiceSkeleton
+class update_request_Skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
 
 {
     private:
@@ -80,7 +80,7 @@ class update_request_Skeleton : public ara::com::SKELETON::skeleton::ServiceSkel
        // ara::com::InstanceIdentifier instance,
        // ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent
 	);
-       // : ara::com::SKELETON::skeleton::ServiceSkeleton("update_request_Skeleton", instance, mode)
+       // : ara::com::proxy_skeleton::skeleton::ServiceSkeleton("update_request_Skeleton", instance, mode)
 
     
 

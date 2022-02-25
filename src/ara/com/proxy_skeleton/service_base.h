@@ -18,7 +18,7 @@ namespace ara
 {
     namespace com
     {
-        namespace SKELETON
+        namespace proxy_skeleton
         {
 
             class ServiceBase
@@ -27,7 +27,7 @@ namespace ara
                 ServiceBase(std::string name)
                 {
                     m_name = name;
-                    m_serviceInterface = std::make_shared<ara::com::internal::ServiceInterface>();
+                    m_serviceInterface = std::make_shared<ara::com::proxy_skeleton::ServiceInterface>();
                 }
 
                 virtual ~ServiceBase();
@@ -47,10 +47,10 @@ namespace ara
                 }
 
                 std::string m_name;
-                std::shared_ptr<ara::com::internal::ServiceInterface> m_serviceInterface;
+                std::shared_ptr<ara::com::proxy_skeleton::ServiceInterface> m_serviceInterface;
             };
-        } // internal
+        } // proxy_skeleton
     } // com
 } // ara
 
-#endif // ARA_COM_INTERNAL_SERVICE_BASE_H_
+#endif // ARA_COM_proxy_skeleton_SERVICE_BASE_H_

@@ -4,14 +4,14 @@
 #include <cstdint>
 #include <string>
 // #include <iostream>
-// #include "ara/core/result.h"
+
 namespace ara
 {
     namespace exec
     {
         // SWS_EM_02000
         /**
-         * Defines the internal states of a Process (see 7.3.1). Scoped Enumeration of uint8_t .
+         * Defines the proxy_skeleton states of a Process (see 7.3.1). Scoped Enumeration of uint8_t .
          */
         enum class ExecutionState : uint8_t
         {
@@ -46,7 +46,7 @@ namespace ara
 
             // SWS_EM_02003
             /**
-             * Interface for a Process to report its internal state to Execution Management.
+             * Interface for a Process to report its proxy_skeleton state to Execution Management.
              * 
              * \param state     Value of the Execution State
              * 

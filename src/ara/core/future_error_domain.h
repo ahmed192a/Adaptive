@@ -10,7 +10,7 @@ namespace ara
     {
         // SWS_CORE_00400
         /**
-         * \brief Specifies the types of internal errors that can occur upon calling Future::get or Future::Get
+         * \brief Specifies the types of proxy_skeleton errors that can occur upon calling Future::get or Future::Get
          * Result.
          * These definitions are equivalent to the ones from std::future_errc.
          * 

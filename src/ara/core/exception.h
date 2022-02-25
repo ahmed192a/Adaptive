@@ -1,58 +1,90 @@
 
 #ifndef ARA_CORE_EXCEPTION_H_
 #define ARA_CORE_EXCEPTION_H_
+
 #include <cstdint>
 #include <stdexcept>
 #include <map>
 #include <sstream>
-#include <string>
+
 #include "error_code.h"
 
-namespace ara 
+namespace ara
 {
     namespace core
     {
-        // SWS_CORE_00601
-        /**
-         * \brief Base type for all AUTOSAR exception types.
-         * 
-         */
-        class Exception //: public std::exception
+
+        class Exception : std::exception
         {
+            ErrorCode const mErrorCode;
+
         public:
-            ara::core::ErrorCode mErrorCode;
+            explicit Exception(ErrorCode &&err)
+                : mErrorCode(std::move(err))
+            {
+            }
 
-        	// ErrorCode errorCode;
-            // SWS_CORE_00611
-            /**
-             * \brief Construct a new Exception object with a specific ErrorCode.
-             * 
-             * \param[in] err   the ErrorCode
-             */
-            explicit Exception(ErrorCode &err) noexcept : mErrorCode(err){}
+            ErrorCode const &Error() const noexcept
+            {
+                return mErrorCode;
+            }
 
-            // SWS_CORE_00612
-            /**
-             * \brief Return the explanatory string.
-             * 
-             * This function overrides the virtual function std::exception::what. All guarantees about the
-             * lifetime of the returned pointer that are given for std::exception::what are preserved.
-             * 
-             * \return char const*  a null-terminated string
-             */
-            std::string what() const noexcept;
+            char const *what() const noexcept override
+            {
+                return std::exception::what();
+            }
 
-            // SWS_CORE_00613
-            /**
-             * \brief Return the embedded ErrorCode that was given to the constructor.
-             * 
-             * \return ErrorCode const&     reference to the embedded ErrorCode
-             */
-            ErrorCode const& Error() const noexcept;
+            std::string toString()
+            {
+                std::stringstream ss;
+                ss << "Exception: " << Error() << " (" << what() << ")";
+                return ss.str();
+            }
         };
-    } // namespace core
-    
-} // namespace ara
 
+        inline std::ostream &operator<<(std::ostream &out, Exception const &ex)
+        {
+            return (out << "Exception: " << ex.Error() << " (" << ex.what() << ")");
+        }
+
+        ///**
+        // * \brief Indicates errors that shall be delivered to the client in case an application error happens during method
+        // * call.
+        // *
+        // * Application errors are compatible to classic AUTOSAR errors and thus consist of a single byte value that indicates
+        // * the error. A server method may throw this exception to deliver this error code to the calling site. Currently this is
+        // * the only exception that is guaranteed to be transmitted to the calling site. All other exceptions may lead to
+        // * uncaught exceptions on server side and thus cause a terminate().
+        // */
+
+        // class ApplicationErrorException : public Exception
+        //{
+
+        // public:
+        //     /**
+        //      * \brief Default constructor that deliberately leaves the exception in an undefined state.
+        //      */
+        //     ApplicationErrorException()
+        //         : Exception("Application error")
+        //     {
+        //     }
+
+        //    /**
+        //     * \brief All subclassess of ApplicationErrorException shall override this method.
+        //     * The string returned by the overriden method shall have the following format:
+        //     * "<error> in <service interface> with ErrorCode: <error code>"
+        //     * where:
+        //     * <error> is the short name of the ApplicationError element within the ARXML model
+        //     * <service interface> is the fullyy qualified short name (short name path) of the service interface wherein
+        //     * the Application Error has been declared.
+        //     * <error code> the 6 bit error code defined within the ApplicationError element in decimal format.
+        //     * \return string representation of this ApplicationError (see above).
+        //     */
+
+        //    virtual const char* what() const noexcept override = 0;
+        //};
+
+    } // namespace core
+} // namespace ara
 
 #endif // ARA_CORE_EXCEPTION_H_

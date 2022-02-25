@@ -4,7 +4,7 @@ namespace sm
 {
 namespace triggerinout
 {
-namespace skeleton
+namespace proxy_skeleton
 {
 namespace events
 {

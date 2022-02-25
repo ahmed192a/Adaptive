@@ -26,7 +26,7 @@ namespace ara
             kServiceDiscovery = 1, // application shall do communication service
                                    // discovery (this must be the only occasion for
                                    // performing service discovery)
-            kInit = 2,             // application shall initialize its internal data structures
+            kInit = 2,             // application shall initialize its proxy_skeleton data structures
                                    // (once)
             kRun = 3,              // application shall perform its normal operation
             kTerminater = 4,       // application shall terminate

@@ -10,7 +10,7 @@ namespace ara
         /**
          * \brief Class representing Function Group State defined in meta-model (ARXML).
          *
-         * \note Once created based on ARXML path, it’s internal value stay bounded to it for entire lifetime of
+         * \note Once created based on ARXML path, it’s proxy_skeleton value stay bounded to it for entire lifetime of
          *       an object.
          */
         class FunctionGroupState

@@ -56,7 +56,7 @@ namespace ara {
              * Description        : Requests a reset of the machine. Before the reset is performed all information within the machine shall
              *                      be persisted. Request will be rejected when RequestUpdateSession was not called successfully before.
              * FireAndForget      : false
-             * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines internal state)
+             * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              */
             Result ResetMachine(void);
 
@@ -67,7 +67,7 @@ namespace ara {
                                     Management know that the update is done and the Machine is in a stable state. Request will be rejected
                                     when RequestUpdateSession was not called successfully before.
              * FireAndForget      : false
-             * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines internal state)
+             * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              */
 
             Result StopUpdateSession(void);
@@ -79,7 +79,7 @@ namespace ara {
                                     Management. State Management might decline this request when machine is not in a state to be
                                     updated.
              * FireAndForget      : false
-             * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines internal state)
+             * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              *                    : kNotAllowedMultipleUpdateSessions (Request for new session was rejected as only single active (update) session is allowed)
              */
 
@@ -97,7 +97,7 @@ namespace ara {
                                       Type        : functionGroupListType
                                       Direction   : IN
 
-             * Application Errors : - kRejected  (Requested operation was rejected due to State Managements/machines internal state)
+             * Application Errors : - kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              *                      - kPrepareFailed (Preparation step of update failed.)
              */
 
@@ -116,7 +116,7 @@ namespace ara {
                                       Type        : functionGroupListType
                                       Direction   : IN
 
-             * Application Errors : - kRejected  (Requested operation was rejected due to State Managements/machines internal state)
+             * Application Errors : - kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              *                      - kVerifyFailed (Verification step of update failed.)
              */
 
@@ -132,7 +132,7 @@ namespace ara {
                                       Type        : functionGroupListType
                                       Direction   : IN
 
-             * Application Errors : - kRejected  (Requested operation was rejected due to State Managements/machines internal state)
+             * Application Errors : - kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              *                      - kRollbackFailed (Rollback step of update failed.)
              */
 

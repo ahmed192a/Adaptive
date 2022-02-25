@@ -17,7 +17,7 @@ namespace ara
     {
         namespace pkgmgr
         {
-            namespace skeleton
+            namespace proxy_skeleton
             {
                 namespace events
                 {
@@ -41,7 +41,7 @@ namespace ara
                  * @note . Service implementation class is derived from the (service) skeleton.
                  *       . ref: 6.3 Skeleton Class in exp_aracomAPI
                  * 
-                 * @todo inherit from ara::com::internal::skeleton::ServiceSkeleton
+                 * @todo inherit from ara::com::proxy_skeleton::skeleton::ServiceSkeleton
                  */
                 class PackageManagementSkeleton
                 {

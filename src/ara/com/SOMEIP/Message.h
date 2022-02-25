@@ -4,7 +4,7 @@ namespace ara
 {
 	namespace com
 	{
-		namespace entry
+		namespace SOMEIP_MESSAGE
 		{
 			enum class MessageType : uint8_t
 			{
@@ -18,7 +18,7 @@ namespace ara
 				TP_NOTIFICATION =0x22, ///!<A TP request of a notification/event callback expecting no response
 				TP_RESPONSE=0x23, ///!<The TP response message
 				TP_ERROR=0x24 ///!<The TP response containing an error
-			}
+			};
 			enum class ReturnCode : uint8_t
 			{
 				E_OK, ///!<No error occurred
@@ -26,8 +26,8 @@ namespace ara
 				E_UNKNOWN_SERVICE,///!<The requested Service ID is unknown
 				E_UNKNOWN_METHOD,///!<The requested Method ID is unknown. Service ID is known.
 				E_NOT_READY,///!<Service ID and Method ID are known. Application not running 
-				E_NOT_REACHABLE,///!<System running the service is not reachable (internal error code only).
-				E_TIMEOUT,///!<A timeout occurred (internal error code only).
+				E_NOT_REACHABLE,///!<System running the service is not reachable (proxy_skeleton error code only).
+				E_TIMEOUT,///!<A timeout occurred (proxy_skeleton error code only).
 				E_WRONG_PROTOCOL_VERSION,///!<Version of SOME/IP protocol not supported
 				E_WRONG_INTERFACE_VERSION,///!<Interface version mismatch
 				E_MALFORMED_MESSAGE,///!<Deserialization error, so that payload cannot be deserialized.
@@ -37,7 +37,7 @@ namespace ara
 				E_E2E,///!<Not further specified E2E error
 				E_E2E_NOT_AVAILABLE ,///!<E2E not available
 				E_E2E_NO_NEW_DATA ///!<No new data for E2E calculation present
-			}
+			};
 			class Header
 			{
               public:
@@ -63,13 +63,11 @@ namespace ara
 			class Message
 			{
 				Header l;
-				vector<uint8_t>payload;
+				std::vector<uint8_t>payload;
 				Message(struct Message_ID a,uint32_t length,struct Request_ID b,uint8_t protocol_version,uint8_t interface_version):l(a,length,b,protocol_version,interface_version)
 				{
 
 				}
-
-				
 			};
 			struct Message_ID
 			{

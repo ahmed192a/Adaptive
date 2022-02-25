@@ -12,14 +12,16 @@
 #ifndef ARA_COM_SKELETON_MANIFEST_H_
 #define ARA_COM_SKELETON_MANIFEST_H_
 
-// #include "ara/com/data_types.h"
-// #include "ara/com/e2e/profiles.h"
-
+#include <string>
+#include <vector>
+#include <array>
+#include <map>
+#include <memory>
 namespace ara
 {
     namespace com
     {
-        namespace SKELETON
+        namespace proxy_skeleton
         {
 
             enum class TransportLayerProtocolEnum : uint8_t
@@ -186,8 +188,8 @@ namespace ara
                 bool parse(std::string file);
             };
 
-        } // internal
+        } // proxy_skeleton
     }     // com
 } // ara
 
-#endif // ARA_COM_INTERNAL_MANIFEST_H_
+#endif // ARA_COM_proxy_skeleton_MANIFEST_H_
