@@ -33,6 +33,12 @@ public class Node {
 	public String getTag() {
 		return tag;
 	}
+	public ArrayList<Node> getChilds() {
+		return childs;
+	}
+	public String getVal() {
+		return val;
+	}
 	public static Node ParseXML(String Data) {
 		Node root = new Node(null,"root");  
 		Node current = root;
@@ -82,4 +88,17 @@ public class Node {
 		if(pos == Data.length() || Data.charAt(pos) == '<')return true;
 		else return false;
 	}	
+	public Node Search(String...strings) {
+		Node current = this;
+		for (String path : strings) {
+			for(Node i : current.getChilds()) {
+				if(i.getTag().equals(path)) {
+					current = i;
+					break;
+				}
+			}
+		if(!path.equals(current.getTag()))return null;
+		}
+        return current;
+	}
 }

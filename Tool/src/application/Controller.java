@@ -33,6 +33,7 @@ public class Controller
 		FC.setTitle("Load XML");
 		FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML","*.XML"));	
 		File myObj = FC.showOpenDialog(Main.getPrimaryStage());
+		Main.Direc = myObj.getPath().substring(0,myObj.getPath().length() - myObj.getName().length());
 		if(myObj!=null) {
 		    Scanner myReader = new Scanner(myObj);
 		    while (myReader.hasNextLine()) 
@@ -61,15 +62,16 @@ public class Controller
 	}
 	
 	public void convert_mi_func(ActionEvent e) {
-	    indicator.clear();
-        indicator.appendText("Header Files Generated Successfully!");  
-        add_tab("Skeleton"," ");
-        add_tab("Proxy"," ");
-        indicator.setStyle("text-area-background: #8e58ee;");
-        convert_mi.setDisable(true);
+		if(generate(Main.Tree)) {
+			indicator.clear();
+	        indicator.appendText("Header Files Generated Successfully!");  
+	        add_tab("Skeleton"," ");
+	        add_tab("Proxy"," ");
+	        indicator.setStyle("text-area-background: #8e58ee;");
+	        convert_mi.setDisable(true);	
+		}
 	}
-	
-	
+
 	public void close_mi_func(ActionEvent e) {
 		tabs.getTabs().clear();
 	    indicator.clear();
@@ -89,5 +91,36 @@ public class Controller
 		tab.setStyle("-fx-background-color:lightgreen;");
 		tab.setContent(txt);
 		tabs.getTabs().add(tab);
+	}
+
+	public boolean generate(Node SI) {
+		String name = SI.Search("Service-Interface","short-name").getVal();
+		if(name == null)return false;
+		name = name.replaceAll(" ", "");	
+		name = name.replaceAll("\t", "");	
+		name = name.replaceAll("\n", "");	
+		Main.sFile = Main.Direc + name + "_skeleton.h";
+		Main.pFile = Main.Direc + name + "_proxy.h";
+		try {
+		      File myObj = new File(Main.sFile);
+		      if (!myObj.createNewFile()) {
+		        myObj.delete();
+		        myObj.createNewFile();
+		      }
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		      return false;
+		    }
+		try {
+		      File myObj = new File(Main.pFile);
+		      if (!myObj.createNewFile()) {
+		        myObj.delete();
+		        myObj.createNewFile();
+		      }
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		      return false;
+		    }
+		return true;
 	}
 }	

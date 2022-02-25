@@ -12,9 +12,19 @@ public class Main extends Application {
 	
 	
     private static Stage primaryStage; // **Declare static Stage**    
-    public static String Data; // **Declare static Stage**    
     public static Node Tree;
     
+    public static String Direc;
+
+    public static String File;
+    public static String Data;  
+
+    public static String sFile;
+    public static String sData;
+
+    public static String pFile;
+    public static String pData; 
+
     private void setPrimaryStage(Stage stage) {
         Main.primaryStage = stage;
     }
