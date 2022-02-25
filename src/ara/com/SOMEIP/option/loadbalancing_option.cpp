@@ -22,7 +22,7 @@ namespace ara
                 return GBWeight;
             }
 
-            std::vector<uint8_t> LoadBalancingOption::Payload() const
+            std::vector<uint8_t> LoadBalancingOption::Payload() 
             {
                 auto _result = Option::BasePayload();
 

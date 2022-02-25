@@ -1,8 +1,18 @@
+/**
+ * @file ipv4_endpoint_option.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-02-25
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef IPV4_ENDPOINT_OPTION_H
 #define IPV4_ENDPOINT_OPTION_H
 
 #include <stdexcept>
-#include "./option.h"
+#include "option.h"
 #include "../helper/ipv4_address.h"
 
 namespace ara
@@ -36,6 +46,7 @@ namespace ara
 
             public:
                 Ipv4EndpointOption() = delete;
+                ~Ipv4EndpointOption();
                 virtual uint16_t Length() const noexcept override;
 
                 /// @brief Get IP address
@@ -50,7 +61,7 @@ namespace ara
                 /// @returns Network port number
                 uint16_t Port() const noexcept;
 
-                virtual std::vector<uint8_t> Payload() const override;
+                virtual std::vector<uint8_t> Payload()  override;
 
                 /// @brief Unitcast endpoint factory
                 /// @param discardable Indicates whether the option can be discarded or not
@@ -83,8 +94,8 @@ namespace ara
                 static Ipv4EndpointOption CreateSdEndpoint(
                     bool discardable,
                     helper::Ipv4Address ipAddress,
-                    Layer4ProtocolType protocol = cDefaultSdProtocol,
-                    uint16_t port = cDefaultSdPort) noexcept;
+                    Layer4ProtocolType protocol = DefaultSdProtocol,
+                    uint16_t port = DefaultSdPort) noexcept;
             };
         }
     }

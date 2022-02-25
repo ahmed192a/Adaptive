@@ -121,7 +121,7 @@ namespace ara
 
                 if (_valid)
                 {
-                    mFirstOptions.push_back(firstOption);
+                    GBFirstOptions.push_back(firstOption);
                 }
                 else
                 {

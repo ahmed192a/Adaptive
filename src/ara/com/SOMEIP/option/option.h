@@ -43,14 +43,14 @@ namespace ara
                 /// @brief Constructor
                 /// @param type Option type
                 /// @param discardable Indicates whether the option can be discarded or not
-                constexpr Option(OptionType type, bool discardable) noexcept : mType{type},
-                                                                               mDiscardable{discardable}
+                constexpr Option(OptionType type, bool discardable) noexcept : GBType{type},
+                                                                               GBDiscardable{discardable}
                 {
                 }
 
                 /// @brief Get base option payload
                 /// @returns Byte array
-                std::vector<uint8_t> BasePayload() const;
+                std::vector<uint8_t> BasePayload() ;
 
             public:
                 virtual ~Option() noexcept = default;
@@ -69,7 +69,7 @@ namespace ara
 
                 /// @brief Get option payload
                 /// @returns Byte array
-                virtual std::vector<uint8_t> Payload() const = 0;
+                virtual std::vector<uint8_t> Payload()  = 0;
             };
         }
     }

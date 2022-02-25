@@ -18,7 +18,7 @@ namespace ara
                 static const uint16_t AnyInstanceId = 0xffff;
                 static const uint32_t AnyMinorVersion = 0xffffffff;
 
-                uint32_t mMinorVersion;
+                uint32_t GBMinorVersion;
 
                 ServiceEntry(EntryType type,
                              uint16_t serviceId,
@@ -65,7 +65,7 @@ namespace ara
                     uint16_t instanceId,
                     uint8_t majorVersion,
                     uint32_t minorVersion,
-                    uint32_t ttl = cInfiniteTtl);
+                    uint32_t ttl = InfiniteTtl);
 
                 /// @brief Stop offer a service entry factory
                 /// @param serviceId Service in interest ID

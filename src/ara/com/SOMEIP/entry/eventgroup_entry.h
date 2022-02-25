@@ -14,7 +14,7 @@ namespace ara
             {
             private:
                 static const uint32_t NackTTL = 0x000000;
-                uint16_t EventgroupId;
+                uint16_t GBEventgroupId;
 
                 EventgroupEntry(EntryType type,
                                 uint16_t serviceId,

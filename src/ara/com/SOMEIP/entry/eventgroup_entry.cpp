@@ -93,10 +93,10 @@ namespace ara
                 const uint32_t SubscribeEventTTL = 0xffffff;
 
                 EventgroupEntry _result(
-                    cSubscribeEventEntry,
+                    SubscribeEventEntry,
                     serviceId,
                     instanceId,
-                    cSubscribeEventTTL,
+                    SubscribeEventTTL,
                     majorVersion,
                     eventgroupId);
 

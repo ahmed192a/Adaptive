@@ -102,10 +102,10 @@ namespace ara
                 const uint32_t StopOfferTTL = 0x000000;
 
                 ServiceEntry _result(
-                    cOfferServiceEntry,
+                    OfferServiceEntry,
                     serviceId,
                     instanceId,
-                    cStopOfferTTL,
+                    StopOfferTTL,
                     majorVersion,
                     minorVersion);
 

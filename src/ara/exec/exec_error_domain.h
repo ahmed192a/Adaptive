@@ -113,7 +113,7 @@ namespace ara
 			 * 
 			 * \return char const*      The message associated with the error code.
 			 */
-			std::string Message(CodeType errorCode) const noexcept override;
+			char const * Message(CodeType errorCode) const noexcept override;
 
 			// SWS_EM_02289
 			/**
@@ -121,7 +121,7 @@ namespace ara
 			 * 
 			 * \param[in] errorCode     The error to throw.
 			 */
-			void ThrowAsException(ara::core::ErrorCode &errorCode) const noexcept(false) override;
+			void ThrowAsException(ara::core::ErrorCode &errorCode) const noexcept(false) ;
 		};
 	} // namespace exec
 

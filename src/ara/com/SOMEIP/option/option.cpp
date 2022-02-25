@@ -16,7 +16,7 @@ namespace ara
                 return GBDiscardable;
             }
 
-            std::vector<uint8_t> Option::BasePayload() const
+            std::vector<uint8_t> Option::BasePayload() 
             {
                 std::vector<uint8_t> _result;
 

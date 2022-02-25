@@ -1,3 +1,13 @@
+/**
+ * @file ipv4_endpoint_option.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-02-25
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "./ipv4_endpoint_option.h"
 
 namespace ara
@@ -27,11 +37,11 @@ namespace ara
                 return GBPort;
             }
 
-            std::vector<uint8_t> Ipv4EndpointOption::Payload() const
+            std::vector<uint8_t> Ipv4EndpointOption::Payload() 
             {
-                auto _result = Option::BasePayload();
+                std::vector<uint8_t> _result = Option::BasePayload();
 
-                helper::Ipv4Address::Inject(_result, GBIpAddress);
+                GBIpAddress.Inject(_result); 
 
                 const uint8_t ReservedByte = 0x00;
                 _result.push_back(ReservedByte);

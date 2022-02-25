@@ -1,7 +1,7 @@
 #ifndef LOADBALANCING_OPTION_H
 #define LOADBALANCING_OPTION_H
 
-#include "./option.h"
+#include "option.h"
 
 namespace ara
 {
@@ -42,7 +42,7 @@ namespace ara
                 /// @returns Servince instance random selection weight
                 uint16_t Weight() const noexcept;
 
-                virtual std::vector<uint8_t> Payload() const override;
+                virtual std::vector<uint8_t> Payload()  override;
             };
         }
     }
