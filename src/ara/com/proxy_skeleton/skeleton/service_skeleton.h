@@ -64,25 +64,27 @@ namespace ara
                                     Message msg,
                                     CServer binding)
                     {
-                        // check the Deserializer
-                        Deserializer deserializer(msg->payload, msg->payload.size());
-                        Unmarshaller<Args...> unmarshaller(deserializer, msg->payload, msg->payload.size());
-
-                        if (unmarshaller.hasInvalidArgData())
-                        {
-                            // error
-                            return;
-                        }
-
-                        ara::core::Future<R> f = (c.*method)(unmarshaller.template unmarshal<std::index_sequence_for<Args...>()>()...);
+                        sHandleCall(c, method, msg,binding, std::index_sequence_for(Args...));
+                       
+                    }
+                    template <typename Class, typename R, typename... Args, std::size_t... index>
+                    void sHandleCall(Class& c,
+                                    ara::core::Future<R> (Class::*method)(Args...),
+                                    Message msg,
+                                    CServer binding,
+                                    std::index_sequence<index...>)
+                    {
+                        Marshal<Args...> unmarshaller(msg->payload);
+                        ara::core::Future<R> f = (c.*method)(unmarshaller.template unmarshal<index>()...);
 
                         f.then([this, msg](ara::core::Future<R> &&f) -> bool
-                               {
-                        R r = f.get();
-                        // get the data then serialize it and send it
-                        binding.SendServer(&r, sizeof(int));
-                        binding.ClientClose();
-                        return true; });
+                        {
+                            R r = f.get();
+                            // get the data then serialize it and send it
+                            binding.SendServer(&r, sizeof(int));
+                            binding.ClientClose();
+                            return true; 
+                        });
                     }
 
                     template <typename Class, typename... Args>
@@ -91,26 +93,28 @@ namespace ara
                                     Message msg,
                                     CServer binding)
                     {
-                        // check the Deserializer
-                        Deserializer deserializer(msg->payload, msg->payload.size());
-                        Unmarshaller<Args...> unmarshaller(deserializer, msg->payload, msg->payload.size());
+                        sHandleCall(c, method, msg, binding,std::index_sequence_for(Args...));
+                    }
+                    template <typename Class,typename... Args, std::size_t... index>
+                    void sHandleCall(Class& c,
+                                    ara::core::Future<void> (Class::*method)(Args...),
+                                    Message msg,
+                                    CServer binding,
+                                    std::index_sequence<index...>)
+                    {
+                        Marshal<Args...> unmarshaller(msg->payload);
 
-                        if (unmarshaller.hasInvalidArgData())
-                        {
-                            // error
-                            return;
-                        }
-
-                        ara::core::Future<R> f = (c.*method)(unmarshaller.template unmarshal<std::index_sequence_for<Args...>()>()...);
+                        ara::core::Future<R> f = (c.*method)(unmarshaller.template unmarshal<index>()...);
 
                         f.then([this, msg](ara::core::Future<R> &&f) -> bool
-                               {
-                        // TO DO: no return value but return result
-                        f.get();
-                        // get the data then serialize it and send it
-                        binding.SendServer(&msg, sizeof(int));
-                        binding.ClientClose();
-                        return true; });
+                        {
+                            // TO DO: no return value but return result
+                            f.get();
+                            // get the data then serialize it and send it
+                            binding.SendServer(&msg, sizeof(int));
+                            binding.ClientClose();
+                            return true; 
+                        });
                     }
 
                     template <typename Class, typename R>
@@ -121,13 +125,13 @@ namespace ara
                     {
                         ara::core::Future<R> f = (c.*method)();
                         f.then([this, msg](ara::core::Future<R> &&f) -> bool
-                               {
-                                   R r = f.get();
+                        {
+                            R r = f.get();
 
-                                   binding.SendServer(&r, sizeof(int));
-                                   binding.ClientClose();
-                                   return true;
-                               });
+                            binding.SendServer(&r, sizeof(int));
+                            binding.ClientClose();
+                            return true;
+                        });
                     }
 
                     template <typename Class>
@@ -136,15 +140,15 @@ namespace ara
                                     Message msg,
                                     CServer binding)
                     {
-                        ara::core::Future<R> f = (c.*method)();
-                        f.then([this, msg](ara::core::Future<R> &&f) -> bool
-                               {
-                                   f.get();
+                        ara::core::Future<void> f = (c.*method)();
+                        f.then([this, msg](ara::core::Future<void> &&f) -> bool
+                        {
+                            f.get();
 
-                                   binding.SendServer(&msg, sizeof(int));
-                                   binding.ClientClose();
-                                   return true;
-                               });
+                            binding.SendServer(&msg, sizeof(int));
+                            binding.ClientClose();
+                            return true;
+                        });
                     }
 
                     template <typename Class, typename... Args>
@@ -153,16 +157,20 @@ namespace ara
                                     Message msg,
                                     CServer binding)
                     {
-                        std::shared_ptr<Deserializer> deserializer(msg->payload->data(), msg->payload->size());
-                        Unmarshaller<Args...> unmarshaller(deserializer, msg->payload->data(), msg->payload->size());
-
-                        if (unmarshaller.hasInvalidArgData())
-                        {
-                            return;
-                        }
-
-                        (c.*method)(unmarshaller.template unmarshal<std::index_sequence_for<Args...>()>()...);
+                        sHandleCall(c,method,msg,binding,std::index_sequence_for(Args...));
                     }
+
+                    template <typename Class, typename... Args, std::size_t... index>
+                    void sHandleCall(Class &c,
+                                    void (Class::*method)(Args...),
+                                    Message msg,
+                                    CServer binding,
+                                    std::index_sequence<index...>)
+                    {
+                        Marshal<Args...> unmarshaller(msg->payload);
+                        (c.*method)(unmarshaller.template unmarshal<index>()...);
+                    }
+
 
                     template <typename Class>
                     void HandleCall(Class &c,

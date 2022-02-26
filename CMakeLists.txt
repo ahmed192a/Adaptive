@@ -3,8 +3,8 @@ project(Adaptive_Platform VERSION 0.1.0)
 
 
 
-# This AUTOSAR Adaptive Platform requires C++14
-set(CMAKE_CXX_STANDARD 14)
+# This AUTOSAR Adaptive Platform requires C++17
+set(CMAKE_CXX_STANDARD 17)
 # Enable 'rdyamic' switch to export the executable's symbols for debugging
 set(CMAKE_ENABLE_EXPORTS 1)
 
@@ -124,7 +124,6 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/test)
     gtest_main
     gmock_main
     ara
-    
   )
 
 endif()
