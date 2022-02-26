@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2022
  *
  */
-#ifndef ARA_COM_INTERNAL_BINDING_DESERIALIZER_H_
-#define ARA_COM_INTERNAL_BINDING_DESERIALIZER_H_
+#ifndef ARA_COM_DESERIALIZER_H_
+#define ARA_COM_DESERIALIZER_H_
 
 #include <cstdint>
 #include <string>
@@ -39,4 +39,4 @@ namespace ara
     } // com
 } // ara
 
-#endif // ARA_COM_INTERNAL_BINDING_DESERIALIZER_H_
+#endif // ARA_COM_DESERIALIZER_H_

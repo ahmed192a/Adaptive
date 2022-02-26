@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef ARA_COM_SKELETON_MANIFEST_H_
-#define ARA_COM_SKELETON_MANIFEST_H_
+#ifndef ARA_COM_PROXY_SKELETON_MANIFEST_H_
+#define ARA_COM_PROXY_SKELETON_MANIFEST_H_
 
 #include <string>
 #include <vector>

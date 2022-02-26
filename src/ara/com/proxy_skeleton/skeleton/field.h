@@ -11,7 +11,8 @@
 
 #ifndef ARA_COM_proxy_skeleton_SKELETON_FIELD_H_
 #define ARA_COM_proxy_skeleton_SKELETON_FIELD_H_
-
+#include "data_type.h"
+#include <string>
 namespace ara
 {
     namespace com
@@ -20,6 +21,13 @@ namespace ara
         {
             namespace skeleton
             {
+                template <typename T>
+                using FieldSetHandler = std::function<std::future<T>(const T &data)>;
+
+                template <typename T>
+                using FieldGetHandler = std::function<std::future<T>()>;
+
+                class ServiceSkeleton;
 
                 template <typename T>
                 class Field
@@ -29,8 +37,8 @@ namespace ara
                     std::string m_name;
 
                 public:
-                    ara::com::FieldGetHandler<T> GetHandler;
-                    ara::com::FieldSetHandler<T> SetHandler;
+                    FieldGetHandler<T> GetHandler;
+                    FieldSetHandler<T> SetHandler;
                     Field(ServiceSkeleton *service, std::string name)
                         : GetHandler(nullptr), SetHandler(nullptr)
                     {
@@ -44,12 +52,12 @@ namespace ara
                         m_service->SendEvent(m_name, data, true);
                     }
                     /*check if this implementation is right*/
-                    void RegisterGetHandler(ara::com::FieldGetHandler<T> getHandler)
+                    void RegisterGetHandler(FieldGetHandler<T> getHandler)
                     {
                         GetHandler = getHandler;
                     }
 
-                    void RegisterSetHandler(ara::com::FieldSetHandler<T> setHandler)
+                    void RegisterSetHandler(FieldSetHandler<T> setHandler)
                     {
                         SetHandler = setHandler;
                     }
@@ -75,12 +83,12 @@ namespace ara
                         m_service->SendEvent(m_name, data, true);
                     }
 
-                    void RegisterGetHandler(ara::com::FieldGetHandler<T> getHandler)
+                    void RegisterGetHandler(FieldGetHandler<T> getHandler)
                     {
                         GetHandler = getHandler;
                     }
 
-                    ara::com::FieldGetHandler<T> GetHandler;
+                    FieldGetHandler<T> GetHandler;
                 };
 
                 template <typename T>
@@ -105,12 +113,12 @@ namespace ara
                         m_service->SendEvent(m_name, data, true);
                     }
 
-                    void RegisterSetHandler(ara::com::FieldSetHandler<T> setHandler)
+                    void RegisterSetHandler(FieldSetHandler<T> setHandler)
                     {
                         SetHandler = setHandler;
                     }
 
-                    ara::com::FieldSetHandler<T> SetHandler;
+                    FieldSetHandler<T> SetHandler;
                 };
 
                 template <typename T>
@@ -152,18 +160,18 @@ namespace ara
 
                     virtual ~FieldNoNotifier() {}
 
-                    void RegisterGetHandler(ara::com::FieldGetHandler<T> getHandler)
+                    void RegisterGetHandler(FieldGetHandler<T> getHandler)
                     {
                         GetHandler = getHandler;
                     }
 
-                    void RegisterSetHandler(ara::com::FieldSetHandler<T> setHandler)
+                    void RegisterSetHandler(FieldSetHandler<T> setHandler)
                     {
                         SetHandler = setHandler;
                     }
 
-                    ara::com::FieldGetHandler<T> GetHandler;
-                    ara::com::FieldSetHandler<T> SetHandler;
+                    FieldGetHandler<T> GetHandler;
+                    FieldSetHandler<T> SetHandler;
                 };
 
                 template <typename T>
@@ -183,12 +191,12 @@ namespace ara
 
                     virtual ~FieldNoNotifierAndSetter() {}
 
-                    void RegisterGetHandler(ara::com::FieldGetHandler<T> getHandler)
+                    void RegisterGetHandler(FieldGetHandler<T> getHandler)
                     {
                         GetHandler = getHandler;
                     }
 
-                    ara::com::FieldGetHandler<T> GetHandler;
+                    FieldGetHandler<T> GetHandler;
                 };
 
                 template <typename T>
@@ -208,12 +216,12 @@ namespace ara
 
                     virtual ~FieldNoNotifierAndGetter() {}
 
-                    void RegisterSetHandler(ara::com::FieldSetHandler<T> setHandler)
+                    void RegisterSetHandler(FieldSetHandler<T> setHandler)
                     {
                         SetHandler = setHandler;
                     }
 
-                    ara::com::FieldSetHandler<T> SetHandler;
+                    FieldSetHandler<T> SetHandler;
                 };
 
                 /* Interface for creating field opject ddepending on the input (getter/notifier/setter)*/

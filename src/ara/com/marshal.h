@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef ARA_COM_INTERNAL_BINDING_MARSHAL_H_
-#define ARA_COM_INTERNAL_BINDING_MARSHAL_H_
+#ifndef ARA_COM_MARSHAL_H_
+#define ARA_COM_MARSHAL_H_
 
 #include "deserializer.h"
 
@@ -84,4 +84,4 @@ namespace ara
     } // com
 } // ara
 
-#endif // ARA_COM_INTERNAL_BINDING_MARSHAL_H_s
+#endif // ARA_COM_MARSHAL_H_s

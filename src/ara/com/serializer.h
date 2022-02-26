@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef ARA_COM_INTERNAL_BINDING_SERIALIZER_H_
-#define ARA_COM_INTERNAL_BINDING_SERIALIZER_H_
+#ifndef ARA_COM_SERIALIZER_H_
+#define ARA_COM_SERIALIZER_H_
 
 #include <cstdint>
 #include <string>
@@ -48,4 +48,4 @@ namespace ara
     } // com
 } // ara
 
-#endif // ARA_COM_INTERNAL_BINDING_SERIALIZER_H_
+#endif // ARA_COM_SERIALIZER_H_

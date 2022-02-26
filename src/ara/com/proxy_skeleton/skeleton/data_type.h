@@ -230,11 +230,7 @@ namespace ara
         template <typename T>
         using SampleAllocateePtr = std::unique_ptr<T>;
 
-        template <typename T>
-        using FieldGetHandler = std::function<ara::core::Future<T>()>;
 
-        template <typename T>
-        using FieldSetHandler = std::function<ara::core::Future<T>(const T& data)>;
 
         // Handler that gets called in case service availability for services which have been searched for via FindService() has changed.
         template <typename T>

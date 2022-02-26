@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2022
  *
  */
-#ifndef ARA_COM_proxy_skeleton_DEFINITIONS_H_
-#define ARA_COM_proxy_skeleton_DEFINITIONS_H_
+#ifndef ARA_COM_PROXY_SKELETON_DEFINITIONS_H_
+#define ARA_COM_PROXY_SKELETON_DEFINITIONS_H_
 
 #include <cstdint>
 #include <memory>
@@ -46,4 +46,4 @@ namespace ara
     } // namespace com
 } // namespace ara
 
-#endif // ARA_COM_proxy_skeleton_DEFINITIONS_H_
+#endif // ARA_COM_PROXY_SKELETON_DEFINITIONS_H_

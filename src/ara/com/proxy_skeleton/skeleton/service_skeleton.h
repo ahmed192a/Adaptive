@@ -12,13 +12,12 @@
 #ifndef ARA_COM_proxy_skeleton_SKELETON_SERVICE_SKELETON_H_
 #define ARA_COM_proxy_skeleton_SKELETON_SERVICE_SKELETON_H_
 
-// #include "types.h"
-#include "../service_base.h"
-#include "../definitions.h"
+#include "com/proxy_skeleton/service_base.h"
+#include "com/proxy_skeleton/definitions.h"
 #include "data_type.h"
-#include "../../../core/future.h"
-#include "../../ipc/server/socket_Server.h"
-#include "../../marshal.h"
+#include "core/future.h"
+#include "ipc/server/socket_Server.h"
+#include "marshal.h"
 
 #include <map>
 #include <queue>

@@ -12,7 +12,8 @@
 #ifndef ARA_COM_proxy_skeleton_SKELETON_EVENT_H_
 #define ARA_COM_proxy_skeleton_SKELETON_EVENT_H_
 
-
+#include <string>
+#include "data_type.h"
 namespace ara
 {
     namespace com
@@ -21,6 +22,8 @@ namespace ara
         {
             namespace skeleton
             {
+
+                class ServiceSkeleton;
 
                 template <typename T>
                 class Event
