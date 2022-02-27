@@ -61,7 +61,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     ara::core::Future<R> (Class::*method)(Args...),
                                     Message msg,
-                                    CServer binding)
+                                    CServer &binding)
                     {
                         sHandleCall(c, method, msg,binding, std::index_sequence_for(Args...));
                        
@@ -70,7 +70,7 @@ namespace ara
                     void sHandleCall(Class& c,
                                     ara::core::Future<R> (Class::*method)(Args...),
                                     Message msg,
-                                    CServer binding,
+                                    CServer &binding,
                                     std::index_sequence<index...>)
                     {
                         Marshal<Args...> unmarshaller(msg->payload);
@@ -90,7 +90,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     ara::core::Future<void> (Class::*method)(Args...),
                                     Message msg,
-                                    CServer binding)
+                                    CServer &binding)
                     {
                         sHandleCall(c, method, msg, binding,std::index_sequence_for(Args...));
                     }
@@ -120,7 +120,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     ara::core::Future<R> (Class::*method)(),
                                     Message msg,
-                                    CServer binding)
+                                    CServer &binding)
                     {
                         ara::core::Future<R> f = (c.*method)();
                         f.then([this, msg](ara::core::Future<R> &&f) -> bool
@@ -137,7 +137,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     ara::core::Future<void> (Class::*method)(),
                                     Message msg,
-                                    CServer binding)
+                                    CServer &binding)
                     {
                         ara::core::Future<void> f = (c.*method)();
                         f.then([this, msg](ara::core::Future<void> &&f) -> bool
@@ -154,7 +154,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     void (Class::*method)(Args...),
                                     Message msg,
-                                    CServer binding)
+                                    CServer &binding)
                     {
                         sHandleCall(c,method,msg,binding,std::index_sequence_for(Args...));
                     }
@@ -163,7 +163,7 @@ namespace ara
                     void sHandleCall(Class &c,
                                     void (Class::*method)(Args...),
                                     Message msg,
-                                    CServer binding,
+                                    CServer &binding,
                                     std::index_sequence<index...>)
                     {
                         Marshal<Args...> unmarshaller(msg->payload);
@@ -175,7 +175,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     void (Class::*method)(),
                                     Message msg,
-                                    CServer binding)
+                                    CServer &binding)
                     {
                         (c.*method)();
                     }
