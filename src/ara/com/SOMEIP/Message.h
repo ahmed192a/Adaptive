@@ -77,7 +77,18 @@ namespace ara
 			private:
 				std::vector<uint8_t> payload;
 
-				Message(
+				
+                Message(
+					struct Message_ID mID,
+					uint32_t length,
+					struct Request_ID rID,
+					uint8_t protocol_version,
+					uint8_t interface_version,
+					MessageType Mtype,
+					ReturnCode Rcode) noexcept;  
+                    
+            protected:
+            Message(
 					struct Message_ID mID,
 					uint32_t length,
 					struct Request_ID rID,
@@ -93,8 +104,6 @@ namespace ara
 					uint8_t interface_version,
 					MessageType Mtype,
 					ReturnCode Rcode) noexcept;  
-                    
-            protected:
 
 
 			public:
