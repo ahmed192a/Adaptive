@@ -94,9 +94,9 @@ namespace ara
 					struct Request_ID rID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
-					MessageType Mtype,
+					MessageType Mtype
 					) noexcept;
-                Message(
+            Message(
 					struct Message_ID mID,
 					uint32_t length,
 					struct Request_ID rID,
