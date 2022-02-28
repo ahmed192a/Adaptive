@@ -1,107 +1,105 @@
-#ifndef SOMEIP_MESSAGE_H
-#define SOMEIP_MESSAGE_H
-
 #include <stdint.h>
-#include <stdexcept>
 #include <vector>
-#include <limits>
-#include "../helper/payload_helper.h"
-
 namespace ara
 {
-    namespace com
-    {
-        namespace someip
-        {
-            /// @brief SOME/IP communication message type
-            enum class SomeIpMessageType : uint8_t
-            {
-                Request = 0x00,           ///!< Request expecting a response
-                RequestNoReturn = 0x01,   ///!< Fire and forget request
-                Notification = 0x02,      ///!< Notification/event callback
-                Response = 0x80,          ///!< Response without any error
-                Error = 0x81,             ///!< Response containing error
-                TpRequest = 0x20,         ///!< Transfer protocol request
-                TpRequestNoReturn = 0x21, ///!< Transfer protocol fire and forget request
-                TpNotification = 0x22,    ///!< Transfer protocol notification
-                TpResponse = 0xa0,        ///!< Transfer protocol response
-                TpError = 0xa1            ///!< Transfer protocol error
-            };
+	namespace com
+	{
+		namespace SOMEIP_MESSAGE
+		{
+			enum class MessageType : uint8_t
+			{
+				REQUEST = 0x00,				 ///!< A request expecting a response (even void)
+				REQUEST_NO_RETURN = 0x01,	 ///!< A fire&forget request
+				NOTIFICATION = 0x02,		 ///!<A request of a notification/event callback expecting no response
+				RESPONSE = 0x80,			 ///!<The response message
+				ERROR = 0x81,				 ///!<The response containing an error
+				TP_REQUEST = 0x20,			 ///!<A TP request expecting a response (even void)
+				TP_REQUEST_NO_RETURN = 0x21, ///!<A TP fire & forget request
+				TP_NOTIFICATION = 0x22,		 ///!<A TP request of a notification/event callback expecting no response
+				TP_RESPONSE = 0x23,			 ///!<The TP response message
+				TP_ERROR = 0x24				 ///!<The TP response containing an error
+			};
+			enum class ReturnCode : uint8_t
+			{
+				E_OK,					   ///!<No error occurred
+				E_NOT_OK,				   ///!<An unspecified error occurred
+				E_UNKNOWN_SERVICE,		   ///!<The requested Service ID is unknown
+				E_UNKNOWN_METHOD,		   ///!<The requested Method ID is unknown. Service ID is known.
+				E_NOT_READY,			   ///!<Service ID and Method ID are known. Application not running
+				E_NOT_REACHABLE,		   ///!<System running the service is not reachable (proxy_skeleton error code only).
+				E_TIMEOUT,				   ///!<A timeout occurred (proxy_skeleton error code only).
+				E_WRONG_PROTOCOL_VERSION,  ///!<Version of SOME/IP protocol not supported
+				E_WRONG_INTERFACE_VERSION, ///!<Interface version mismatch
+				E_MALFORMED_MESSAGE,	   ///!<Deserialization error, so that payload cannot be deserialized.
+				E_WRONG_MESSAGE_TYPE,	   //!< An unexpected message type was received (e.g. REQUEST_NO_RETURN for a method defined as REQUEST).
+				E_E2E_REPEATED,			   ///!<Repeated E2E calculation error
+				E_E2E_WRONG_SEQUENCE,	   ///!<Wrong E2E sequence error
+				E_E2E,					   ///!<Not further specified E2E error
+				E_E2E_NOT_AVAILABLE,	   ///!<E2E not available
+				E_E2E_NO_NEW_DATA		   ///!<No new data for E2E calculation present
+			};
+			struct Message_ID
+			{
+				uint16_t serivce_id;
+				uint16_t method_id = 0;
+			};
+			struct Request_ID
+			{
+				uint16_t client_id;
+				uint16_t session_id=1;
+			};
+			class Header
+			{
+			public:
+				struct Message_ID mID;
+				uint32_t length;
+				struct Request_ID rID;
+				uint8_t protocol_version;
+				uint8_t interface_version;
+				MessageType Mtype;
+				ReturnCode Rcode;
+				Header(struct Message_ID mID, uint32_t length, struct Request_ID rID, uint8_t protocol_version, uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
+				{
+					this->mID.serivce_id = mID.serivce_id;
+					this->mID.method_id = mID.method_id;
+					this->length = length;
+					this->rID.client_id = rID.client_id;
+					this->rID.session_id = rID.session_id;
+					this->protocol_version = protocol_version;
+					this->interface_version = interface_version;
+                    this->Mtype=Mtype;
+                    this->Rcode=Rcode;
+				}
+			};
 
-            /// @brief SOME/IP communication message return code
-            enum class SomeIpReturnCode : uint8_t
-            {
-                eOK,                    ///!< No error occurred
-                eNotOk,                 ///!< Unspecified error occurred
-                eUnknownService,        ///!< Service ID is unknown
-                eUnknownMethod,         ///!< Method ID is unknown
-                eNotReady,              ///!< Service is not running
-                eNotReachable,          ///!< Service is not reachable
-                eTimeout,               ///!< Timeout occurred
-                eWrongProtocolVersion,  ///!< SOME/IP protocol version is not supported
-                eWrongInterfaceVersion, ///!< Service interface version is not supported
-                eMalformedMessage,      ///!< Deserialization error occurred
-                eWrongMessageType,      ///!< Invalid message type
-                eE2eRepeated,           ///!< Repeated E2E calculation error
-                eE2eWrongSequnece,      ///!< Wrong E2E sequence error
-                eE2e,                   ///!< Unspecified E2E error
-                eE2eNotAvailable,       ///!< E2E is not supported
-                eE2eNoNewData           ///!< No new data E2E calculation present
-            };
+			class Message : public Header
+			{
+			private:
+				std::vector<uint8_t> payload;
 
-            /// @brief SOME/IP Abstract Message
-            class SomeIpMessage
-            {
-            private:
-                uint32_t mMessageId;
-                uint16_t mClientId;
-                uint16_t mSessionId;
-                uint8_t mProtocolVersion;
-                uint8_t mInterfaceVersion;
-                SomeIpMessageType mMessageType;
-                SomeIpReturnCode mReturnCode;
-
-                SomeIpMessage(uint32_t messageId,
-                              uint16_t clientId,
-                              uint16_t sessionId,
-                              uint8_t protocolVersion,
-                              uint8_t interfaceVersion,
-                              SomeIpMessageType messageType,
-                              SomeIpReturnCode returnCode) noexcept;
-
+				Message(
+					struct Message_ID mID,
+					uint32_t length,
+					struct Request_ID rID,
+					uint8_t protocol_version,
+					uint8_t interface_version,
+					MessageType Mtype,
+					) noexcept;
+                Message(
+					struct Message_ID mID,
+					uint32_t length,
+					struct Request_ID rID,
+					uint8_t protocol_version,
+					uint8_t interface_version,
+					MessageType Mtype,
+					ReturnCode Rcode) noexcept;  
+                    
             protected:
-                /// @brief Constructor for request and notification
-                /// @param messageId Message ID consisting service and method/event ID
-                /// @param clientId Client ID including ID prefix
-                /// @param protocolVersion SOME/IP protocol header version
-                /// @param interfaceVersion Service interface version
-                /// @param messageType SOME/IP message type (request or notification)
-                /// @param sessionId Active/non-active session ID
-                SomeIpMessage(uint32_t messageId,
-                              uint16_t clientId,
-                              uint8_t protocolVersion,
-                              uint8_t interfaceVersion,
-                              SomeIpMessageType messageType,
-                              uint16_t sessionId = 1);
 
-                /// @brief Constructor for response and error
-                /// @param messageId Message ID consisting service and method/event ID
-                /// @param clientId Client ID including ID prefix
-                /// @param protocolVersion SOME/IP protocol header version
-                /// @param interfaceVersion Service interface version
-                /// @param messageType SOME/IP message type (response or error)
-                /// @param returnCode Message response/error return code
-                /// @param sessionId Active/non-active session ID
-                SomeIpMessage(uint32_t messageId,
-                              uint16_t clientId,
-                              uint8_t protocolVersion,
-                              uint8_t interfaceVersion,
-                              SomeIpMessageType messageType,
-                              SomeIpReturnCode returnCode,
-                              uint16_t sessionId = 1);
 
-            public:
-                virtual ~SomeIpMessage() noexcept = default;
+			public:
+			   public:
+                virtual ~Message() noexcept = default;
 
                 /// @brief Get message ID
                 /// @returns Message ID consisting service and method/event ID
@@ -138,17 +136,17 @@ namespace ara
 
                 /// @brief Get message type
                 /// @returns SOME/IP message type
-                SomeIpMessageType MessageType() const noexcept;
+                MessageType MessageType() const noexcept;
 
                 /// @brief Get return code
                 /// @returns SOME/IP message return code
-                SomeIpReturnCode ReturnCode() const noexcept;
+                ReturnCode ReturnCode() const noexcept;
 
                 /// @brief Get message payload
                 /// @returns Byte array
                 virtual std::vector<uint8_t> Payload() const;
-            };
-        }
-    }
+			};
+
+		}
+	}
 }
-#endif
