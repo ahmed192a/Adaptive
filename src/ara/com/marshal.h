@@ -84,4 +84,4 @@ namespace ara
     } // com
 } // ara
 
-#endif // ARA_COM_MARSHAL_H_s
+#endif // ARA_COM_MARSHAL_H_

@@ -32,18 +32,15 @@ namespace ara
             namespace skeleton
             {
 
-                class ServiceSkeleton : public ara::com::proxy_skeleton::ServiceBase
+                class ServiceSkeleton 
                 {
                 public:
                     ServiceSkeleton(
                         std::string name,
                         ara::com::InstanceIdentifier instance,
                         ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent)
-                        : ServiceBase(name), m_instance(instance.GetInstanceId())
-                    {
-                        m_name = name;
-                        m_mode = mode;
-                    }
+                        : m_instance(instance.GetInstanceId()), m_name{name},m_mode{mode}
+                    {}
 
                     virtual ~ServiceSkeleton();
 
@@ -203,8 +200,7 @@ namespace ara
 
                         return p.get_future();
                     }
-
-                private:
+                    
                     template <typename T>
                     void SendEvent(std::string eventName, const T &data, bool is_field)
                     {
@@ -213,7 +209,8 @@ namespace ara
                     bool HasRequest();
 
                     void ProcessRequest();
-
+                private:
+                    std::string m_name;
                     int m_fd;
                     ara::com::InstanceIdentifier m_instance;
                     ara::com::MethodCallProcessingMode m_mode;
@@ -223,7 +220,6 @@ namespace ara
                     std::condition_variable m_condition;
                     std::vector<std::shared_ptr<std::promise<void>>> m_thread_joins;
 
-                    // friend SkeletonBase;
                 };
 
             } // skeleton

@@ -1,5 +1,7 @@
 #include <stdint.h>
 #include <vector>
+#include <stdexcept>
+#include <limits>
 namespace ara
 {
 	namespace com
@@ -97,8 +99,8 @@ namespace ara
 					MessageType Mtype
 					) noexcept;
             Message(
-					struct Message_ID mID,
 					uint32_t length,
+					struct Message_ID mID,
 					struct Request_ID rID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
@@ -153,7 +155,7 @@ namespace ara
 
                 /// @brief Get message payload
                 /// @returns Byte array
-                virtual std::vector<uint8_t> Payload() const;
+                std::vector<uint8_t> Payload() ;
 			};
 
 		}

@@ -4,10 +4,10 @@ namespace ara
 {
     namespace com
     {
-        namespace entry
+        namespace SOMEIP_MESSAGE
         {
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept:Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode)noexcept:
-            GBMessageID{mID},GBlength{length},GBRequest_ID{rID},GBProtocol_Version{protocol_version},GBinterface_version{interface_version},GBMessageType{MType},GBReturnCode{Rcodr}
+            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept:
+            Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode)
             {}
             Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept
             :Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode::E_OK)
@@ -19,7 +19,7 @@ namespace ara
                     throw std::invalid_argument("Invalid message type.");
                 }
             }
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept
+            Message::Message(uint32_t length,struct Message_ID mID,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept
             :Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
             {
                  if ((MessageType != Message::REQUEST) ||
@@ -59,7 +59,7 @@ namespace ara
             bool Message::IncrementSessionId() noexcept
             {
                 const uint8_t SessionIdMin = 1;
-                constexpr uint8_t SessionIdMax = std::numeric_limits<uint8_t>::max();
+                constexpr uint8_t SessionIdMax = std::numeric_limits<uint8_t>::std::max();
 
                 if ( GBRequest_ID.Session_id == SessionIdMax)
                 {
@@ -83,7 +83,7 @@ namespace ara
                 return GBinterface_version;
             }
 
-            Message Message::MessageType() const noexcept
+            MessageType Message::MessageType() const noexcept
             {
                 return GBMessageType;
             }
@@ -93,7 +93,7 @@ namespace ara
                 return GBReturnCode;
             }
 
-            std::vector<uint8_t> Message::Payload() const
+            std::vector<uint8_t> Message::Payload() 
             {
             }
 
