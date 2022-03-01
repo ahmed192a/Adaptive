@@ -14,13 +14,7 @@ namespace ara
                 uint8_t interface_version,
                 enum MessageType Mtype,
                 enum ReturnCode Rcode)noexcept:
-            GBMessageID{mID},
-            GBlength{length},
-            GBRequest_ID{rID},
-            GBProtocol_Version{protocol_version},
-            GBinterface_version{interface_version},
-            GBMessageType{MType},
-            GBReturnCode{Rcodr}
+            Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode)
             {}
             Message::Message(
                 struct Message_ID mID,
@@ -70,9 +64,9 @@ namespace ara
                 }
 
             }
-              uint32_t Message::MessageId() const noexcept
+            struct Message_ID Message::MessageId() const noexcept
             {
-                return GBMessageType;
+                return GBMessageID;
             }
 
             uint16_t Message::ClientId() const noexcept
@@ -82,12 +76,12 @@ namespace ara
 
             uint16_t Message::SessionId() const noexcept
             {
-                return GBRequest_ID.Session_id;
+                return GBRequest_ID.session_id;
             }
             
             void Message::SetSessionId(uint16_t sessionId)
             {
-                 GBRequest_ID.Session_id = sessionId;
+                GBRequest_ID.session_id = sessionId;
             }
 
             bool Message::IncrementSessionId() noexcept
@@ -95,21 +89,21 @@ namespace ara
                 const uint8_t SessionIdMin = 1;
                 constexpr uint8_t SessionIdMax = std::numeric_limits<uint8_t>::max();
 
-                if ( GBRequest_ID.Session_id == SessionIdMax)
+                if ( GBRequest_ID.session_id == SessionIdMax)
                 {
-                    GBRequest_ID.Session_id= SessionIdMin;
+                    GBRequest_ID.session_id= SessionIdMin;
                     return true;
                 }
                 else
                 {
-                    GBRequest_ID.Session_id++;
+                    GBRequest_ID.session_id++;
                     return false;
                 }
             }
             
             uint8_t Message::ProtocolVersion() const noexcept
             {
-                return GBprotocolversion;
+                return GBProtocol_Version;
             }
 
             uint8_t Message::InterfaceVersion() const noexcept
@@ -117,7 +111,7 @@ namespace ara
                 return GBinterface_version;
             }
 
-            Message Message::MessageType() const noexcept
+            MessageType Message::MessageType() const noexcept
             {
                 return GBMessageType;
             }
@@ -127,7 +121,7 @@ namespace ara
                 return GBReturnCode;
             }
 
-            std::vector<uint8_t> Message::Payload() const
+            std::vector<uint8_t> Message::Payload() 
             {
             }
 

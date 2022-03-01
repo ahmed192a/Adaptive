@@ -53,24 +53,24 @@ namespace ara
 			class Header
 			{
 			public:
-				struct Message_ID mID;
-				uint32_t length;
-				struct Request_ID rID;
-				uint8_t protocol_version;
-				uint8_t interface_version;
-				MessageType Mtype;
-				ReturnCode Rcode;
+				struct Message_ID GBMessageID;
+				uint32_t GBlength;
+				struct Request_ID GBRequest_ID;
+				uint8_t GBProtocol_Version;
+				uint8_t GBinterface_version;
+				MessageType GBMessageType;
+				ReturnCode GBReturnCode;
 				Header(struct Message_ID mID, uint32_t length, struct Request_ID rID, uint8_t protocol_version, uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
 				{
-					this->mID.serivce_id = mID.serivce_id;
-					this->mID.method_id = mID.method_id;
-					this->length = length;
-					this->rID.client_id = rID.client_id;
-					this->rID.session_id = rID.session_id;
-					this->protocol_version = protocol_version;
-					this->interface_version = interface_version;
-                    this->Mtype=Mtype;
-                    this->Rcode=Rcode;
+					GBMessageID.serivce_id = mID.serivce_id;
+					GBMessageID.method_id = mID.method_id;
+					GBlength = length;
+					GBRequest_ID.client_id = rID.client_id;
+					GBRequest_ID.session_id = rID.session_id;
+					GBProtocol_Version = protocol_version;
+					GBinterface_version = interface_version;
+					GBMessageType=Mtype;
+					GBReturnCode=Rcode;
 				}
 			};
 
@@ -114,7 +114,7 @@ namespace ara
 
                 /// @brief Get message ID
                 /// @returns Message ID consisting service and method/event ID
-                uint32_t MessageId() const noexcept;
+                struct Message_ID MessageId() const noexcept;
 
                 /// @brief Get message length
                 /// @returns Message length including the payload length
