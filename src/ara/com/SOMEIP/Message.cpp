@@ -6,30 +6,64 @@ namespace ara
     {
         namespace SOMEIP_MESSAGE
         {
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept:Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode)noexcept:
-            GBMessageID{mID},GBlength{length},GBRequest_ID{rID},GBProtocol_Version{protocol_version},GBinterface_version{interface_version},GBMessageType{MType},GBReturnCode{Rcodr}
+            Message::Message(
+                struct Message_ID mID,
+                uint32_t length,
+                struct Request_ID rID,
+                uint8_t protocol_version,
+                uint8_t interface_version,
+                enum MessageType Mtype,
+                enum ReturnCode Rcode)noexcept:
+            GBMessageID{mID},
+            GBlength{length},
+            GBRequest_ID{rID},
+            GBProtocol_Version{protocol_version},
+            GBinterface_version{interface_version},
+            GBMessageType{MType},
+            GBReturnCode{Rcodr}
             {}
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept
-            :Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode::E_OK)
+            Message::Message(
+                struct Message_ID mID,
+                uint32_t length,
+                struct Request_ID rID,
+                uint8_t protocol_version,
+                uint8_t interface_version,
+                enum MessageType Mtype)noexcept:
+            Message( 
+                mID, 
+                length,
+                rID, 
+                protocol_version, 
+                interface_version, 
+                Mtype, 
+                ReturnCode::E_OK)
             {
-                 if ((MessageType != Message::REQUEST) &&
-                    (MessageType != Message::NOTIFICATION))
+                 if ((Mtype != MessageType::REQUEST) &&
+                    (Mtype != MessageType::NOTIFICATION))
                 {
                     // E2E is not supported yet.
                     throw std::invalid_argument("Invalid message type.");
                 }
             }
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept
-            :Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
+
+            Message::Message(
+                struct Message_ID mID,
+                uint32_t length,
+                struct Request_ID rID,
+                uint8_t protocol_version,
+                uint8_t interface_version,
+                enum MessageType Mtype,
+                enum ReturnCode Rcode)noexcept:
+            Message( mID, length, rID, protocol_version, interface_version, Mtype, Rcode)
             {
-                 if ((MessageType != Message::REQUEST) ||
-                    (MessageType != Message::NOTIFICATION))
+                 if ((Mtype != MessageType::REQUEST) ||
+                    (Mtype != MessageType::NOTIFICATION))
                 {
                     // E2E is not supported yet.
                     throw std::invalid_argument("Invalid message type.");
                 }
-                else if ((MessageType != Message::ERROR) &&
-                         (ReturnCode == ReturnCode::E_OK))
+                else if ((Mtype != MessageType::ERROR) &&
+                         (Rcode == ReturnCode::E_OK))
                 {
                     // Error message cannot have OK return code.
                     throw std::invalid_argument("Invalid return code.");
