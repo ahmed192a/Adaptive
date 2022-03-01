@@ -1,3 +1,5 @@
 #! /bin/sh
+cd build ; ctest;
+cd src/test ; ./Adaptive_Platform-ut
 
-cd build/src/test ; ./ara_unit_test
+
