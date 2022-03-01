@@ -16,11 +16,13 @@ void read(CServer &fd, vector<uint8_t> &arg)
     fd.UDPRecFrom(&size, sizeof(size), (struct sockaddr *) &cliaddr, &len);
     cout<<"size is "<<size<<endl;
     arg.reserve(size);
-    for (i = 0; i < size; i++)
-    {
-        fd.UDPRecFrom(&data, sizeof(data), (struct sockaddr *) &cliaddr, &len);
-        arg.push_back(data);
-    }
+    fd.UDPRecFrom(&arg[0], size, (struct sockaddr *) &cliaddr, &len);
+
+    // for (i = 0; i < size; i++)
+    // {
+    //     fd.UDPRecFrom(&data, sizeof(data), (struct sockaddr *) &cliaddr, &len);
+    //     arg.push_back(data);
+    // }
 }
 
 int main()

@@ -22,10 +22,11 @@ void write(CServer &fd ,const vector<uint8_t> &arg)
     uint32_t size = arg.size();
     cout<<size<<endl;
     fd.UDPSendTo(&size, sizeof(size), (const sockaddr *)&sd);
-    for (vector<uint8_t>::const_iterator it = arg.begin(); it != arg.end(); it++)
-    {
-        fd.UDPSendTo(&(*it), sizeof(uint8_t), (const sockaddr *)&sd) ;
-    }
+    fd.UDPSendTo((const char*)arg.data(), arg.size(), (const sockaddr *)&sd) ;
+    // for (vector<uint8_t>::const_iterator it = arg.begin(); it != arg.end(); it++)
+    // {
+    //     fd.UDPSendTo(&(*it), sizeof(uint8_t), (const sockaddr *)&sd) ;
+    // }
 }
 int main()
 {
