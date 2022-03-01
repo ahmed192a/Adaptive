@@ -8,24 +8,21 @@ namespace ara
         {
             Message::Message(
                 struct Message_ID mID,
-                uint32_t length,
                 struct Request_ID rID,
                 uint8_t protocol_version,
                 uint8_t interface_version,
                 enum MessageType Mtype,
                 enum ReturnCode Rcode)noexcept:
-            Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode)
+            Header(mID,rID,protocol_version,interface_version,Mtype,Rcode)
             {}
             Message::Message(
                 struct Message_ID mID,
-                uint32_t length,
                 struct Request_ID rID,
                 uint8_t protocol_version,
                 uint8_t interface_version,
                 enum MessageType Mtype)noexcept:
             Message( 
                 mID, 
-                length,
                 rID, 
                 protocol_version, 
                 interface_version, 
@@ -41,14 +38,13 @@ namespace ara
             }
 
             Message::Message(
-                struct Message_ID mID,
-                uint32_t length,
                 struct Request_ID rID,
+                struct Message_ID mID,
                 uint8_t protocol_version,
                 uint8_t interface_version,
                 enum MessageType Mtype,
                 enum ReturnCode Rcode)noexcept:
-            Message( mID, length, rID, protocol_version, interface_version, Mtype, Rcode)
+            Message( mID, rID, protocol_version, interface_version, Mtype, Rcode)
             {
                  if ((Mtype != MessageType::REQUEST) ||
                     (Mtype != MessageType::NOTIFICATION))
@@ -111,12 +107,12 @@ namespace ara
                 return GBinterface_version;
             }
 
-            MessageType Message::MessageType() const noexcept
+            MessageType Message::Messagetype() const noexcept
             {
                 return GBMessageType;
             }
 
-            ReturnCode Message::ReturnCode() const noexcept
+            ReturnCode Message::Returncode() const noexcept
             {
                 return GBReturnCode;
             }

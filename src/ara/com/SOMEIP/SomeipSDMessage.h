@@ -4,14 +4,14 @@
 #include <stdint.h>
 #include <vector>
 #include <utility>
-#include "../someip_message.h"
-#include "../../entry/entry.h"
+#include "Message.h"
+#include "entry/entry.h"
 
 namespace ara
 {
     namespace com
     {
-        namespace someip
+        namespace SOMEIP_MESSAGE
         {
             namespace sd
             {
@@ -19,20 +19,22 @@ namespace ara
                 class SomeIpSDMessage : public Message
                 {
                 private:
+                	const struct Request_ID RID={.client_id =0, .session_id=0 };
+					const struct Message_ID MID={0xffff,0x8100 };
                     static const uint32_t MessageId = 0xffff8100;
                     static const uint16_t ClientId = 0x0000;
                     static const uint8_t ProtocolVersion = 0x01;
                     static const uint8_t InterfaceVersion = 0x01;
-                    static const MessageType MessageType = MessageType:NOTIFICATION;
+                    static const MessageType Messagetype = MessageType::NOTIFICATION;
 
                     bool Rebooted;
-                    std::vector<entry::Entry *> Entries;
+                    std::vector<entry::Entry *> entries;
 
-                    uint32_t getEntryLength() const noexcept;
-                    uint32_t getOptionLength() const noexcept;
+                    uint32_t getEntriesLength() const noexcept;
+                    uint32_t getOptionsLength() const noexcept;
 
                 public:
-                    SomeIpSdMessage();
+                    SomeIpSDMessage();
 
                     const std::vector<entry::Entry *> &Entries() const noexcept;
 
@@ -45,7 +47,7 @@ namespace ara
 
                     bool IncrementSessionId() noexcept override;
 
-                    std::vector<uint8_t> Payload() const override;
+                    std::vector<uint8_t> Payload()  override;
                 };
             }
         }

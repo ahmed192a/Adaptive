@@ -4,35 +4,35 @@ namespace ara
 {
     namespace com
     {
-        namespace someip
+        namespace SOMEIP_MESSAGE
         {
             namespace sd
             {
                 SomeIpSDMessage::SomeIpSDMessage() :    Message(
-                                                         MessageId,
-                                                         ClientId,
+                                                         MID,
+                                                         RID,
                                                          ProtocolVersion,
                                                          InterfaceVersion,
-                                                         MessageType),
+                                                         Messagetype),
                                                          Rebooted{true}
                 {
                 }
 
-                uint32_t SomeIpSDMessage::getEntryLength() const noexcept
+                uint32_t SomeIpSDMessage::getEntriesLength() const noexcept
                 {
                     const uint32_t EntrySize = 16;
-                    uint32_t noOFEntries = Entries.size();
-                    uint32_t result = numberOfEntries*EntrySize;
+                    uint32_t noOFEntries = entries.size();
+                    uint32_t result = noOFEntries*EntrySize;
 
                     return result;
                 }
 
-                uint32_t SomeIpSDMessage::getOptionLength() const noexcept
+                uint32_t SomeIpSDMessage::getOptionsLength() const noexcept
                 {
                     const uint32_t OptionLengthFieldSize = 3;
-                    uint32_t _result = 0;
+                    uint32_t result = 0;
 
-                    for (auto entry : mEntries)
+                    for (auto entry : entries)
                     {
                         for (auto firstOption : entry->FirstOptions())
                         {
@@ -50,15 +50,15 @@ namespace ara
 
                 const std::vector<entry::Entry *> &SomeIpSDMessage::Entries() const noexcept
                 {
-                    return Entries;
+                    return entries;
                 }
 
                 void SomeIpSDMessage::AddEntry(entry::Entry *entry)
                 {
-                    Entries.push_back(entry);
+                    entries.push_back(entry);
                 }
 
-                uint32_t SomeIpDdMessage::Length() const noexcept
+                uint32_t SomeIpSDMessage::Length() const noexcept
                 {
                     const uint32_t LengthFieldSize = 4;
                     // Request ID + Versions + Message Type + Return Code
@@ -92,12 +92,12 @@ namespace ara
                 {
                     bool wrapped = Message::IncrementSessionId();
                     // If the message is rebooted, check for wrapping
-                    mRebooted &= !_wrapped;
+                    Rebooted &= !wrapped;
 
-                    return _wrapped;
+                    return wrapped;
                 }
 
-                std::vector<uint8_t> SomeIpSDMessage::Payload() const
+                std::vector<uint8_t> SomeIpSDMessage::Payload() 
                 {
                     // General SOME/IP header payload insertion
                     std::vector<uint8_t> _result = Message::Payload();
@@ -106,7 +106,7 @@ namespace ara
                     {
                         // Both Unicast Support and Explicit Initial Data Control flags are on.
                         const uint32_t RebootedFlag = 0xe0000000;
-                        helper::Inject(_result, cRebootedFlag);
+                        helper::Inject(_result, RebootedFlag);
                     }
                     else
                     {
@@ -118,11 +118,11 @@ namespace ara
                     uint8_t lastOptionIndex = 0;
                     std::vector<uint8_t> entriesPayload;
                     std::vector<uint8_t> optionsPayload;
-                    for (auto entry : Entries)
+                    for (auto entry : entries)
                     {
                         auto entryPayload = entry->Payload(lastOptionIndex);
                         helper::Concat(
-                            entriesPayload, std::move(_entryPayload));
+                            entriesPayload, std::move(entryPayload));
 
                         for (auto firstOption : entry->FirstOptions())
                         {
@@ -142,16 +142,16 @@ namespace ara
                     }
 
                     // Entries length and payloads insertion
-                    uint32_t entriesLength = getEntryLength();
-                    helper::Inject(result, entriesLength);
-                    helper::Concat(result, std::move(entriesPayload));
+                    uint32_t entriesLength = getEntriesLength();
+                    helper::Inject(_result, entriesLength);
+                    helper::Concat(_result, std::move(entriesPayload));
 
                     // Options length and payloads insertion
                     uint32_t optionsLength = getOptionsLength();
-                    helper::Inject(result, _optionsLength);
-                    helper::Concat(result, std::move(optionsPayload));
+                    helper::Inject(_result, optionsLength);
+                    helper::Concat(_result, std::move(optionsPayload));
 
-                    return result;
+                    return _result;
                 }
             }
         }

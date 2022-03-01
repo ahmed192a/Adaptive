@@ -47,6 +47,10 @@ namespace ara
 			};
 			struct Request_ID
 			{
+				// Request_ID(uint16_t x, uint16_t y){
+				// 	client_id = x;
+				// 	session_id = y;
+				// }
 				uint16_t client_id;
 				uint16_t session_id=1;
 			};
@@ -60,11 +64,11 @@ namespace ara
 				uint8_t GBinterface_version;
 				MessageType GBMessageType;
 				ReturnCode GBReturnCode;
-				Header(struct Message_ID mID, uint32_t length, struct Request_ID rID, uint8_t protocol_version, uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
+				Header(struct Message_ID mID, struct Request_ID rID, uint8_t protocol_version, uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
 				{
 					GBMessageID.serivce_id = mID.serivce_id;
 					GBMessageID.method_id = mID.method_id;
-					GBlength = length;
+					//GBlength = length;
 					GBRequest_ID.client_id = rID.client_id;
 					GBRequest_ID.session_id = rID.session_id;
 					GBProtocol_Version = protocol_version;
@@ -82,7 +86,6 @@ namespace ara
 				
                 Message(
 					struct Message_ID mID,
-					uint32_t length,
 					struct Request_ID rID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
@@ -92,16 +95,14 @@ namespace ara
             protected:
             Message(
 					struct Message_ID mID,
-					uint32_t length,
 					struct Request_ID rID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
 					MessageType Mtype
 					) noexcept;
             Message(
-					uint32_t length,
-					struct Message_ID mID,
 					struct Request_ID rID,
+					struct Message_ID mID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
 					MessageType Mtype,
@@ -147,15 +148,15 @@ namespace ara
 
                 /// @brief Get message type
                 /// @returns SOME/IP message type
-                MessageType MessageType() const noexcept;
+                MessageType Messagetype() const noexcept;
 
                 /// @brief Get return code
                 /// @returns SOME/IP message return code
-                ReturnCode ReturnCode() const noexcept;
+                ReturnCode Returncode() const noexcept;
 
                 /// @brief Get message payload
                 /// @returns Byte array
-                std::vector<uint8_t> Payload() ;
+                virtual std::vector<uint8_t> Payload() ;
 			};
 
 		}
