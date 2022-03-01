@@ -119,6 +119,22 @@ namespace ara
 
             std::vector<uint8_t> Message::Payload() 
             {
+                std::vector<uint8_t> result;
+
+                helper::Inject(result, MessageId());
+                helper::Inject(result, Length());
+                helper::Inject(result, ClientId());
+                helper::Inject(result, SessionId());
+                _result.push_back(ProtocolVersion());
+                _result.push_back(InterfaceVersion());
+
+                uint8_t messageType = static_cast<uint8_t>(MessageType());
+                result.push_back(messageType);
+
+                uint8_t returnCode = static_cast<uint8_t>(ReturnCode());
+                result.push_back(returnCode);
+
+                return _result;
             }
 
         }
