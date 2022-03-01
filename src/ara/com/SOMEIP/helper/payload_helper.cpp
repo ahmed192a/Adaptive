@@ -9,7 +9,7 @@
  * 
  */
 #include "./payload_helper.h"
-
+#include <cstring>
 namespace ara
 {
     namespace com
@@ -42,6 +42,13 @@ namespace ara
 
                 _byte = value;
                 vector.push_back(_byte);
+            }
+            template <typename T>
+            void Inject(std::vector<uint8_t> &vector, T data)
+            {
+                std::vector<uint8_t> buffer(sizeof(data));
+                memcpy(&buffer[0], (const void *)&data, sizeof(data));
+                vector.insert(vector.end(), buffer.begin(), buffer.end());
             }
 
             void Concat(std::vector<uint8_t> &vector1, std::vector<uint8_t> &&vector2)

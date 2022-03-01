@@ -46,7 +46,7 @@ namespace ara
 
             public:
                 Ipv4EndpointOption() = delete;
-                ~Ipv4EndpointOption();
+                ~Ipv4EndpointOption(){}
                 virtual uint16_t Length() const noexcept override;
 
                 /// @brief Get IP address

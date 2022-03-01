@@ -20,7 +20,7 @@ namespace ara
 
             bool Entry::ValidateOption(const option::Option *option) const noexcept
             {
-                bool _result;
+                bool _result=true;
 
                 switch (option->Type())
                 {
@@ -44,14 +44,14 @@ namespace ara
 
                     break;
                 }
-                case option::OptionType::IPv4SdEndpoint:
-                case option::OptionType::IPv6SdEndpoint:
-                {
-                    // Service discovery endpoints are not allowed in entries.
-                    _result = false;
+                // case option::OptionType::IPv4SdEndpoint:
+                // case option::OptionType::IPv6SdEndpoint:
+                // {
+                //     // Service discovery endpoints are not allowed in entries.
+                //     _result = false;
 
-                    break;
-                }
+                //     break;
+                // }
                 default:
                 {
                     // Other options cannot be validated in the base entry class.

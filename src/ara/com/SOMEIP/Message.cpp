@@ -29,12 +29,14 @@ namespace ara
                 Mtype, 
                 ReturnCode::E_OK)
             {
+                /*
                  if ((Mtype != MessageType::REQUEST) &&
                     (Mtype != MessageType::NOTIFICATION))
                 {
                     // E2E is not supported yet.
                     throw std::invalid_argument("Invalid message type.");
                 }
+                */
             }
 
             Message::Message(
@@ -120,13 +122,15 @@ namespace ara
             std::vector<uint8_t> Message::Payload() 
             {
                 std::vector<uint8_t> result;
+                Message_ID mid = MessageId();
 
-                helper::Inject(result, MessageId());
+                helper::Inject(result, mid.serivce_id);
+                helper::Inject(result, mid.method_id);
                 helper::Inject(result, Length());
                 helper::Inject(result, ClientId());
                 helper::Inject(result, SessionId());
-                _result.push_back(ProtocolVersion());
-                _result.push_back(InterfaceVersion());
+                result.push_back(ProtocolVersion());
+                result.push_back(InterfaceVersion());
 
                 uint8_t messageType = static_cast<uint8_t>(MessageType());
                 result.push_back(messageType);
@@ -134,7 +138,7 @@ namespace ara
                 uint8_t returnCode = static_cast<uint8_t>(ReturnCode());
                 result.push_back(returnCode);
 
-                return _result;
+                return result;
             }
 
         }

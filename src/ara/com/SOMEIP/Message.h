@@ -2,6 +2,11 @@
 #include <vector>
 #include <stdexcept>
 #include <limits>
+#include "helper/ipv4_address.h"
+#include "helper/payload_helper.h"
+#include "helper/ttl_timer.h"
+#include <iostream>
+using namespace std;
 namespace ara
 {
 	namespace com
@@ -110,7 +115,6 @@ namespace ara
 
 
 			public:
-			   public:
                 virtual ~Message() noexcept = default;
 
                 /// @brief Get message ID

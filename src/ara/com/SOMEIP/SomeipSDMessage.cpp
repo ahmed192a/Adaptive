@@ -1,5 +1,6 @@
 #include "SomeipSDMessage.h"
-
+#include <iostream>
+using namespace std;
 namespace ara
 {
     namespace com
@@ -8,13 +9,13 @@ namespace ara
         {
             namespace sd
             {
-                SomeIpSDMessage::SomeIpSDMessage() :    Message(
+                SomeIpSDMessage::SomeIpSDMessage() : Rebooted{true},
+                                                    Message(
                                                          MID,
                                                          RID,
                                                          ProtocolVersion,
                                                          InterfaceVersion,
-                                                         Messagetype),
-                                                         Rebooted{true}
+                                                         Messagetype)
                 {
                 }
 

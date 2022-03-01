@@ -19,10 +19,8 @@ namespace ara
                 class SomeIpSDMessage : public Message
                 {
                 private:
-                	const struct Request_ID RID={.client_id =0, .session_id=0 };
-					const struct Message_ID MID={0xffff,0x8100 };
-                    static const uint32_t MessageId = 0xffff8100;
-                    static const uint16_t ClientId = 0x0000;
+                	static constexpr struct Request_ID RID={.client_id =0, .session_id=1 };
+					static constexpr struct Message_ID MID={0xffff,0x8100};
                     static const uint8_t ProtocolVersion = 0x01;
                     static const uint8_t InterfaceVersion = 0x01;
                     static const MessageType Messagetype = MessageType::NOTIFICATION;
