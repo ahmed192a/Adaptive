@@ -50,7 +50,7 @@ void handle_call(CServer& cserver,const struct C_Info& message, std::function<in
 
 void skeleton::method_dispatch(const struct C_Info& message, CServer& cserver)
 {
-	cout<<"Dispatch "<<message.method_name<<endl;
+	cout<<"Dispatch " << message.method_name << endl;
     if(strcmp(message.method_name , "add") == 0)
     {
         handle_call(cserver, message, add);

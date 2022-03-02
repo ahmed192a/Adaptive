@@ -27,6 +27,7 @@ int main(){
     vector<SD_data> data; 
     struct SD_data receive;  
     CSV csv;
+    csv.clear(CSV_FILE);
     // use the child process for sercice discovery (Listen to all servers and get services information)
     if (process_id == 0){
         // listen to all servers 
@@ -76,8 +77,8 @@ int main(){
             // in the future, a number should be sent first to indicate how many struct is gonna be sent
             // then a for loop to send the vector "containing port numbers" element by element 
 
-            // send the port number to the client
-            s1.SendServer(&data[0].port_number, sizeof(int));
+            // send the struct to the client
+            s1.SendServer(&data[0], sizeof(struct SD_data));
             s1.ClientClose();
         }
         

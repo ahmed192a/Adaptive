@@ -36,6 +36,7 @@ class CSV{
         // close the file
         csv_file.close();
     }
+    // Check before writing in file -> No repeated data
     bool check(const char* file_name, int service_id, int process_id)
     {
         // open file for reading
@@ -99,6 +100,7 @@ class CSV{
 
         csv_file.close();
     }
+    // Server sendes stop offer service
     void delete_record (const char* file_name, int delete_record)
     {  
         // Open File pointers
