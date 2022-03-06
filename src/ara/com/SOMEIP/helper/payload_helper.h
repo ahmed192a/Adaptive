@@ -32,6 +32,10 @@ namespace ara
             /// @param value Integer input value
             void Inject(std::vector<uint8_t> &vector, uint32_t value);
 
+
+            template <typename T>
+            void Inject(std::vector<uint8_t> &vector, T data);
+
             /// @brief Concat the second vector into the end of the first vector
             /// @param vector1 First vector
             /// @param vector2 Second vector

@@ -1,5 +1,12 @@
 #include <stdint.h>
 #include <vector>
+#include <stdexcept>
+#include <limits>
+#include "helper/ipv4_address.h"
+#include "helper/payload_helper.h"
+#include "helper/ttl_timer.h"
+#include <iostream>
+using namespace std;
 namespace ara
 {
 	namespace com
@@ -19,7 +26,7 @@ namespace ara
 				TP_RESPONSE = 0x23,			 ///!<The TP response message
 				TP_ERROR = 0x24				 ///!<The TP response containing an error
 			};
-			enum class RCode : uint8_t
+			enum class ReturnCode : uint8_t
 			{
 				E_OK,					   ///!<No error occurred
 				E_NOT_OK,				   ///!<An unspecified error occurred
@@ -45,28 +52,34 @@ namespace ara
 			};
 			struct Request_ID
 			{
+				// Request_ID(uint16_t x, uint16_t y){
+				// 	client_id = x;
+				// 	session_id = y;
+				// }
 				uint16_t client_id;
-				uint16_t session_id;
+				uint16_t session_id=1;
 			};
 			class Header
 			{
 			public:
-				struct Message_ID a;
-				uint32_t length;
-				struct Request_ID b;
-				uint8_t protocol_version;
-				uint8_t interface_version;
-				MessageType ab;
-				RCode abc;
-				Header(struct Message_ID a, uint32_t length, struct Request_ID b, uint8_t protocol_version, uint8_t interface_version)
+				struct Message_ID GBMessageID;
+				uint32_t GBlength;
+				struct Request_ID GBRequest_ID;
+				uint8_t GBProtocol_Version;
+				uint8_t GBinterface_version;
+				MessageType GBMessageType;
+				ReturnCode GBReturnCode;
+				Header(struct Message_ID mID, struct Request_ID rID, uint8_t protocol_version, uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
 				{
-					this->a.serivce_id = a.serivce_id;
-					this->a.method_id = a.method_id;
-					this->length = length;
-					this->b.client_id = b.client_id;
-					this->b.session_id = b.session_id;
-					this->protocol_version = protocol_version;
-					this->interface_version = interface_version;
+					GBMessageID.serivce_id = mID.serivce_id;
+					GBMessageID.method_id = mID.method_id;
+					//GBlength = length;
+					GBRequest_ID.client_id = rID.client_id;
+					GBRequest_ID.session_id = rID.session_id;
+					GBProtocol_Version = protocol_version;
+					GBinterface_version = interface_version;
+					GBMessageType=Mtype;
+					GBReturnCode=Rcode;
 				}
 			};
 
@@ -75,23 +88,79 @@ namespace ara
 			private:
 				std::vector<uint8_t> payload;
 
-				Message(
+				
+                Message(
 					struct Message_ID mID,
-					uint32_t length,
 					struct Request_ID rID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
 					MessageType Mtype,
-					RCode Rcode) noexcept;
+					ReturnCode Rcode) noexcept;  
+                    
+            protected:
+            Message(
+					struct Message_ID mID,
+					struct Request_ID rID,
+					uint8_t protocol_version,
+					uint8_t interface_version,
+					MessageType Mtype
+					) noexcept;
+            Message(
+					struct Request_ID rID,
+					struct Message_ID mID,
+					uint8_t protocol_version,
+					uint8_t interface_version,
+					MessageType Mtype,
+					ReturnCode Rcode) noexcept;  
+
 
 			public:
-				Message(
-					struct Message_ID mID,
-					uint32_t length, 
-					struct Request_ID rID, 
-					uint8_t protocol_version, 
-					uint8_t interface_version, 
-					MessageType Mtype) noexcept;
+                virtual ~Message() noexcept = default;
+
+                /// @brief Get message ID
+                /// @returns Message ID consisting service and method/event ID
+                struct Message_ID MessageId() const noexcept;
+
+                /// @brief Get message length
+                /// @returns Message length including the payload length
+                virtual uint32_t Length() const noexcept = 0;
+
+                /// @brief Get client ID
+                /// @returns Client ID including ID prefix
+                uint16_t ClientId() const noexcept;
+
+                /// @brief Get session ID
+                /// @returns Active/non-active session ID
+                uint16_t SessionId() const noexcept;
+
+                /// @brief Set a new session ID
+                /// @param sessionId New session ID
+                virtual void SetSessionId(uint16_t sessionId);
+
+                /// @brief Increment the session ID by one
+                /// @returns True if the session ID is wrappered; otherwise false
+                /// @note In the case of wrapping, session ID will start from 1
+                virtual bool IncrementSessionId() noexcept;
+
+                /// @brief Get protocol version
+                /// @returns SOME/IP protocol header version
+                uint8_t ProtocolVersion() const noexcept;
+
+                /// @brief Get interface version
+                /// @returns Service interface version
+                uint8_t InterfaceVersion() const noexcept;
+
+                /// @brief Get message type
+                /// @returns SOME/IP message type
+                MessageType Messagetype() const noexcept;
+
+                /// @brief Get return code
+                /// @returns SOME/IP message return code
+                ReturnCode Returncode() const noexcept;
+
+                /// @brief Get message payload
+                /// @returns Byte array
+                virtual std::vector<uint8_t> Payload() ;
 			};
 
 		}

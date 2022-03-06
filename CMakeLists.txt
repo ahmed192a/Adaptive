@@ -16,7 +16,7 @@ set(CMAKE_ENABLE_EXPORTS 1)
 # Dependencies:
 
 #https://discourse.cmake.org/t/better-way-to-work-by-modules-with-cmake-and-gtest-or-any-library/3699/3
-#message(STATUS "Fetching googletest")
+message(STATUS "Fetching googletest")
 include(FetchContent)
 
 FetchContent_Declare(
@@ -27,7 +27,7 @@ FetchContent_Declare(
         GIT_PROGRESS TRUE)
 FetchContent_MakeAvailable(googletest)
 
-#message(STATUS "Fetching JSON library")
+message(STATUS "Fetching JSON library")
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 FetchContent_Declare(
         json
@@ -39,11 +39,14 @@ FetchContent_MakeAvailable(json)
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
+
+
+
 ########################################################################
 #
 # Source Directories:
 
-  set(source_ara_dir
+set(source_ara_dir
   "${CMAKE_SOURCE_DIR}/src/ara")
 
 file(GLOB_RECURSE SRC_FILES ${source_ara_dir}/*.cpp)
@@ -93,6 +96,22 @@ target_link_libraries(
   process1
   ara
 )
+add_executable(
+  SOMEIP_SP
+  test_partial_processes/server_someip.cpp
+)
+target_link_libraries(
+  SOMEIP_SP
+  ara
+)
+add_executable(
+  SOMEIP_CP
+  test_partial_processes/client_someip.cpp
+)
+target_link_libraries(
+  SOMEIP_CP
+  ara
+)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src)
 add_executable(
   ${PROJECT_NAME} 
@@ -107,23 +126,28 @@ target_link_libraries(
 
 # option for testing
 option(build_tests "Build all the tests.")
-set(build_tests OFF)
+set(build_tests ON)
 message(STATUS "print_all_variables------------------------------------------${build_tests}")
-
+file(GLOB_RECURSE TEST_SRC_FILES Testing/*.cpp)
 if(build_tests)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/test)
 
   enable_testing()
  
   add_executable(
-    ara_unit_test
-    Testing/hello_test.cpp
+    ${PROJECT_NAME}-ut 
+    ${TEST_SRC_FILES}
   )
   target_link_libraries(
-    ara_unit_test
+    ${PROJECT_NAME}-ut 
+    PUBLIC
+    gtest
+    gmock
     gtest_main
     gmock_main
     ara
   )
+  include(GoogleTest)
+  gtest_discover_tests(${PROJECT_NAME}-ut)
 
 endif()
