@@ -14,5 +14,6 @@
 
 #include "../ara/com/proxy_skeleton/skeleton/field.h"
 #include "ucm_types.h"
+#include "ucm_error.h"
 
 #endif
