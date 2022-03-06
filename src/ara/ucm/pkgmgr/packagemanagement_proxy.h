@@ -11,6 +11,9 @@
 
 #ifndef ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_PROXY_H_
 #define ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_PROXY_H_
+
+#include "inc.h"
+
 namespace ara
 {
     namespace ucm
@@ -33,7 +36,7 @@ namespace ara
                      * @note int de ay haga mo2ktn
                      * 
                      */
-                    using CurrentStatus = int;
+                    using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<::ara::ucm::PackageManagerStatusType,true,true,false>::type;
                 }
                 namespace methods
                 {
