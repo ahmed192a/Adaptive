@@ -22,6 +22,8 @@ struct event_info{
 
 using namespace std;
 
+extern void (*g_handler)(int, siginfo_t *, void *);
+
 // Client Information
 struct C_Info
 {
@@ -48,7 +50,7 @@ ara::com::proxy_skeleton::skeleton::Event event2;
 * the client gives the service discovery a service id, and later receive a struct containing
 * Process id and port number of the server
 */
-static void signal_handler(int signum, siginfo_t *siginfo, void *ucontext)
+ void signal_handler2(int signum, siginfo_t *siginfo, void *ucontext)
 {
     static int count = 0;
     if (signum != SIGUSR1) return;
@@ -89,6 +91,8 @@ static void signal_handler(int signum, siginfo_t *siginfo, void *ucontext)
 
 int main(int argc, char **argv)
 {
+
+    g_handler = &signal_handler2;
     
     // just by using Event constructor, we started the signals code "to receive subscription requests"
 

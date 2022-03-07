@@ -11,10 +11,13 @@
 #include "event.h"
 #include <unistd.h>
 #include <signal.h>
+#include <functional>
 
 extern CServer s2; // To use the already opened socket between the server and the client
 
-static void signal_handler(int signum, siginfo_t *siginfo, void *ucontext){}
+void (*g_handler)(int, siginfo_t *, void *);
+
+//extern void signal_handler(int signum, siginfo_t *siginfo, void *ucontext){}
 
 
 namespace ara
@@ -61,7 +64,7 @@ Event::Event()
     // We print the server pid to make sure that the client is talking to our server
     std::cout << "receiver: PID is " << pid << std::endl;
 
-    signal_action.sa_sigaction = signal_handler;
+    signal_action.sa_sigaction = g_handler;
     sigemptyset (&signal_action.sa_mask);
     signal_action.sa_flags = SA_SIGINFO;
     sigaction(SIGUSR1, &signal_action, NULL);

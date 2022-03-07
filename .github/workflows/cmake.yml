@@ -44,6 +44,10 @@ jobs:
     #   with:
     #     name: buildfiles
     #     path: ${{github.workspace}}/build
+    - name: Test
+      working-directory: ${{github.workspace}}/build/src/test
+      run: ./Adaptive_Platform-ut
+
       # Generate Doxygen code dodumentation and publish it to the GitHub Pages
     - uses: langroodi/doxygenize@v1.6
       with:
