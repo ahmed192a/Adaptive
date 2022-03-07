@@ -1,6 +1,16 @@
 #ifndef ARA_EXEC_EXEC_ERROR_DOMAIN_H_
 #define ARA_EXEC_EXEC_ERROR_DOMAIN_H_
 
+/**
+ * @file exec_error_domain.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../core/error_domain.h"
 #include "../core/error_code.h"
 #include "../core/exception.h"

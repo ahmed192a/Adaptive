@@ -1,3 +1,13 @@
+/**
+ * @file execution_error_event.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <cstdint>
 #include "function_group.h"
 

@@ -1,4 +1,14 @@
-// We are not using this file anymore, we're using the service_proxy
+/**
+ * @file proxy.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+// We are not using this file anymore, we're using the 
 #include "proxy.hpp"
 #include <iostream>
 #include <string.h>

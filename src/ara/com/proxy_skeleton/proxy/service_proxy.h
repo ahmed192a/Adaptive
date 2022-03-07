@@ -2,6 +2,16 @@
 #define ARA_COM_INTERNAL_SERVICE_PROXY_H_
 
 // #include "proxy.hpp"
+/**
+ * @file service_proxy.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <iostream>
 #include <string.h>
 #include <sys/types.h>

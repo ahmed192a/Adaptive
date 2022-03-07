@@ -1,3 +1,13 @@
+/**
+ * @file deterministic_client.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef ARA_EXEC_DETERMINISTIC_CLIENT_H_
 #define ARA_EXEC_DETERMINISTIC_CLIENT_H_
 

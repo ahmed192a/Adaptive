@@ -76,21 +76,25 @@ target_link_libraries(
 target_include_directories(
   ara 
   PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/core>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/server>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/client>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/skeleton>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/SOMEIP>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/entry>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/option>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/helper>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/sm>  
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/core
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/server
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/client
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/proxy
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/skeleton
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ServiceDiscovery
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/entry
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/option
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/helper
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/sm
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/ucm
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/ucm/pkgmgr
 )
 # get executable 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
