@@ -9,8 +9,5 @@ struct SD_data{
     bool message_type;
 };
 
-struct event_info{
-    int process_id;
-    char event_name[30];
-};
+
 #endif

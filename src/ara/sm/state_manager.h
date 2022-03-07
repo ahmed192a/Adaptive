@@ -21,7 +21,7 @@ namespace ara
 
         public:
             /** Defining the needed funcion groups **/
-            static FunctionGroup MachineFG;                       // The machine Function Group
+            // static FunctionGroup MachineFG;                       // The machine Function Group
             static std::vector<FunctionGroupState> MachineStates; // The machine States
 
             static std::vector<FunctionGroup, std::vector<FunctionGroupState>> FunctionGroups; // The Other function groups

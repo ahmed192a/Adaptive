@@ -14,7 +14,10 @@
 #include "lib/data.h"
 
 
-
+struct event_info{
+    int process_id;
+    char event_name[30];
+};
 
 using namespace std;
 

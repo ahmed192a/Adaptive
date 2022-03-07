@@ -18,7 +18,7 @@ Result UpdateRequest::ResetMachine(void) {
        // ara::exec::FunctionGroupState state;    
         
         //StateManager::EM.SetState();
-        StateManager::MachineFG.state = "Restart";
+        // StateManager::MachineFG.state = "Restart";
     }
 
 }
@@ -44,16 +44,16 @@ Result UpdateRequest::RequestUpdateSession(void) {
     }
 
     // There is no active session currently
-    if( StateManager::MachineFG.state != "Running") {
-        // The Machine current status do not accept session activation
-        //return errorDomains::kRejected;
-    }
-    else {
-        // accepted the update request and openned an update session
-        activeSession = true;
-        status = UpdateStatus::acquired;
-        //return;
-    }       
+    // if( StateManager::MachineFG.state != "Running") {
+    //     // The Machine current status do not accept session activation
+    //     //return errorDomains::kRejected;
+    // }
+    // else {
+    //     // accepted the update request and openned an update session
+    //     activeSession = true;
+    //     status = UpdateStatus::acquired;
+    //     //return;
+    // }       
 }
 
 errorDomains UpdateRequest::PrepareUpdate(UpdateRequest::FunctionGroupListType functionGroupList) {

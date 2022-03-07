@@ -1,15 +1,15 @@
-#include "state_manager.h"
+// #include "state_manager.h"
 
-int main(void)
-{
-    // creating an instance from the state manager
-    ara::sm::StateManager sm;
+// int main(void)
+// {
+//     // creating an instance from the state manager
+//     ara::sm::StateManager sm;
 
-    // initializing the state manager with the needed information about the platform
-    ara::sm::StateManager::init();
+//     // initializing the state manager with the needed information about the platform
+//     ara::sm::StateManager::init();
 
-    return 0;
-}
+//     return 0;
+// }
 
 // while(1) {
 //     //  Ex:  (Will not be defined here)
