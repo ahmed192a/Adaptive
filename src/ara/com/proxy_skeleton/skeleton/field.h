@@ -13,6 +13,7 @@
 #define ARA_COM_proxy_skeleton_SKELETON_FIELD_H_
 #include "data_type.h"
 #include <string>
+#include <future>
 namespace ara
 {
     namespace com
