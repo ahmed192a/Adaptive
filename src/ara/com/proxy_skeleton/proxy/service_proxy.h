@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <netdb.h>
-#include "../../ServiceDiscovery/Service_Discovery/client/CClient.h"
+#include "../../ipc/client/socket_Client.h"
 #include "../../../../data.h"
 
 #include "event.h"

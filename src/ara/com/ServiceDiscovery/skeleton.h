@@ -1,10 +1,10 @@
-#include "Service_Discovery/server/CServer.h"
+#include "../ipc/server/socket_Server.h"
 #include <unistd.h>
 #include "functional"
 #include <iostream>
 #include <string.h>
 #include "data.h"
-class skeleton
+class skeleton 
 {
 private:
     /* data */

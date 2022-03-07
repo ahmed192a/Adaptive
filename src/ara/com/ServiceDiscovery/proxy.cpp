@@ -9,8 +9,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <netdb.h>
-#include "Service_Discovery/server/CServer.h"
-#include "Service_Discovery/client/CClient.h"
+#include "../ipc/client/socket_Client.h"
+#include "../ipc/server/socket_Server.h"
+
 #include "data.h"
 
 using namespace std;

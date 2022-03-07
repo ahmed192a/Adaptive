@@ -1,5 +1,4 @@
 #include <iostream>
-#include "../../../data.h"
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -7,11 +6,13 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "Service_Discovery/server/CServer.h"
-#include "skeleton.h"
-// #include "event.hpp"
-#include "../proxy_skeleton/skeleton/event.h"
-# include <signal.h>
+#include <signal.h>
+
+#include "../../../src/ara/com/ipc/server/socket_Server.h"
+#include "../../../src/ara/com/ServiceDiscovery/skeleton.h"
+#include "../../../src/ara/com/proxy_skeleton/skeleton/event.h"
+#include "lib/data.h"
+
 
 
 

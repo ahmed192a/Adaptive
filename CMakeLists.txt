@@ -112,6 +112,55 @@ target_link_libraries(
   SOMEIP_CP
   ara
 )
+##################### SD process
+add_executable(
+  sd_process
+  test_partial_processes/SD_TEST/SD/service_descovery.cpp
+)
+target_link_libraries(
+  sd_process
+  ara
+)
+##################### SD server
+file(GLOB_RECURSE SD_S_SRC_FILES test_partial_processes/SD_TEST/server/lib/*.cpp)
+file(GLOB_RECURSE SD_S_HED_FILES test_partial_processes/SD_TEST/server/lib/*.h)
+add_library(
+  server_lib 
+  ${SD_S_SRC_FILES}
+  ${SD_S_HED_FILES}
+  )
+set_target_properties(
+  server_lib
+  PROPERTIES LINKER_LANGUAGE CXX
+)
+add_executable(
+  sd_server
+  test_partial_processes/SD_TEST/server/server.cpp
+)
+target_link_libraries(
+  sd_server
+  ara
+  server_lib
+)
+##################### SD client
+file(GLOB_RECURSE SD_C_SRC_FILES test_partial_processes/SD_TEST/client/lib/*.cpp)
+file(GLOB_RECURSE SD_C_HED_FILES test_partial_processes/SD_TEST/client/lib/*.h)
+add_library(
+    client_lib 
+    ${SD_C_SRC_FILES}
+    ${SD_C_HED_FILES}
+    )
+add_executable(
+  sd_client
+  test_partial_processes/SD_TEST/client/main.cpp
+)
+target_link_libraries(
+  sd_client
+  ara
+  client_lib
+)
+
+#################################### Main APP
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src)
 add_executable(
   ${PROJECT_NAME} 

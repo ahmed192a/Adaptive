@@ -8,7 +8,7 @@
 #include <iostream>
 #include <time.h>
 #include <signal.h>
-#include "../../ServiceDiscovery/Service_Discovery/server/CServer.h"
+#include "../../ipc/server/socket_Server.h"
 #include "../../../../data.h"
 #include <set>
 #include <iterator>

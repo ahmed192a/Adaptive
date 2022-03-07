@@ -1,7 +1,7 @@
 #ifndef ARA_COM_INTERNAL_PROXY_EVENT_H_
 #define ARA_COM_INTERNAL_PROXY_EVENT_H_
 
-#include "../../ServiceDiscovery/Service_Discovery/client/CClient.h"
+#include "../../ipc/client/socket_Client.h"
 #include <string.h>
 #include <string>
 #include <unistd.h>
