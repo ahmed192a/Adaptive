@@ -1,3 +1,13 @@
+/**
+ * @file event.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef ARA_COM_INTERNAL_SKELETON_EVENT_H_
 #define ARA_COM_INTERNAL_SKELETON_EVENT_H_
 
@@ -8,7 +18,7 @@
 #include <iostream>
 #include <time.h>
 #include <signal.h>
-#include "../../ServiceDiscovery/Service_Discovery/server/CServer.h"
+#include "../../ipc/server/socket_Server.h"
 #include "../../../../data.h"
 #include <set>
 #include <iterator>

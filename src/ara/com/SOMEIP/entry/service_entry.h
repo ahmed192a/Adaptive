@@ -1,3 +1,13 @@
+/**
+ * @file service_entry.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef SERVICE_ENTRY_H
 #define SERVICE_ENTRY_H
 

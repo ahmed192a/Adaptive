@@ -1,3 +1,13 @@
+/**
+ * @file SomeipSDMessage.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef SOMEIPSDMESSAGE_H
 #define SOMEIPSDMESSAGE_H
 
@@ -25,7 +35,7 @@ namespace ara
                     static const uint8_t InterfaceVersion = 0x01;
                     static const MessageType Messagetype = MessageType::NOTIFICATION;
 
-                    bool Rebooted;
+                    bool Rebooted =false;
                     std::vector<entry::Entry *> entries;
 
                     uint32_t getEntriesLength() const noexcept;

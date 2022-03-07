@@ -6,6 +6,7 @@
 #include <map>
 #include "manifest_parser.h"
 #include <string>
+#include <sys/stat.h>
 
 #include <dirent.h>
 #include <filesystem>  // to get all files in certain dir
@@ -21,8 +22,8 @@ using namespace ara::exec;
 using namespace ara::exec::parser;
 using namespace std;
 
-#define     MC_MF   "../manifest_samples/machine_manifest.json"
-#define     EM_MF   "../manifest_samples/execution_manifest.json"
+#define     MC_MF   "manifest_samples/machine_manifest.json"
+#define     EM_MF   "manifest_samples/execution_manifest.json"
 
 
 
@@ -36,7 +37,7 @@ struct GLOB{
 void exec_init_map(map<string, GLOB> & system_FG);
 void terminate_p(GLOB &G);
 void start_p(GLOB &G);
-
+void create_man();
 
 
 
@@ -49,6 +50,7 @@ int main(int, char**) {
     
     //Log lg;
     //lg.Insert("\n\n----------------------------program started-------------\n", "EM");
+    create_man();
     cout<<"\n\n----------------------------program started-------------\n";
     vector<GLOB> gg;
     map<string, GLOB> gs;
@@ -158,4 +160,114 @@ void start_p(GLOB &G){
            }
        }
     }
+}
+
+
+void create_man(){
+    const int dir_err = mkdir("manifest_samples", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    fstream file;
+    file.open("manifest_samples/machine_manifest.json", ios::app);
+    file<< "{\n"
+"    \"Machine_manifest\": {\n"
+"        \"Machine_manifest_id\": \"mach_id\",\n"
+"        \"Mode_declaration_group\": [\n"
+"            {\n"
+"                \"Function_group_name\": \"MachineFG\",\n"
+"                \"Mode_declarations\": [\n"
+"                    {\n"
+"                      \"Mode\": \"off\"\n"
+"                    },\n"
+"                    {\n"
+"                      \"Mode\": \"Starting-up\"\n"
+"                    },\n"
+"                    {\n"
+"                      \"Mode\": \"Running\"\n"
+"                    },\n"
+"                    {\n"
+"                      \"Mode\": \"Shuttingdown\"\n"
+"                    },\n"
+"                    {\n"
+"                      \"Mode\": \"restart\"\n"
+"                    }\n"
+"                ]\n"
+"            },\n"
+"            {\n"
+"                \"Function_group_name\": \"FG_1\",\n"
+"                \"Mode_declarations\": [\n"
+"                    {\n"
+"                      \"Mode\": \"off\"\n"
+"                    },\n"
+"                    {\n"
+"                      \"Mode\": \"on\"\n"
+"                    }\n"
+"                ]\n"
+"            },\n"
+"            {\n"
+"              \"Function_group_name\": \"FG_2\",\n"
+"              \"Mode_declarations\": [\n"
+"                  {\n"
+"                    \"Mode\": \"off\"\n"
+"                  },\n"
+"                  {\n"
+"                    \"Mode\": \"on\"\n"
+"                  }\n"
+"              ]\n"
+"          }\n"
+"            \n"
+"        ]\n"
+"    }\n"
+"}";
+file.close();
+file.open("manifest_samples/execution_manifest.json", ios::app);
+file<<"{\n"
+"    \"Execution_manifest\": {\n"
+"        \"Execution_manifest_id\": \"exec_id\",\n"
+"        \"Process\": [\n"
+"            {\n"
+"                \"Process_name\": \"process1\",\n"
+"                \"Mode_dependent_startup_configs\": [\n"
+"                    {\n"
+"                        \"Startup_options\": [\n"
+"                            {\n"
+"                                \"Option_kind\": \"commandLineShortForm\",\n"
+"                                \"Option_name\": \"filename\",\n"
+"                                \"Option_arg\": \"inputfile_1\"\n"
+"                            }\n"
+"                        ],\n"
+"                        \"FunctionGroupDependencies\": [\n"
+"                            {\n"
+"                                \"Function_group\": \"FG_1\",\n"
+"                                \"Mode\": \"on\"\n"
+"                            }\n"
+"                        ]\n"
+"                    }\n"
+"                ]\n"
+"                \n"
+"            },\n"
+"            {\n"
+"                \"Process_name\": \"sm_process\",\n"
+"                \"Mode_dependent_startup_configs\": [\n"
+"                    {\n"
+"                        \"Startup_options\": [\n"
+"                            {\n"
+"                                \"Option_kind\": \"commandLineShortForm\",\n"
+"                                \"Option_name\": \"filename\",\n"
+"                                \"Option_arg\": \"inputfile_1\"\n"
+"                            }\n"
+"                        ],\n"
+"                        \"FunctionGroupDependencies\": [\n"
+"                            {\n"
+"                                \"Function_group\": \"MachineFG\",\n"
+"                                \"Mode\": \"Starting-up\"\n"
+"                            }\n"
+"                        ]\n"
+"                    }\n"
+"                ]\n"
+"                \n"
+"            }\n"
+"        ]\n"
+"    }\n"
+"}";
+file.close();
+
 }

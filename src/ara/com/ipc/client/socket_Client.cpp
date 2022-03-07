@@ -1,3 +1,13 @@
+/**
+ * @file socket_Client.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include<unistd.h>
 #include<iostream>
 #include<strings.h>

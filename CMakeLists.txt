@@ -10,7 +10,6 @@ set(CMAKE_ENABLE_EXPORTS 1)
 
 
 
-
 ########################################################################
 #
 # Dependencies:
@@ -56,6 +55,13 @@ add_library(
     ${SRC_FILES}
     ${HED_FILES}
     )
+# target_compile_options(
+#   ara
+#   PRIVATE
+#   -Werror
+#   -Wall
+#   -Wextra
+# )
 
 # set_target_properties(
 #   ara
@@ -70,21 +76,25 @@ target_link_libraries(
 target_include_directories(
   ara 
   PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/core>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/server>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/client>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/skeleton>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/SOMEIP>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/entry>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/option>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/helper>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/sm>  
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/core
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/server
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ipc/client
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/proxy
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/proxy_skeleton/skeleton
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/ServiceDiscovery
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/entry
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/option
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/com/SOMEIP/helper
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/sm
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/ucm
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ara/ucm/pkgmgr
 )
 # get executable 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
@@ -112,6 +122,55 @@ target_link_libraries(
   SOMEIP_CP
   ara
 )
+##################### SD process
+add_executable(
+  sd_process
+  test_partial_processes/SD_TEST/SD/service_descovery.cpp
+)
+target_link_libraries(
+  sd_process
+  ara
+)
+##################### SD server
+file(GLOB_RECURSE SD_S_SRC_FILES test_partial_processes/SD_TEST/server/lib/*.cpp)
+file(GLOB_RECURSE SD_S_HED_FILES test_partial_processes/SD_TEST/server/lib/*.h)
+add_library(
+  server_lib 
+  ${SD_S_SRC_FILES}
+  ${SD_S_HED_FILES}
+  )
+set_target_properties(
+  server_lib
+  PROPERTIES LINKER_LANGUAGE CXX
+)
+add_executable(
+  sd_server
+  test_partial_processes/SD_TEST/server/server.cpp
+)
+target_link_libraries(
+  sd_server
+  ara
+  server_lib
+)
+##################### SD client
+file(GLOB_RECURSE SD_C_SRC_FILES test_partial_processes/SD_TEST/client/lib/*.cpp)
+file(GLOB_RECURSE SD_C_HED_FILES test_partial_processes/SD_TEST/client/lib/*.h)
+add_library(
+    client_lib 
+    ${SD_C_SRC_FILES}
+    ${SD_C_HED_FILES}
+    )
+add_executable(
+  sd_client
+  test_partial_processes/SD_TEST/client/main.cpp
+)
+target_link_libraries(
+  sd_client
+  ara
+  client_lib
+)
+
+#################################### Main APP
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src)
 add_executable(
   ${PROJECT_NAME} 

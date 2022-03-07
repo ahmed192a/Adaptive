@@ -1,4 +1,14 @@
-// We are not using this file anymore, we're using the service_proxy
+/**
+ * @file proxy.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+// We are not using this file anymore, we're using the 
 #include "proxy.hpp"
 #include <iostream>
 #include <string.h>
@@ -9,8 +19,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <netdb.h>
-#include "Service_Discovery/server/CServer.h"
-#include "Service_Discovery/client/CClient.h"
+#include "../ipc/client/socket_Client.h"
+#include "../ipc/server/socket_Server.h"
+
 #include "data.h"
 
 using namespace std;

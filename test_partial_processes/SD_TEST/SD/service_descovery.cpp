@@ -13,9 +13,9 @@
 #include <netdb.h>
 #include <iostream>
 
-#include "data.h"
-#include "csv.hpp"
-#include "Service_Discovery/server/CServer.h"
+#include "../../../src/ara/com/ServiceDiscovery/data.h"
+#include "../../../src/ara/com/ServiceDiscovery/csv.h"
+#include "../../../src/ara/com/ipc/server/socket_Server.h"
 
 #define CSV_FILE "data.csv"
 

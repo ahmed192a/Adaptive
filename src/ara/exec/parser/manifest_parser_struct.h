@@ -1,3 +1,13 @@
+/**
+ * @file manifest_parser_struct.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef ARA_EXEC_PARSER_MANIFEST_PARSER_class_H_
 #define ARA_EXEC_PARSER_MANIFEST_PARSER_class_H_
 

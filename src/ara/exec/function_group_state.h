@@ -1,3 +1,13 @@
+/**
+ * @file function_group_state.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef ARA_EXEC_FUNCTION_GROUP_STATE_H_
 #define ARA_EXEC_FUNCTION_GROUP_STATE_H_
 #include <string>

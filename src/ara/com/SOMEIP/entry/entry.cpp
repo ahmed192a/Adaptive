@@ -1,3 +1,13 @@
+/**
+ * @file entry.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "entry.h"
 
 namespace ara
@@ -13,8 +23,8 @@ namespace ara
                          uint8_t majorVersion) noexcept :GBType{type},
                                                          GBServiceId{serviceId},
                                                          GBInstanceId{instanceId},
-                                                         GBTTL{ttl},
-                                                         GBMajorVersion{majorVersion}
+                                                         GBMajorVersion{majorVersion},
+                                                         GBTTL{ttl}
             {
             }
 

@@ -1,10 +1,20 @@
-#include "Service_Discovery/server/CServer.h"
+/**
+ * @file skeleton.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#include "../ipc/server/socket_Server.h"
 #include <unistd.h>
 #include "functional"
 #include <iostream>
 #include <string.h>
 #include "data.h"
-class skeleton
+class skeleton 
 {
 private:
     /* data */

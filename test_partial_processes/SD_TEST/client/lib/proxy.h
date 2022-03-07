@@ -1,4 +1,4 @@
-#include "ara/com/proxy_skeleton/proxy/service_proxy.h"
+#include "../../../../src/ara/com/proxy_skeleton/proxy/service_proxy.h"
 
 // later this file will be UCM Proxy
 

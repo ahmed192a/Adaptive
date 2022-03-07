@@ -1,3 +1,13 @@
+/**
+ * @file Message.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include"Message.h"
 
 namespace ara
@@ -48,18 +58,18 @@ namespace ara
                 enum ReturnCode Rcode)noexcept:
             Message( mID, rID, protocol_version, interface_version, Mtype, Rcode)
             {
-                 if ((Mtype != MessageType::REQUEST) ||
-                    (Mtype != MessageType::NOTIFICATION))
-                {
-                    // E2E is not supported yet.
-                    throw std::invalid_argument("Invalid message type.");
-                }
-                else if ((Mtype != MessageType::ERROR) &&
-                         (Rcode == ReturnCode::E_OK))
-                {
-                    // Error message cannot have OK return code.
-                    throw std::invalid_argument("Invalid return code.");
-                }
+                //  if ((Mtype != MessageType::REQUEST) ||
+                //     (Mtype != MessageType::NOTIFICATION))
+                // {
+                //     // E2E is not supported yet.
+                //     throw std::invalid_argument("Invalid message type.");
+                // }
+                // else if ((Mtype != MessageType::ERROR) &&
+                //          (Rcode == ReturnCode::E_OK))
+                // {
+                //     // Error message cannot have OK return code.
+                //     throw std::invalid_argument("Invalid return code.");
+                // }
 
             }
             struct Message_ID Message::MessageId() const noexcept

@@ -16,4 +16,11 @@
 #include "ucm_types.h"
 #include "ucm_error.h"
 
+#include <future>
+
+#include "packagemanagement_common.h"
+
+#include "proxy_methods.hpp"
+using namespace ara::com::pkgmgr::proxy;
+
 #endif
