@@ -1,5 +1,6 @@
 #include "lib/proxy.h"
 #include <signal.h>
+#define SD_PORT    1690
 
 static void signal_handler(int signum, siginfo_t *siginfo, void *ucontext)
 {
@@ -24,7 +25,7 @@ int main(int argc, char **argv){
 
     proxy test;
     
-    test.FindService(atoi(argv[1]), 32);
+    test.FindService(SD_PORT, 32);
 
     test.SendRequest();
     char name [30] = "event1";

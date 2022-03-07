@@ -12,7 +12,8 @@
 #include "../../../src/ara/com/ServiceDiscovery/skeleton.h"
 #include "../../../src/ara/com/proxy_skeleton/skeleton/event.h"
 #include "lib/data.h"
-
+#define SERVER_PORT  5365
+#define SD_PORT    1690
 
 struct event_info{
     int process_id;
@@ -110,11 +111,11 @@ int main(int argc, char **argv)
 
     // We take the sever port number as the first argument 
     cout << "mypid: " << getpid() << endl;
-    int portNum = atoi(argv[1]);
+    int portNum = SERVER_PORT;
 
     // We then take object from skeleton, construct it giving
     // (Server port number, service discovery port number, server service id)
-    skeleton s1(portNum, atoi(argv[2]), 32);
+    skeleton s1(portNum, SD_PORT, 32);
 
     // send to service discovery the offered service
     s1.start_service();
