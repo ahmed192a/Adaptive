@@ -23,6 +23,7 @@ private:
     int service_descovery_port_number;
     CServer s1;
     struct sockaddr_in  cliaddr;
+    
 public:
 
     skeleton(int portNumber, int sd, int service_id);
