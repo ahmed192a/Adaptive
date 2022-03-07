@@ -13,8 +13,8 @@ namespace ara
                          uint8_t majorVersion) noexcept :GBType{type},
                                                          GBServiceId{serviceId},
                                                          GBInstanceId{instanceId},
-                                                         GBTTL{ttl},
-                                                         GBMajorVersion{majorVersion}
+                                                         GBMajorVersion{majorVersion},
+                                                         GBTTL{ttl}
             {
             }
 

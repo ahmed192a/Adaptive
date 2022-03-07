@@ -55,13 +55,13 @@ add_library(
     ${SRC_FILES}
     ${HED_FILES}
     )
-target_compile_options(
-  ara
-  PRIVATE
-  -Werror
-  -Wall
-  -Wextra
-)
+# target_compile_options(
+#   ara
+#   PRIVATE
+#   -Werror
+#   -Wall
+#   -Wextra
+# )
 
 # set_target_properties(
 #   ara
