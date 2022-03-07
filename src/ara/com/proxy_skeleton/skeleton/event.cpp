@@ -4,7 +4,7 @@
 
 extern CServer s2; // To use the already opened socket between the server and the client
 
-void signal_handler(int signum, siginfo_t *siginfo, void *ucontext){}
+static void signal_handler(int signum, siginfo_t *siginfo, void *ucontext){}
 
 
 namespace ara

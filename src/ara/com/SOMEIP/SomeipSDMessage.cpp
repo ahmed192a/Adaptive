@@ -9,13 +9,14 @@ namespace ara
         {
             namespace sd
             {
-                SomeIpSDMessage::SomeIpSDMessage() : Rebooted{true},
+                SomeIpSDMessage::SomeIpSDMessage() : 
                                                     Message(
                                                          MID,
                                                          RID,
                                                          ProtocolVersion,
                                                          InterfaceVersion,
-                                                         Messagetype)
+                                                         Messagetype),
+                                                         Rebooted{true}
                 {
                 }
 

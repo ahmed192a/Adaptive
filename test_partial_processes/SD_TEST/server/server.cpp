@@ -47,7 +47,7 @@ ara::com::proxy_skeleton::skeleton::Event event2;
 * the client gives the service discovery a service id, and later receive a struct containing
 * Process id and port number of the server
 */
-void signal_handler(int signum, siginfo_t *siginfo, void *ucontext)
+static void signal_handler(int signum, siginfo_t *siginfo, void *ucontext)
 {
     static int count = 0;
     if (signum != SIGUSR1) return;

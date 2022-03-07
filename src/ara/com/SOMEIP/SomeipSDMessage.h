@@ -25,7 +25,7 @@ namespace ara
                     static const uint8_t InterfaceVersion = 0x01;
                     static const MessageType Messagetype = MessageType::NOTIFICATION;
 
-                    bool Rebooted;
+                    bool Rebooted =false;
                     std::vector<entry::Entry *> entries;
 
                     uint32_t getEntriesLength() const noexcept;
