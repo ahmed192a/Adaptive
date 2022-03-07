@@ -35,8 +35,11 @@ jobs:
       # working-directory: ${{github.workspace}}/build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+    
+    - name: Run
+      working-directory: ${{github.workspace}}/build/src 
+      run: ./Adaptive_Platform
       # Generate Doxygen code dodumentation and publish it to the GitHub Pages
-
     - uses: langroodi/doxygenize@v1.6
       with:
         doxygenconf: './doc/doxygen.conf'
