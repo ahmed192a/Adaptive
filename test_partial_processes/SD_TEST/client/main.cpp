@@ -33,6 +33,7 @@ int main(int argc, char **argv){
 
     //test.SendRequest();
     ara::ucm::pkgmgr::add_output adder(&test);
+    adder();
     char name [30] = "event1";
     
     test.Subscribe(name);

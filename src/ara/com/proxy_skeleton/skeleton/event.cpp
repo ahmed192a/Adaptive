@@ -43,7 +43,7 @@ void Event::print_subscribers()
 {
     // printing set s1
     std::set<int, std::greater<int> >::iterator itr;
-    std::cout << "\nThe set event_name is : \n";
+    std::cout << "The set event_name is : \n";
     for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++) {
         std::cout << *itr << " ";
     }    

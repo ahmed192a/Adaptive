@@ -9,6 +9,7 @@
  * 
  */
 #include "service_proxy.h"
+#include <iostream>
 
 struct C_Info
 {
@@ -69,6 +70,7 @@ namespace proxy
         CClient c1(SOCK_STREAM);
         c1.OpenSocket();
         bzero(hostbuffer,256);
+        std::cout<<"REQUEST"<<std::endl;
         int hostnameRet = gethostname(hostbuffer, sizeof(hostbuffer));
 
         if(hostnameRet < 0)

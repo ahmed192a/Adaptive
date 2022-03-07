@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-
+#include <memory>
 #include "../../../src/ara/com/ipc/server/socket_Server.h"
 #include "../../../src/ara/com/ServiceDiscovery/skeleton.h"
 #include "../../../src/ara/com/proxy_skeleton/skeleton/event.h"
@@ -34,8 +34,8 @@ struct C_Info
 };
 
 CServer s2(SOCK_STREAM); // Socket between the server and the client
-ara::com::proxy_skeleton::skeleton::Event event1;
-ara::com::proxy_skeleton::skeleton::Event event2;
+std::shared_ptr<ara::com::proxy_skeleton::skeleton::Event> event1;
+std::shared_ptr<ara::com::proxy_skeleton::skeleton::Event> event2;
 
 /* Scenario 
 * First file we run is the Service Discovery:
@@ -68,15 +68,15 @@ ara::com::proxy_skeleton::skeleton::Event event2;
         std::cout << e1.event_name << endl;
         if (strcmp(e1.event_name, "event1") == 0)
         {
-            event1.setter(e1.process_id);
+            event1->setter(e1.process_id);
             std::cout << "Event1: " << std::endl;
-            event1.print_subscribers();
+            event1->print_subscribers();
         }
         else
         {
-            event2.setter(e1.process_id);
+            event2->setter(e1.process_id);
             std::cout << "Event2: " << std::endl;
-            event2.print_subscribers();
+            event2->print_subscribers();
         }
         
         
@@ -93,7 +93,8 @@ int main(int argc, char **argv)
 {
 
     g_handler = &signal_handler2;
-    
+    event1 = std::make_shared<ara::com::proxy_skeleton::skeleton::Event>();
+    event2 = std::make_shared<ara::com::proxy_skeleton::skeleton::Event>();
     // just by using Event constructor, we started the signals code "to receive subscription requests"
 
 
@@ -150,12 +151,12 @@ int main(int argc, char **argv)
     s1.method_dispatch(x, s2);
 
     /////////////////////////////////////////////////////////////////////////////////////
-    while (event1.subscribers_data.empty()){}
-    event1.update(7);
+    while (event1->subscribers_data.empty()){}
+    event1->update(7);
 
     sleep(1);
-    while (event2.subscribers_data.empty()){}
-    event2.update(9);
+    while (event2->subscribers_data.empty()){}
+    event2->update(9);
 
     cout << "\nGoodbye..." << endl;
 
