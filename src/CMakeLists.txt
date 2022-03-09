@@ -1,0 +1,78 @@
+# Note that headers are optional, and do not affect add_library, but they will not
+# show up in IDEs unless they are listed in add_library.
+
+
+
+# https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html
+# https://gitlab.com/CLIUtils/modern-cmake/tree/master/examples/extended-project
+# https://cliutils.gitlab.io/modern-cmake/chapters/basics/example.html
+
+if(${CMAKE_VERSION} VERSION_LESS 3.14)
+  include(cmake/add_FetchContent_MakeAvailable.cmake)
+endif()
+
+# set(source_ara_dir
+#   "${CMAKE_SOURCE_DIR}/src/ara")
+message(STATUS "Fetching JSON library")
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+FetchContent_Declare(
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json
+        GIT_TAG v3.9.1
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE)
+FetchContent_MakeAvailable(json)
+
+file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/*.hpp")
+file(GLOB_RECURSE SOURCE_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/ara/*.cpp")
+
+
+add_library(
+  ara_lib
+  ${SOURCE_LIST}
+  ${HEADER_LIST}
+)
+target_include_directories(
+  ara_lib 
+  PUBLIC 
+  ../include
+)
+target_link_libraries(
+  ara_lib 
+  PUBLIC 
+  nlohmann_json::nlohmann_json
+)
+
+target_compile_features(
+  ara_lib 
+  PUBLIC 
+  cxx_std_17
+)
+
+source_group(
+  TREE "${PROJECT_SOURCE_DIR}/include"
+  PREFIX "Header Files"
+  FILES ${HEADER_LIST})
+
+
+# Optionally glob, but only for CMake 3.12 or later:
+# file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${ModernCMakeExample_SOURCE_DIR}/include/modern/*.hpp")
+# set(HEADER_LIST "${ModernCMakeExample_SOURCE_DIR}/include/modern/lib.hpp")
+
+# Make an automatic library - will be static or dynamic based on user setting
+# add_library(modern_library lib.cpp ${HEADER_LIST})
+
+# We need this directory, and users of our library will need it too
+# target_include_directories(modern_library PUBLIC ../include)
+
+# This depends on (header only) boost
+# target_link_libraries(modern_library PRIVATE Boost::boost)
+
+# All users of this library will need at least C++11
+# target_compile_features(modern_library PUBLIC cxx_std_11)
+
+# IDEs should put the headers in a nice place
+# source_group(
+#   TREE "${PROJECT_SOURCE_DIR}/include"
+#   PREFIX "Header Files"
+#   FILES ${HEADER_LIST})

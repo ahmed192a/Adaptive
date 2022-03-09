@@ -16,3 +16,9 @@
 ### steps for test
 - open terminal in the project dir
 - run this command "./test.sh"
+
+
+### steps for SD test
+- ./configure.sh -> one time
+- ./build.sh
+- ./sd_test.sh

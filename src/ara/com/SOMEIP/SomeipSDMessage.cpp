@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "SomeipSDMessage.h"
+#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #include <iostream>
 using namespace std;
 namespace ara

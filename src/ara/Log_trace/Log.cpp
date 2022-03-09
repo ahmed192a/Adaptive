@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "Log.h"
+#include "ara/Log_trace/Log.hpp"
 #include "sys/stat.h"
 #include "sys/types.h"
 #include "errno.h"

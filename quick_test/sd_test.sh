@@ -1,6 +1,6 @@
 #! /bin/sh
 cd ..;
-cd build/src/processes ;
-gnome-terminal -- './sd_process';
-gnome-terminal -- './sd_server';
-gnome-terminal -- './sd_client';
+cd build/test_partial_processes/SD_TEST ;
+gnome-terminal -- './SD/sd_process';
+gnome-terminal -- './server/server_sd';
+gnome-terminal -- './client/cleint_sd';

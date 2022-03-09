@@ -1,5 +1,5 @@
-#include "update_request.h"
-#include "state_manager.h"
+#include "ara/sm/update_request.hpp"
+#include "ara/sm/state_manager.hpp"
 
 using namespace ara::sm;
 

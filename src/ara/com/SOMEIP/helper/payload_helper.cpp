@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "./payload_helper.h"
+#include "ara/com/SOMEIP/helper/payload_helper.hpp"
 #include <cstring>
 namespace ara
 {

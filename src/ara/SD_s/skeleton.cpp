@@ -1,0 +1,90 @@
+/**
+ * @file skeleton.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#include "ara/SD_s/skeleton.hpp"
+#include "ara/com/proxy_skeleton/definitions.hpp"
+using SD_data = ara::com::proxy_skeleton::SD_data;
+
+
+using namespace std;
+skeleton::skeleton( int service_id)
+:ara::com::proxy_skeleton::skeleton::ServiceSkeleton("skeleton",service_id),
+s1(SOCK_DGRAM)
+{
+    this->service_id = service_id;
+}
+
+skeleton::~skeleton()
+{
+}
+
+void skeleton::start_service()
+{
+    this->s1.OpenSocket(portNumber);
+    this->s1.BindServer();
+    SD_data service = {service_id, getpid() ,portNumber, true};
+
+    this->cliaddr.sin_family = AF_INET; // IPv4
+    this->cliaddr.sin_addr.s_addr = INADDR_ANY;
+    this->cliaddr.sin_port = htons(service_descovery_port_number);
+
+    this->s1.UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+}
+
+int skeleton::Add(std::vector<uint8_t> msg)
+{
+    ara::com::Deserializer dser;
+    int val1 = dser.deserialize<int>(msg,sizeof(int));
+    int val2 = dser.deserialize<int>(msg,sizeof(int)*2);
+
+    return (val1 + val2);
+}
+
+void handle_call(CServer& cserver,const C_Info& message, std::function<int (int, int)> func)
+{
+    int result = func(message.param1, message.param2);
+    cserver.SendServer(&result, sizeof(int));
+    cserver.ClientClose();
+}
+
+void skeleton::method_dispatch(std::vector<uint8_t>& message, CServer& cserver)
+{
+    ara::com::Deserializer dser;
+    int methodID = dser.deserialize<int>(message,0);
+    int result = -1;
+	cout<<"Dispatch " << methodID << endl;
+
+    switch (methodID)
+    {
+    case 0:
+        result = Add(message);
+        cserver.SendServer(&result, sizeof(int));
+    	cserver.ClientClose();
+        break;
+    default:
+    	cserver.SendServer(&result, sizeof(int));
+    	cserver.ClientClose();
+        break;
+    }
+
+    
+
+}
+
+void skeleton::StopOfferService()
+{
+     SD_data service = {service_id, getpid() ,portNumber, false};
+
+    this->s1.UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+    int x;
+    socklen_t len = sizeof(this->cliaddr);
+    this->s1.CloseSocket();
+}
+

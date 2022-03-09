@@ -1,4 +1,4 @@
-#include "./TriggerInOut.h"
+#include "ara/sm/TriggerInOut.hpp"
 
 namespace ara
 {

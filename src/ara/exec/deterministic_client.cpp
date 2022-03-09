@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "deterministic_client.h"
+#include "ara/exec/deterministic_client.hpp"
 #include "sys/stat.h"
 #include "sys/types.h"
 #include "errno.h"

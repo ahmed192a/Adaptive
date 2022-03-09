@@ -14,10 +14,9 @@
 #include<strings.h>
 #include<string.h>
 #include<errno.h>
-#include"socket_Server.h"
+#include "ara/com/ipc/server/socket_Server.hpp"
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <iostream>
 using namespace std;
 CServer::CServer(int type)
 {
@@ -34,11 +33,12 @@ error_kind CServer::OpenSocket(int portno)
 	if(this->sockfd < 0)
 	{
 		Error = FAILEDSOCETOPEN;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 		return Error;
 	}
 	//clear address structure
-	bzero((char *) &this->serv_addr, sizeof(this->serv_addr));
+	memset((char *) &this->serv_addr,'\0', sizeof(this->serv_addr));
+
 	this->portno = portno;
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr =  inet_addr("127.0.0.1");//INADDR_ANY; 
@@ -54,16 +54,16 @@ error_kind CServer::BindServer()
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR,
 	                        (void*)&yes, sizeof(yes)) < 0) {
 	   // fprintf(stderr, "setsockopt() failed. Error: %d\n", GETSOCKETERRNO());
-		cout<<"ERROR---------\n";
+		cout<<"[SERVER SOCKET] ERROR BIND---------\n";
 	}
 
 	error_kind Error = SUCCEEDED;
 	int bindRet = bind(sockfd,(struct sockaddr *) &this->serv_addr,sizeof(this->serv_addr)); 
-	std::cout<<"bind" <<bindRet<<std::endl;
+	std::cout<<"[SERVER SOCKET] bind result" <<bindRet<<std::endl;
 	if(bindRet < 0)
 	{
 		Error = BIND_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 	}
 	return Error;
 	
@@ -76,7 +76,7 @@ error_kind CServer::ListenServer(int no)
 	if(lisret < 0)
 	{
 		Error = LISTEN_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 	}
 	return Error;
 	
@@ -87,41 +87,39 @@ error_kind CServer::AcceptServer()
 	error_kind Error = SUCCEEDED;
 	this->clientlen = sizeof(this->cli_addr);
 	this->newsockfd = accept(this->sockfd,(struct sockaddr *)&this->cli_addr,&this->clientlen);
-	std::cout << "accept " << this->newsockfd << std::endl;
+	std::cout << "[SERVER SOCKET] accept " << this->newsockfd << std::endl;
 	if(this->newsockfd < 0)
 	{
 		Error = ACCEPT_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 	}
 	return Error;
 }
 
 
-error_kind CServer::SendServer(const void* buffer, size_t n)
+error_kind CServer::SendServer(void* buffer, size_t n)
 {
 	error_kind Error = SUCCEEDED;
 	ssize_t sndRet = send(this->newsockfd, buffer,n,0);
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 	}
 
 
 	return Error;
 }
 
-error_kind CServer::UDPSendTo(const void * buffer,size_t n,const sockaddr * address)
+error_kind CServer::UDPSendTo( void * buffer,size_t n, sockaddr * address)
 {
 	error_kind Error = SUCCEEDED;
-	// sendto(udpServer, (const struct SD_data*)&service, sizeof(struct SD_data), 
-	// MSG_CONFIRM, (const struct sockaddr *) &cliaddr,
-	// 	len);
+
 	ssize_t sndRet = sendto(this->sockfd, buffer , n,MSG_CONFIRM, address, sizeof(sockaddr_in));
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 	}
 
 
@@ -131,13 +129,12 @@ error_kind CServer::UDPSendTo(const void * buffer,size_t n,const sockaddr * addr
 error_kind CServer::UDPRecFrom(void * buffer,size_t n, sockaddr * address, socklen_t * size)
 {
 	error_kind Error = SUCCEEDED;
-	// n = recvfrom(udpServer, &shared_mem[0], sizeof(struct SD_data), 
-    //                 MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
+
 	ssize_t sndRet = recvfrom(this->sockfd, buffer , n,MSG_WAITALL, address, size);
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 	}
 
 
@@ -148,14 +145,14 @@ error_kind CServer::UDPRecFrom(void * buffer,size_t n, sockaddr * address, sockl
 error_kind CServer::ReceiveServer(void* buffer, size_t n)
 {
 	error_kind Error = SUCCEEDED;
-	bzero(buffer,n);
+	memset(buffer,'\0',n);
 	// std::cout<<this->newsockfd << "  "<< this->sockfd<<std::endl;
 	// recv(newSocket, ohlala, sizeof(ohlala), 0);
 	ssize_t rdRet = recv(this->newsockfd,buffer,n, 0);
 	if(rdRet < 0) 
 	{
 		Error = RECEIVE_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
 	}
 	return Error;
 }

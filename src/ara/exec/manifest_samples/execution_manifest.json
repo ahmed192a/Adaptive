@@ -3,13 +3,13 @@
         "Execution_manifest_id": "exec_id",
         "Process": [
             {
-                "Process_name": "SM",
+                "Process_name": "process1",
                 "Mode_dependent_startup_configs": [
                     {
                         "Startup_options": [
                             {
                                 "Option_kind": "commandLineShortForm",
-                                "Option_name": "filename",
+                                "Option_name": "EM_test_process",
                                 "Option_arg": "inputfile_1"
                             }
                         ],

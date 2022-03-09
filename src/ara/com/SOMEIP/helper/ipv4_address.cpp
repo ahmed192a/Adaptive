@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "./ipv4_address.h"
+#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
 
 namespace ara
 {

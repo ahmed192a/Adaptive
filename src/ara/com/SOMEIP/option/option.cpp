@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "./option.h"
+#include "ara/com/SOMEIP/option/option.hpp"
 
 namespace ara
 {

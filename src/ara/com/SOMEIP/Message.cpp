@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include"Message.h"
+#include"ara/com/SOMEIP/Message.hpp"
 
 namespace ara
 {

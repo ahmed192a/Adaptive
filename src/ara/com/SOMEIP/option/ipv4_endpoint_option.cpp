@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "./ipv4_endpoint_option.h"
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
 
 namespace ara
 {

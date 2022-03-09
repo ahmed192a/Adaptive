@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "manifest_parser.h"
+#include "ara/exec/parser/manifest_parser.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -96,7 +96,6 @@ namespace ara
                                         read_value(startup_option, kStartupOptionsOptionKind, option.kind);
                                         read_value(startup_option, kStartupOptionsOptionName, option.name);
                                         read_value(startup_option, kStartupOptionsOptionArg, option.arg);
-
                                         config.startup_options.push_back(option);
                                     }
                                 }

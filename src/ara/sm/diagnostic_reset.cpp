@@ -1,4 +1,4 @@
-#include "diagnostic_reset.h"
+#include "ara/sm/diagnostic_reset.hpp"
 
 using namespace ara::sm;
 

@@ -6,9 +6,9 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#include "packagemanagement_skeleton.h"
-#include "packagemanagement_common.h"
-#include "ucm_error.h"
+#include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
+#include "ara/ucm/pkgmgr/packagemanagement_common.hpp"
+#include "ara/ucm/pkgmgr/ucm_error.hpp"
 
 using namespace ara::ucm::pkgmgr::skeleton;
 using namespace ara::ucm;

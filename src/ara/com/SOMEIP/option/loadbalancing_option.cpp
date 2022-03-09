@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "./loadbalancing_option.h"
+#include "ara/com/SOMEIP/option/loadbalancing_option.hpp"
 
 namespace ara
 {

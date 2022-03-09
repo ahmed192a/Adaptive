@@ -14,8 +14,7 @@
 #include<stdio.h>
 #include<string.h>
 #include <errno.h>
-#include"socket_Client.h"
-#include <iostream>
+#include "ara/com/ipc/client/socket_Client.hpp"
 using namespace std;
 
 CClient::CClient(int type)
@@ -53,7 +52,8 @@ error_kind CClient::GetHost(std::string hostname,int hostno)
 error_kind CClient::ClientConnect()
 {
 	error_kind Error = SUCCEEDED;
-	bzero((char*)&this->serv_addr,sizeof(this->serv_addr));
+	memset((char*)&this->serv_addr,'\0', sizeof(this->serv_addr));
+
 	this->serv_addr.sin_family = AF_INET;
 	bcopy((char *)this->server->h_addr,(char *)&this->serv_addr.sin_addr.s_addr,this->server->h_length);
 	this->serv_addr.sin_port = htons(this->portno);
@@ -83,7 +83,7 @@ error_kind CClient::ClientWrite(void* data, int size)
 error_kind CClient::ClientRead(void* data, int size)
 {
 	error_kind Error = SUCCEEDED;
-	bzero(data, size);
+	memset(data, '\0', size);
 	int RdRet = read(this->sockfd, data, size);
 	if(RdRet < 0)
 	{
