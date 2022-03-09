@@ -66,7 +66,7 @@ add_subdirectory(test_partial_processes/SD_TEST/SD)
 
 # option for testing
 option(build_tests "Build all the tests.")
-set(build_tests OFF)
+set(build_tests ON)
 message(STATUS "print_all_variables------------------------------------------${build_tests}")
 add_subdirectory(Testing)
 

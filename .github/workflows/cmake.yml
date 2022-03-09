@@ -37,7 +37,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     
     - name: Run
-      working-directory: ${{github.workspace}}/build/src 
+      working-directory: ${{github.workspace}}/build/App 
       run: ./Adaptive_Platform
     # - name: Upload result 
     #   uses: actions/upload-artifact@v2
@@ -45,7 +45,7 @@ jobs:
     #     name: buildfiles
     #     path: ${{github.workspace}}/build
     - name: Test
-      working-directory: ${{github.workspace}}/build/src/test
+      working-directory: ${{github.workspace}}/build/Testing
       run: ./Adaptive_Platform-ut
 
       # Generate Doxygen code dodumentation and publish it to the GitHub Pages
