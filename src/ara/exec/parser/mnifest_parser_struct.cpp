@@ -96,7 +96,7 @@ bool Process::start(){
 
    
         // get file discreptor
-        int fd = open((startup_configs[0].startup_options[0].name+"/execution_client_fifo").c_str(), O_RDONLY);
+        int fd = open("processes/execution_client_fifo", O_RDONLY);
         if(fd == -1) {
             std::cout<< "EM:[ERROR] => can't open fifo";
         }else{
