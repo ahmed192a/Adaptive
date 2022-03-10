@@ -17,26 +17,18 @@
 #define SERVER_PORT 5365
 #define SD_PORT 1690
 #define MAX_QUEUE_CLIENTS 1
-
-struct event_info
-{
-    int process_id;
-    char event_name[30];
-};
+#define SERVICE_ID 32
 
 using namespace std;
 using C_Info = ara::com::proxy_skeleton::C_Info;
-// extern void (*g_handler)(int, siginfo_t *, void *);
+using event_info = ara::com::proxy_skeleton::event_info;
 
 CServer server_main_socket(SOCK_STREAM); // Socket between the server and the client
-std::shared_ptr<ara::com::proxy_skeleton::skeleton::Event<int>> event1;
-std::shared_ptr<ara::com::proxy_skeleton::skeleton::Event<int>> event2;
-std::shared_ptr<ara::com::proxy_skeleton::skeleton::Field<int>> field1;
+skeleton server_skeleton_obj(SERVICE_ID);
 Color::Modifier blue(Color::FG_BLUE);
 Color::Modifier def(Color::FG_DEFAULT);
 /**
  * @todo
- *  - add event , field in skeleton
  *  - GET, SET in field
  */
 void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext);
@@ -46,20 +38,16 @@ int main(int argc, char **argv)
     /// VARIABLES
     char buffer[256];
     C_Info x;
-    skeleton server_skeleton_obj(32);
+
     std::vector<uint8_t> msg;
     int msg_size;
     ara::com::Deserializer dser;
 
     // We take the sever port number as the first argument
-    cout << blue << "\t[SERVER] mypid: " << getpid() <<   endl;
+    cout << blue << "\t[SERVER] mypid: " << getpid() << endl;
 
     // g_handler = &subscribe_handler2;
     ara::com::proxy_skeleton::skeleton::EVENT::set_handle(&subscribe_handler2);
-
-    event1 = std::make_shared<ara::com::proxy_skeleton::skeleton::Event<int>>(&server_skeleton_obj, "event1");
-    event2 = std::make_shared<ara::com::proxy_skeleton::skeleton::Event<int>>(&server_skeleton_obj, "event2");
-    field1 = std::make_shared<ara::com::proxy_skeleton::skeleton::Field<int>>(&server_skeleton_obj, "field1");
 
     // send to service discovery the offered service
     server_skeleton_obj.start_service();
@@ -70,7 +58,7 @@ int main(int argc, char **argv)
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
 
     server_main_socket.AcceptServer();
-    cout << blue << "\t[SERVER]  accepted" <<   endl;
+    cout << blue << "\t[SERVER]  accepted" << endl;
 
     strcpy(buffer, "=> Server connected...\n");
 
@@ -85,31 +73,34 @@ int main(int argc, char **argv)
     server_main_socket.ReceiveServer((void *)&x, sizeof(x));
 
     // print the requested method
-    cout << blue << "\t[SERVER] " << x.method_name <<   endl;
+    cout << blue << "\t[SERVER] " << x.method_name << endl;
 
     // Perform the requested method then send the result
     server_skeleton_obj.method_dispatch(msg, server_main_socket);
 
     /////////////////////////////////////////////////////////////////////////////////////
-    while (event1->subscribers_data.empty())
+    while (server_skeleton_obj.event1.subscribers_data.empty())
     {
     }
-    event1->update(7);
+    std::cout << blue << "\t[SERVER] : ";
+    server_skeleton_obj.event1.update(7);
 
     sleep(1);
-    while (event2->subscribers_data.empty())
+    while (server_skeleton_obj.event2.subscribers_data.empty())
     {
     }
-    event2->update(9);
+    std::cout << blue << "\t[SERVER] : ";
+
+    server_skeleton_obj.event2.update(9);
 
     int y = 2;
-    while (field1->subscribers_data.empty())
+    while (server_skeleton_obj.field1.subscribers_data.empty())
     {
     }
-    // field1->update(y , x.process_id);
-    field1->update(y);
+    std::cout << blue << "\t[SERVER] : ";
+    server_skeleton_obj.field1.update(y);
 
-    cout << blue << "\n\t[SERVER] Goodbye..." <<   endl;
+    cout << blue << "\n\t[SERVER] Goodbye..." << endl;
 
     server_skeleton_obj.StopOfferService();
 
@@ -128,26 +119,42 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
     if (siginfo->si_code != SI_QUEUE)
         return;
 
-    cout << blue << "\t[SERVER] receiver: Got value " << siginfo->si_int <<   endl;
+    cout << blue << "\t[SERVER] receiver: Got value " << siginfo->si_int << endl;
 
     if (siginfo->si_int == 2)
     {
         server_main_socket.AcceptServer();
-        struct event_info e1;
-        server_main_socket.ReceiveServer((struct event_info *)&e1, sizeof(struct event_info));
+        event_info R_e_info;
+        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
 
-        std::cout << blue << "\t[SERVER]" << e1.event_name <<   endl;
-        if (strcmp(e1.event_name, "event1") == 0)
+        switch (R_e_info.service_id)
         {
-            event1->set_subscriber(e1.process_id);
-            std::cout << blue << "\t[SERVER] Event1: " << std::endl;
-            event1->print_subscribers();
-        }
-        else
-        {
-            event2->set_subscriber(e1.process_id);
-            std::cout << blue << "\t[SERVER] Event2: " << std::endl;
-            event2->print_subscribers();
+        case 32:
+
+            switch (R_e_info.event_id)
+            {
+            case 0:
+                server_skeleton_obj.event1.set_subscriber(R_e_info.process_id);
+                std::cout << blue << "\n\t[SERVER] Event1: ";
+                server_skeleton_obj.event1.print_subscribers();
+                break;
+            case 1:
+                server_skeleton_obj.event2.set_subscriber(R_e_info.process_id);
+                std::cout << blue << "\n\t[SERVER] Event2: ";
+                server_skeleton_obj.event2.print_subscribers();
+                break;
+            case 2:
+                server_skeleton_obj.field1.set_subscriber(R_e_info.process_id);
+                std::cout << blue << "\n\t[SERVER] Field1: ";
+                server_skeleton_obj.field1.print_subscribers();
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
         }
 
         count++;

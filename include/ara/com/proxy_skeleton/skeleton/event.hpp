@@ -44,18 +44,12 @@ namespace ara
                     std::set<int> subscribers_data;
                     Event(
                         ServiceSkeleton *service,
-                        std::string name)
+                        std::string name,
+                        int event_id )
                         : m_service{service},
-                          m_name{name}
+                          m_name{name},
+                          m_event_id{event_id}
                     {
-                        // initializing the event data
-                        this->event_data = 5;
-
-                        pid_t pid = getpid();
-
-                        // We print the server pid to make sure that the client is talking to our server
-                        std::cout << "Event in server's PID -> " << pid << std::endl;
-
 
                     }
                     ~Event() {}
@@ -71,10 +65,10 @@ namespace ara
                     {
                         // printing set s1
                         std::set<int, std::greater<int>>::iterator itr;
-                        std::cout << "The set event_name is : \n";
+                        std::cout << "the subscribers of "<<m_name<<" are : \n";
                         for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
                         {
-                            std::cout<<"\t=> " <<": "<< *itr << "\n";
+                            std::cout<<"\t\t=> " <<": "<< *itr << "\n";
                         }
                     }
 
@@ -82,7 +76,7 @@ namespace ara
                     {
                         this->event_data = value;
                         // sendevent(value , client);
-                        std::cout <<"Event : "<<m_name<< " is Udpated " << std::endl;
+                        std::cout <<m_name<< " is Udpated " << std::endl;
                         notify(value);
                     }
 
@@ -98,18 +92,19 @@ namespace ara
                         union sigval sigval;
                         sigval.sival_int = value;
                         std::set<int, std::greater<int>>::iterator itr;
-                        std::cout << "\nThe set event_name is : \n";
+                        // std::cout << "\nThe set event_name is : \n";
                         for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
                         {
-                            printf("sender: sending %d to PID %d\n", sigval.sival_int, *itr);
+                            // printf("sender: sending %d to PID %d\n", sigval.sival_int, *itr);
                             sigqueue(*itr, SIGUSR1, sigval);
                         }
                     }
 
-                private:
+                protected:
                     ServiceSkeleton *m_service;
                     std::string m_name;
                     T event_data;
+                    int m_event_id;
                     
 
                     // public:

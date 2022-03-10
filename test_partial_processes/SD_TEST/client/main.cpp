@@ -18,15 +18,15 @@ void event_field_handler(int signum, siginfo_t *siginfo, void *ucontext)
 {
     if (signum != SIGUSR1) return;
     if (siginfo->si_code != SI_QUEUE) return;
+    std::cout <<"\t\t\t[CLIENT] receiver: Got value " << siginfo->si_int << std::endl;
 
-    printf("receiver: Got value %d\n", siginfo->si_int);
 }
 
 int main(int argc, char **argv){
     std::cout<<green;
     pid_t pid = getpid();
-    std::cout << "receiver: PID is " << pid << std::endl;
-
+    std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
+    int result;
 
     struct sigaction signal_action;
     signal_action.sa_sigaction = event_field_handler;
@@ -39,17 +39,15 @@ int main(int argc, char **argv){
     
     test.FindService(32);
 
-    std::cout<<"Result of ADD section-------------- \n" <<test.Add(1,5)<<std::endl;
-    std::cout<<"END Result of ADD section-------------- \n";
+    std::cout<<"\t\t\t[CLIENT] Result of ADD : ";
+    result = test.Add(1,5);
+    std::cout<<result <<std::endl;
 
-    char name [30] = "event1";    
-    test.ev1.Subscribe(name);
+    test.ev1.Subscribe();
     sleep(5);
-    strcpy(name, "event2");
-    test.ev1.Subscribe(name);
-
-    char name_field [30] = "field1";  
-    test.ev1.Subscribe(name_field);
+    test.ev2.Subscribe();
+    sleep(5);
+    test.fd1.Subscribe();
 
 
     while(1) sleep(100);

@@ -18,6 +18,17 @@
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
 using C_Info = ara::com::proxy_skeleton::C_Info;
+namespace event
+{
+    using event = ara::com::proxy_skeleton::skeleton::Event<int>;
+} // namespace event
+
+namespace field
+{
+    using field = ara::com::proxy_skeleton::skeleton::Field<int>;
+} // namespace field
+
+
 class skeleton  : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton 
 {
 private:
@@ -29,7 +40,9 @@ private:
     struct sockaddr_in  cliaddr;
     
 public:
-
+    event::event event1;
+    event::event event2;
+    field::field field1;
     skeleton(int service_id);
     ~skeleton();
     void start_service();

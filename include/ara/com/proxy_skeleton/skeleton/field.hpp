@@ -63,11 +63,15 @@ namespace ara
                     Field
                     (
                         ServiceSkeleton *service,
-                        std::string name
+                        std::string name , 
+                        int field_id
                     ):Event<T>(
                         service,
-                        name
+                        name ,
+                        field_id
                     )
+                    // m_service{service},
+                    // m_name{name}
                     {
                     }
                     

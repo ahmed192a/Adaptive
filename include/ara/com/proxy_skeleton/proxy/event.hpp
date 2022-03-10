@@ -27,19 +27,20 @@ namespace ara
                 public:
                     Event(
                     ServiceProxy *service,
-                    std::string name) 
+                    std::string name , 
+                    int event_id ) 
                     :   Cient_Server_connection(SOCK_STREAM),
                         m_service{service},
-                        m_name{name}
+                        m_name{name},
+                        m_event_id{event_id}
                     {                        
                     }
                     ~Event(){}
-                    void Subscribe(char event_name[])
+                    void Subscribe()
                     {
                         // We first use signals to inform the sever that we wanna subscribe to an event
                         union sigval sigval;
                         sigval.sival_int = 2;
-                        printf("sender: sending %d to PID %d\n", sigval.sival_int, m_service->server_handle.process_id);
 
                         // here we're sending number 2 to the server
                         sigqueue(m_service->server_handle.process_id, SIGUSR1, sigval);
@@ -51,10 +52,12 @@ namespace ara
                         Cient_Server_connection.ClientConnect();
 
                         // here we're sending the event_name
-                        event_info e1;
-                        e1.process_id = getpid();
-                        strcpy(e1.event_name, event_name);
-                        Cient_Server_connection.ClientWrite((void *)&e1, sizeof(e1));
+                        event_info e_info;
+                        e_info.process_id = getpid();
+                        e_info.event_id = m_event_id;
+                        e_info.service_id = m_service->m_service_id;
+                        strcpy(e_info.event_name, m_name.data());
+                        Cient_Server_connection.ClientWrite((void *)&e_info, sizeof(e_info));
                         Cient_Server_connection.CloseSocket();
                     }
 
@@ -67,11 +70,12 @@ namespace ara
                         return event_data;
                     }
 
-                private:
+                protected:
                     ServiceProxy *m_service;
                     std::string m_name;
                     CClient Cient_Server_connection;
                     T event_data;
+                    int m_event_id;
 
                 }; // Event
             }      // proxy

@@ -29,10 +29,11 @@ namespace ara
                 public:
                     Field(
                         ServiceProxy *service,
-                        std::string name)
-                        : Event<T>(service, name),
-                        m_service{service},
-                        m_name{name}
+                        std::string name,
+                        int field_id )
+                        : Event<T>(service, name , field_id)
+                        // m_service{service},
+                        // m_name{name}
                     {
                     }
 
@@ -66,9 +67,9 @@ namespace ara
     
                     }
 
-                private:
-                    ServiceProxy *m_service;
-                    std::string m_name;
+                // private:
+                //     ServiceProxy *m_service;
+                //     std::string m_name;
                 };
 
                 template <typename T>

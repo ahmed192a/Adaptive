@@ -4,9 +4,9 @@
  * @brief Skeleton(service provider) file for ucm::pkgmgr
  * @version 0.1
  * @date 2022-02-19
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #ifndef ARA_UCM_PKGMGR_PackageManagement_SKELETON_H_
@@ -33,20 +33,20 @@ namespace ara
                 {
                     /**
                      * @brief The current status of UCM.
-                     * 
+                     *
                      * @todo update typedef:
                      *       field: CurrentStatus of type: PackageManagementStatusType
                      * @note int de ay haga mo2ktn
-                     * 
+                     *
                      */
                     using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<::ara::ucm::PackageManagerStatusType, true, true, false>::type;
                 }
                 /**
                  * @brief implementation of PackageManagementSkeleton interface
-                 * 
+                 *
                  * @note . Service implementation class is derived from the (service) skeleton.
                  *       . ref: 6.3 Skeleton Class in exp_aracomAPI
-                 * 
+                 *
                  * @todo inherit from ara::com::proxy_skeleton::skeleton::ServiceSkeleton
                  */
                 class PackageManagementSkeleton
@@ -56,11 +56,11 @@ namespace ara
                      * @brief Construct a new Package Management Skeleton object
                      *        Ctor taking instance identifier as parameter and having default
                      *        request processing mode kEvent.
-                     * 
-                     * @param instance 
-                     * @param mode 
-                     * @todo implement arguments types 
-                     * 
+                     *
+                     * @param instance
+                     * @param mode
+                     * @todo implement arguments types
+                     *
                      */
                     PackageManagementSkeleton(
                         // ara::com::InstanceIdentifier instance,
@@ -76,6 +76,8 @@ namespace ara
                      */
                     std::future<::ara::ucm::PackageManagerStatusType> CurrentStatus_Get()
                     {
+                        std::future<::ara::ucm::PackageManagerStatusType> f;
+                        return f;
                     }
 
                     std::future<ara::ucm::pkgmgr::PackageManagement::ActivateOutput> Activate();
@@ -99,7 +101,6 @@ namespace ara
                     void DispatchMethodCall()
                     {
                     }
-                    
                 };
 
             }

@@ -59,6 +59,8 @@ namespace ara
             struct event_info{
                 int process_id;
                 char event_name[30];
+                int event_id;
+                int service_id;
             };
 
         } // namespace proxy_skeleton

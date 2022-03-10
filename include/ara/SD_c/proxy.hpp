@@ -31,7 +31,8 @@ namespace saam
 
     public:
         events::EV1 ev1;
-        // fields::FD1 fd1;
+        events::EV1 ev2;
+        fields::FD1 fd1;
         proxy();
 
         int Add(int x, int y)

@@ -16,7 +16,10 @@ using SD_data = ara::com::proxy_skeleton::SD_data;
 using namespace std;
 skeleton::skeleton( int service_id)
 :ara::com::proxy_skeleton::skeleton::ServiceSkeleton("skeleton",service_id),
-s1(SOCK_DGRAM)
+s1(SOCK_DGRAM) , 
+event1(this , "event1" , 0),
+event2(this , "event2" , 1),
+field1(this , "field1" , 2)
 {
     this->service_id = service_id;
 }
@@ -59,7 +62,7 @@ void skeleton::method_dispatch(std::vector<uint8_t>& message, CServer& cserver)
     ara::com::Deserializer dser;
     int methodID = dser.deserialize<int>(message,0);
     int result = -1;
-	cout<<"Dispatch " << methodID << endl;
+	cout<<"\t[SERVER] Dispatch " << methodID << endl;
 
     switch (methodID)
     {

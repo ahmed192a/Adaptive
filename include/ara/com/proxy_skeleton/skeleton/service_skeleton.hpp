@@ -35,6 +35,7 @@ namespace ara
                 public:
                     ServiceSkeleton(
                         std::string name,
+                        
                         ara::com::InstanceIdentifier instance,
                         ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent)
                         : m_instance(instance.GetInstanceId()), m_name{name}, m_mode{mode}

@@ -59,7 +59,6 @@ error_kind CServer::BindServer()
 
 	error_kind Error = SUCCEEDED;
 	int bindRet = bind(sockfd,(struct sockaddr *) &this->serv_addr,sizeof(this->serv_addr)); 
-	std::cout<<"[SERVER SOCKET] bind result" <<bindRet<<std::endl;
 	if(bindRet < 0)
 	{
 		Error = BIND_FAILED;
@@ -87,7 +86,6 @@ error_kind CServer::AcceptServer()
 	error_kind Error = SUCCEEDED;
 	this->clientlen = sizeof(this->cli_addr);
 	this->newsockfd = accept(this->sockfd,(struct sockaddr *)&this->cli_addr,&this->clientlen);
-	std::cout << "[SERVER SOCKET] accept " << this->newsockfd << std::endl;
 	if(this->newsockfd < 0)
 	{
 		Error = ACCEPT_FAILED;

@@ -42,6 +42,7 @@ namespace ara
                     CClient Cient_Server_connection;
 
                 public:
+                    int m_service_id;
                     SD_data server_handle; // a struct to receive in it the process id & port number of the server from service discovery
                     ServiceProxy();
                     virtual ~ServiceProxy();
@@ -58,40 +59,34 @@ namespace ara
                         memset(buffer, '\0', bufsize);
 
                         Cient_Server_connection.OpenSocket();
-                        std::cout << "REQUEST" << std::endl;
 
                         // talk to the server using the received port number
                         Cient_Server_connection.GetHost("127.0.0.1", this->server_handle.port_number);
                         Cient_Server_connection.ClientConnect();
 
                         // Receive a confirmation message from the server
-                        std::cout << "=> Awaiting confirmation from the server2..." << std::endl; // line 40
                         Cient_Server_connection.ClientRead(buffer, bufsize);
-                        std::cout << buffer << std::endl;
-                        std::cout << "=> Connection confirmed, you are good to go...";
 
                         C_Info x = {getpid(), "add", 3, 2};
                         std::vector<uint8_t> msgser = ser.Payload();
                         int msg_size = msgser.size();
                         Cient_Server_connection.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         Cient_Server_connection.ClientWrite(&msgser[0], msg_size);
-                        printf("%d - %d - %d - %d \n", msgser[4],msgser[5],msgser[6],msgser[7]);
+                        // printf("%d - %d - %d - %d \n", msgser[4],msgser[5],msgser[6],msgser[7]);
                         
                         // send the requested method, and the parameters
                         Cient_Server_connection.ClientWrite(&x, sizeof(C_Info));
 
-                        std::cout << "The method is sent to the server" << std::endl;
 
                         int result; // to save the result of the method
 
                         // receive the methods result
                         Cient_Server_connection.ClientRead((int *)&result, sizeof(result));
-                        std::cout << "Received result: " << result << std::endl;
-                        std::cout << "\n=> Connection terminated.\nGoodbye...\n";
+
 
                         Cient_Server_connection.CloseSocket();
 
-                        return 0;
+                        return result;
                     }
 
                     template <typename... Args>

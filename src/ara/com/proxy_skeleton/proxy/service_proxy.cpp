@@ -34,6 +34,7 @@ namespace ara
                 {
                     // Send a service id to the service discovery
                     // receive a struct
+                    m_service_id = service_id;
                     char buffer[256];
                     char hostbuffer[256];
                     CClient Client_SD(SOCK_STREAM);
@@ -43,7 +44,7 @@ namespace ara
 
                     if (hostnameRet < 0)
                     {
-                        std::cout << ("Unable to local machine get Host Name\n");
+                        std::cout << ("[SERVICE PROXY] ERROR : Unable to local machine get Host Name\n");
                     }
 
                     Client_SD.GetHost("127.0.0.1", SD_PortNum);
@@ -54,8 +55,8 @@ namespace ara
 
                     // receive a struct
                     Client_SD.ClientRead(&this->server_handle, sizeof(server_handle));
-                    std::cout << "Received port number: " << server_handle.port_number << "  " << server_handle.process_id << std::endl;
-                    std::cout << "\n=> Connection terminated.\nGoodbye...\n";
+                    // std::cout << "Received port number: " << server_handle.port_number << "  " << server_handle.process_id << std::endl;
+                    // std::cout << "\n=> Connection terminated.\nGoodbye...\n";
 
                     // we then call the setter function to set its private data, that later will be used to subscribe to an event
                     // setter(receive.port_number, receive.process_id);

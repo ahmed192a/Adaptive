@@ -36,7 +36,6 @@ namespace ara
             template <typename T>
             void serialize(T data)
             {
-                std::cout<<" serial -> "<<data<<std::endl;
                 std::vector<uint8_t> buffer(sizeof(data));
                 memcpy(&buffer[0], (const void *)&data, sizeof(data));
                 payload.insert(payload.end(), buffer.begin(), buffer.end());
