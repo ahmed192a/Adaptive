@@ -30,46 +30,96 @@ namespace ara
                     Field(
                         ServiceProxy *service,
                         std::string name,
-                        int field_id )
-                        : Event<T>(service, name , field_id)
-                        // m_service{service},
-                        // m_name{name}
+                        int field_id)
+                        : Event<T>(service, name, field_id),
+                        m_Cient_Server_connection(SOCK_STREAM),
+                    m_service{service},
+                    m_name{name},
+                    m_field_id{field_id}
                     {
                     }
 
-                    ~Field(){}
+                    ~Field() {}
 
                     /**
-                     * @brief 
-                     * 
+                     * @brief
+                     *
                      * @todo implemention code
-                     *         - send request to server to Get this field value 
-                     *         - msg sent is (m_name + "_Get", value) 
+                     *         - send request to server to Get this field value
+                     *         - msg sent is (m_name + "_Get", value)
                      *         - this request will return the current value
-                     * @return T 
+                     * @return T
                      */
-                    T Get() {
-                        // send request to server to get this field value 
+                    T Get()
+                    {
+                        T data;
+                        // send request to server to get this field value
                         // msg sent is (m_name + "_Get")
-                         
+                        // We first use signals to inform the sever that we wanna subscribe to an event
+                        union sigval sigval;
+                        sigval.sival_int = 4;
+
+                        // here we're sending number 2 to the server
+                        sigqueue(m_service->server_handle.process_id, SIGUSR1, sigval);
+
+                        // then here we open a socket between server and client
+
+                        m_Cient_Server_connection.OpenSocket();
+                        m_Cient_Server_connection.GetHost("127.0.0.1", m_service->server_handle.port_number);
+                        m_Cient_Server_connection.ClientConnect();
+
+                        // here we're sending the event_name
+                        event_info e_info;
+                        e_info.process_id = getpid();
+                        e_info.event_id = m_field_id;
+                        e_info.service_id = m_service->m_service_id;
+                        strcpy(e_info.event_name, m_name.data());
+                        m_Cient_Server_connection.ClientWrite((void *)&e_info, sizeof(e_info));
+                        m_Cient_Server_connection.ClientRead((void * )&data, sizeof(data));
+                        m_Cient_Server_connection.CloseSocket();
+                        return data;
                     }
                     /**
-                     * @brief 
-                     * 
+                     * @brief
+                     *
                      * @todo implemention code
-                     *         - send request to server to set this field value 
+                     *         - send request to server to set this field value
                      *         - msg sent is (m_name + "_Set", value)
                      *         - this request will return the updated
-                     * @param value 
-                     * @return T 
+                     * @param value
+                     * @return T
                      */
-                    T Set(T& value){
-    
+                    T Set(T &value)
+                    {
+                        union sigval sigval;
+                        sigval.sival_int = 5;
+
+                        // here we're sending number 2 to the server
+                        sigqueue(m_service->server_handle.process_id, SIGUSR1, sigval);
+
+                        // then here we open a socket between server and client
+
+                        m_Cient_Server_connection.OpenSocket();
+                        m_Cient_Server_connection.GetHost("127.0.0.1", m_service->server_handle.port_number);
+                        m_Cient_Server_connection.ClientConnect();
+
+                        // here we're sending the event_name
+                        event_info e_info;
+                        e_info.process_id = getpid();
+                        e_info.event_id = m_field_id;
+                        e_info.service_id = m_service->m_service_id;
+                        strcpy(e_info.event_name, m_name.data());
+                        m_Cient_Server_connection.ClientWrite((void *)&e_info, sizeof(e_info));
+                        m_Cient_Server_connection.ClientWrite((void * )&value, sizeof(value));
+                        m_Cient_Server_connection.CloseSocket();
+                        return value;
                     }
 
-                // private:
-                //     ServiceProxy *m_service;
-                //     std::string m_name;
+                    private:
+                    CClient m_Cient_Server_connection;
+                        ServiceProxy *m_service;
+                        std::string m_name;
+                        int m_field_id;
                 };
 
                 template <typename T>

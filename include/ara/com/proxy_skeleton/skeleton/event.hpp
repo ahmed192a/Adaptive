@@ -31,44 +31,50 @@ namespace ara
         {
             namespace skeleton
             {
-                namespace EVENT{
+                namespace EVENT
+                {
                     void set_handle(void (*handler)(int, siginfo_t *, void *));
                 }
 
                 template <typename T>
                 class Event
                 {
-                // private:
+                    // private:
                     // void (*g_handler)(int, siginfo_t *, void *)
                 public:
                     std::set<int> subscribers_data;
+                    T event_data;
                     Event(
                         ServiceSkeleton *service,
                         std::string name,
-                        int event_id )
+                        int event_id)
                         : m_service{service},
                           m_name{name},
                           m_event_id{event_id}
                     {
-
                     }
                     ~Event() {}
-
-
 
                     void set_subscriber(int client_id)
                     {
                         subscribers_data.insert(client_id);
                     }
 
+                    void Del_subscriber(int client_id)
+                    {
+                        subscribers_data.erase(client_id);
+                        // insert(client_id);
+                    }
+
                     void print_subscribers()
                     {
                         // printing set s1
                         std::set<int, std::greater<int>>::iterator itr;
-                        std::cout << "the subscribers of "<<m_name<<" are : \n";
+                        std::cout << "the subscribers of " << m_name << " are : \n";
                         for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
                         {
-                            std::cout<<"\t\t=> " <<": "<< *itr << "\n";
+                            std::cout << "\t\t=> "
+                                      << ": " << *itr << "\n";
                         }
                     }
 
@@ -76,16 +82,16 @@ namespace ara
                     {
                         this->event_data = value;
                         // sendevent(value , client);
-                        std::cout <<m_name<< " is Udpated " << std::endl;
+                        std::cout << m_name << " is Udpated " << std::endl;
                         notify(value);
                     }
 
                     /**
-                     * @brief 
-                     * 
-                     * @todo edit the sigval to carry any type not just int 
-                     * 
-                     * @param value 
+                     * @brief
+                     *
+                     * @todo edit the sigval to carry any type not just int
+                     *
+                     * @param value
                      */
                     void notify(T value)
                     {
@@ -100,12 +106,11 @@ namespace ara
                         }
                     }
 
-                protected:
+                private:
                     ServiceSkeleton *m_service;
                     std::string m_name;
-                    T event_data;
-                    int m_event_id;
                     
+                    int m_event_id;
 
                     // public:
                     //      Event(ServiceSkeleton *service, std::string name)

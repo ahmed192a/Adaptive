@@ -27,10 +27,7 @@ CServer server_main_socket(SOCK_STREAM); // Socket between the server and the cl
 skeleton server_skeleton_obj(SERVICE_ID);
 Color::Modifier blue(Color::FG_BLUE);
 Color::Modifier def(Color::FG_DEFAULT);
-/**
- * @todo
- *  - GET, SET in field
- */
+
 void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext);
 
 int main(int argc, char **argv)
@@ -97,8 +94,13 @@ int main(int argc, char **argv)
     while (server_skeleton_obj.field1.subscribers_data.empty())
     {
     }
+
     std::cout << blue << "\t[SERVER] : ";
     server_skeleton_obj.field1.update(y);
+
+    while (!server_skeleton_obj.field1.subscribers_data.empty()) // test uns
+    {
+    }
 
     cout << blue << "\n\t[SERVER] Goodbye..." << endl;
 
@@ -113,7 +115,8 @@ int main(int argc, char **argv)
 
 void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
 {
-    static int count = 0;
+    event_info R_e_info;
+
     if (signum != SIGUSR1)
         return;
     if (siginfo->si_code != SI_QUEUE)
@@ -121,10 +124,10 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
 
     cout << blue << "\t[SERVER] receiver: Got value " << siginfo->si_int << endl;
 
-    if (siginfo->si_int == 2)
+    switch (siginfo->si_int)
     {
+    case 2:
         server_main_socket.AcceptServer();
-        event_info R_e_info;
         server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
         std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
 
@@ -156,7 +159,102 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
         default:
             break;
         }
+        server_main_socket.ClientClose();
+        break;
+    case 3:
+        server_main_socket.AcceptServer();
+        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
 
-        count++;
+        switch (R_e_info.service_id)
+        {
+        case 32:
+
+            switch (R_e_info.event_id)
+            {
+            case 0:
+                server_skeleton_obj.event1.Del_subscriber(R_e_info.process_id);
+                std::cout << blue << "\n\t[SERVER] Event1: ";
+                server_skeleton_obj.event1.print_subscribers();
+                break;
+            case 1:
+                server_skeleton_obj.event2.Del_subscriber(R_e_info.process_id);
+                std::cout << blue << "\n\t[SERVER] Event2: ";
+                server_skeleton_obj.event2.print_subscribers();
+                break;
+            case 2:
+                server_skeleton_obj.field1.Del_subscriber(R_e_info.process_id);
+                std::cout << blue << "\n\t[SERVER] Field1: ";
+                server_skeleton_obj.field1.print_subscribers();
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+        server_main_socket.ClientClose();
+        break;
+    case 4:
+        server_main_socket.AcceptServer();
+        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
+
+        switch (R_e_info.service_id)
+        {
+        case 32:
+
+            switch (R_e_info.event_id)
+            {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                server_main_socket.SendServer((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
+
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+        server_main_socket.ClientClose();
+
+        break;
+    case 5:
+        server_main_socket.AcceptServer();
+        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
+
+        switch (R_e_info.service_id)
+        {
+        case 32:
+
+            switch (R_e_info.event_id)
+            {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                server_main_socket.ReceiveServer((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
+
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+        server_main_socket.ClientClose();
+
+        break;
+    default:
+        break;
     }
 }

@@ -6,11 +6,7 @@
 
 /**
  * @todo
- *  - event id
- *  - field id
- *  - event unsubscribe
  *  - event send data in update notify
- *  - test field proxy
  */
 Color::Modifier green(Color::FG_GREEN);
 Color::Modifier def(Color::FG_DEFAULT);
@@ -48,6 +44,17 @@ int main(int argc, char **argv){
     test.ev2.Subscribe();
     sleep(5);
     test.fd1.Subscribe();
+    sleep(5);
+    int x=565;
+    std::cout<<"\n\t\t\t[CLIENT] set field1 = "<<test.fd1.Set(x)<<std::endl;
+
+
+
+    std::cout<<"\n\t\t\t[CLIENT] get field1 = "<<test.fd1.Get()<<std::endl;
+    //sleep(5);
+    test.fd1.UnSubscribe();
+
+
 
 
     while(1) sleep(100);
