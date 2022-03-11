@@ -75,12 +75,18 @@ public class Controller
 		ArrayList<Node> SIGroup = Main.Tree.Search("Service-Interface");
 		String names = new String();
 		for(Node SI : SIGroup) {
-			if(generate(SI) && generate_proxy(SI)) {
+			if(generate(SI) && generate_proxy(SI) && generate_common(SI) && generate_returntypes(SI)) {
 				indicator.clear();
 		        String s = Main.sFile.get(Main.sFile.size()-1);
 		        String p = Main.pFile.get(Main.sFile.size()-1);
+		        String c = Main.cFile.get(Main.cFile.size()-1);
+		        String r = Main.rFile.get(Main.rFile.size()-1);
+
 		        add_tab(s.substring(s.lastIndexOf('\\') + 1),ReadFile(s));
-		        add_tab(p.substring(s.lastIndexOf('\\') + 1),ReadFile(p));
+		        add_tab(p.substring(p.lastIndexOf('\\') + 1),ReadFile(p));
+		        add_tab(c.substring(c.lastIndexOf('\\') + 1),ReadFile(c));
+		        add_tab(r.substring(r.lastIndexOf('\\') + 1),ReadFile(r));
+
 		        names+="\"" + c_get(SI.Search("short-name").get(0).getVal())+"\",";
 		        if(SIGroup.get(SIGroup.size()-1).equals(SI)) {
 			        indicator.appendText("Header Files for "+ names.substring(0,names.length()-1) +" Generated Successfully!");  
@@ -133,10 +139,10 @@ public class Controller
 		
 
 		String Data = new String(
-				"#ifndef "+full_name+"_SKELETON_H_\r\n"
-			      		+ "#define "+full_name+"_SKELETON_H_\r\n"
+				"#ifndef "+full_name+"_SKELETON_H\r\n"
+			      		+ "#define "+full_name+"_SKELETON_H\r\n"
 			      		+ "#include <string.h>\r\n"
-			      		+ "#include \"core/future.h\"\r\n"
+			      		+ "#include <future>\r\n"
 			      		+ "#include \"com/proxy_skeleton/skeleton/service_skeleton.h\"\r\n"
 			      		+ "#include \"com/proxy_skeleton/definitions.h\"\r\n"
 			      		+ "//#include \r\n"
@@ -233,7 +239,7 @@ public class Controller
 				m_a += c_get((arg.Search("short-name").get(0).getVal())) + ",";
 			}
 			m_a = m_a.substring(0, m_a.lastIndexOf(','));
-			Data+="ara::core::Future<void> "+m_n+"("+ m_a +");\r\n";
+			Data+="std::future<void> "+m_n+"("+ m_a +");\r\n";
 		}
 
 		Data+= "};\r\n";
@@ -275,13 +281,12 @@ public class Controller
 		
 
 		String Data = new String(
-				"#ifndef "+full_name+"_PROXY_H_\r\n"
-			      		+ "#define "+full_name+"_PROXY_H_\r\n"
+				"#ifndef "+full_name+"_PROXY_H\r\n"
+			      		+ "#define "+full_name+"_PROXY_H\r\n"
 			      		+ "#include <string.h>\r\n"
-			      		+ "#include \"core/future.h\"\r\n"
-			      		+ "#include \"com/proxy_skeleton/skeleton/service_proxy.h\"\r\n"
+			      		+ "#include <future>\r\n"
+			      		+ "#include \"com/proxy_skeleton/proxy/service_proxy.h\"\r\n"
 			      		+ "#include \"com/proxy_skeleton/definitions.h\"\r\n"
-			      		+ "#include \""+name+"_returntypes.h\"\r\n"
 			      		+ "#include \""+name+"_common.h\"\r\n"
 			      		+ "//#include \r\n"
 			      		+ "\r\n"
@@ -380,6 +385,8 @@ public class Controller
 			ArrayList<Node> args = method.Search("arguments","argument-probs");
 			String m_a = "";
 			for(Node arg:args) {
+				//m_a is useless here
+				if(!arg.Search("direction").get(0).getVal().contains("in"))continue;
 				String t = c_get((arg.Search("type").get(0).getVal()));
 				if(t.contains("/")) {
 					String inc = t.substring(0,t.lastIndexOf('/'));
@@ -387,7 +394,7 @@ public class Controller
 					m_a+=t.substring(t.lastIndexOf('/') + 1);
 				}
 				else {
-					m_a+=t;
+					m_a+=t + " ";
 				}
 								
 				m_a += arg.Search("direction").get(0).getVal().contains("out")? " &":" ";
@@ -412,6 +419,171 @@ public class Controller
 		        myObj.createNewFile();
 		      }
 		      WriteFile(Main.pFile.get(Main.pFile.size()-1),Data);
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		      return false;
+		    }
+		return true;
+	}
+	public boolean generate_common(Node SI) {
+		String name = SI.Search("short-name").get(0).getVal();
+		if(name == null) return false;
+		name = c_get(name);	
+
+		String full_name = new String();
+		ArrayList<Node> tmp = SI.Search("namespace","symbol-probs","symbol");
+		ArrayList<String> sym = new ArrayList<String>();
+		for(Node i:tmp) {
+			sym.add(c_get(i.getVal()));
+			full_name+=sym.get(sym.size()-1).toUpperCase()+"_";
+		}
+		full_name += name.toUpperCase();		
+
+		String Data = new String(
+				"#ifndef "+full_name+"_COMMON_H\r\n"
+			      		+ "#define "+full_name+"_COMMON_H\r\n"
+			      		+ "#include \""+name+"_returntypes.h\"\r\n"
+			      		+ "#include \"com/proxy_skeleton/proxy/service_proxy.h\"\r\n"
+			      		+ "\r\n"
+				);
+		
+		//Start
+		for(String i:sym) {
+			Data+=  "namespace "+i+"\r\n"+ "{\r\n";
+		}
+		
+		
+		//Methods
+		ArrayList<Node> methods = SI.Search("methods","client-server-operation");
+	
+		
+		for(Node method : methods) {
+			
+			String m_n = c_get(method.Search("short-name").get(0).getVal());
+			Data += "class "+m_n+"\r\n{\r\n";
+			Data += "private:\r\n"
+					+ "ara::com::proxy_skeleton::proxy::ServiceProxy *m_srv;\r\n"
+					+ "public:\r\n"
+					+ m_n + "(ara::com::proxy_skeleton::proxy::ServiceProxy *srv):m_srv{srv}{}\r\n";
+			for(String i:sym) {
+				Data+= i+"::";
+			}
+			
+			ArrayList<Node> args = method.Search("arguments","argument-probs");
+			String m_a = "";
+			for(Node arg:args) {
+				String t = c_get((arg.Search("type").get(0).getVal()));
+				if(t.contains("/")) {
+					m_a+=t.substring(t.lastIndexOf('/') + 1);
+				}
+				else {
+					m_a+=t;
+				}				
+				m_a += arg.Search("direction").get(0).getVal().contains("out")? " &":" ";
+				m_a += c_get((arg.Search("short-name").get(0).getVal())) + ",";
+			}
+			m_a = m_a.substring(0, m_a.lastIndexOf(','));
+			Data += m_n +"ReturnType operator()(" + m_a +"){return result;}\r\n";
+			for(String i:sym) {
+				Data+= "::"+i;
+			}
+			Data +="::"+m_n+"ReturnType result;\r\n};\r\n";
+		}
+
+		for(String i:sym) {
+			Data+=  "}\r\n";
+		}
+		Data+= "#endif";
+		Main.cFile.add(Main.Direc + name + "_common.h");
+		try {
+		      File myObj = new File(Main.cFile.get(Main.cFile.size()-1));
+		      if (!myObj.createNewFile()) {
+		        myObj.delete();
+		        myObj.createNewFile();
+		      }
+		      WriteFile(Main.cFile.get(Main.cFile.size()-1),Data);
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		      return false;
+		    }
+		return true;
+	}
+	public boolean generate_returntypes(Node SI) {
+		String name = SI.Search("short-name").get(0).getVal();
+		if(name == null) return false;
+		name = c_get(name);	
+
+		String full_name = new String();
+		ArrayList<Node> tmp = SI.Search("namespace","symbol-probs","symbol");
+		ArrayList<String> sym = new ArrayList<String>();
+		for(Node i:tmp) {
+			sym.add(c_get(i.getVal()));
+			full_name+=sym.get(sym.size()-1).toUpperCase()+"_";
+		}
+		full_name += name.toUpperCase();		
+
+		String Data = new String(
+				"#ifndef "+full_name+"_RETURNTYPES_H\r\n"
+			      		+ "#define "+full_name+"_RETURNTYPES_H\r\n"
+			      		+ "#include <future>\r\n"
+			      		+ "\r\n"
+				);
+		
+		//Start
+		for(String i:sym) {
+			Data+=  "namespace "+i+"\r\n"+ "{\r\n";
+		}
+		
+		
+		//Methods
+		ArrayList<Node> methods = SI.Search("methods","client-server-operation");
+	
+		
+		for(Node method : methods) {
+			
+			String m_n = c_get(method.Search("short-name").get(0).getVal());
+			Data += "class "+m_n+"\r\n{\r\n";
+			Data += "private:\r\n"
+					+ "ara::com::proxy_skeleton::proxy::ServiceProxy *m_srv;\r\n"
+					+ "public:\r\n"
+					+ m_n + "(ara::com::proxy_skeleton::proxy::ServiceProxy *srv):m_srv{srv}{}\r\n";
+			for(String i:sym) {
+				Data+= i+"::";
+			}
+			
+			ArrayList<Node> args = method.Search("arguments","argument-probs");
+			String m_a = "";
+			for(Node arg:args) {
+				String t = c_get((arg.Search("type").get(0).getVal()));
+				if(t.contains("/")) {
+					m_a+=t.substring(t.lastIndexOf('/') + 1);
+				}
+				else {
+					m_a+=t;
+				}				
+				m_a += arg.Search("direction").get(0).getVal().contains("out")? " &":" ";
+				m_a += c_get((arg.Search("short-name").get(0).getVal())) + ",";
+			}
+			m_a = m_a.substring(0, m_a.lastIndexOf(','));
+			Data += m_n +"ReturnType operator()(" + m_a +"){return result;}\r\n";
+			for(String i:sym) {
+				Data+= "::"+i;
+			}
+			Data +="::"+m_n+"ReturnType result;\r\n};\r\n";
+		}
+
+		for(String i:sym) {
+			Data+=  "}\r\n";
+		}
+		Data+= "#endif";
+		Main.rFile.add(Main.Direc + name + "_returntypes.h");
+		try {
+		      File myObj = new File(Main.rFile.get(Main.rFile.size()-1));
+		      if (!myObj.createNewFile()) {
+		        myObj.delete();
+		        myObj.createNewFile();
+		      }
+		      WriteFile(Main.rFile.get(Main.rFile.size()-1),Data);
 		    } catch (IOException e) {
 		      e.printStackTrace();
 		      return false;

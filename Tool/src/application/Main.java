@@ -15,17 +15,22 @@ public class Main extends Application {
 	
     private static Stage primaryStage; // **Declare static Stage**    
     public static Node Tree;
-    
+ 
     public static String Direc;
-
     public static String File;
     public static String Data;  
 
     public static ArrayList<String> sFile = new ArrayList<String>();
-    public static ArrayList<String> sData = new ArrayList<String>();;
+    public static ArrayList<String> sData = new ArrayList<String>();
 
-    public static ArrayList<String> pFile = new ArrayList<String>();;
-    public static ArrayList<String> pData = new ArrayList<String>();; 
+    public static ArrayList<String> pFile = new ArrayList<String>();
+    public static ArrayList<String> pData = new ArrayList<String>();
+    
+    public static ArrayList<String> cFile = new ArrayList<String>();
+    public static ArrayList<String> cData = new ArrayList<String>();
+
+    public static ArrayList<String> rFile = new ArrayList<String>();
+    public static ArrayList<String> rData = new ArrayList<String>();
 
     private void setPrimaryStage(Stage stage) {
         Main.primaryStage = stage;
