@@ -107,6 +107,7 @@ bool Process::start(){
                 // Log Error : counldn't send the state to fifo
             }
             close(fd);
+            unlink("processes/execution_client_fifo");
             if(state == ara::exec::ExecutionState::kRunning) 
             std::cout<<"EM: report succeed "<<(int) state<<endl;
         }
