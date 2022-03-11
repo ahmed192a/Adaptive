@@ -58,7 +58,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     std::future<R> (Class::*method)(Args...),
                                     Message msg,
-                                    CServer &binding);
+                                    Socket &binding);
                     // {
                     //     sHandleCall(c, method, msg, binding, std::index_sequence_for(Args...));
                     // }
@@ -67,7 +67,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     std::future<void> (Class::*method)(Args...),
                                     Message msg,
-                                    CServer &binding);
+                                    Socket &binding);
                     // {
                     //     sHandleCall(c, method, msg, binding, std::index_sequence_for(Args...));
                     // }
@@ -76,15 +76,15 @@ namespace ara
                     void HandleCall(Class &c,
                                     std::future<R> (Class::*method)(),
                                     Message msg,
-                                    CServer &binding);
+                                    Socket &binding);
                     // {
                     //     std::future<R> f = (c.*method)();
                     //    // f.then([this, msg, binding](std::future<R> &&f) -> bool
                     //    //        {
                     //         R r = f.get();
 
-                    //         binding.SendServer(&r, sizeof(int));
-                    //         binding.ClientClose();
+                    //         binding.Send(&r, sizeof(int));
+                    //         binding.CloseSocket();
                     //      //   return true; });
                     // }
 
@@ -92,14 +92,14 @@ namespace ara
                     void HandleCall(Class &c,
                                     std::future<void> (Class::*method)(),
                                     Message msg,
-                                    CServer &binding);
+                                    Socket &binding);
                     // {
                     //     std::future<void> f = (c.*method)();
                     //     //f.then([this, msg, binding](std::future<void> &&f) -> bool
                     //     //       {
                     //         f.get();
 
-                    //         binding.SendServer(&msg, sizeof(int));
+                    //         binding.Send(&msg, sizeof(int));
                     //         binding.ClientClose();
                     //     //    return true; });
                     // }
@@ -108,7 +108,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     void (Class::*method)(Args...),
                                     Message msg,
-                                    CServer &binding);
+                                    Socket &binding);
                     // {
                     //     sHandleCall(c, method, msg, binding, std::index_sequence_for(Args...));
                     // }
@@ -117,7 +117,7 @@ namespace ara
                     void HandleCall(Class &c,
                                     void (Class::*method)(),
                                     Message msg,
-                                    CServer &binding);
+                                    Socket &binding);
                     // {
                     //     (c.*method)();
                     // }
@@ -160,7 +160,7 @@ namespace ara
                     void sHandleCall(Class &c,
                                      std::future<R> (Class::*method)(Args...),
                                      Message msg,
-                                     CServer &binding,
+                                     Socket &binding,
                                      std::index_sequence<index...>)
                     {
                         Marshal<Args...> unmarshaller(msg.payload);
@@ -178,15 +178,15 @@ namespace ara
                         //       {
                             R r = f.get();
                             // get the data then serialize it and send it
-                            binding.SendServer(&r, sizeof(int));
-                            binding.ClientClose();
+                            binding.Send(&r, sizeof(int));
+                            binding.CloseSocket();
                             // return true; });
                     }
                     template <typename Class, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
                                      std::future<void> (Class::*method)(Args...),
                                      Message msg,
-                                     CServer binding,
+                                     Socket binding,
                                      std::index_sequence<index...>)
                     {
                         Marshal<Args...> unmarshaller(msg.payload);
@@ -199,8 +199,8 @@ namespace ara
                             f.get();
                             // get the data then serialize it and send it
                             
-                            binding.SendServer(&msg, sizeof(int));
-                            binding.ClientClose();
+                            binding.Send(&msg, sizeof(int));
+                            binding.CloseSocket();
                             // return true; });
                     }
 
@@ -208,7 +208,7 @@ namespace ara
                     void sHandleCall(Class &c,
                                      void (Class::*method)(Args...),
                                      Message msg,
-                                     CServer &binding,
+                                     Socket &binding,
                                      std::index_sequence<index...>)
                     {
                         Marshal<Args...> unmarshaller(msg.payload);

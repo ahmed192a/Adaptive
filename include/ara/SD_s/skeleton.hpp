@@ -46,7 +46,7 @@ public:
     skeleton(int service_id);
     ~skeleton();
     void start_service();
-    void method_dispatch(std::vector<uint8_t>& message, CServer& cserver);
+    void method_dispatch(std::vector<uint8_t>& message, Socket& cserver);
     void StopOfferService();
     int Add(std::vector<uint8_t> msg);
 };

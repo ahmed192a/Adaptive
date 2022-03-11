@@ -16,7 +16,7 @@
 
 #define SERVER_PORT 5365
 #define SD_PORT 1690
-#define MAX_QUEUE_CLIENTS 1
+#define MAX_QUEUE_CLIENTS 5
 #define SERVICE_ID 32
 
 using namespace std;
@@ -54,26 +54,26 @@ int main(int argc, char **argv)
     server_main_socket.BindServer();
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
 
-    server_main_socket.AcceptServer();
+    Socket Sclient =  server_main_socket.AcceptServer();
     cout << blue << "\t[SERVER]  accepted" << endl;
 
     strcpy(buffer, "=> Server connected...\n");
 
     // send a confirmation connect to client
-    server_main_socket.SendServer(buffer, strlen(buffer));
+    Sclient.Send(buffer, strlen(buffer));
 
     // Receive a struct from client containing the method name and parameters
-    server_main_socket.ReceiveServer((void *)&msg_size, sizeof(msg_size));
+    Sclient.Receive((void *)&msg_size, sizeof(msg_size));
     msg.resize(msg_size);
-    server_main_socket.ReceiveServer((void *)&msg[0], sizeof(msg));
+    Sclient.Receive((void *)&msg[0], sizeof(msg));
 
-    server_main_socket.ReceiveServer((void *)&x, sizeof(x));
+    Sclient.Receive((void *)&x, sizeof(x));
 
     // print the requested method
     cout << blue << "\t[SERVER] " << x.method_name << endl;
 
     // Perform the requested method then send the result
-    server_skeleton_obj.method_dispatch(msg, server_main_socket);
+    server_skeleton_obj.method_dispatch(msg, Sclient);
 
     /////////////////////////////////////////////////////////////////////////////////////
     while (server_skeleton_obj.event1.subscribers_data.empty())
@@ -115,6 +115,8 @@ int main(int argc, char **argv)
 
 void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
 {
+    // the next line isn't good but we use it her just for testing for now
+    Socket soc = server_main_socket.AcceptServer();
     event_info R_e_info;
 
     if (signum != SIGUSR1)
@@ -127,8 +129,8 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
     switch (siginfo->si_int)
     {
     case 2:
-        server_main_socket.AcceptServer();
-        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        //soc =  server_main_socket.AcceptServer();
+        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
         std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
 
         switch (R_e_info.service_id)
@@ -159,11 +161,11 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
         default:
             break;
         }
-        server_main_socket.ClientClose();
+        soc.CloseSocket();
         break;
     case 3:
-        server_main_socket.AcceptServer();
-        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        //soc =  server_main_socket.AcceptServer();
+        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
         std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
 
         switch (R_e_info.service_id)
@@ -194,11 +196,11 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
         default:
             break;
         }
-        server_main_socket.ClientClose();
+        soc.CloseSocket();
         break;
     case 4:
-        server_main_socket.AcceptServer();
-        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        //soc = server_main_socket.AcceptServer();
+        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
         std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
 
         switch (R_e_info.service_id)
@@ -212,7 +214,7 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
             case 1:
                 break;
             case 2:
-                server_main_socket.SendServer((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
+                soc.Send((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
 
                 break;
             default:
@@ -222,12 +224,12 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
         default:
             break;
         }
-        server_main_socket.ClientClose();
+        soc.CloseSocket();
 
         break;
     case 5:
-        server_main_socket.AcceptServer();
-        server_main_socket.ReceiveServer((void *)&R_e_info, sizeof(R_e_info));
+        //soc = server_main_socket.AcceptServer();
+        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
         std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
 
         switch (R_e_info.service_id)
@@ -241,7 +243,7 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
             case 1:
                 break;
             case 2:
-                server_main_socket.ReceiveServer((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
+                soc.Receive((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
 
                 break;
             default:
@@ -251,7 +253,7 @@ void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
         default:
             break;
         }
-        server_main_socket.ClientClose();
+        soc.CloseSocket();
 
         break;
     default:

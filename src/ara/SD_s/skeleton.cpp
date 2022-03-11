@@ -50,14 +50,14 @@ int skeleton::Add(std::vector<uint8_t> msg)
     return (val1 + val2);
 }
 
-void handle_call(CServer& cserver,const C_Info& message, std::function<int (int, int)> func)
+void handle_call(Socket& cserver,const C_Info& message, std::function<int (int, int)> func)
 {
     int result = func(message.param1, message.param2);
-    cserver.SendServer(&result, sizeof(int));
-    cserver.ClientClose();
+    cserver.Send(&result, sizeof(int));
+    cserver.CloseSocket();
 }
 
-void skeleton::method_dispatch(std::vector<uint8_t>& message, CServer& cserver)
+void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
 {
     ara::com::Deserializer dser;
     int methodID = dser.deserialize<int>(message,0);
@@ -68,12 +68,12 @@ void skeleton::method_dispatch(std::vector<uint8_t>& message, CServer& cserver)
     {
     case 0:
         result = Add(message);
-        cserver.SendServer(&result, sizeof(int));
-    	cserver.ClientClose();
+        cserver.Send(&result, sizeof(int));
+    	cserver.CloseSocket();
         break;
     default:
-    	cserver.SendServer(&result, sizeof(int));
-    	cserver.ClientClose();
+    	cserver.Send(&result, sizeof(int));
+    	cserver.CloseSocket();
         break;
     }
 

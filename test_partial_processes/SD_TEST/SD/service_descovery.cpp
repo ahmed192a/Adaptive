@@ -73,9 +73,9 @@ int main()
         s1.ListenServer(3);
         while (1)
         {
-            s1.AcceptServer();
+            Socket soc = s1.AcceptServer();
             // receive the service id
-            s1.ReceiveServer(&service_id, sizeof(int));
+            soc.Receive(&service_id, sizeof(int));
 
             // search the file,
             // it takes a vector of structs "in case there's more than one server offers the service"
@@ -85,8 +85,8 @@ int main()
             // then a for loop to send the vector "containing port numbers" element by element
 
             // send the struct to the client
-            s1.SendServer(&data[0], sizeof(SD_data));
-            s1.ClientClose();
+            soc.Send(&data[0], sizeof(SD_data));
+            soc.CloseSocket();
         }
 
         s1.CloseSocket();

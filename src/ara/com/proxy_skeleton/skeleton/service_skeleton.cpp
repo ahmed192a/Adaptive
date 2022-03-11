@@ -12,7 +12,7 @@ namespace ara
                 void ServiceSkeleton::HandleCall(Class &c,
                                                  std::future<R> (Class::*method)(Args...),
                                                  Message msg,
-                                                 CServer &binding)
+                                                 Socket &binding)
                 {
                     sHandleCall(c, method, msg, binding, std::index_sequence_for<Args...>());
                 }
@@ -21,7 +21,7 @@ namespace ara
                 void ServiceSkeleton::HandleCall(Class &c,
                                                  std::future<void> (Class::*method)(Args...),
                                                  Message msg,
-                                                 CServer &binding)
+                                                 Socket &binding)
                 {
                     sHandleCall(c, method, msg, binding, std::index_sequence_for<Args...>());
                 }
@@ -29,30 +29,30 @@ namespace ara
                 void ServiceSkeleton::HandleCall(Class &c,
                                                  std::future<R> (Class::*method)(),
                                                  Message msg,
-                                                 CServer &binding)
+                                                 Socket &binding)
                 {
                     std::future<R> f = (c.*method)();
                     // f.then([this, msg, binding](std::future<R> &&f) -> bool
                     //        {
                     R r = f.get();
 
-                    binding.SendServer(&r, sizeof(int));
-                    binding.ClientClose();
+                    binding.Send(&r, sizeof(int));
+                    binding.CloseSocket();
                     //   return true; });
                 }
                 template <typename Class>
                 void ServiceSkeleton::HandleCall(Class &c,
                                                  std::future<void> (Class::*method)(),
                                                  Message msg,
-                                                 CServer &binding)
+                                                 Socket &binding)
                 {
                     std::future<void> f = (c.*method)();
                     // f.then([this, msg, binding](std::future<void> &&f) -> bool
                     //        {
                     f.get();
 
-                    binding.SendServer(&msg, sizeof(int));
-                    binding.ClientClose();
+                    binding.Send(&msg, sizeof(int));
+                    binding.CloseSocket();
                     //    return true; });
                 }
 
@@ -60,7 +60,7 @@ namespace ara
                 void ServiceSkeleton::HandleCall(Class &c,
                                                  void (Class::*method)(Args...),
                                                  Message msg,
-                                                 CServer &binding)
+                                                 Socket &binding)
                 {
                     sHandleCall(c, method, msg, binding, std::index_sequence_for<Args...>());
                 }
@@ -69,7 +69,7 @@ namespace ara
                 void ServiceSkeleton::HandleCall(Class &c,
                                                  void (Class::*method)(),
                                                  Message msg,
-                                                 CServer &binding)
+                                                 Socket &binding)
                 {
                     (c.*method)();
                 }

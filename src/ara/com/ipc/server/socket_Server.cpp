@@ -18,6 +18,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 using namespace std;
+
 CServer::CServer(int type)
 {
 	//std::cout<<"server object created"<<std::endl;
@@ -81,33 +82,38 @@ error_kind CServer::ListenServer(int no)
 	
 }
 
-error_kind CServer::AcceptServer()
+Socket CServer::AcceptServer()
 {
 	error_kind Error = SUCCEEDED;
 	this->clientlen = sizeof(this->cli_addr);
 	this->newsockfd = accept(this->sockfd,(struct sockaddr *)&this->cli_addr,&this->clientlen);
+	
+
 	if(this->newsockfd < 0)
 	{
 		Error = ACCEPT_FAILED;
 		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+		//return Error;
+
 	}
-	return Error;
+	Socket soc(this->newsockfd,this->cli_addr);
+	return soc;
 }
 
 
-error_kind CServer::SendServer(void* buffer, size_t n)
-{
-	error_kind Error = SUCCEEDED;
-	ssize_t sndRet = send(this->newsockfd, buffer,n,0);
-	if(sndRet < 0)
-	{
-		Error = SEND_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
-	}
+// error_kind CServer::SendServer(void* buffer, size_t n)
+// {
+// 	error_kind Error = SUCCEEDED;
+// 	ssize_t sndRet = send(this->newsockfd, buffer,n,0);
+// 	if(sndRet < 0)
+// 	{
+// 		Error = SEND_FAILED;
+// 		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+// 	}
 
 
-	return Error;
-}
+// 	return Error;
+// }
 
 error_kind CServer::UDPSendTo( void * buffer,size_t n, sockaddr * address)
 {
@@ -140,20 +146,20 @@ error_kind CServer::UDPRecFrom(void * buffer,size_t n, sockaddr * address, sockl
 }
 
 
-error_kind CServer::ReceiveServer(void* buffer, size_t n)
-{
-	error_kind Error = SUCCEEDED;
-	memset(buffer,'\0',n);
-	// std::cout<<this->newsockfd << "  "<< this->sockfd<<std::endl;
-	// recv(newSocket, ohlala, sizeof(ohlala), 0);
-	ssize_t rdRet = recv(this->newsockfd,buffer,n, 0);
-	if(rdRet < 0) 
-	{
-		Error = RECEIVE_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
-	}
-	return Error;
-}
+// error_kind CServer::ReceiveServer(void* buffer, size_t n)
+// {
+// 	error_kind Error = SUCCEEDED;
+// 	memset(buffer,'\0',n);
+// 	// std::cout<<this->newsockfd << "  "<< this->sockfd<<std::endl;
+// 	// recv(newSocket, ohlala, sizeof(ohlala), 0);
+// 	ssize_t rdRet = recv(this->newsockfd,buffer,n, 0);
+// 	if(rdRet < 0) 
+// 	{
+// 		Error = RECEIVE_FAILED;
+// 		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+// 	}
+// 	return Error;
+// }
 
 void CServer::CloseSocket()
 {
@@ -161,13 +167,13 @@ void CServer::CloseSocket()
 	close(this->sockfd);
 }
 
-void CServer::ClientClose()
-{
-	close(this->newsockfd);
-}
+// void CServer::ClientClose()
+// {
+// 	close(this->newsockfd);
+// }
 
 
 CServer::~CServer(){
-	close(this->newsockfd);
+	// close(this->newsockfd);
 	close(this->sockfd);
 }
