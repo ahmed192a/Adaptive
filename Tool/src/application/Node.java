@@ -88,17 +88,22 @@ public class Node {
 		if(pos == Data.length() || Data.charAt(pos) == '<')return true;
 		else return false;
 	}	
-	public Node Search(String...strings) {
+	public ArrayList<Node> Search(String...strings) {
+		ArrayList<Node> Res = new ArrayList<Node>();
 		Node current = this;
 		for (String path : strings) {
 			for(Node i : current.getChilds()) {
 				if(i.getTag().equals(path)) {
-					current = i;
-					break;
+					if(path.equals(strings[strings.length - 1])) {
+						Res.add(i);
+					}
+					else {
+						current = i;
+						break;	
+					}
 				}
 			}
-		if(!path.equals(current.getTag()))return null;
 		}
-        return current;
+        return Res;
 	}
 }

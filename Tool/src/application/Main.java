@@ -1,5 +1,7 @@
 package application;
 	
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -19,11 +21,11 @@ public class Main extends Application {
     public static String File;
     public static String Data;  
 
-    public static String sFile;
-    public static String sData;
+    public static ArrayList<String> sFile = new ArrayList<String>();
+    public static ArrayList<String> sData = new ArrayList<String>();;
 
-    public static String pFile;
-    public static String pData; 
+    public static ArrayList<String> pFile = new ArrayList<String>();;
+    public static ArrayList<String> pData = new ArrayList<String>();; 
 
     private void setPrimaryStage(Stage stage) {
         Main.primaryStage = stage;
