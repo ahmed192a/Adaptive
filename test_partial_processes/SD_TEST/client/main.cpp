@@ -36,7 +36,7 @@ int main(int argc, char **argv){
     test.FindService(32);
 
     std::cout<<"\t\t\t[CLIENT] Result of ADD : ";
-    result = test.Add(1,5);
+    result = test.ADD(13,85);
     std::cout<<result <<std::endl;
 
     test.ev1.Subscribe();

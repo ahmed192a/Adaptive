@@ -10,6 +10,7 @@
  */
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
 #include "ara/com/proxy_skeleton/proxy/field.hpp"
+#include "ara/SD_c/common.hpp"
 
 // later this file will be UCM Proxy
 namespace saam
@@ -24,6 +25,11 @@ namespace saam
         using FD1 = ara::com::proxy_skeleton::proxy::Field<int>;
     } // namespace events
 
+    // namespace methods
+    // {
+    //     using Add_out = saam::add_output;
+    // }
+
     class proxy : public ara::com::proxy_skeleton::proxy::ServiceProxy
     {
     private:
@@ -35,11 +41,9 @@ namespace saam
         fields::FD1 fd1;
         proxy();
 
-        int Add(int x, int y)
-        {
-            return SendRequest(0,x,y);
-        }
+        int Add(int x, int y);
 
+        add_output ADD;
         ~proxy();
     };
 

@@ -1,50 +1,49 @@
-// /**
-//  * @file common.h
-//  * @author your name (you@domain.com)
-//  * @brief 
-//  * @version 0.1
-//  * @date 2022-03-07
-//  * 
-//  * @copyright Copyright (c) 2022
-//  * 
-//  */
-// #ifndef ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H
-// #define ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H
+/**
+ * @file common.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#ifndef ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H
+#define ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H
 
-// #include "return_types.h"
-// #include "proxy.h"
+#include "ara/SD_c/return_types.hpp"
+#include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
+// #include "ara/SD_c/proxy.hpp"
 
 
+namespace saam
+{
+    // class proxy;
+    class add_output
+    {
+        private:
+        ara::com::proxy_skeleton::proxy::ServiceProxy *px;
+        public:
+        add_output(ara::com::proxy_skeleton::proxy::ServiceProxy* x)
+        {
+            this->px = x;
+        }
+        
+        ::saam::addReturnType result;
 
+        // saam::addReturnType operator()(int x, int y)
+        // {
+        //     result.add = px->SendRequest(0,x,y);
+        //     return result;
+        // }
+        int operator()(int p1, int p2)
+        {
+            return px->SendRequest(0,p1,p2);
+        }
 
-// namespace ara
-// {
-//    namespace ucm
-//    {
-//       namespace pkgmgr
-//        {  
-//             class add_output
-//             {
-//                 private:
-//                 proxy* x;
-//                 public:
-//                 add_output(proxy* x)
-//                 {
-//                      this->x = x;
-//                 }
-                
-//                 ::ara::ucm::pkgmgr::addReturnType result;
+        ~add_output(){};
+    };
 
-//                 void operator()()
-//                 {
-//                    x->SendRequest();
-//                 }
+}  //ara
 
-//                 ~add_output(){};
-//             };
-
-//         }  //pkgmgr
-//    }  //ucm
-// }  //ara
-
-// #endif //ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H
+#endif //ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H

@@ -13,20 +13,15 @@
 
 
 
-namespace ara
+namespace saam
 {
-namespace ucm
-{
-namespace pkgmgr
-{
+
    struct addReturnType
    {
       int add;
 
    };
 
-}
-}
 }
 
 #endif // ARA_UCM_PKGMGR_IMPL_TYPE_ACTIVATERETURNTYPE_H
