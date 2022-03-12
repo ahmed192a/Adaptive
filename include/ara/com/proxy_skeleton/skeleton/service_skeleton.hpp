@@ -18,6 +18,7 @@
 #include "ara/com/marshal.hpp"
 #include <utility>
 #include <unistd.h>
+#include "ara/com/serializer.hpp"
 // #include <map>
 #include <queue>
 #include <future>
@@ -78,13 +79,19 @@ namespace ara
                     template <typename T>
                     void SendEvent(int event_id, const T &data, bool is_field, sockaddr_in *client_add)
                     {
-                        ara::com::proxy_skeleton::event_info<T> msg_;
+                        ara::com::Serializer ser;
+                        ser.serialize(data);
+                        ara::com::proxy_skeleton::event_info msg_;
                         msg_.service_id = m_instance.GetInstanceId();
                         msg_.event_id = event_id;
-                        ara::com::proxy_skeleton::event_notify<T> msg_e = {event_id, m_instance.GetInstanceId(), data};
-                        int x = 5;
+                        msg_.data = ser.Payload();
+                        ser.Clear();
+                        uint32_t size = sizeof(msg_);
+                        ser.serialize(size);
+                        ser.serialize(msg_);
+                        std::vector<uint8_t> msg = ser.Payload();
                         // server_client_connenction.OpenSocket();
-                        server_client_connenction->UDPSendTo((void *)&msg_e, sizeof(msg_e), (sockaddr *)client_add);
+                        server_client_connenction->UDPSendTo((void *)&msg[0], msg.size(), (sockaddr *)client_add);
                         // server_client_connenction->UDPSendTo((void *)&data, sizeof(data), (sockaddr *)client_add);
                         // server_client_connenction.CloseSocket();
                     }

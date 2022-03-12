@@ -45,16 +45,9 @@ namespace ara
                         m_service->EventUnsubscribe<T>(m_event_id);
                     }
 
-                    // template <typename T>
                     void handlecall(ara::com::proxy_skeleton::event_notify<T> val)
                     {
-
-                        // sockaddr_in echoClntAddr; /* Address of datagram source */
-                        // unsigned int clntLen;     /* Address length */
-
-                        // clntLen = sizeof(echoClntAddr);
-                        // m_service->Cient_Server_connection_DG->UDPRecFrom(&event_data, sizeof(event_data), (sockaddr *)&echoClntAddr, &clntLen);
-                         event_data = val.newdata;
+                        event_data = val.newdata;
                     }
                     T get_value()
                     {

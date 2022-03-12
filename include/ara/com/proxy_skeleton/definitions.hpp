@@ -56,9 +56,12 @@ namespace ara
                 int port_number;
                 bool message_type;
             };
-            template <typename T>
+
             struct event_info
             {
+                uint32_t service_id;
+                uint32_t event_id;
+
                 /**
                  * 0 ->new value
                  * 1 ->subscripe
@@ -66,10 +69,8 @@ namespace ara
                  * 3 ->set
                  * 4 ->get
                  */
-                uint8_t operation;  
-                int event_id;
-                int service_id;
-                T data;
+                uint8_t operation;
+                std::vector<uint8_t> data;
             };
             template <typename T>
             struct event_notify

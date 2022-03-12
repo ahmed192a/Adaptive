@@ -112,7 +112,7 @@ namespace ara
                             m_service->SendEvent<T>(m_event_id, event_data, false,&(fg));
                         }
                     }
-                    virtual void handlecall(ara::com::proxy_skeleton::event_info<T> &msg, ara::com::proxy_skeleton::Client_udp_Info client)
+                    virtual void handlecall(ara::com::proxy_skeleton::event_info &msg, ara::com::proxy_skeleton::Client_udp_Info client)
                     {
                         switch (msg.operation)
                         {

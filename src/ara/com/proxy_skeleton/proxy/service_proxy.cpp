@@ -56,6 +56,8 @@ namespace ara
                     // receive a struct
                     Client_SD.ClientRead(&this->server_handle, sizeof(server_handle));
                     Client_SD.CloseSocket();
+
+                    
                     return 0;
                 }
 

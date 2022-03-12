@@ -10,21 +10,11 @@
 #define SERVICE_ID 32
 CServer client_event_h(SOCK_DGRAM);
 ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handler(&client_event_h,SD_PORT);
-saam::proxy server_proxy_obj( &proxy_handler);
-/**
- * @todo
- *  - event send data in update notify
- */
+saam::proxy server_proxy_obj(&proxy_handler);
+
 Color::Modifier green(Color::FG_GREEN);
 Color::Modifier def(Color::FG_DEFAULT);
-void event_field_handler(int signum, siginfo_t *siginfo, void *ucontext)
-{
-    if (signum != SIGUSR1)
-        return;
-    if (siginfo->si_code != SI_QUEUE)
-        return;
-    std::cout << "\t\t\t[CLIENT] receiver: Got value " << siginfo->si_int << std::endl;
-}
+
 /**
  * @brief handle Event in client
  * 
@@ -33,6 +23,59 @@ void event_field_handler(int signum, siginfo_t *siginfo, void *ucontext)
  * @todo
  *      - use serialzer and deserializer
  *      - get the second value which is event id then send it to the corresponding handler
+ * 
+ * @param sigtype 
+ */
+void Event_Handler(int sigtype);
+
+int main(int argc, char **argv)
+{
+    client_event_h.OpenSocket(5875);
+    client_event_h.BindServer();
+    client_event_h.EnableInterrupt(Event_Handler);
+
+    std::string sma = "heloo";
+    std::cout << green;
+    pid_t pid = getpid();
+    std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
+    int result;
+
+
+    // Event
+    server_proxy_obj.FindService(32);
+
+    std::cout << "\t\t\t[CLIENT] Result of ADD : ";
+    result = server_proxy_obj.ADD(13, 85);
+    std::cout << result << std::endl;
+
+    server_proxy_obj.ev1.Subscribe();
+    sleep(5);
+    server_proxy_obj.ev2.Subscribe();
+    sleep(5);
+    server_proxy_obj.fd1.Subscribe();
+    sleep(5);
+    int x = 565;
+    std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_obj.fd1.Set(x) << std::endl;
+
+    std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_obj.fd1.Get() << std::endl;
+    // sleep(5);
+
+    server_proxy_obj.fd1.UnSubscribe();
+
+    while (1)
+    {
+        sleep(1);
+        printf(".\n");
+        fflush(stdout);
+    }
+
+    return 0;
+}
+
+
+
+/**
+ * @brief handle all event and field updates
  * 
  * @param sigtype 
  */
@@ -80,54 +123,4 @@ void Event_Handler(int sigtype)
     default:
         break;
     }
-}
-
-int main(int argc, char **argv)
-{
-    client_event_h.OpenSocket(5875);
-    client_event_h.BindServer();
-    client_event_h.EnableInterrupt(Event_Handler);
-
-    std::string sma = "heloo";
-    std::cout << green;
-    pid_t pid = getpid();
-    std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
-    int result;
-
-    // struct sigaction signal_action;
-    // signal_action.sa_sigaction = event_field_handler;
-    // sigemptyset(&signal_action.sa_mask);
-    // signal_action.sa_flags = SA_SIGINFO;
-    // sigaction(SIGUSR1, &signal_action, NULL);
-
-    // Event
-
-    server_proxy_obj.FindService(32);
-
-    std::cout << "\t\t\t[CLIENT] Result of ADD : ";
-    result = server_proxy_obj.ADD(13, 85);
-    std::cout << result << std::endl;
-
-    server_proxy_obj.ev1.Subscribe();
-    sleep(5);
-    server_proxy_obj.ev2.Subscribe();
-    sleep(5);
-    server_proxy_obj.fd1.Subscribe();
-    sleep(5);
-    int x = 565;
-    std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_obj.fd1.Set(x) << std::endl;
-
-    std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_obj.fd1.Get() << std::endl;
-    // sleep(5);
-
-    server_proxy_obj.fd1.UnSubscribe();
-
-    while (1)
-    {
-        sleep(1);
-        printf(".\n");
-        fflush(stdout);
-    }
-
-    return 0;
 }

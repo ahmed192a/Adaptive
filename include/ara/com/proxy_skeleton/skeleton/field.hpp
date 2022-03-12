@@ -15,7 +15,7 @@
 // #include <string>
 // #include <future>
 #include <bits/stdc++.h>
-
+#include "ara/com/deserializer.hpp"
 #include "ara/com/proxy_skeleton/skeleton/event.hpp"
 namespace ara
 {
@@ -69,8 +69,10 @@ namespace ara
                     // m_name{name}
                     {
                     }
-                    void handlecall(ara::com::proxy_skeleton::event_info<T> &msg, ara::com::proxy_skeleton::Client_udp_Info client) override
+                    void handlecall(ara::com::proxy_skeleton::event_info &msg, ara::com::proxy_skeleton::Client_udp_Info client) override
                     {
+                        ara::com::Deserializer dser;
+                        ara::com::Serializer ser;
                         switch (msg.operation)
                         {
                         case 0:
@@ -84,11 +86,13 @@ namespace ara
                             Event<T>::Del_subscriber(client);
                             break;
                         case 3:
-                            Event<T>::event_data = msg.data;
+
+                            Event<T>::event_data = dser.deserialize<T>(msg.data,0);
                             break;
 
                         case 4:
-                            msg.data = Event<T>::event_data;
+                            ser.serialize(Event<T>::event_data);
+                            msg.data = ser.Payload();
                             break;
                         default:
                             break;
