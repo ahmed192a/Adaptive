@@ -40,9 +40,13 @@ void Handle_IO(int sigtype)
 
     ara::com::proxy_skeleton::event_info evr;
     clntLen = sizeof(echoClntAddr);
+    uint32_t sizeMSG;
+    server_main_socket_DG.UDPRecFrom((void *)&sizeMSG, sizeof(sizeMSG), (struct sockaddr *)&echoClntAddr, &clntLen);
+
+    printf("\n[SERVER]  ->> Handling client %s %d with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port,sizeMSG);
+    evr.data.resize(sizeMSG );
     server_main_socket_DG.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
 
-    printf("\n[SERVER]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
     fflush(stdout);
     ara::com::proxy_skeleton::Client_udp_Info cudp;
     cudp.port = echoClntAddr.sin_port;
@@ -64,12 +68,12 @@ void Handle_IO(int sigtype)
             server_skeleton_obj.field1.handlecall(evr, cudp);
             if (evr.operation == 4)
             {
-                std::cout << "[server] get field1 "  << std::endl;
+                std::cout << "[server] get field1 " << std::endl;
                 server_main_socket_DG.UDPSendTo((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr);
             }
             else if (evr.operation == 3)
             {
-                std::cout << "[server] set field1 "  << std::endl;
+                std::cout << "[server] set field1 " << std::endl;
             }
             else
             {
