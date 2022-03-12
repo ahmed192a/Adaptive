@@ -47,7 +47,7 @@ namespace ara
                         std::cout << ("[SERVICE PROXY] ERROR : Unable to local machine get Host Name\n");
                     }
 
-                    Client_SD.GetHost("127.0.0.1", SD_PortNum);
+                    Client_SD.GetHost("127.0.0.1", m_proxy_handle->m_SD_PortNum);
                     Client_SD.ClientConnect();
 
                     // send the service id
@@ -55,20 +55,15 @@ namespace ara
 
                     // receive a struct
                     Client_SD.ClientRead(&this->server_handle, sizeof(server_handle));
-                    // std::cout << "Received port number: " << server_handle.port_number << "  " << server_handle.process_id << std::endl;
-                    // std::cout << "\n=> Connection terminated.\nGoodbye...\n";
-
-                    // we then call the setter function to set its private data, that later will be used to subscribe to an event
-                    // setter(receive.port_number, receive.process_id);
                     Client_SD.CloseSocket();
                     return 0;
                 }
 
                 
 
-                ServiceProxy::ServiceProxy(CServer* client_UDP)
-                :Cient_Server_connection(SOCK_STREAM),
-                Cient_Server_connection_DG{client_UDP}
+                ServiceProxy::ServiceProxy(SP_Handle * proxy_handle)
+                :m_proxy_handle{proxy_handle},
+                Cient_Server_connection(SOCK_STREAM)
                 {
                 }
                 ServiceProxy::~ServiceProxy()

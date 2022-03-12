@@ -1,8 +1,8 @@
 #include "ara/SD_c/proxy.hpp"
 
 namespace saam{
-    proxy::proxy(CServer* clinet_UDP)
-        :ara::com::proxy_skeleton::proxy::ServiceProxy(clinet_UDP), 
+    proxy::proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle* proxy_handle)
+        :ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle), 
         ev1(this,"event1" , 0),
         ev2(this,"event2" , 1),
         fd1(this , "field1" , 2),

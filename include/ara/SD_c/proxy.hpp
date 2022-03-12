@@ -39,7 +39,7 @@ namespace saam
         events::EV1 ev1;
         events::EV1 ev2;
         fields::FD1 fd1;
-        proxy(CServer* cleint_UPD);
+        proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle *proxy_handle);
 
         int Add(int x, int y);
 

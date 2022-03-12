@@ -9,7 +9,8 @@
 #define SD_PORT 1690
 #define SERVICE_ID 32
 CServer client_event_h(SOCK_DGRAM);
-saam::proxy server_proxy_obj(&client_event_h);
+ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handler(&client_event_h,SD_PORT);
+saam::proxy server_proxy_obj( &proxy_handler);
 /**
  * @todo
  *  - event send data in update notify
