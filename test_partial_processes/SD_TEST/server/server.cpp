@@ -38,11 +38,15 @@ void Handle_IO(int sigtype)
     sockaddr_in echoClntAddr; /* Address of datagram source */
     unsigned int clntLen;     /* Address length */
 
-    ara::com::proxy_skeleton::event_info<int> evr;
+    ara::com::proxy_skeleton::event_info evr;
     clntLen = sizeof(echoClntAddr);
+    uint32_t sizeMSG;
+    server_main_socket_DG.UDPRecFrom((void *)&sizeMSG, sizeof(sizeMSG), (struct sockaddr *)&echoClntAddr, &clntLen);
+
+    printf("\n[SERVER]  ->> Handling client %s %d with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port,sizeMSG);
+    evr.data.resize(sizeMSG );
     server_main_socket_DG.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
 
-    printf("\n[SERVER]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
     fflush(stdout);
     ara::com::proxy_skeleton::Client_udp_Info cudp;
     cudp.port = echoClntAddr.sin_port;
@@ -59,37 +63,28 @@ void Handle_IO(int sigtype)
         case 1:
             std::cout << "[server] sub event2 start\n";
             server_skeleton_obj.event2.handlecall(evr, cudp);
-            // if (evr.subscribe)
-            //     server_skeleton_obj.event2.set_subscriber(cudp);
-            // else
-            //     server_skeleton_obj.event2.Del_subscriber(cudp);
             break;
         case 2:
             server_skeleton_obj.field1.handlecall(evr, cudp);
             if (evr.operation == 4)
             {
-                std::cout << "[server] get field1 " << evr.data << std::endl;
+                std::cout << "[server] get field1 " << std::endl;
                 server_main_socket_DG.UDPSendTo((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr);
             }
             else if (evr.operation == 3)
             {
-                std::cout << "[server] set field1 " << server_skeleton_obj.field1.event_data << std::endl;
+                std::cout << "[server] set field1 " << std::endl;
             }
             else
             {
                 std::cout << "[server] sub field1 start\n";
             }
-            // if (evr.subscribe)
-            //     server_skeleton_obj.field1.set_subscriber(cudp);
-            // else
-            //     server_skeleton_obj.field1.Del_subscriber(cudp);
             break;
 
         default:
             break;
         }
         break;
-
     default:
         break;
     }

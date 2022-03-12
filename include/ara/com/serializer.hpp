@@ -40,6 +40,10 @@ namespace ara
                 memcpy(&buffer[0], (const void *)&data, sizeof(data));
                 payload.insert(payload.end(), buffer.begin(), buffer.end());
             }
+            void Clear()
+            {
+                payload.clear();
+            }
             std::vector<uint8_t> Payload()
             {
                 return payload;

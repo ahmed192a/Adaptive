@@ -51,22 +51,21 @@ namespace ara
                         uint32_t m_SD_PortNum;
                         SP_Handle(CServer *client_UPD, uint32_t SD_PortNum)
                             : m_client_UPD{client_UPD},
-                            m_SD_PortNum{SD_PortNum}
+                              m_SD_PortNum{SD_PortNum}
                         {
                         }
                         ~SP_Handle()
                         {
                         }
-
                     };
 
                     // CServer *Cient_Server_connection_DG;
                     SP_Handle *m_proxy_handle;
                     int m_service_id;
-                    // a struct to receive in it the process id & port number 
+                    // a struct to receive in it the process id & port number
                     //  of the server from service discovery
-                    SD_data server_handle; 
-                    ServiceProxy(SP_Handle * proxy_handle);
+                    SD_data server_handle;
+                    ServiceProxy(SP_Handle *proxy_handle);
                     virtual ~ServiceProxy();
                     int FindService(int service_id); // we send to the service discovery a request for a specific service
 
@@ -167,7 +166,7 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        event_info<T> e_info;
+                        event_info e_info;
                         e_info.operation = 1;
                         e_info.event_id = event_id;
                         e_info.service_id = m_service_id;
@@ -192,7 +191,7 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        event_info<T> e_info;
+                        event_info e_info;
                         e_info.operation = 2;
                         e_info.event_id = event_id;
                         e_info.service_id = m_service_id;
@@ -202,6 +201,43 @@ namespace ara
                         ser.serialize(e_info);
                         std::vector<uint8_t> msgser = ser.Payload();
                         m_proxy_handle->m_client_UPD->UDPSendTo((void *)&msgser[0], sizeof(msgser), (sockaddr *)&serv_addr);
+                    }
+
+                    void Field_get(ara::com::proxy_skeleton::event_info &f_get)
+                    {
+                        ara::com::Serializer ser;
+                        uint32_t size = sizeof(f_get);
+                        ser.serialize(size);
+                        ser.serialize(f_get);
+                        std::vector<uint8_t> msg = ser.Payload();
+
+                        struct sockaddr_in serv_addr;
+                        serv_addr.sin_family = AF_INET;
+                        serv_addr.sin_port = htons(server_handle.port_number);
+                        if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
+                        {
+                            printf("\nInvalid address/ Address not supported \n");
+                        }
+                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&msg[0], msg.size(), (sockaddr *)&serv_addr);
+                        socklen_t slen = sizeof(serv_addr);
+                        m_proxy_handle->m_client_UPD->UDPRecFrom(&f_get, sizeof(f_get), (sockaddr *)&serv_addr, &slen);
+                    }
+                    void Field_set(ara::com::proxy_skeleton::event_info &f_set)
+                    {
+                        ara::com::Serializer ser;
+                        uint32_t size = sizeof(f_set);
+                        ser.serialize(size);
+                        ser.serialize(f_set);
+                        std::vector<uint8_t> msg = ser.Payload();
+
+                        struct sockaddr_in serv_addr;
+                        serv_addr.sin_family = AF_INET;
+                        serv_addr.sin_port = htons(server_handle.port_number);
+                        if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
+                        {
+                            printf("\nInvalid address/ Address not supported \n");
+                        }
+                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&msg[0], msg.size(), (sockaddr *)&serv_addr);
                     }
                 };
 
