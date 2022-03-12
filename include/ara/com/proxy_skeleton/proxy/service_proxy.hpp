@@ -53,84 +53,72 @@ namespace ara
                     int FindService(int service_id); // we send to the service discovery a request for a specific service
 
                     // send to the server a requested method
-                    template <typename... Args>
-                    int SendRequest(Args &&...args)
+                    // template <typename... Args>
+                    // int SendRequest(Args &&...args)
+                    // {
+                    //     ara::com::Serializer ser;
+                    //     (ser.serialize(std::forward<Args>(args)), ...);
+                    //     int bufsize = 256;
+                    //     char buffer[bufsize];
+                    //     memset(buffer, '\0', bufsize);
+                    //     Cient_Server_connection.OpenSocket();
+                    //     Cient_Server_connection.GetHost("127.0.0.1", this->server_handle.port_number);
+                    //     Cient_Server_connection.ClientConnect();
+                    //     Cient_Server_connection.ClientRead(buffer, bufsize);
+                    //     std::vector<uint8_t> msgser = ser.Payload();
+                    //     int msg_size = msgser.size();
+                    //     Cient_Server_connection.ClientWrite((void *)&msg_size, sizeof(msg_size));
+                    //     Cient_Server_connection.ClientWrite(&msgser[0], msg_size);
+                    //     int result; // to save the result of the method
+                    //     // receive the methods result
+                    //     Cient_Server_connection.ClientRead((int *)&result, sizeof(result));
+                    //     Cient_Server_connection.CloseSocket();
+                    //     return result;
+                    // }
+
+
+                    template <typename R, typename... Args>
+                    R SendRequest(uint32_t method_id,Args &&...args)
                     {
                         ara::com::Serializer ser;
+                        ser.serialize(method_id);
                         (ser.serialize(std::forward<Args>(args)), ...);
                         int bufsize = 256;
                         char buffer[bufsize];
                         memset(buffer, '\0', bufsize);
-
                         Cient_Server_connection.OpenSocket();
-
-                        // talk to the server using the received port number
                         Cient_Server_connection.GetHost("127.0.0.1", this->server_handle.port_number);
                         Cient_Server_connection.ClientConnect();
-
-                        // Receive a confirmation message from the server
                         Cient_Server_connection.ClientRead(buffer, bufsize);
-
-                        // C_Info x = {getpid(), "add", 3, 2};
                         std::vector<uint8_t> msgser = ser.Payload();
                         int msg_size = msgser.size();
                         Cient_Server_connection.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         Cient_Server_connection.ClientWrite(&msgser[0], msg_size);
-                        // printf("%d - %d - %d - %d \n", msgser[4],msgser[5],msgser[6],msgser[7]);
-
-                        // send the requested method, and the parameters
-                        // Cient_Server_connection.ClientWrite(&x, sizeof(C_Info));
-
-                        int result; // to save the result of the method
-
+                        R result; // to save the result of the method
                         // receive the methods result
                         Cient_Server_connection.ClientRead((int *)&result, sizeof(result));
-
                         Cient_Server_connection.CloseSocket();
-
                         return result;
-                    }
-
-                    template <typename... Args>
-                    std::future<void> SendRequest(std::string name, Args &&...args)
-                    {
-                        std::future<void> f;
-
-                        // f = m_binding->SendRequest(name, std::forward<Args>(args)...);
-
-                        return f;
-                    }
-
-                    template <typename R, typename... Args>
-                    std::future<R> SendRequest(std::string name, Args &&...args)
-                    {
-                        std::future<R> f;
-
-                        // f = m_binding->SendRequest<R>(name, std::forward<Args>(args)...);
-
-                        return f;
+                        // R s;
+                        // return s;
                     }
 
                     template <typename R>
-                    std::future<R> SendRequest(std::string name)
+                    R SendRequest(uint32_t method_id)
                     {
-                        std::future<R> f;
-
-                        // f = m_binding->SendRequest<R>(name);
-
-                        return f;
+                        R s;
+                        return s;
                     }
 
                     template <typename... Args>
-                    void SendFireAndForgetRequest(std::string name, Args &&...args)
+                    void SendFireAndForgetRequest(uint32_t method_id, Args &&...args)
                     {
-                        // m_binding->SendFireAndForgetRequest(name, std::forward<Args>(args)...);
                     }
 
-                    void SendFireAndForgetRequest(std::string name)
+                    void SendFireAndForgetRequest(uint32_t method_id)
                     {
-                        // m_binding->SendFireAndForgetRequest(name);
                     }
+
                     // event
                     template <typename T>
                     void EventSubscribe(int event_id)
