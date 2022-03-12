@@ -17,6 +17,7 @@
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/marshal.hpp"
 #include <utility>
+#include <unistd.h>
 // #include <map>
 #include <queue>
 #include <future>
@@ -35,11 +36,17 @@ namespace ara
                 public:
                     ServiceSkeleton(
                         std::string name,
+                        int portNum,
+                        int sd_portNum,
+                        int service_id,
                         ara::com::InstanceIdentifier instance,
                         CServer *server_UDP,
                         ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent)
                         : m_instance(instance.GetInstanceId()),
                           m_name{name},
+                          portNumber{portNum},
+                          service_descovery_port_number{sd_portNum}, 
+                          service_id{service_id},
                           m_mode{mode},
                           server_client_connenction{server_UDP}
                     {
@@ -47,19 +54,35 @@ namespace ara
 
                     virtual ~ServiceSkeleton() {}
 
-                    virtual void OfferService() {}
+                    virtual void OfferService() 
+                    {
+                        SD_data service = {service_id, getpid() ,portNumber, true};
 
-                    void StopOfferService() {}
+                        this->cliaddr.sin_family = AF_INET; // IPv4
+                        this->cliaddr.sin_addr.s_addr = INADDR_ANY;
+                        this->cliaddr.sin_port = htons(service_descovery_port_number);
+
+                        this->server_client_connenction->UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+                    }
+
+                    void StopOfferService() 
+                    {
+                        SD_data service = {service_id, getpid() ,portNumber, false};
+
+                        this->server_client_connenction->UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+                        int x;
+                        socklen_t len = sizeof(this->cliaddr);
+                    }
 
                     // std::future<bool> ProcessNextMethodCall(){}
                     template <typename T>
                     void SendEvent(int event_id, const T &data, bool is_field, sockaddr_in *client_add)
                     {
-                        ara::com::proxy_skeleton::event_info<T> msg_ ;
+                        ara::com::proxy_skeleton::event_info<T> msg_;
                         msg_.service_id = m_instance.GetInstanceId();
                         msg_.event_id = event_id;
                         ara::com::proxy_skeleton::event_notify<T> msg_e = {event_id, m_instance.GetInstanceId(), data};
-                        int x=5;
+                        int x = 5;
                         // server_client_connenction.OpenSocket();
                         server_client_connenction->UDPSendTo((void *)&msg_e, sizeof(msg_e), (sockaddr *)client_add);
                         // server_client_connenction->UDPSendTo((void *)&data, sizeof(data), (sockaddr *)client_add);
@@ -67,8 +90,6 @@ namespace ara
                     }
 
                 protected:
-                    
-
                     void init() {}
                     // virtual void DispatchMethodCall(Message msg, std::shared_ptr<int> binding) = 0;
 
@@ -169,6 +190,11 @@ namespace ara
                     void ProcessRequest();
 
                 private:
+                    int portNumber; /* Server PortNumber */
+                    int service_id;
+                    int service_descovery_port_number;
+                    struct sockaddr_in cliaddr;
+
                     template <typename Class, typename R, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
                                      std::future<R> (Class::*method)(Args...),

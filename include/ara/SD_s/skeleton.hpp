@@ -18,6 +18,10 @@
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
 using C_Info = ara::com::proxy_skeleton::C_Info;
+
+#define portNumber 5365
+#define service_descovery_port_number 1690
+
 namespace event
 {
     using event = ara::com::proxy_skeleton::skeleton::Event<int>;
@@ -32,9 +36,9 @@ class skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
 {
 private:
     /* data */
-    const int portNumber = 5365;
+    // int portNumber = 5365;
     int service_id;
-    const int service_descovery_port_number = 1690;
+    // int service_descovery_port_number = 1690;
     CServer *s1;
     struct sockaddr_in cliaddr;
 
@@ -44,10 +48,6 @@ public:
     field::field field1;
     skeleton(int service_id, CServer *server_udp);
     ~skeleton();
-    void start_service();
     void method_dispatch(std::vector<uint8_t> &message, Socket &cserver);
-    void StopOfferService();
     int Add(std::vector<uint8_t> msg);
-
-
 };
