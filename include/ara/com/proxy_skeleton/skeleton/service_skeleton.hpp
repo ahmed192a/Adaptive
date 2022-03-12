@@ -35,24 +35,42 @@ namespace ara
                 public:
                     ServiceSkeleton(
                         std::string name,
-                        
                         ara::com::InstanceIdentifier instance,
+                        CServer *server_UDP,
                         ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent)
-                        : m_instance(instance.GetInstanceId()), m_name{name}, m_mode{mode}
+                        : m_instance(instance.GetInstanceId()),
+                          m_name{name},
+                          m_mode{mode},
+                          server_client_connenction{server_UDP}
                     {
                     }
 
-                    virtual ~ServiceSkeleton(){}
+                    virtual ~ServiceSkeleton() {}
 
-                    void OfferService(){}
+                    virtual void OfferService() {}
 
-                    void StopOfferService(){}
+                    void StopOfferService() {}
 
                     // std::future<bool> ProcessNextMethodCall(){}
+                    template <typename T>
+                    void SendEvent(int event_id, const T &data, bool is_field, sockaddr_in *client_add)
+                    {
+                        ara::com::proxy_skeleton::event_info<T> msg_ ;
+                        msg_.service_id = m_instance.GetInstanceId();
+                        msg_.event_id = event_id;
+                        ara::com::proxy_skeleton::event_notify<T> msg_e = {event_id, m_instance.GetInstanceId(), data};
+                        int x=5;
+                        // server_client_connenction.OpenSocket();
+                        server_client_connenction->UDPSendTo((void *)&msg_e, sizeof(msg_e), (sockaddr *)client_add);
+                        // server_client_connenction->UDPSendTo((void *)&data, sizeof(data), (sockaddr *)client_add);
+                        // server_client_connenction.CloseSocket();
+                    }
 
                 protected:
-                    void init(){}
-                    //virtual void DispatchMethodCall(Message msg, std::shared_ptr<int> binding) = 0;
+                    
+
+                    void init() {}
+                    // virtual void DispatchMethodCall(Message msg, std::shared_ptr<int> binding) = 0;
 
                     template <typename Class, typename R, typename... Args>
                     void HandleCall(Class &c,
@@ -146,11 +164,6 @@ namespace ara
                         return p.get_future();
                     }
 
-                    template <typename T>
-                    void SendEvent(std::string eventName, const T &data, bool is_field)
-                    {
-                    }
-
                     bool HasRequest();
 
                     void ProcessRequest();
@@ -171,16 +184,13 @@ namespace ara
                         // std::future<R> f = (c.*method)(unmarshaller.template unmarshal<index>()...);
                         // p->set_value((c.*method)(unmarshaller.template unmarshal<index>()...));
 
-
-
-
-                       // f.then([this, msg, binding](std::future<R> &&f) -> bool
+                        // f.then([this, msg, binding](std::future<R> &&f) -> bool
                         //       {
-                            R r = f.get();
-                            // get the data then serialize it and send it
-                            binding.Send(&r, sizeof(int));
-                            binding.CloseSocket();
-                            // return true; });
+                        R r = f.get();
+                        // get the data then serialize it and send it
+                        binding.Send(&r, sizeof(int));
+                        binding.CloseSocket();
+                        // return true; });
                     }
                     template <typename Class, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
@@ -195,13 +205,13 @@ namespace ara
 
                         // f.then([this, msg, binding](std::future<void> &&f) -> bool
                         //        {
-                            // TO DO: no return value but return result
-                            f.get();
-                            // get the data then serialize it and send it
-                            
-                            binding.Send(&msg, sizeof(int));
-                            binding.CloseSocket();
-                            // return true; });
+                        // TO DO: no return value but return result
+                        f.get();
+                        // get the data then serialize it and send it
+
+                        binding.Send(&msg, sizeof(int));
+                        binding.CloseSocket();
+                        // return true; });
                     }
 
                     template <typename Class, typename... Args, std::size_t... index>
@@ -219,11 +229,13 @@ namespace ara
                     int m_fd;
                     ara::com::InstanceIdentifier m_instance;
                     ara::com::MethodCallProcessingMode m_mode;
-                    bool m_terminated;
-                    std::queue<std::shared_ptr<Message>> m_requestMessages;
-                    std::mutex m_mutex;
-                    std::condition_variable m_condition;
-                    std::vector<std::shared_ptr<std::promise<void>>> m_thread_joins;
+                    CServer *server_client_connenction;
+
+                    // bool m_terminated;
+                    // std::queue<std::shared_ptr<Message>> m_requestMessages;
+                    // std::mutex m_mutex;
+                    // std::condition_variable m_condition;
+                    // std::vector<std::shared_ptr<std::promise<void>>> m_thread_joins;
                 };
 
             } // skeleton

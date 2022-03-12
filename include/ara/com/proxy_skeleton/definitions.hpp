@@ -56,15 +56,42 @@ namespace ara
                 int port_number;
                 bool message_type;
             };
-            struct event_info{
-                int process_id;
-                char event_name[30];
+            template <typename T>
+            struct event_info
+            {
+                /**
+                 * 0 ->new value
+                 * 1 ->subscripe
+                 * 2 ->unsubscripe
+                 * 3 ->set
+                 * 4 ->get
+                 */
+                uint8_t operation;  
                 int event_id;
                 int service_id;
+                T data;
+            };
+            template <typename T>
+            struct event_notify
+            {
+                int event_id;
+                int service_id;
+                T newdata;
+            };
+            struct Client_udp_Info
+            {
+                int port;
+                std::string addr;
+                bool operator==(const Client_udp_Info &kl)
+                {
+                    if (port == kl.port && addr == kl.addr)
+                        return true;
+                    return false;
+                }
             };
 
         } // namespace proxy_skeleton
-    } // namespace com
+    }     // namespace com
 } // namespace ara
 
 #endif // ARA_COM_PROXY_SKELETON_DEFINITIONS_H_

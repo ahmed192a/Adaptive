@@ -29,8 +29,7 @@ namespace ara
                         ServiceProxy *service,
                         std::string name,
                         int event_id)
-                        : Cient_Server_connection(SOCK_STREAM),
-                          m_service{service},
+                        : m_service{service},
                           m_name{name},
                           m_event_id{event_id}
                     {
@@ -38,57 +37,24 @@ namespace ara
                     ~Event() {}
                     void Subscribe()
                     {
-                        // We first use signals to inform the sever that we wanna subscribe to an event
-                        union sigval sigval;
-                        sigval.sival_int = 2;
-
-                        // here we're sending number 2 to the server
-                        sigqueue(m_service->server_handle.process_id, SIGUSR1, sigval);
-
-                        // then here we open a socket between server and client
-
-                        Cient_Server_connection.OpenSocket();
-                        Cient_Server_connection.GetHost("127.0.0.1", m_service->server_handle.port_number);
-                        Cient_Server_connection.ClientConnect();
-
-                        // here we're sending the event_name
-                        event_info e_info;
-                        e_info.process_id = getpid();
-                        e_info.event_id = m_event_id;
-                        e_info.service_id = m_service->m_service_id;
-                        strcpy(e_info.event_name, m_name.data());
-                        Cient_Server_connection.ClientWrite((void *)&e_info, sizeof(e_info));
-                        Cient_Server_connection.CloseSocket();
+                        m_service->EventSubscribe<T>(m_event_id);
                     }
 
                     void UnSubscribe()
                     {
-                        // We first use signals to inform the sever that we wanna subscribe to an event
-                        union sigval sigval;
-                        sigval.sival_int = 3;
-
-                        // here we're sending number 2 to the server
-                        sigqueue(m_service->server_handle.process_id, SIGUSR1, sigval);
-
-                        // then here we open a socket between server and client
-
-                        Cient_Server_connection.OpenSocket();
-                        Cient_Server_connection.GetHost("127.0.0.1", m_service->server_handle.port_number);
-                        Cient_Server_connection.ClientConnect();
-
-                        // here we're sending the event_name
-                        event_info e_info;
-                        e_info.process_id = getpid();
-                        e_info.event_id = m_event_id;
-                        e_info.service_id = m_service->m_service_id;
-                        strcpy(e_info.event_name, m_name.data());
-                        Cient_Server_connection.ClientWrite((void *)&e_info, sizeof(e_info));
-                        Cient_Server_connection.CloseSocket();
+                        m_service->EventUnsubscribe<T>(m_event_id);
                     }
 
-                    void handlecall(T msg_data)
+                    // template <typename T>
+                    void handlecall(ara::com::proxy_skeleton::event_notify<T> val)
                     {
-                        event_data = msg_data;
+
+                        // sockaddr_in echoClntAddr; /* Address of datagram source */
+                        // unsigned int clntLen;     /* Address length */
+
+                        // clntLen = sizeof(echoClntAddr);
+                        // m_service->Cient_Server_connection_DG->UDPRecFrom(&event_data, sizeof(event_data), (sockaddr *)&echoClntAddr, &clntLen);
+                         event_data = val.newdata;
                     }
                     T get_value()
                     {
@@ -98,7 +64,6 @@ namespace ara
                 private:
                     ServiceProxy *m_service;
                     std::string m_name;
-                    CClient Cient_Server_connection;
                     T event_data;
                     int m_event_id;
 

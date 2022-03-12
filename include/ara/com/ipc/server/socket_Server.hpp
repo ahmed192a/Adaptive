@@ -18,10 +18,10 @@
 class CServer
 {
 private:
-	int sockfd,newsockfd,portno,type;
 	socklen_t clientlen;
 	struct sockaddr_in serv_addr, cli_addr;
 public:
+	int sockfd,newsockfd,portno,type;
 
 
 	CServer(int type);
@@ -30,6 +30,7 @@ public:
 	error_kind BindServer();
 	error_kind ListenServer(int no);
 	Socket AcceptServer();
+	error_kind EnableInterrupt(void (*SIGIOHandler)(int) );
 	// error_kind SendServer( void* buffer, size_t n);
 	error_kind UDPSendTo( void * buffer,size_t n, sockaddr * address);
 	// error_kind ReceiveServer(void* buffer, size_t n);

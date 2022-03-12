@@ -21,21 +21,85 @@
 
 using namespace std;
 using C_Info = ara::com::proxy_skeleton::C_Info;
-using event_info = ara::com::proxy_skeleton::event_info;
+// using event_info = ara::com::proxy_skeleton::event_info;
 
-CServer server_main_socket(SOCK_STREAM); // Socket between the server and the client
-skeleton server_skeleton_obj(SERVICE_ID);
+CServer server_main_socket(SOCK_STREAM);   // Socket between the server and the client
+CServer server_main_socket_DG(SOCK_DGRAM); // Socket between the server and the client
+
+skeleton server_skeleton_obj(SERVICE_ID, &server_main_socket_DG);
 Color::Modifier blue(Color::FG_BLUE);
 Color::Modifier def(Color::FG_DEFAULT);
 
-void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext);
+// void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext);
+
+void Handle_IO(int sigtype)
+{
+
+    sockaddr_in echoClntAddr; /* Address of datagram source */
+    unsigned int clntLen;     /* Address length */
+
+    ara::com::proxy_skeleton::event_info<int> evr;
+    clntLen = sizeof(echoClntAddr);
+    server_main_socket_DG.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
+
+    printf("\n[SERVER]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
+    fflush(stdout);
+    ara::com::proxy_skeleton::Client_udp_Info cudp;
+    cudp.port = echoClntAddr.sin_port;
+    cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
+    switch (evr.service_id)
+    {
+    case SERVICE_ID:
+        switch (evr.event_id)
+        {
+        case 0:
+            std::cout << "[server] sub event1 start\n";
+            server_skeleton_obj.event1.handlecall(evr, cudp);
+            break;
+        case 1:
+            std::cout << "[server] sub event2 start\n";
+            server_skeleton_obj.event2.handlecall(evr, cudp);
+            // if (evr.subscribe)
+            //     server_skeleton_obj.event2.set_subscriber(cudp);
+            // else
+            //     server_skeleton_obj.event2.Del_subscriber(cudp);
+            break;
+        case 2:
+            server_skeleton_obj.field1.handlecall(evr, cudp);
+            if (evr.operation == 4)
+            {
+                std::cout << "[server] get field1 " << evr.data << std::endl;
+                server_main_socket_DG.UDPSendTo((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr);
+            }
+            else if (evr.operation == 3)
+            {
+                std::cout << "[server] set field1 " << server_skeleton_obj.field1.event_data << std::endl;
+            }
+            else
+            {
+                std::cout << "[server] sub field1 start\n";
+            }
+            // if (evr.subscribe)
+            //     server_skeleton_obj.field1.set_subscriber(cudp);
+            // else
+            //     server_skeleton_obj.field1.Del_subscriber(cudp);
+            break;
+
+        default:
+            break;
+        }
+        break;
+
+    default:
+        break;
+    }
+}
 
 int main(int argc, char **argv)
 {
     /// VARIABLES
     char buffer[256];
     C_Info x;
-
     std::vector<uint8_t> msg;
     int msg_size;
     ara::com::Deserializer dser;
@@ -44,17 +108,25 @@ int main(int argc, char **argv)
     cout << blue << "\t[SERVER] mypid: " << getpid() << endl;
 
     // g_handler = &subscribe_handler2;
-    ara::com::proxy_skeleton::skeleton::EVENT::set_handle(&subscribe_handler2);
-
-    // send to service discovery the offered service
-    server_skeleton_obj.start_service();
-
+    // ara::com::proxy_skeleton::skeleton::EVENT::set_handle(&subscribe_handler2);
     /* TCP with client */
     server_main_socket.OpenSocket(SERVER_PORT);
     server_main_socket.BindServer();
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
 
-    Socket Sclient =  server_main_socket.AcceptServer();
+    server_main_socket_DG.OpenSocket(SERVER_PORT);
+    server_main_socket_DG.BindServer();
+
+    // send to service discovery the offered service
+    server_skeleton_obj.start_service();
+
+    if (server_main_socket_DG.EnableInterrupt(Handle_IO) == FAILED)
+    {
+        cout << "int errrrrrrrrrrrror\n";
+        return -1;
+    }
+
+    Socket Sclient = server_main_socket.AcceptServer();
     cout << blue << "\t[SERVER]  accepted" << endl;
 
     strcpy(buffer, "=> Server connected...\n");
@@ -67,10 +139,10 @@ int main(int argc, char **argv)
     msg.resize(msg_size);
     Sclient.Receive((void *)&msg[0], sizeof(msg));
 
-    Sclient.Receive((void *)&x, sizeof(x));
+    // Sclient.Receive((void *)&x, sizeof(x));
 
     // print the requested method
-    cout << blue << "\t[SERVER] " << x.method_name << endl;
+    // cout << blue << "\t[SERVER] " << x.method_name << endl;
 
     // Perform the requested method then send the result
     server_skeleton_obj.method_dispatch(msg, Sclient);
@@ -104,159 +176,15 @@ int main(int argc, char **argv)
 
     cout << blue << "\n\t[SERVER] Goodbye..." << endl;
 
-    server_skeleton_obj.StopOfferService();
+    // server_skeleton_obj.StopOfferService();
 
     // always be awake to receive stuff from signal
     while (1)
-        sleep(100);
+    {
+        printf(".\n");
+        sleep(1);
+    }
+
     server_main_socket.CloseSocket();
     return 0;
-}
-
-void subscribe_handler2(int signum, siginfo_t *siginfo, void *ucontext)
-{
-    // the next line isn't good but we use it her just for testing for now
-    Socket soc = server_main_socket.AcceptServer();
-    event_info R_e_info;
-
-    if (signum != SIGUSR1)
-        return;
-    if (siginfo->si_code != SI_QUEUE)
-        return;
-
-    cout << blue << "\t[SERVER] receiver: Got value " << siginfo->si_int << endl;
-
-    switch (siginfo->si_int)
-    {
-    case 2:
-        //soc =  server_main_socket.AcceptServer();
-        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
-        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
-
-        switch (R_e_info.service_id)
-        {
-        case 32:
-
-            switch (R_e_info.event_id)
-            {
-            case 0:
-                server_skeleton_obj.event1.set_subscriber(R_e_info.process_id);
-                std::cout << blue << "\n\t[SERVER] Event1: ";
-                server_skeleton_obj.event1.print_subscribers();
-                break;
-            case 1:
-                server_skeleton_obj.event2.set_subscriber(R_e_info.process_id);
-                std::cout << blue << "\n\t[SERVER] Event2: ";
-                server_skeleton_obj.event2.print_subscribers();
-                break;
-            case 2:
-                server_skeleton_obj.field1.set_subscriber(R_e_info.process_id);
-                std::cout << blue << "\n\t[SERVER] Field1: ";
-                server_skeleton_obj.field1.print_subscribers();
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-        soc.CloseSocket();
-        break;
-    case 3:
-        //soc =  server_main_socket.AcceptServer();
-        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
-        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
-
-        switch (R_e_info.service_id)
-        {
-        case 32:
-
-            switch (R_e_info.event_id)
-            {
-            case 0:
-                server_skeleton_obj.event1.Del_subscriber(R_e_info.process_id);
-                std::cout << blue << "\n\t[SERVER] Event1: ";
-                server_skeleton_obj.event1.print_subscribers();
-                break;
-            case 1:
-                server_skeleton_obj.event2.Del_subscriber(R_e_info.process_id);
-                std::cout << blue << "\n\t[SERVER] Event2: ";
-                server_skeleton_obj.event2.print_subscribers();
-                break;
-            case 2:
-                server_skeleton_obj.field1.Del_subscriber(R_e_info.process_id);
-                std::cout << blue << "\n\t[SERVER] Field1: ";
-                server_skeleton_obj.field1.print_subscribers();
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-        soc.CloseSocket();
-        break;
-    case 4:
-        //soc = server_main_socket.AcceptServer();
-        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
-        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
-
-        switch (R_e_info.service_id)
-        {
-        case 32:
-
-            switch (R_e_info.event_id)
-            {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                soc.Send((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
-
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-        soc.CloseSocket();
-
-        break;
-    case 5:
-        //soc = server_main_socket.AcceptServer();
-        soc.Receive((void *)&R_e_info, sizeof(R_e_info));
-        std::cout << "service id " << R_e_info.service_id << " eve id " << R_e_info.event_id << std::endl;
-
-        switch (R_e_info.service_id)
-        {
-        case 32:
-
-            switch (R_e_info.event_id)
-            {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                soc.Receive((void *)&server_skeleton_obj.field1.event_data, sizeof(server_skeleton_obj.field1.event_data));
-
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-        soc.CloseSocket();
-
-        break;
-    default:
-        break;
-    }
 }

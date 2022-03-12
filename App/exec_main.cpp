@@ -17,7 +17,7 @@
 #include <fcntl.h>
 #include <utility>
 #include <sys/wait.h>
-#include "ara/SD_c/proxy.hpp"
+// #include "ara/SD_c/proxy.hpp"
 using namespace ara::exec;
 using namespace ara::exec::parser;
 using namespace std;
@@ -48,7 +48,6 @@ int main(int, char**) {
     // 4. get the state from SM
     // 5. switch state (start terminating sequence and starting sequence)
     
-    saam::proxy p1;
 
     //Log lg;
     //lg.Insert("\n\n----------------------------program started-------------\n", "EM");

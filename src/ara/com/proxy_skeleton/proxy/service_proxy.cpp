@@ -66,7 +66,9 @@ namespace ara
 
                 
 
-                ServiceProxy::ServiceProxy():Cient_Server_connection(SOCK_STREAM)
+                ServiceProxy::ServiceProxy(CServer* client_UDP)
+                :Cient_Server_connection(SOCK_STREAM),
+                Cient_Server_connection_DG{client_UDP}
                 {
                 }
                 ServiceProxy::~ServiceProxy()

@@ -39,7 +39,7 @@ namespace saam
         events::EV1 ev1;
         events::EV1 ev2;
         fields::FD1 fd1;
-        proxy();
+        proxy(CServer* cleint_UPD);
 
         int Add(int x, int y);
 

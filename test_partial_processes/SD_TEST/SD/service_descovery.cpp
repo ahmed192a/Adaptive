@@ -24,7 +24,7 @@ int main()
 {
     Color::Modifier red(Color::FG_RED);
     Color::Modifier def(Color::FG_DEFAULT);
-    cout<<red;
+    cout << red<<"SD\n";
     // cout << "This ->" << red << serverP << def << "<- is red." << endl;
 
     int portNumber = 1690;
@@ -47,11 +47,11 @@ int main()
         while (1)
         {
 
-            cout << red << "[SD] : receiving offers"  << endl;
             // receive a struct containing the service information
             s1.UDPRecFrom(&receive, sizeof(SD_data), (struct sockaddr *)&cliaddr, &len);
             data.push_back(receive);
-            cout << red << "[SD] : Struct: " << receive.port_number << "-" << receive.service_id << "-" << receive.process_id  << endl;
+            cout << red << "[SD] : receiving offers" << endl;
+            cout << red << "[SD] : Struct: " << receive.port_number << "-" << receive.service_id << "-" << receive.process_id << endl;
             // write these information into the csv file
 
             if (receive.message_type)

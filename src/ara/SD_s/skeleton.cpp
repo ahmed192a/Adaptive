@@ -14,14 +14,16 @@ using SD_data = ara::com::proxy_skeleton::SD_data;
 
 
 using namespace std;
-skeleton::skeleton( int service_id)
-:ara::com::proxy_skeleton::skeleton::ServiceSkeleton("skeleton",service_id),
-s1(SOCK_DGRAM) , 
+skeleton::skeleton( int service_id, CServer* server_udp)
+:ara::com::proxy_skeleton::skeleton::ServiceSkeleton("skeleton",service_id, server_udp),
+s1{server_udp}, 
 event1(this , "event1" , 0),
 event2(this , "event2" , 1),
 field1(this , "field1" , 2)
 {
     this->service_id = service_id;
+    // this->s1.OpenSocket(portNumber);
+    // this->s1.BindServer();
 }
 
 skeleton::~skeleton()
@@ -30,15 +32,13 @@ skeleton::~skeleton()
 
 void skeleton::start_service()
 {
-    this->s1.OpenSocket(portNumber);
-    this->s1.BindServer();
     SD_data service = {service_id, getpid() ,portNumber, true};
 
     this->cliaddr.sin_family = AF_INET; // IPv4
     this->cliaddr.sin_addr.s_addr = INADDR_ANY;
     this->cliaddr.sin_port = htons(service_descovery_port_number);
 
-    this->s1.UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+    this->s1->UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
 }
 
 int skeleton::Add(std::vector<uint8_t> msg)
@@ -85,9 +85,9 @@ void skeleton::StopOfferService()
 {
      SD_data service = {service_id, getpid() ,portNumber, false};
 
-    this->s1.UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+    this->s1->UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
     int x;
     socklen_t len = sizeof(this->cliaddr);
-    this->s1.CloseSocket();
+    // this->s1.CloseSocket();
 }
 

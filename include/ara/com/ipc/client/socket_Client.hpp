@@ -26,8 +26,12 @@ public:
 	error_kind OpenSocket();
 	error_kind GetHost(std::string hostname,int hostno);
 	error_kind ClientConnect();
+	error_kind EnableInterrupt(void (*SIGIOHandler)(int) );
+
 	error_kind ClientWrite(void* data, int size);
 	error_kind ClientRead(void* data, int size);
+	error_kind UDPSendTo(void * buffer,size_t n, sockaddr * address);
+	error_kind UDPRecFrom(void * buffer,size_t n, sockaddr * address, socklen_t * size);
 	void CloseSocket();
 };
 

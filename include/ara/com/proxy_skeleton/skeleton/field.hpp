@@ -31,13 +31,12 @@ namespace ara
                 template <typename T>
                 using FieldGetHandler = std::function<std::future<T>()>;
 
-
                 /**
                  * @brief has getter ,setter , notifier
-                 * 
-                 * @tparam T 
+                 *
+                 * @tparam T
                  */
-               template <typename T>
+                template <typename T>
                 class Field : public Event<T>
                 {
                 private:
@@ -59,24 +58,44 @@ namespace ara
                     // {
                     //     m_service->SendEvent(m_name, data, true);
                     // }
-                    // std::set<int> subscribers_data_field; 
-                    Field
-                    (
+                    // std::set<int> subscribers_data_field;
+                    Field(
                         ServiceSkeleton *service,
-                        std::string name , 
-                        int field_id
-                    ):Event<T>(
-                        service,
-                        name ,
-                        field_id
-                    )
+                        std::string name,
+                        int field_id) : Event<T>(service,
+                                                 name,
+                                                 field_id)
                     // m_service{service},
                     // m_name{name}
                     {
                     }
-                    
-                    
-                    virtual ~Field(){}
+                    void handlecall(ara::com::proxy_skeleton::event_info<T> &msg, ara::com::proxy_skeleton::Client_udp_Info client) override
+                    {
+                        switch (msg.operation)
+                        {
+                        case 0:
+                            // new value
+                            // event_data = msg_data;
+                            break;
+                        case 1:
+                            Event<T>::set_subscriber(client);
+                            break;
+                        case 2:
+                            Event<T>::Del_subscriber(client);
+                            break;
+                        case 3:
+                            Event<T>::event_data = msg.data;
+                            break;
+
+                        case 4:
+                            msg.data = Event<T>::event_data;
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+
+                    virtual ~Field() {}
 
                     // // void Update(const T& data , int pid);
                     // void Update(int data, int pid);

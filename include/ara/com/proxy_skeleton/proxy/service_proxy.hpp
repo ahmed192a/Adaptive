@@ -16,12 +16,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "ara/com/ipc/client/socket_Client.hpp"
+#include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
 #include "ara/com/serializer.hpp"
 
 #include <cstring>
 #include <signal.h>
 #include <future>
+#include <arpa/inet.h>
 
 #include <queue>
 using SD_data = ara::com::proxy_skeleton::SD_data;
@@ -41,10 +43,12 @@ namespace ara
                     const int SD_PortNum = 1690;
                     CClient Cient_Server_connection;
 
+                protected:
                 public:
+                    CServer *Cient_Server_connection_DG;
                     int m_service_id;
                     SD_data server_handle; // a struct to receive in it the process id & port number of the server from service discovery
-                    ServiceProxy();
+                    ServiceProxy(CServer *client_UPD);
                     virtual ~ServiceProxy();
                     int FindService(int service_id); // we send to the service discovery a request for a specific service
 
@@ -67,22 +71,20 @@ namespace ara
                         // Receive a confirmation message from the server
                         Cient_Server_connection.ClientRead(buffer, bufsize);
 
-                        C_Info x = {getpid(), "add", 3, 2};
+                        // C_Info x = {getpid(), "add", 3, 2};
                         std::vector<uint8_t> msgser = ser.Payload();
                         int msg_size = msgser.size();
                         Cient_Server_connection.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         Cient_Server_connection.ClientWrite(&msgser[0], msg_size);
                         // printf("%d - %d - %d - %d \n", msgser[4],msgser[5],msgser[6],msgser[7]);
-                        
-                        // send the requested method, and the parameters
-                        Cient_Server_connection.ClientWrite(&x, sizeof(C_Info));
 
+                        // send the requested method, and the parameters
+                        // Cient_Server_connection.ClientWrite(&x, sizeof(C_Info));
 
                         int result; // to save the result of the method
 
                         // receive the methods result
                         Cient_Server_connection.ClientRead((int *)&result, sizeof(result));
-
 
                         Cient_Server_connection.CloseSocket();
 
@@ -128,6 +130,47 @@ namespace ara
                     void SendFireAndForgetRequest(std::string name)
                     {
                         // m_binding->SendFireAndForgetRequest(name);
+                    }
+                    // event
+                    template <typename T>
+                    void EventSubscribe(int event_id)
+                    {
+                        // Cient_Server_connection.OpenSocket();
+                        struct sockaddr_in serv_addr;
+                        serv_addr.sin_family = AF_INET;
+                        serv_addr.sin_port = htons(server_handle.port_number);
+                        // std::cout << "sub port num" << server_handle.port_number << std::endl;
+                        if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
+                        {
+                            printf("\nInvalid address/ Address not supported \n");
+                            // return -1;
+                        }
+                        event_info<T> e_info;
+                        e_info.operation = 1;
+                        e_info.event_id = event_id;
+                        e_info.service_id = m_service_id;
+                        Cient_Server_connection_DG->UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        // Cient_Server_connection.CloseSocket();
+                    }
+                    template <typename T>
+                    void EventUnsubscribe(int event_id)
+                    {
+                        // Cient_Server_connection.OpenSocket();
+                        struct sockaddr_in serv_addr;
+                        serv_addr.sin_family = AF_INET;
+                        serv_addr.sin_port = htons(server_handle.port_number);
+                        // std::cout << "sub port num" << server_handle.port_number << std::endl;
+                        if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
+                        {
+                            printf("\nInvalid address/ Address not supported \n");
+                            // return -1;
+                        }
+                        event_info<T> e_info;
+                        e_info.operation = 2;
+                        e_info.event_id = event_id;
+                        e_info.service_id = m_service_id;
+                        Cient_Server_connection_DG->UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        // Cient_Server_connection.CloseSocket();
                     }
 
                     // HandleType m_handle;
@@ -190,16 +233,12 @@ namespace ara
 
 // static void StopFindService(ara::com::FindServiceHandle handle);
 
-// protected:
 //     void init();
 // friend Event;
 // private:
 // int server_port_number; // to save the received port number from the service discovery
 // void processMessage();
 
-// event
-// void EventSubscribe(std::string name);
-// void EventUnsubscribe(std::string name);
 // void SetEventReceiveHandler(std::string name, std::function<void(std::shared_ptr<std::vector<uint8_t>>)> handler);
 // void UnsetEventReceiveHandler(std::string name);
 // void SetEventSubscriptionStateChangeHandler(std::string name, ara::com::SubscriptionStateChangeHandler handler);

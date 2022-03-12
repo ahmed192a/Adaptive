@@ -1,12 +1,12 @@
 /**
  * @file skeleton.hpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-03-07
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include <unistd.h>
@@ -28,35 +28,26 @@ namespace field
     using field = ara::com::proxy_skeleton::skeleton::Field<int>;
 } // namespace field
 
-
-class skeleton  : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton 
+class skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
 {
 private:
     /* data */
     const int portNumber = 5365;
     int service_id;
     const int service_descovery_port_number = 1690;
-    CServer s1;
-    struct sockaddr_in  cliaddr;
-    
+    CServer *s1;
+    struct sockaddr_in cliaddr;
+
 public:
     event::event event1;
     event::event event2;
     field::field field1;
-    skeleton(int service_id);
+    skeleton(int service_id, CServer *server_udp);
     ~skeleton();
     void start_service();
-    void method_dispatch(std::vector<uint8_t>& message, Socket& cserver);
+    void method_dispatch(std::vector<uint8_t> &message, Socket &cserver);
     void StopOfferService();
     int Add(std::vector<uint8_t> msg);
+
+
 };
-
-
-
-
-
-
-
-
-
-
