@@ -148,7 +148,7 @@ namespace ara
                         Cient_Server_connection.ClientConnect();
                         Cient_Server_connection.ClientRead(buffer, bufsize); // read confirmation
                         std::vector<uint8_t> msgser = ser.Payload();
-                        int msg_size = msgser.size();
+                        int msg_size = msgser.size();//sizeof = 4 bytes
                         Cient_Server_connection.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         Cient_Server_connection.ClientWrite(&msgser[0], msg_size);
                         Cient_Server_connection.CloseSocket();
@@ -158,6 +158,8 @@ namespace ara
                     template <typename T>
                     void EventSubscribe(int event_id)
                     {
+                        Serializer ser;
+
                         struct sockaddr_in serv_addr;
                         serv_addr.sin_family = AF_INET;
                         serv_addr.sin_port = htons(server_handle.port_number);
@@ -169,11 +171,20 @@ namespace ara
                         e_info.operation = 1;
                         e_info.event_id = event_id;
                         e_info.service_id = m_service_id;
-                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+
+                        int obj_size = sizeof(e_info);
+                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&obj_size, sizeof(obj_size), (sockaddr *)&serv_addr);
+                        
+                        // int data_size = obj_size - 9;
+                        // ser.serialize(obj_size);
+                        ser.serialize(e_info);
+                        std::vector<uint8_t> msgser = ser.Payload();
+                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&msgser[0], sizeof(msgser), (sockaddr *)&serv_addr);
                     }
                     template <typename T>
                     void EventUnsubscribe(int event_id)
                     {
+                        Serializer ser;
                         struct sockaddr_in serv_addr;
                         serv_addr.sin_family = AF_INET;
                         serv_addr.sin_port = htons(server_handle.port_number);
@@ -185,7 +196,12 @@ namespace ara
                         e_info.operation = 2;
                         e_info.event_id = event_id;
                         e_info.service_id = m_service_id;
-                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        int obj_size = sizeof(e_info);
+                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&obj_size, sizeof(obj_size), (sockaddr *)&serv_addr);
+                        // ser.serialize(obj_size);
+                        ser.serialize(e_info);
+                        std::vector<uint8_t> msgser = ser.Payload();
+                        m_proxy_handle->m_client_UPD->UDPSendTo((void *)&msgser[0], sizeof(msgser), (sockaddr *)&serv_addr);
                     }
                 };
 
