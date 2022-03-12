@@ -219,7 +219,7 @@ public class Controller
 		}		
 		
 		ArrayList<Node> methods = SI.Search("methods","client-server-operation");
-
+        ArrayList<String> includes = new ArrayList<String>();
 		for(Node method : methods) {
 			String m_n = c_get(method.Search("short-name").get(0).getVal());
 			ArrayList<Node> args = method.Search("arguments","argument-probs");
@@ -228,7 +228,10 @@ public class Controller
 				String t = c_get((arg.Search("type").get(0).getVal()));
 				if(t.contains("/")) {
 					String inc = t.substring(0,t.lastIndexOf('/'));
-					Data = Data.replace("//#include", "#include \""+inc+".h\"\r\n//#include");
+					if(!includes.contains(inc)) {
+						includes.add(inc);
+						Data = Data.replace("//#include", "#include \""+inc+".h\"\r\n//#include");
+					}
 					m_a+=t.substring(t.lastIndexOf('/') + 1);
 				}
 				else {
@@ -239,7 +242,7 @@ public class Controller
 				m_a += c_get((arg.Search("short-name").get(0).getVal())) + ",";
 			}
 			m_a = m_a.substring(0, m_a.lastIndexOf(','));
-			Data+="std::future<void> "+m_n+"("+ m_a +");\r\n";
+			Data+="void "+m_n+"("+ m_a +");\r\n";
 		}
 
 		Data+= "};\r\n";
@@ -288,7 +291,6 @@ public class Controller
 			      		+ "#include \"com/proxy_skeleton/proxy/service_proxy.h\"\r\n"
 			      		+ "#include \"com/proxy_skeleton/definitions.h\"\r\n"
 			      		+ "#include \""+name+"_common.h\"\r\n"
-			      		+ "//#include \r\n"
 			      		+ "\r\n"
 				);
 		
@@ -382,25 +384,6 @@ public class Controller
 		
 		for(Node method : methods) {
 			String m_n = c_get(method.Search("short-name").get(0).getVal());
-			ArrayList<Node> args = method.Search("arguments","argument-probs");
-			String m_a = "";
-			for(Node arg:args) {
-				//m_a is useless here
-				if(!arg.Search("direction").get(0).getVal().contains("in"))continue;
-				String t = c_get((arg.Search("type").get(0).getVal()));
-				if(t.contains("/")) {
-					String inc = t.substring(0,t.lastIndexOf('/'));
-					Data = Data.replace("//#include", "#include \""+inc+".h\"\r\n//#include");
-					m_a+=t.substring(t.lastIndexOf('/') + 1);
-				}
-				else {
-					m_a+=t + " ";
-				}
-								
-				m_a += arg.Search("direction").get(0).getVal().contains("out")? " &":" ";
-				m_a += c_get((arg.Search("short-name").get(0).getVal())) + ",";
-			}
-			m_a = m_a.substring(0, m_a.lastIndexOf(','));
 			Data+="methods::"+m_n+"_m "+ m_n +";\r\n";
 		}
 
@@ -444,6 +427,7 @@ public class Controller
 			      		+ "#define "+full_name+"_COMMON_H\r\n"
 			      		+ "#include \""+name+"_returntypes.h\"\r\n"
 			      		+ "#include \"com/proxy_skeleton/proxy/service_proxy.h\"\r\n"
+			      		+ "//#include \r\n"
 			      		+ "\r\n"
 				);
 		
@@ -455,8 +439,7 @@ public class Controller
 		
 		//Methods
 		ArrayList<Node> methods = SI.Search("methods","client-server-operation");
-	
-		
+		ArrayList<String> includes = new ArrayList<String>();
 		for(Node method : methods) {
 			
 			String m_n = c_get(method.Search("short-name").get(0).getVal());
@@ -472,15 +455,20 @@ public class Controller
 			ArrayList<Node> args = method.Search("arguments","argument-probs");
 			String m_a = "";
 			for(Node arg:args) {
+				if(!arg.Search("direction").get(0).getVal().contains("in"))continue;
 				String t = c_get((arg.Search("type").get(0).getVal()));
 				if(t.contains("/")) {
+					String inc = t.substring(0,t.lastIndexOf('/'));
+					if(!includes.contains(inc)) {
+						includes.add(inc);
+						Data = Data.replace("//#include", "#include \""+inc+".h\"\r\n//#include");
+					}
 					m_a+=t.substring(t.lastIndexOf('/') + 1);
 				}
 				else {
 					m_a+=t;
-				}				
-				m_a += arg.Search("direction").get(0).getVal().contains("out")? " &":" ";
-				m_a += c_get((arg.Search("short-name").get(0).getVal())) + ",";
+				}
+				m_a +=" "+ c_get((arg.Search("short-name").get(0).getVal())) + ",";
 			}
 			m_a = m_a.substring(0, m_a.lastIndexOf(','));
 			Data += m_n +"ReturnType operator()(" + m_a +"){return result;}\r\n";
@@ -493,6 +481,7 @@ public class Controller
 		for(String i:sym) {
 			Data+=  "}\r\n";
 		}
+		Data = Data.replace("//#include", "");
 		Data+= "#endif";
 		Main.cFile.add(Main.Direc + name + "_common.h");
 		try {
@@ -526,6 +515,7 @@ public class Controller
 				"#ifndef "+full_name+"_RETURNTYPES_H\r\n"
 			      		+ "#define "+full_name+"_RETURNTYPES_H\r\n"
 			      		+ "#include <future>\r\n"
+			      		+ "//#include \r\n"
 			      		+ "\r\n"
 				);
 		
@@ -537,44 +527,38 @@ public class Controller
 		
 		//Methods
 		ArrayList<Node> methods = SI.Search("methods","client-server-operation");
-	
+        ArrayList<String> includes = new ArrayList<String>();
+
 		
 		for(Node method : methods) {
 			
 			String m_n = c_get(method.Search("short-name").get(0).getVal());
-			Data += "class "+m_n+"\r\n{\r\n";
-			Data += "private:\r\n"
-					+ "ara::com::proxy_skeleton::proxy::ServiceProxy *m_srv;\r\n"
-					+ "public:\r\n"
-					+ m_n + "(ara::com::proxy_skeleton::proxy::ServiceProxy *srv):m_srv{srv}{}\r\n";
-			for(String i:sym) {
-				Data+= i+"::";
-			}
-			
+			Data += "struct " + m_n+"ReturnType\r\n{\r\n";
 			ArrayList<Node> args = method.Search("arguments","argument-probs");
-			String m_a = "";
 			for(Node arg:args) {
+				String m_a = "::";
+				if(!arg.Search("direction").get(0).getVal().contains("out"))continue;
 				String t = c_get((arg.Search("type").get(0).getVal()));
 				if(t.contains("/")) {
+					String inc = t.substring(0,t.lastIndexOf('/'));
+					if(!includes.contains(inc)) {
+						includes.add(inc);
+						Data = Data.replace("//#include", "#include \""+inc+".h\"\r\n//#include");
+					}
 					m_a+=t.substring(t.lastIndexOf('/') + 1);
 				}
 				else {
 					m_a+=t;
 				}				
-				m_a += arg.Search("direction").get(0).getVal().contains("out")? " &":" ";
-				m_a += c_get((arg.Search("short-name").get(0).getVal())) + ",";
+				m_a += " "+c_get((arg.Search("short-name").get(0).getVal()))+";\r\n";
+				Data += m_a;
 			}
-			m_a = m_a.substring(0, m_a.lastIndexOf(','));
-			Data += m_n +"ReturnType operator()(" + m_a +"){return result;}\r\n";
-			for(String i:sym) {
-				Data+= "::"+i;
-			}
-			Data +="::"+m_n+"ReturnType result;\r\n};\r\n";
+			Data +="};\r\n";
 		}
-
 		for(String i:sym) {
 			Data+=  "}\r\n";
 		}
+		Data = Data.replace("//#include", "");
 		Data+= "#endif";
 		Main.rFile.add(Main.Direc + name + "_returntypes.h");
 		try {
