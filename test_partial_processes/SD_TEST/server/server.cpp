@@ -118,7 +118,7 @@ int main(int argc, char **argv)
     server_main_socket_DG.BindServer();
 
     // send to service discovery the offered service
-    server_skeleton_obj.start_service();
+    server_skeleton_obj.OfferService();
 
     if (server_main_socket_DG.EnableInterrupt(Handle_IO) == FAILED)
     {
