@@ -12,7 +12,7 @@ namespace saam{
 
     int proxy::Add(int p1, int p2)
     {
-        return SendRequest(0,p1,p2);
+        return 1;//SendRequest(methodid,p1,p2);
     }
 
     proxy::~proxy()
