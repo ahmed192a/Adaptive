@@ -35,18 +35,15 @@ namespace field
 class skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
 {
 private:
-    /* data */
-    // int portNumber = 5365;
-    int service_id;
-    // int service_descovery_port_number = 1690;
-    CServer *s1;
     struct sockaddr_in cliaddr;
+    ara::com::InstanceIdentifier serviceid;
 
 public:
+
     event::event event1;
     event::event event2;
     field::field field1;
-    skeleton(int service_id, CServer *server_udp);
+    skeleton(ara::com::InstanceIdentifier instance, ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle);
     ~skeleton();
     void method_dispatch(std::vector<uint8_t> &message, Socket &cserver);
     int Add(std::vector<uint8_t> msg);

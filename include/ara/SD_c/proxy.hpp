@@ -25,10 +25,10 @@ namespace saam
         using FD1 = ara::com::proxy_skeleton::proxy::Field<int>;
     } // namespace events
 
-    // namespace methods
-    // {
-    //     using Add_out = saam::add_output;
-    // }
+    namespace methods
+    {
+        using Add_out = saam::add_output;
+    }
 
     class proxy : public ara::com::proxy_skeleton::proxy::ServiceProxy
     {
@@ -39,7 +39,7 @@ namespace saam
         events::EV1 ev1;
         events::EV1 ev2;
         fields::FD1 fd1;
-        proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle *proxy_handle);
+        proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle);
 
         int Add(int x, int y);
 

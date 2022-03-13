@@ -103,8 +103,8 @@ error_kind CServer::EnableInterrupt(void (*SIGIOHandler)(int))
 		return Error;
 	}
 
-	/* Arrange for nonblocking I/O and SIGIO delivery */
-	if (fcntl(sockfd, F_SETFL, O_NONBLOCK | FASYNC) < 0)
+	/* Arrange for nonblocking I/O and SIGIO delivery O_NONBLOCK |*/
+	if (fcntl(sockfd, F_SETFL,  FASYNC) < 0)
 	{
 		Error = FAILED;
 		return Error;

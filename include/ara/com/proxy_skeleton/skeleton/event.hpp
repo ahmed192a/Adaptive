@@ -39,54 +39,7 @@ namespace ara
                 template <typename T>
                 class Event
                 {
-                    // private:
-                    // void (*g_handler)(int, siginfo_t *, void *)
-                public:
-                    std::vector<ara::com::proxy_skeleton::Client_udp_Info> subscribers_data;
-                    T event_data;
-                    Event(
-                        ServiceSkeleton *service,
-                        std::string name,
-                        int event_id)
-                        : m_service{service},
-                          m_name{name},
-                          m_event_id{event_id}
-                    {
-                    }
-                    ~Event() {}
-
-                    void set_subscriber(ara::com::proxy_skeleton::Client_udp_Info  client_id)
-                    {
-                        subscribers_data.push_back(client_id);
-                    }
-
-                    void Del_subscriber(ara::com::proxy_skeleton::Client_udp_Info client_id)
-                    {
-
-                        subscribers_data.erase(std::remove(subscribers_data.begin(), subscribers_data.end(), client_id), subscribers_data.end());
-                        //subscribers_data.erase(client_id);
-                        // insert(client_id);
-                    }
-
-                    void print_subscribers()
-                    {
-                        // printing set s1
-                        std::vector<ara::com::proxy_skeleton::Client_udp_Info>::iterator itr;
-                        std::cout << "the subscribers of " << m_name << " are : \n";
-                        for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
-                        {
-                            // std::cout << "\t\t=> "<< ": " << *itr << "\n";
-                        }
-                    }
-
-                    void update(T value)
-                    {
-                        this->event_data = value;
-                        // sendevent(value , client);
-                        std::cout << m_name << " is Udpated " << std::endl;
-                        notify(value);
-                    }
-
+                private:
                     /**
                      * @brief
                      *
@@ -96,67 +49,94 @@ namespace ara
                      */
                     void notify(T value)
                     {
-                        // union sigval sigval;
-                        // sigval.sival_int = value;
                         std::vector<ara::com::proxy_skeleton::Client_udp_Info>::iterator itr;
 
                         for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
                         {
-                            // printf("sender: sending %d to PID %d\n", sigval.sival_int, *itr);
-                            // sigqueue(*itr, SIGUSR1, sigval);
                             sockaddr_in fg;
-                            fg.sin_family=AF_INET;
-                            fg.sin_port= (*itr).port;
+                            fg.sin_family = AF_INET;
+                            fg.sin_port = (*itr).port;
                             inet_pton(AF_INET, (*itr).addr.data(), &fg.sin_addr);
-                            
-                            m_service->SendEvent<T>(m_event_id, event_data, false,&(fg));
+                            m_service->SendEvent<T>(m_event_id, event_data, &(fg));
                         }
                     }
-                    virtual void handlecall(ara::com::proxy_skeleton::event_info &msg, ara::com::proxy_skeleton::Client_udp_Info client)
+
+                protected:
+                    ServiceSkeleton *m_service;
+                    std::string m_name;
+                    uint32_t m_event_id;
+                    T event_data;
+                    std::vector<ara::com::proxy_skeleton::Client_udp_Info> subscribers_data;
+
+                public:
+                    Event(
+                        ServiceSkeleton *service,
+                        std::string name,
+                        uint32_t event_id)
+                        : m_service{service},
+                          m_name{name},
+                          m_event_id{event_id}
+                    {
+                    }
+                    ~Event() {}
+
+                    void set_subscriber(ara::com::proxy_skeleton::Client_udp_Info client_id)
+                    {
+                        subscribers_data.push_back(client_id);
+                    }
+
+                    void Del_subscriber(ara::com::proxy_skeleton::Client_udp_Info client_id)
+                    {
+                        subscribers_data.erase(std::remove(subscribers_data.begin(), subscribers_data.end(), client_id), subscribers_data.end());
+                    }
+
+                    void print_subscribers()
+                    {
+                        if(subscribers_data.empty())
+                        {
+                            std::cout << "the subscribers list of " << m_name << " is empty\n";
+                            return ;
+                        }
+                        std::vector<ara::com::proxy_skeleton::Client_udp_Info>::iterator itr;
+                        std::cout << "the subscribers of " << m_name << " are : \n";
+                        for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
+                        {
+                            std::cout << "\t\t=> "
+                                      << ": " << (*itr).port << "\n";
+                        }
+                    }
+
+                    void update(T value)
+                    {
+                        this->event_data = value;
+                        std::cout << m_name << " is Udpated " << std::endl;
+                        notify(value);
+                    }
+
+                    void handlecall(ara::com::proxy_skeleton::event_info &msg, ara::com::proxy_skeleton::Client_udp_Info client)
                     {
                         switch (msg.operation)
                         {
                         case 0:
-                            // new value 
+                            // new value
                             // event_data = msg_data;
                             break;
                         case 1:
                             set_subscriber(client);
+                            print_subscribers();
                             break;
                         case 2:
                             Del_subscriber(client);
+                            print_subscribers();
                             break;
                         default:
                             break;
                         }
                     }
-
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-                    int m_event_id;
-
-                    // public:
-                    //      Event(ServiceSkeleton *service, std::string name)
-                    //          :EventBase(service, name)
-                    //      {
-                    //      }
-                    //      void signal_handler(int signum, siginfo_t *siginfo, void *ucontext);
-
-                    //     void Send(const T& data)
-                    //     {
-                    //         SendEvent(m_name, data, false);
-                    //     }
-
-                    //     void Send(ara::com::SampleAllocateePtr<T> data)
-                    //     {
-                    //         Send(*data);
-                    //     }
-
-                    //     ara::com::SampleAllocateePtr<T> Allocate()
-                    //     {
-                    //         return std::make_unique<T>();
-                    //     }
+                    std::vector<ara::com::proxy_skeleton::Client_udp_Info> getsub()
+                    {
+                        return subscribers_data;
+                    }
 
                 }; // Event
             }      // skeleton

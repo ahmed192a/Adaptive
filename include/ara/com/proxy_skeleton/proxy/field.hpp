@@ -13,7 +13,6 @@
 
 #include "ara/com/proxy_skeleton/proxy/event.hpp"
 #include "ara/com/deserializer.hpp"
-// #include <bits/stdc++.h>
 
 namespace ara
 {
@@ -31,9 +30,8 @@ namespace ara
                     Field(
                         ServiceProxy *service,
                         std::string name,
-                        int field_id)
+                        uint32_t field_id)
                         : Event<T>(service, name, field_id),
-                          m_Cient_Server_connection(SOCK_DGRAM),
                           m_service{service},
                           m_name{name},
                           m_field_id{field_id}
@@ -53,17 +51,18 @@ namespace ara
                      */
                     T Get()
                     {
-                        T data;
+                        T value;
                         ara::com::Deserializer dser;
-
+                        std::vector<uint8_t> data;
+                        data.resize(sizeof(value));
                         ara::com::proxy_skeleton::event_info e_get;
                         e_get.event_id = m_field_id;
-                        e_get.service_id = m_service->m_service_id;
+                        e_get.service_id = m_service->m_proxy_handle.m_server_com.service_id;
                         e_get.operation = 4;
-                        e_get.data.resize(sizeof(T));
-                        m_service->Field_get(e_get);
-                        data = dser.deserialize<T>(e_get.data, 0);
-                        return data;
+                        //e_get.data_size= data.size();
+                        m_service->Field_get(e_get, data);
+                        value = dser.deserialize<T>(data, 0);
+                        return value;
 
                         // // then here we open a socket between server and client
 
@@ -101,12 +100,13 @@ namespace ara
                     {
                         ara::com::Serializer ser;
                         ser.serialize(value);
+                        std::vector<uint8_t> data = ser.Payload();
                         ara::com::proxy_skeleton::event_info e_set;
                         e_set.event_id = m_field_id;
-                        e_set.service_id = m_service->m_service_id;
+                        e_set.service_id = m_service->m_proxy_handle.m_server_com.service_id;
                         e_set.operation = 3;
-                        e_set.data = ser.Payload();
-                        m_service->Field_set(e_set);
+                        e_set.data_size = data.size();
+                        m_service->Field_set(e_set, data);
                         return value;
 
                         // m_Cient_Server_connection.OpenSocket();
@@ -129,10 +129,10 @@ namespace ara
                     }
 
                 private:
-                    CClient m_Cient_Server_connection;
+                    //CClient m_Cient_Server_connection;
                     ServiceProxy *m_service;
                     std::string m_name;
-                    int m_field_id;
+                    uint32_t m_field_id;
                 };
 
                 template <typename T>

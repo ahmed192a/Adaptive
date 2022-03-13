@@ -51,14 +51,23 @@ namespace ara
             };
             struct SD_data
             {
-                int service_id;
+                uint32_t service_id;
                 int process_id;
-                int port_number;
+                uint32_t port_number;
                 bool message_type;
+                bool operator==(SD_data &other)
+                {
+                    if (service_id == other.service_id && process_id == other.process_id && port_number == other.port_number && message_type == other.message_type)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
             };
 
             struct event_info
             {
+
                 uint32_t service_id;
                 uint32_t event_id;
 
@@ -69,8 +78,10 @@ namespace ara
                  * 3 ->set
                  * 4 ->get
                  */
+                uint32_t data_size;
                 uint8_t operation;
-                std::vector<uint8_t> data;
+
+                // std::vector<uint8_t> data;
             };
             template <typename T>
             struct event_notify

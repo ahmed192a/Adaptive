@@ -26,10 +26,10 @@ namespace ara
             namespace skeleton
             {
                 template <typename T>
-                using FieldSetHandler = std::function<std::future<T>(const T &data)>;
+                using FieldSetHandler = std::function<T(const T &data)>;
 
                 template <typename T>
-                using FieldGetHandler = std::function<std::future<T>()>;
+                using FieldGetHandler = std::function<T()>;
 
                 /**
                  * @brief has getter ,setter , notifier
@@ -39,37 +39,16 @@ namespace ara
                 template <typename T>
                 class Field : public Event<T>
                 {
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-
                 public:
-                    // FieldGetHandler<T> GetHandler;
-                    // FieldSetHandler<T> SetHandler;
-                    // Field(ServiceSkeleton *service, std::string name)
-                    //     : GetHandler(nullptr), SetHandler(nullptr)
-                    // {
-                    //     m_name = name;
-                    // }
-
-                    // virtual ~Field() {}
-
-                    // void Update(const T &data)
-                    // {
-                    //     m_service->SendEvent(m_name, data, true);
-                    // }
-                    // std::set<int> subscribers_data_field;
                     Field(
                         ServiceSkeleton *service,
                         std::string name,
-                        int field_id) : Event<T>(service,
+                        uint32_t field_id) : Event<T>(service,
                                                  name,
                                                  field_id)
-                    // m_service{service},
-                    // m_name{name}
                     {
                     }
-                    void handlecall(ara::com::proxy_skeleton::event_info &msg, ara::com::proxy_skeleton::Client_udp_Info client) override
+                    void handlecall(ara::com::proxy_skeleton::event_info &msg,std::vector<uint8_t>&data, ara::com::proxy_skeleton::Client_udp_Info client)
                     {
                         ara::com::Deserializer dser;
                         ara::com::Serializer ser;
@@ -81,18 +60,20 @@ namespace ara
                             break;
                         case 1:
                             Event<T>::set_subscriber(client);
+                            Event<T>::print_subscribers();
                             break;
                         case 2:
                             Event<T>::Del_subscriber(client);
+                            // Event<T>::print_subscribers();
                             break;
                         case 3:
-
-                            Event<T>::event_data = dser.deserialize<T>(msg.data,0);
+                            Event<T>::event_data = dser.deserialize<T>(data,0);
                             break;
 
                         case 4:
                             ser.serialize(Event<T>::event_data);
-                            msg.data = ser.Payload();
+                            data = ser.Payload();
+                            msg.data_size = data.size();
                             break;
                         default:
                             break;
@@ -100,23 +81,7 @@ namespace ara
                     }
 
                     virtual ~Field() {}
-
-                    // // void Update(const T& data , int pid);
-                    // void Update(int data, int pid);
-                    // // void SendEvent(std::string eventName, const T &data, bool is_field , int pid);
-                    // void SendEvent(std::string eventName, int data, bool is_field, int pid);
-
-                    // int x;
-                    /*check if this implementation is right*/
-                    // void RegisterGetHandler(FieldGetHandler<T> getHandler)
-                    // {
-                    //     GetHandler = getHandler;
-                    // }
-
-                    // void RegisterSetHandler(FieldSetHandler<T> setHandler)
-                    // {
-                    //     SetHandler = setHandler;
-                    // }
+                   
                 };
 
                 template <typename T>

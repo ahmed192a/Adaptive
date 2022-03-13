@@ -12,6 +12,7 @@
 #define ARA_COM_PROXY_SKELETON_PROXY_EVENT_H_
 
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
+#include "ara/com/deserializer.hpp"
 namespace ara
 {
     namespace com
@@ -24,11 +25,17 @@ namespace ara
                 template <typename T>
                 class Event
                 {
+                protected:
+                    ServiceProxy *m_service;
+                    std::string m_name;
+                    T event_data;
+                    uint32_t m_event_id;
+
                 public:
                     Event(
                         ServiceProxy *service,
                         std::string name,
-                        int event_id)
+                        uint32_t event_id)
                         : m_service{service},
                           m_name{name},
                           m_event_id{event_id}
@@ -37,28 +44,24 @@ namespace ara
                     ~Event() {}
                     void Subscribe()
                     {
-                        m_service->EventSubscribe<T>(m_event_id);
+                        m_service->EventSubscribe(m_event_id);
                     }
 
                     void UnSubscribe()
                     {
-                        m_service->EventUnsubscribe<T>(m_event_id);
+                        m_service->EventUnsubscribe(m_event_id);
                     }
 
-                    void handlecall(ara::com::proxy_skeleton::event_notify<T> val)
+                    void handlecall(ara::com::proxy_skeleton::event_info& val, std::vector<uint8_t > &msg)
                     {
-                        event_data = val.newdata;
+                        ara::com::Deserializer dser;
+                        event_data = dser.deserialize<T>(msg, 0);
+                        // event_data = val.newdata;
                     }
                     T get_value()
                     {
                         return event_data;
                     }
-
-                private:
-                    ServiceProxy *m_service;
-                    std::string m_name;
-                    T event_data;
-                    int m_event_id;
 
                 }; // Event
             }      // proxy

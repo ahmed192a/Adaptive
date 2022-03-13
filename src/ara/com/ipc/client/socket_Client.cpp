@@ -35,6 +35,8 @@ error_kind CClient::OpenSocket()
 	error_kind Error = SUCCEEDED;
 	
 	this->sockfd = socket(AF_INET,type,0);
+	// std::cout<<"socket opened\n";
+	// sleep(1);
 
 	// if(type = SOCK_DGRAM)
 	// {
@@ -136,8 +138,8 @@ error_kind CClient::EnableInterrupt(void (*SIGIOHandler)(int) )
 		return Error;
 	}
 
-    /* Arrange for nonblocking I/O and SIGIO delivery */
-    if (fcntl(sockfd, F_SETFL, O_NONBLOCK | FASYNC) < 0)
+    /* Arrange for nonblocking I/O and SIGIO delivery  O_NONBLOCK |*/
+    if (fcntl(sockfd, F_SETFL, FASYNC) < 0)
 	{
 		Error = FAILED;
 		return Error;

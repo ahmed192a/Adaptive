@@ -73,9 +73,11 @@ int main()
         s1.ListenServer(3);
         while (1)
         {
+
             Socket soc = s1.AcceptServer();
             // receive the service id
             soc.Receive(&service_id, sizeof(int));
+            std::cout<<"[SD] client requested service id  : "<<service_id<<std::endl;
 
             // search the file,
             // it takes a vector of structs "in case there's more than one server offers the service"
