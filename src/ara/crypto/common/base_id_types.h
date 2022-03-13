@@ -28,7 +28,7 @@ namespace ara
       /**
       *  defines key-slot types; currently only machine and applicaiton key-slots are defined
       */
-      enum class KetSlotType : std::uint32_t
+      enum class KeySlotType : std::uint32_t
       {
         kMachine= 1, 
         kApplication= 2
