@@ -192,9 +192,10 @@ namespace ara
                             printf("\nInvalid address/ Address not supported \n");
                         }
                         f_get.data_size = 0;
-                        m_proxy_handle.m_client_UPD->UDPSendTo((void *)&f_get, sizeof(f_get), (sockaddr *)&serv_addr);
+
+                        service_proxy_udp.UDPSendTo((void *)&f_get, sizeof(f_get), (sockaddr *)&serv_addr);
                         socklen_t slen = sizeof(serv_addr);
-                        m_proxy_handle.m_client_UPD->UDPRecFrom((void *)&data[0], data.size(), (sockaddr *)&serv_addr, &slen);
+                        service_proxy_udp.UDPRecFrom((void *)&data[0], data.size(), (sockaddr *)&serv_addr, &slen);
                     }
                     void Field_set(ara::com::proxy_skeleton::event_info &f_set, std::vector<uint8_t> &data)
                     {

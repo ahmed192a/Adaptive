@@ -8,7 +8,7 @@
 #include "ara/com/ipc/server/socket_Server.hpp"
 #define SD_PORT 1690
 #define SERVICE_ID 32
-CServer client_event_h(SOCK_DGRAM);
+CClient client_event_h(SOCK_DGRAM);
 ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handler;
 ara::com::FindServiceHandle findhandle{SERVICE_ID,32,SD_PORT};
 saam::proxy *server_proxy_ptr;
@@ -33,14 +33,16 @@ void Event_Handler(int sigtype);
 int main(int argc, char **argv)
 {
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (saam::proxy::FindService(findhandle)[0]);
+    hand.m_client_UPD = &client_event_h;
     saam::proxy server_proxy_obj(hand);
+    
     std::cout<<"handle : "<<hand.m_server_com.port_number<<" "<<hand.m_server_com.service_id<<std::endl;
     server_proxy_ptr = &server_proxy_obj;
 
     std::cout<<"\t\t\t[CLIENT] starting\n";
     sleep(2);
-    client_event_h.OpenSocket(0);
-    client_event_h.BindServer();
+    client_event_h.OpenSocket();
+    //client_event_h.BindServer();
     client_event_h.EnableInterrupt(Event_Handler);
     std::cout<<"\t\t\t[CLIENT] starting\n";
 
@@ -57,20 +59,20 @@ int main(int argc, char **argv)
     std::cout << "\t\t\t[CLIENT] Result of ADD : ";
     result = server_proxy_obj.ADD(13, 85);
     std::cout << result << std::endl;
-    sleep(5);
+    sleep(3);
     server_proxy_obj.ev1.Subscribe();
-    sleep(5);
+    
+    sleep(3);
     server_proxy_obj.ev2.Subscribe();
-    sleep(5);
+    sleep(3);
     server_proxy_obj.fd1.Subscribe();
-    sleep(5);
-    int x = 565;
-    std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_obj.fd1.Set(x) << std::endl;
-
-    std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_obj.fd1.Get() << std::endl;
-    // sleep(5);
-
-    server_proxy_obj.fd1.UnSubscribe();
+    sleep(3);
+    // int x = 565;
+    // std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_obj.fd1.Set(x) << std::endl;
+    // sleep(2);
+    // std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_obj.fd1.Get() << std::endl;
+    // sleep(2);
+    // server_proxy_obj.fd1.UnSubscribe();
     
 
     while (1)

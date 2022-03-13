@@ -68,6 +68,7 @@ namespace ara
                             break;
                         case 3:
                             Event<T>::event_data = dser.deserialize<T>(data,0);
+                            std::cout<<"data is seted***************\n\n\n";
                             break;
 
                         case 4:

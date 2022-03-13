@@ -88,7 +88,7 @@ error_kind CServer::EnableInterrupt(void (*SIGIOHandler)(int))
 		return Error;
 	}
 	/* No flags */
-	hand.sa_flags = 0;
+	hand.sa_flags = SA_RESTART;
 
 	if (sigaction(SIGIO, &hand, 0) < 0)
 	{

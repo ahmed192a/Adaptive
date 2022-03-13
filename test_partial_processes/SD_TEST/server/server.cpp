@@ -21,13 +21,15 @@
 
 using namespace std;
 using C_Info = ara::com::proxy_skeleton::C_Info;
-// using event_info = ara::com::proxy_skeleton::event_info;
 
 CServer server_main_socket(SOCK_STREAM);   // Socket between the server and the client
 CServer server_main_socket_DG(SOCK_DGRAM); // Socket between the server and the client
+
 ara::com::InstanceIdentifier instance(SERVICE_ID); 
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
 skeleton server_skeleton_obj(instance, skeleton_handle);
+
+
 
 Color::Modifier blue(Color::FG_BLUE);
 Color::Modifier def(Color::FG_DEFAULT);
@@ -154,6 +156,7 @@ void Handle_IO(int sigtype)
     {
         IO_Handler_count++;
         server_main_socket_DG.UDPRecFrom((void *)&msg[0], evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+        std::cout<<"got value of set\n";
     }
     
     ara::com::proxy_skeleton::Client_udp_Info cudp;

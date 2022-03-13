@@ -42,9 +42,11 @@ namespace ara
                     {
                     }
                     ~Event() {}
+
                     void Subscribe()
                     {
                         m_service->EventSubscribe(m_event_id);
+                        std::cout<<"subscribe -- \n";
                     }
 
                     void UnSubscribe()

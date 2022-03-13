@@ -57,7 +57,7 @@ namespace ara
                             fg.sin_family = AF_INET;
                             fg.sin_port = (*itr).port;
                             inet_pton(AF_INET, (*itr).addr.data(), &fg.sin_addr);
-                            m_service->SendEvent<T>(m_event_id, event_data, &(fg));
+                            m_service->SendEvent<T>(m_event_id, event_data, &fg);
                         }
                     }
 

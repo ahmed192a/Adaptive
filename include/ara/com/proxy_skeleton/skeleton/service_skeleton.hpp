@@ -57,7 +57,7 @@ namespace ara
                             m_mode{mode},
                             m_skeleton_handle{skeleton_handle}
                     {
-                        m_skeleton_udp.OpenSocket();
+                        
 
                        // skeleton_handle.m_server_UPD = &m_skeleton_udp;
                         this->cliaddr.sin_family = AF_INET; // IPv4
@@ -67,8 +67,10 @@ namespace ara
 
                     virtual ~ServiceSkeleton() {}
 
-                    virtual void OfferService() 
+                    void OfferService() 
                     {
+                        this->m_skeleton_udp.OpenSocket(0);
+                        this->m_skeleton_udp.BindServer();
                         SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, true};
                         this->m_skeleton_udp.UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
                     }
@@ -77,6 +79,7 @@ namespace ara
                     {
                         SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, false};
                         this->m_skeleton_udp.UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+                        this->m_skeleton_udp.CloseSocket();
                     }
 
                     /**
@@ -100,11 +103,11 @@ namespace ara
                         msg_.service_id = m_service_id.GetInstanceId();
                         msg_.event_id = event_id;
                         msg_.operation = 0;
-                        msg_.data_size = sizeof(data);
+                        msg_.data_size = sermsg.size();
                         /* send the event info object then send the serialized data */
                         std::cout<<"send event to client"<< client_add->sin_port<<std::endl;
-                        m_skeleton_udp.UDPSendTo((void *)&msg_, sizeof(msg_), (sockaddr *)client_add);
-                        m_skeleton_udp.UDPSendTo((void *)&sermsg[0], sermsg.size(), (sockaddr *)client_add);
+                        this->m_skeleton_udp.UDPSendTo((void *)&msg_, sizeof(msg_), (sockaddr *)client_add);
+                        this->m_skeleton_udp.UDPSendTo((void *)&sermsg[0], sermsg.size(), (sockaddr *)client_add);
                     }
 
                 protected:
@@ -247,7 +250,7 @@ namespace ara
                     struct sockaddr_in cliaddr;
                     ara::com::InstanceIdentifier &m_instance_id;
                     ara::com::MethodCallProcessingMode m_mode;
-                    CClient m_skeleton_udp;
+                    CServer m_skeleton_udp;
                 };
 
             } // skeleton
