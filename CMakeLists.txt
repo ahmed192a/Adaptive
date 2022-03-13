@@ -27,7 +27,7 @@ endif()
 
 # The compiled library code is here
 add_subdirectory(src)
-# add_subdirectory(App)
+add_subdirectory(App)
 add_subdirectory(test_partial_processes/SD_TEST/server)
 add_subdirectory(test_partial_processes/SD_TEST/client)
 add_subdirectory(test_partial_processes/SD_TEST/SD)

@@ -57,15 +57,15 @@ namespace ara
                             fg.sin_family = AF_INET;
                             fg.sin_port = (*itr).port;
                             inet_pton(AF_INET, (*itr).addr.data(), &fg.sin_addr);
-                            m_service->SendEvent<T>(m_event_id, event_data, &fg);
+                            m_service->SendEvent<T>(m_event_id, *event_data, &fg);
                         }
                     }
 
                 protected:
                     ServiceSkeleton *m_service;
                     std::string m_name;
-                    uint32_t m_event_id;
-                    T event_data;
+                    uint32_t m_event_id; 
+                    std::shared_ptr<T> event_data;
                     std::vector<ara::com::proxy_skeleton::Client_udp_Info> subscribers_data;
 
                 public:
@@ -77,6 +77,7 @@ namespace ara
                           m_name{name},
                           m_event_id{event_id}
                     {
+                        event_data = std::make_shared<T>();
                     }
                     ~Event() {}
 
@@ -108,7 +109,7 @@ namespace ara
 
                     void update(T value)
                     {
-                        this->event_data = value;
+                        *event_data = value;
                         std::cout << m_name << " is Udpated " << std::endl;
                         notify(value);
                     }

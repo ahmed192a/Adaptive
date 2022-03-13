@@ -63,28 +63,6 @@ namespace ara
                         m_service->Field_get(e_get, data);
                         value = dser.deserialize<T>(data, 0);
                         return value;
-
-                        // // then here we open a socket between server and client
-
-                        // m_Cient_Server_connection.OpenSocket();
-
-                        // m_Cient_Server_connection.OpenSocket();
-
-                        // struct sockaddr_in serv_addr;
-                        // serv_addr.sin_family = AF_INET;
-                        // serv_addr.sin_port = htons(m_service->server_handle.port_number);
-                        // // std::cout << "sub port num" << server_handle.port_number << std::endl;
-                        // if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
-                        // {
-                        //     printf("\nInvalid address/ Address not supported \n");
-                        //     // return -1;
-                        // }
-                        // m_Cient_Server_connection.UDPSendTo(&e_set, sizeof(e_set), (sockaddr *)&serv_addr);
-                        // socklen_t slen = sizeof(serv_addr);
-                        // m_Cient_Server_connection.UDPRecFrom(&e_set, sizeof(e_set), (sockaddr *)&serv_addr, &slen);
-
-                        // m_Cient_Server_connection.CloseSocket();
-                        // return e_set.data;
                     }
                     /**
                      * @brief
@@ -108,24 +86,6 @@ namespace ara
                         e_set.data_size = data.size();
                         m_service->Field_set(e_set, data);
                         return value;
-
-                        // m_Cient_Server_connection.OpenSocket();
-                        // ara::com::proxy_skeleton::event_info e_set;
-                        // e_set.event_id = m_field_id;
-                        // e_set.service_id = m_service->m_service_id;
-                        // e_set.data = value;
-                        // e_set.operation = 3;
-                        // struct sockaddr_in serv_addr;
-                        // serv_addr.sin_family = AF_INET;
-                        // serv_addr.sin_port = htons(m_service->server_handle.port_number);
-                        // if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
-                        // {
-                        //     printf("\nInvalid address/ Address not supported \n");
-                        // }
-                        // m_Cient_Server_connection.UDPSendTo(&e_set, sizeof(e_set), (sockaddr *)&serv_addr);
-                        // m_Cient_Server_connection.CloseSocket();
-
-                        // return value;
                     }
 
                 private:

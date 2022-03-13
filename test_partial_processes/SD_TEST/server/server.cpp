@@ -14,6 +14,12 @@
 #include "ara/com/deserializer.hpp"
 #include "color/color.hpp"
 
+#include <sys/mman.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>	/*  This file is necessary for using shared
+			    memory constructs
+			*/
+
 #define SERVER_PORT 5365
 #define SD_PORT 1690
 #define MAX_QUEUE_CLIENTS 5
@@ -23,22 +29,23 @@ using namespace std;
 using C_Info = ara::com::proxy_skeleton::C_Info;
 
 CServer server_main_socket(SOCK_STREAM);   // Socket between the server and the client
-CServer server_main_socket_DG(SOCK_DGRAM); // Socket between the server and the client
+std::shared_ptr<CServer> server_main_socket_DG = std::make_shared<CServer>(SOCK_DGRAM); // Socket between the server and the client
 
-ara::com::InstanceIdentifier instance(SERVICE_ID); 
+ara::com::InstanceIdentifier instance(SERVICE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
 skeleton server_skeleton_obj(instance, skeleton_handle);
-
-
 
 Color::Modifier blue(Color::FG_BLUE);
 Color::Modifier def(Color::FG_DEFAULT);
 
-
-void Handle_IO(int sigtype);
+void Handle_IO();
+static skeleton *server_skeleton_ptr ;
 
 int main(int argc, char **argv)
 {
+    server_skeleton_ptr = (skeleton *)mmap(NULL, sizeof *server_skeleton_ptr, PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    memcpy(server_skeleton_ptr, &server_skeleton_obj, sizeof(server_skeleton_obj));
     /// VARIABLES
     char buffer[256];
     C_Info x;
@@ -56,109 +63,116 @@ int main(int argc, char **argv)
     server_main_socket.BindServer();
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
 
-    server_main_socket_DG.OpenSocket(SERVER_PORT);
-    server_main_socket_DG.BindServer();
+    server_main_socket_DG->OpenSocket(SERVER_PORT);
+    server_main_socket_DG->BindServer();
 
     // send to service discovery the offered service
-    server_skeleton_obj.OfferService();
+    server_skeleton_ptr->OfferService();
 
-    if (server_main_socket_DG.EnableInterrupt(Handle_IO) == FAILED)
+    int pid = fork();
+    if (pid == 0)
     {
-        cout << "int errrrrrrrrrrrror\n";
-        return -1;
-    }
-    cout << blue << "\t[SERVER]  Ready" << endl;
-    Socket Sclient = server_main_socket.AcceptServer();
-    cout << blue << "\t[SERVER]  accepted" << endl;
+        cout<<"shared "<<server_skeleton_ptr<<endl;
+        cout << blue << "\t[SERVER]  Ready" << endl;
+        Socket Sclient = server_main_socket.AcceptServer();
+        cout << blue << "\t[SERVER]  accepted" << endl;
 
-    strcpy(buffer, "=> Server connected...\n");
+        strcpy(buffer, "=> Server connected...\n");
 
-    // send a confirmation connect to client
-    Sclient.Send(buffer, strlen(buffer));
+        // send a confirmation connect to client
+        Sclient.Send(buffer, strlen(buffer));
 
-    // Receive a struct from client containing the method name and parameters
-    Sclient.Receive((void *)&msg_size, sizeof(msg_size));
-    msg.resize(msg_size);
-    Sclient.Receive((void *)&msg[0], sizeof(msg));
+        // Receive a struct from client containing the method name and parameters
+        Sclient.Receive((void *)&msg_size, sizeof(msg_size));
+        msg.resize(msg_size);
+        Sclient.Receive((void *)&msg[0], sizeof(msg));
 
-    // Sclient.Receive((void *)&x, sizeof(x));
+        // Sclient.Receive((void *)&x, sizeof(x));
 
-    // print the requested method
-    // cout << blue << "\t[SERVER] " << x.method_name << endl;
+        // print the requested method
+        // cout << blue << "\t[SERVER] " << x.method_name << endl;
 
-    // Perform the requested method then send the result
-    server_skeleton_obj.method_dispatch(msg, Sclient);
+        // Perform the requested method then send the result
+        server_skeleton_ptr->method_dispatch(msg, Sclient);
 
-    /////////////////////////////////////////////////////////////////////////////////////
-    while (server_skeleton_obj.event1.getsub().empty())
-    {
-    }
-    std::cout << blue << "\t[SERVER] : ";
-    server_skeleton_obj.event1.update(7);
+        /////////////////////////////////////////////////////////////////////////////////////
+        while (server_skeleton_ptr->event1.getsub().empty())
+        {
+            printf("7\n");
+            server_skeleton_ptr->event1.print_subscribers();
+            sleep(1);
+        }
+        std::cout << blue << "\t[SERVER] : ";
+        server_skeleton_ptr->event1.update(7);
 
-    sleep(1);
-    while (server_skeleton_obj.event2.getsub().empty())
-    {
-    }
-    std::cout << blue << "\t[SERVER] : ";
-
-    server_skeleton_obj.event2.update(9);
-
-    int y = 2;
-    while (server_skeleton_obj.field1.getsub().empty())
-    {
-    }
-
-    std::cout << blue << "\t[SERVER] : ";
-    server_skeleton_obj.field1.update(y);
-
-    while (!server_skeleton_obj.field1.getsub().empty()) // test uns
-    {
-    }
-
-    cout << blue << "\n\t[SERVER] Goodbye..." << endl;
-
-    // server_skeleton_obj.StopOfferService();
-
-    // always be awake to receive stuff from signal
-    while (1)
-    {
-        printf(".\n");
         sleep(1);
+        while (server_skeleton_ptr->event2.getsub().empty())
+        {
+        }
+        std::cout << blue << "\t[SERVER] : ";
+
+        server_skeleton_ptr->event2.update(9);
+
+        int y = 2;
+        while (server_skeleton_ptr->field1.getsub().empty())
+        {
+        }
+
+        std::cout << blue << "\t[SERVER] : ";
+        server_skeleton_ptr->field1.update(y);
+
+        while (!server_skeleton_ptr->field1.getsub().empty()) // test uns
+        {
+        }
+
+        cout << blue << "\n\t[SERVER] Goodbye..." << endl;
+
+        // server_skeleton_ptr->StopOfferService();
+
+        // always be awake to receive stuff from signal
+        while (1)
+        {
+            printf(".\n");
+            sleep(1);
+        }
+
+        server_main_socket.CloseSocket();
+    }
+    else
+    {
+        cout<<"shared "<<server_skeleton_ptr<<endl;
+        while(1) Handle_IO();
     }
 
-    server_main_socket.CloseSocket();
     return 0;
 }
 
-
-
-void Handle_IO(int sigtype)
+void Handle_IO()
 {
-    static uint8_t IO_Handler_count =0;
+    // static uint8_t IO_Handler_count = 0;
 
-    if(IO_Handler_count == 1)
-    {
-        IO_Handler_count = 0;
-        return;
-    }
-    
+    // if (IO_Handler_count == 1)
+    // {
+    //     IO_Handler_count = 0;
+    //     return;
+    // }
 
-    sockaddr_in echoClntAddr; /* Address of datagram source */
-    unsigned int clntLen=sizeof(echoClntAddr);     /* Address length */
+    sockaddr_in echoClntAddr;                    /* Address of datagram source */
+    unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
     ara::com::proxy_skeleton::event_info evr;
     std::vector<uint8_t> msg;
-    server_main_socket_DG.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
+    server_main_socket_DG->UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
 
-    printf("\n[SERVER]  ->> Handling client %s %d with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port,evr.data_size);fflush(stdout);
+    printf("\n[SERVER]  ->> Handling client %s %d with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port, evr.data_size);
+    fflush(stdout);
     msg.resize(evr.data_size);
-    if(evr.data_size)
+    if (evr.data_size)
     {
-        IO_Handler_count++;
-        server_main_socket_DG.UDPRecFrom((void *)&msg[0], evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
-        std::cout<<"got value of set\n";
+        // IO_Handler_count++;
+        server_main_socket_DG->UDPRecFrom((void *)&msg[0], evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+        std::cout << "got value of set\n";
     }
-    
+
     ara::com::proxy_skeleton::Client_udp_Info cudp;
     cudp.port = echoClntAddr.sin_port;
     cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
@@ -170,22 +184,22 @@ void Handle_IO(int sigtype)
         {
         case 0:
             std::cout << "[server] sub event1 start\n";
-            server_skeleton_obj.event1.handlecall(evr, cudp);
+            server_skeleton_ptr->event1.handlecall(evr, cudp);
             std::cout << "[server] sub event1 start\n";
 
             break;
         case 1:
             std::cout << "[server] sub event2 start\n";
-            server_skeleton_obj.event2.handlecall(evr, cudp);
-                        std::cout << "[server] sub event2 start\n";
+            server_skeleton_ptr->event2.handlecall(evr, cudp);
+            std::cout << "[server] sub event2 start\n";
 
             break;
         case 2:
-            server_skeleton_obj.field1.handlecall(evr,msg, cudp);
+            server_skeleton_ptr->field1.handlecall(evr, msg, cudp);
             if (evr.operation == 4)
             {
                 std::cout << "[server] get field1 " << std::endl;
-                server_main_socket_DG.UDPSendTo((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr);
+                server_main_socket_DG->UDPSendTo((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr);
             }
             else if (evr.operation == 3)
             {
