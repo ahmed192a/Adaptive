@@ -16,11 +16,8 @@
 #include "ara/ucm/pkgmgr/ucm_types.hpp"
 #include "ara/ucm/pkgmgr/ucm_error.hpp"
 
-#include <future>
-
 #include "ara/ucm/pkgmgr/packagemanagement_common.hpp"
 
 #include "ara/ucm/pkgmgr/proxy_methods.hpp"
-using namespace ara::com::pkgmgr::proxy;
 
 #endif

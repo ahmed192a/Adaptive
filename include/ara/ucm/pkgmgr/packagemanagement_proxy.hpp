@@ -37,7 +37,7 @@ namespace ara
                      * @note int de ay haga mo2ktn
                      * 
                      */
-                    using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<::ara::ucm::PackageManagerStatusType, true, true, false>::type;
+                    using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType, true, false, true>::type;
                 }
                 /**
                  * @brief implementation of PackageManagementProxy interface
@@ -57,26 +57,36 @@ namespace ara
                          *        - Methods
                          *        - findservice function
                          */
-                    PackageManagementProxy();
+                    PackageManagementProxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle)
+                    : ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle),
+                     TransferStart(this),
+                     TransferData(this),
+                     TransferExit(this)
 
-                    methods::Activate Activate;
-                    methods::Cancel Cancel;
-                    methods::DeleteTransfer DeleteTransfer;
-                    methods::Finish Finish;
-                    methods::GetHistory GetHistory;
-                    methods::GetId GetId;
-                    methods::GetSwClusterChangeInfo GetSwClusterChangeInfo;
-                    methods::GetSwClusterDescription GetSwClusterDescription;
-                    methods::GetSwClusterInfo GetSwClusterInfo;
-                    methods::GetSwPackages GetSwPackages;
-                    methods::GetSwProcessProgress GetSwProcessProgress;
-                    methods::ProcessSwPackage ProcessSwPackage;
-                    methods::RevertProcessedSwPackages RevertProcessedSwPackages;
-                    methods::Rollback Rollback;
-                    methods::TransferData TransferData;
-                    methods::TransferExit TransferExit;
-                    methods::TransferStart TransferStart;
+                      
+                    //  CurrentStatus(this, "CurrentStatus", 0)
+                    {
 
+                    }
+
+                    // methods::Activate Activate;
+                    // methods::Cancel Cancel;
+                    // methods::DeleteTransfer DeleteTransfer;
+                    // methods::Finish Finish;
+                    // methods::GetHistory GetHistory;
+                    // methods::GetId GetId;
+                    // methods::GetSwClusterChangeInfo GetSwClusterChangeInfo;
+                    // methods::GetSwClusterDescription GetSwClusterDescription;
+                    // methods::GetSwClusterInfo GetSwClusterInfo;
+                    // methods::GetSwPackages GetSwPackages;
+                    // methods::GetSwProcessProgress GetSwProcessProgress;
+                    // methods::ProcessSwPackage ProcessSwPackage;
+                    // methods::RevertProcessedSwPackages RevertProcessedSwPackages;
+                    // methods::Rollback Rollback;
+                    ara::ucm::pkgmgr::proxy::methods::TransferData TransferData;
+                    ara::ucm::pkgmgr::proxy::methods::TransferExit TransferExit;
+                    ara::ucm::pkgmgr::proxy::methods::TransferStart TransferStart;
+                    // fields::CurrentStatus CurrentStatus;
                     
                 };
 
