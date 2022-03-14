@@ -23,7 +23,7 @@ namespace saam
     {
         private:
         ara::com::proxy_skeleton::proxy::ServiceProxy *px;
-        int methodid =0;
+        int methodid =5;
         public:
         add_output(ara::com::proxy_skeleton::proxy::ServiceProxy* x)
         {

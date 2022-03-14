@@ -47,4 +47,8 @@ public:
     ~skeleton();
     void method_dispatch(std::vector<uint8_t> &message, Socket &cserver);
     int Add(std::vector<uint8_t> msg);
+    int ADD(int p1, int p2)
+    {
+        return p1+p2;
+    }
 };

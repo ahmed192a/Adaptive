@@ -46,6 +46,9 @@ namespace ara
                          //CClient *m_server_UPD;
                     };
                     SK_Handle m_skeleton_handle;
+                    ara::com::InstanceIdentifier &m_service_id;
+                    ara::com::InstanceIdentifier &m_instance_id;
+
                     ServiceSkeleton(
                         InstanceIdentifier &service_id,
                         InstanceIdentifier &instance,
@@ -69,14 +72,16 @@ namespace ara
 
                     void OfferService() 
                     {
-                        this->m_skeleton_udp.OpenSocket(0);
-                        this->m_skeleton_udp.BindServer();
+                        this->m_skeleton_udp.OpenSocket();
+                        // this->m_skeleton_udp.BindServer();
                         SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, true};
                         this->m_skeleton_udp.UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+                        this->m_skeleton_udp.CloseSocket();
                     }
 
                     void StopOfferService() 
                     {
+                        this->m_skeleton_udp.OpenSocket();
                         SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, false};
                         this->m_skeleton_udp.UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
                         this->m_skeleton_udp.CloseSocket();
@@ -92,7 +97,7 @@ namespace ara
                      * @param client_add 
                      */
                     template <typename T>
-                    void SendEvent(int event_id, const T &data, sockaddr_in *client_add)
+                    void SendEvent(int event_id, const T &data, sockaddr_in client_add)
                     {
                         /* Serialize the data */
                         ara::com::Serializer ser;
@@ -105,9 +110,11 @@ namespace ara
                         msg_.operation = 0;
                         msg_.data_size = sermsg.size();
                         /* send the event info object then send the serialized data */
-                        std::cout<<"send event to client"<< client_add->sin_port<<std::endl;
-                        this->m_skeleton_udp.UDPSendTo((void *)&msg_, sizeof(msg_), (sockaddr *)client_add);
-                        this->m_skeleton_udp.UDPSendTo((void *)&sermsg[0], sermsg.size(), (sockaddr *)client_add);
+                        std::cout<<"send event to client "<< client_add.sin_port<<std::endl;
+                        this->m_skeleton_udp.OpenSocket();
+                        this->m_skeleton_udp.UDPSendTo((void *)&msg_, sizeof(msg_), (sockaddr *)&client_add);
+                        this->m_skeleton_udp.UDPSendTo((void *)&sermsg[0], sermsg.size(), (sockaddr *)&client_add);
+                        this->m_skeleton_udp.CloseSocket();
                     }
 
                 protected:
@@ -115,7 +122,7 @@ namespace ara
                     template <typename Class, typename R, typename... Args>
                     void HandleCall(Class &c,
                                     R (Class::*method)(Args...),
-                                    Message msg,
+                                    std::vector<uint8_t> msg,
                                     Socket &binding)
                     {
                         
@@ -204,13 +211,13 @@ namespace ara
                     template <typename Class, typename R, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
                                      R (Class::*method)(Args...),
-                                     Message msg,
+                                     std::vector<uint8_t> msg,
                                      Socket &binding,
                                      std::index_sequence<index...>)
                     {
-                        Marshal<Args...> unmarshaller(msg.payload);
+                        Marshal<Args...> unmarshaller(msg);
                         R result = (c.*method)(unmarshaller.template unmarshal<index>()...);
-                        binding.Send(&result, sizeof(int));
+                        binding.Send(&result, sizeof(R));
                         binding.CloseSocket();
                     }
                     template <typename Class, typename... Args, std::size_t... index>
@@ -246,11 +253,10 @@ namespace ara
                         (c.*method)(unmarshaller.template unmarshal<index>()...);
                     }
 
-                    ara::com::InstanceIdentifier &m_service_id;
+
                     struct sockaddr_in cliaddr;
-                    ara::com::InstanceIdentifier &m_instance_id;
                     ara::com::MethodCallProcessingMode m_mode;
-                    CServer m_skeleton_udp;
+                    CClient m_skeleton_udp;
                 };
 
             } // skeleton

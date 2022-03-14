@@ -28,7 +28,7 @@ namespace ara
                 protected:
                     ServiceProxy *m_service;
                     std::string m_name;
-                    T event_data;
+                    std::shared_ptr<T> event_data;
                     uint32_t m_event_id;
 
                 public:
@@ -40,6 +40,7 @@ namespace ara
                           m_name{name},
                           m_event_id{event_id}
                     {
+                        event_data = std::make_shared<T>();
                     }
                     ~Event() {}
 
@@ -57,12 +58,12 @@ namespace ara
                     void handlecall(ara::com::proxy_skeleton::event_info& val, std::vector<uint8_t > &msg)
                     {
                         ara::com::Deserializer dser;
-                        event_data = dser.deserialize<T>(msg, 0);
+                        *event_data = dser.deserialize<T>(msg, 0);
                         // event_data = val.newdata;
                     }
-                    T get_value()
+                    T  get_value()
                     {
-                        return event_data;
+                        return *event_data;
                     }
 
                 }; // Event

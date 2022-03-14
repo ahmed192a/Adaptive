@@ -48,13 +48,17 @@ void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
     int methodID = dser.deserialize<int>(message,0);
     int result = -1;
 	cout<<"\t[SERVER] Dispatch " << methodID << endl;
+    std::vector<uint8_t> msg;
+    msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
 
     switch (methodID)
     {
-    case 0:
-        result = Add(message);
-        cserver.Send(&result, sizeof(int));
-    	cserver.CloseSocket();
+    case 5:
+        HandleCall(*this,&skeleton::ADD,msg,cserver);
+
+        // result = Add(message);
+        // cserver.Send(&result, sizeof(int));
+    	// cserver.CloseSocket();
         break;
     default:
     	cserver.Send(&result, sizeof(int));
