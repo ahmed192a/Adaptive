@@ -9,7 +9,7 @@
  * 
  */
 
-#include "mytimer.hpp"
+#include "../../../../../include/ara/com/proxy_skeleton/timer/mytimer.hpp"
 
 /**
  * @brief 
