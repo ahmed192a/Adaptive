@@ -1,155 +1,155 @@
-/**
- * @file packagemanagement_common.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-03-07
- * 
- * @copyright Copyright (c) 2022
- * 
- */
+// /**
+//  * @file packagemanagement_common.h
+//  * @author your name (you@domain.com)
+//  * @brief 
+//  * @version 0.1
+//  * @date 2022-03-07
+//  * 
+//  * @copyright Copyright (c) 2022
+//  * 
+//  */
 
-#ifndef PACKAGEMANAGEMENT_COMMON_H
-#define PACKAGEMANAGEMENT_COMMON_H
+// #ifndef PACKAGEMANAGEMENT_COMMON_H
+// #define PACKAGEMANAGEMENT_COMMON_H
 
-namespace ara
-{
-	namespace ucm
-	{
-		namespace pkgmgr
-		{
-			class PackageManagement
-			{
-			public:
-				class ActivateOutput
-				{
-				private:
+// namespace ara
+// {
+// 	namespace ucm
+// 	{
+// 		namespace pkgmgr
+// 		{
+// 			class PackageManagement
+// 			{
+// 			public:
+// 				class ActivateOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 					
-				};
-				class CancelOutput
-				{
-				private:
+// 				};
+// 				class CancelOutput
+// 				{
+// 				private:
 					
 
-				public:
+// 				public:
 					
-				};
-				class DeleteTransferOutput
-				{
-				private:
+// 				};
+// 				class DeleteTransferOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 					
-				};
-				class FinishOutput
-				{
-				private:
+// 				};
+// 				class FinishOutput
+// 				{
+// 				private:
 					
-				public:
+// 				public:
 					
-				};
-				class GetHistoryOutput
-				{
-				private:
+// 				};
+// 				class GetHistoryOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 					
-				};
-				class GetIdOutput
-				{
-				private:
+// 				};
+// 				class GetIdOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 					
-				};
-				class GetSwClusterChangeInfoOutput
-				{
-				private:
+// 				};
+// 				class GetSwClusterChangeInfoOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 				
-				};
-				class GetSwClusterDescriptionOutput
-				{
-				private:
+// 				};
+// 				class GetSwClusterDescriptionOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 
-				};
-				class GetSwClusterInfoOutput
-				{
-				private:
+// 				};
+// 				class GetSwClusterInfoOutput
+// 				{
+// 				private:
 					
 
-				public:
+// 				public:
 					
-				};
-				class GetSwPackagesOutput
-				{
-				private:
+// 				};
+// 				class GetSwPackagesOutput
+// 				{
+// 				private:
 					
-				public:
+// 				public:
 					
-				};
-				class GetSwProcessProgressOutput
-				{
-				private:
+// 				};
+// 				class GetSwProcessProgressOutput
+// 				{
+// 				private:
 				
-				public:
+// 				public:
 					
-				};
-				class ProcessSwPackageOutput
-				{
-				private:
+// 				};
+// 				class ProcessSwPackageOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 		
-				};
-				class RevertProcessedSwPackagesOutput
-				{
-				private:
+// 				};
+// 				class RevertProcessedSwPackagesOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 					
-				};
-				class RollbackOutput
-				{
-				private:
+// 				};
+// 				class RollbackOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 					
-				};
-				class TransferDataOutput
-				{
-				private:
+// 				};
+// 				class TransferDataOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 				
-				};
-				class TransferExitOutput
-				{
-				private:
+// 				};
+// 				class TransferExitOutput
+// 				{
+// 				private:
 
-				public:
+// 				public:
 					
-				};
-				class TransferStartOutput
-				{
-				private:
+// 				};
+// 				class TransferStartOutput
+// 				{
+// 				private:
 					
-				public:
+// 				public:
 					
-				};
-			};
+// 				};
+// 			};
 
-			static void registerPackageManagementErrors()
-			{
-			}
+// 			static void registerPackageManagementErrors()
+// 			{
+// 			}
 
-		}
-	}
-}
+// 		}
+// 	}
+// }
 
-#endif /* PACKAGEMANAGEMENT_COMMON_H */
+// #endif /* PACKAGEMANAGEMENT_COMMON_H */

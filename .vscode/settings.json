@@ -1,6 +1,5 @@
 {
     "files.associations": {
-        
         "cctype": "cpp",
         "clocale": "cpp",
         "cmath": "cpp",
@@ -74,8 +73,8 @@
         "scoped_allocator": "cpp",
         "shared_mutex": "cpp",
         "typeindex": "cpp",
-        "valarray": "cpp"
-    
+        "valarray": "cpp",
+        "strstream": "cpp"
     },
 
 }

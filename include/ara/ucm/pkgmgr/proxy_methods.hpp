@@ -13,10 +13,15 @@
 #define PROXY_METHODS_HPP
 
 #include <bits/stdc++.h>
+#include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
+#include "ucm_return_types.hpp"
+#include "ucm_types.hpp"
+
+using namespace ara::ucm::pkgmgr::PackageManagement;
 
 namespace ara
 {
-    namespace com
+    namespace ucm
     {
         namespace pkgmgr
         {
@@ -196,37 +201,70 @@ namespace ara
                     {
                     private:
                         const std::string methodName_ = "TransferData";
-
+                        ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy;
+                        const int methodid =8;
                     public:
-                        TransferData();
+                        TransferData(ara::com::proxy_skeleton::proxy::ServiceProxy* service_proxy)
+                        {
+                            this->service_proxy = service_proxy;
+                        }
 
                         const std::string getMethodName();
 
-                        uint64_t operator()(uint64_t size);
+                        template<std::size_t N>
+                        TransferDataOutput operator()(TransferIdType id, ByteVectorType data, uint64_t blockCounter)
+                        {
+                            auto I = std::integer_sequence<std::size_t, N>();
+                            return send(id, data, blockCounter, std::make_index_sequence<N>{});
+                        }
+                        template<std::size_t...index>
+                        TransferDataOutput send(TransferIdType id, ByteVectorType data, uint64_t blockCounter, std::index_sequence<index...>)
+                        {
+                            TransferDataOutput res = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(methodid, id, blockCounter,data[index]...);
+                            return res;
+                        }
                     };
                     class TransferExit
                     {
                     private:
                         const std::string methodName_ = "TransferExit";
+                        ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy;
+                        const int methodid =9;
 
                     public:
-                        TransferExit();
+                        TransferExit(ara::com::proxy_skeleton::proxy::ServiceProxy* service_proxy)
+                        {
+                            this->service_proxy = service_proxy;
+                        }
 
                         const std::string getMethodName();
 
-                        uint64_t operator()(uint64_t size);
+                        TransferExitOutput operator()(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+                        {
+                            TransferExitOutput res = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput>(methodid, id);
+                            return res;
+                        }
                     };
                     class TransferStart
                     {
                     private:
                         const std::string methodName_ = "TransferStart";
-
+                        ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy;
+                        const int methodid =7;
                     public:
-                        TransferStart();
+                        TransferStart(ara::com::proxy_skeleton::proxy::ServiceProxy* service_proxy)
+                        {
+                            this->service_proxy = service_proxy;
+                        }
 
                         const std::string getMethodName();
 
-                        uint64_t operator()(uint64_t size);
+                        TransferStartOutput operator()(uint64_t size)
+                        {
+                            TransferStartOutput res = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput>(methodid, size);
+                            return res;
+                        }
+
                     };
                 }
 

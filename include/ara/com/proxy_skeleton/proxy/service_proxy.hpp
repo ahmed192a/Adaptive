@@ -82,7 +82,7 @@ namespace ara
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
                         // receive the methods result
-                        service_proxy_tcp.ClientRead((int *)&result, sizeof(result));
+                        service_proxy_tcp.ClientRead((void *)&result, sizeof(result));
                         service_proxy_tcp.CloseSocket();
                         return result;
                     }

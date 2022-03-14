@@ -13,9 +13,22 @@
 #define ARA_UCM_PKGMGR_PackageManagement_SKELETON_H_
 
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
+#include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
+#include "ara/com/proxy_skeleton/definitions.hpp"
 #include "ara/ucm/pkgmgr/ucm_types.hpp"
+#include "ucm_return_types.hpp"
 #include <future>
-#include "ara/ucm/pkgmgr/packagemanagement_common.hpp"
+
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <bits/stdc++.h>
+using namespace boost::uuids;
 
 namespace ara
 {
@@ -39,7 +52,7 @@ namespace ara
                      * @note int de ay haga mo2ktn
                      *
                      */
-                    using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<::ara::ucm::PackageManagerStatusType, true, true, false>::type;
+                    using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<::ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType, true, true, false>::type;
                 }
                 /**
                  * @brief implementation of PackageManagementSkeleton interface
@@ -49,8 +62,21 @@ namespace ara
                  *
                  * @todo inherit from ara::com::proxy_skeleton::skeleton::ServiceSkeleton
                  */
-                class PackageManagementSkeleton
+                class PackageManagementSkeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
                 {
+                private:
+                    struct TransferInfo
+                    {
+                        uint8_t TransferExitFlag; /* After calling TransferExit, can't call TransferData again */
+                        uint32_t BlockSize;       // 10, localCounter: 0 -> 9 (localCounter + 1) * BlockSize == size
+                        ara::ucm::pkgmgr::PackageManagement::TransferIdType id;
+                        uint64_t size; // 100 bytes
+                        uint64_t localBlockCounter = 0;
+                    } TransferInfoData;
+
+                    std::vector<uint8_t> buffer;
+                    ara::com::InstanceIdentifier serviceid;
+
                 public:
                     /**
                      * @brief Construct a new Package Management Skeleton object
@@ -63,10 +89,11 @@ namespace ara
                      *
                      */
                     PackageManagementSkeleton(
-                        // ara::com::InstanceIdentifier instance,
                         // ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent
+                        ara::com::InstanceIdentifier instance,
+                        ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle) : serviceid(45),
+                                                                                                          ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle)
 
-                    )
                     {
                     }
                     /**
@@ -74,32 +101,69 @@ namespace ara
                      *        - Fields
                      *        - Methods
                      */
-                    std::future<::ara::ucm::PackageManagerStatusType> CurrentStatus_Get()
+                    ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType CurrentStatus_Get()
                     {
-                        std::future<::ara::ucm::PackageManagerStatusType> f;
-                        return f;
                     }
 
-                    std::future<ara::ucm::pkgmgr::PackageManagement::ActivateOutput> Activate();
-                    std::future<ara::ucm::pkgmgr::PackageManagement::CancelOutput> Cancel(TransferIdType id);
-                    std::future<ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput> DeleteTransfer(TransferIdType id);
-                    std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> Finish();
-                    void GetHistory(uint64_t timestampGE, uint64_t timestampLT, GetHistoryVectorType &history);
-                    void GetId(UCMIdentifierType &id);
-                    void GetSwClusterChangeInfo(SwClusterInfoVectorType &SwInfo);
-                    void GetSwClusterDescription(SwDescVectorType &SwCluster);
-                    void GetSwClusterInfo(SwClusterInfoVectorType &SwInfo);
-                    void GetSwPackages(SwPackageInfoVectorType &Packages);
-                    std::future<ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput> GetSwProcessProgress(TransferIdType id, uint8_t &progress);
-                    std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ProcessSwPackage(TransferIdType id);
-                    std::future<ara::ucm::pkgmgr::PackageManagement::RevertProcessedSwPackagesOutput> RevertProcessedSwPackages();
-                    std::future<ara::ucm::pkgmgr::PackageManagement::RollbackOutput> Rollback();
-                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> TransferData(TransferIdType id, ByteVectorType data, uint64_t size);
-                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> TransferExit(TransferIdType id);
-                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> TransferStart(uint64_t size, TransferIdType &id, uint32_t &BlockSize);
+                    ara::ucm::pkgmgr::PackageManagement::ActivateOutput Activate();
+                    ara::ucm::pkgmgr::PackageManagement::CancelOutput Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
+                    ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput DeleteTransfer(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
+                    ara::ucm::pkgmgr::PackageManagement::FinishOutput Finish();
+                    void GetHistory(uint64_t timestampGE, uint64_t timestampLT, ara::ucm::pkgmgr::PackageManagement::GetHistoryVectorType &history);
+                    void GetId(ara::ucm::pkgmgr::PackageManagement::UCMIdentifierType &id);
+                    void GetSwClusterChangeInfo(ara::ucm::pkgmgr::PackageManagement::SwClusterInfoVectorType &SwInfo);
+                    void GetSwClusterDescription(ara::ucm::pkgmgr::PackageManagement::SwDescVectorType &SwCluster);
+                    void GetSwClusterInfo(ara::ucm::pkgmgr::PackageManagement::SwClusterInfoVectorType &SwInfo);
+                    void GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages);
+                    ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, uint8_t &progress);
+                    ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
+                    ara::ucm::pkgmgr::PackageManagement::RevertProcessedSwPackagesOutput RevertProcessedSwPackages();
+                    ara::ucm::pkgmgr::PackageManagement::RollbackOutput Rollback();
+                    ara::ucm::pkgmgr::PackageManagement::TransferDataOutput TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter);
+                    ara::ucm::pkgmgr::PackageManagement::TransferExitOutput TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
+                    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput TransferStart(uint64_t size);
 
-                    void DispatchMethodCall()
+                    void method_dispatch(std::vector<uint8_t> &message, Socket &cserver)
                     {
+                        ara::com::Deserializer dser;
+                        int methodID = dser.deserialize<int>(message, 0);
+                        int result = -1;
+                        cout << "\t[SERVER] Dispatch " << methodID << endl;
+                        std::vector<uint8_t> msg;
+                        msg.insert(msg.begin(), message.begin() + sizeof(int), message.end());
+                        ara::ucm::pkgmgr::PackageManagement::ByteVectorType data;
+                        uint64_t blockCounter;
+                        ara::ucm::pkgmgr::PackageManagement::TransferIdType id;
+                        ara::ucm::pkgmgr::PackageManagement::TransferDataOutput ucm_result;
+                        int i;
+                        switch (methodID)
+                        {
+                        case 7:
+                            HandleCall(*this, &PackageManagementSkeleton::TransferStart, msg, cserver);
+                            break;
+                        case 8:
+                            // HandleCall(*this, &PackageManagementSkeleton::TransferData, msg, cserver);
+                            id = dser.deserialize<ara::ucm::pkgmgr::PackageManagement::TransferIdType>(msg, 0);
+                            blockCounter = dser.deserialize<uint64_t>(msg, 16);
+
+                            
+                            for(i = 24; i < msg.size(); i++)
+                            {
+                                data.push_back(dser.deserialize<uint8_t>(msg, i));
+                            }
+                            cout << "msgsize" << msg.size() << endl;
+                            ucm_result = TransferData(id, data, blockCounter);
+                            cserver.Send(&ucm_result, sizeof(ucm_result));
+                            cserver.CloseSocket();
+                            break;
+                        case 9:
+                            HandleCall(*this, &PackageManagementSkeleton::TransferExit, msg, cserver);
+                            break;
+                        default:
+                            cserver.Send(&result, sizeof(int));
+                            cserver.CloseSocket();
+                            break;
+                        }
                     }
                 };
 
