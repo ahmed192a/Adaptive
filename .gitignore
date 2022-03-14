@@ -66,4 +66,4 @@ build
 .setting*
 Debug
 
-
+doc/html*
