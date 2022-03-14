@@ -12,11 +12,12 @@
 #include "ara/com/ipc/server/socket_Server.hpp"
 #define SD_PORT 1690
 #define SERVICE_ID 32
-std::shared_ptr<CClient> client_event_h = std::make_shared<CClient>(SOCK_DGRAM);
+CClient client_event_h (SOCK_DGRAM);
+CServer ssevent(SOCK_DGRAM);
 ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handler;
 ara::com::FindServiceHandle findhandle{SERVICE_ID, 32, SD_PORT};
 static saam::proxy *server_proxy_ptr;
-
+// static CClient *client_event_ptr;
 Color::Modifier green(Color::FG_GREEN);
 Color::Modifier def(Color::FG_DEFAULT);
 
@@ -37,22 +38,33 @@ int main(int argc, char **argv)
 {    
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (saam::proxy::FindService(findhandle)[0]);
 
-    hand.m_client_UPD = &*client_event_h;
+    hand.m_client_UPD = &client_event_h;
 
     saam::proxy server_proxy_obj(hand);
     server_proxy_ptr = (saam::proxy *)mmap(NULL, sizeof *server_proxy_ptr, PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-    memcpy(server_proxy_ptr, &server_proxy_obj, sizeof(server_proxy_obj));
+    // client_event_ptr = (CClient *)mmap(NULL, sizeof *client_event_ptr, PROT_READ | PROT_WRITE, 
+    //                 MAP_SHARED | MAP_ANONYMOUS, -1, 0);  
     
+    memcpy(server_proxy_ptr, &server_proxy_obj, sizeof(server_proxy_obj));
+    // memcpy(client_event_ptr, &client_event_h, sizeof(client_event_h));
+
+    ssevent.OpenSocket(7575);
+    ssevent.BindServer();
+
 
     std::cout << "handle : " << hand.m_server_com.port_number << " " << hand.m_server_com.service_id << std::endl;
 
     std::cout << "\t\t\t[CLIENT] starting\n";
     sleep(2);
-    client_event_h->OpenSocket();
+    client_event_h.OpenSocket();
     // client_event_h.BindServer();
     //  client_event_h->EnableInterrupt(Event_Handler);
     std::cout << "\t\t\t[CLIENT] starting\n";
+
+
+
+
     int pid = fork();
     if (pid == 0)
     {
@@ -66,7 +78,7 @@ int main(int argc, char **argv)
         // server_proxy_obj->FindService(32);
 
         std::cout << "\t\t\t[CLIENT] Result of ADD : ";
-        result = server_proxy_ptr->ADD(13, 85);
+        result = server_proxy_ptr->ADD(7, 85);
         std::cout << result << std::endl;
         sleep(3);
         server_proxy_ptr->ev1.Subscribe();
@@ -76,12 +88,12 @@ int main(int argc, char **argv)
         sleep(3);
         server_proxy_ptr->fd1.Subscribe();
         sleep(3);
-        // int x = 565;
-        // std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_ptr->fd1.Set(x) << std::endl;
-        // sleep(2);
-        // std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_ptr->fd1.Get() << std::endl;
-        // sleep(2);
-        // server_proxy_ptr->fd1.UnSubscribe();
+        int x = 565;
+        std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_ptr->fd1.Set(x) << std::endl;
+        sleep(2);
+        std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_ptr->fd1.Get() << std::endl;
+        sleep(2);
+        server_proxy_ptr->fd1.UnSubscribe();
 
         while (1)
         {
@@ -120,13 +132,13 @@ void Event_Handler()
     ara::com::proxy_skeleton::event_info evr;
     std::vector<uint8_t> msg;
 
-    client_event_h->UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
+   ssevent.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
     printf("\t[CLIENT]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
     fflush(stdout);
     msg.resize(evr.data_size);
     if (evr.data_size)
     {
-        client_event_h->UDPRecFrom((void *)&msg[0], msg.size(), (struct sockaddr *)&echoClntAddr, &clntLen);
+        ssevent.UDPRecFrom((void *)&msg[0], msg.size(), (struct sockaddr *)&echoClntAddr, &clntLen);
         // IO_Handler_count++;
     }
 

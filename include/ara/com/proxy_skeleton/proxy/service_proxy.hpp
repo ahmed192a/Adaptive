@@ -157,12 +157,19 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
+                        int pport = htons(7575);
+
                         event_info e_info;
                         e_info.operation = 1;
                         e_info.event_id = event_id;
                         e_info.service_id = m_proxy_handle.m_server_com.service_id;
-                        e_info.data_size = 0;
+                        e_info.data_size = (sizeof(pport));
+
+  
+
                         m_proxy_handle.m_client_UPD->UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        m_proxy_handle.m_client_UPD->UDPSendTo((void *)&pport, sizeof(pport), (sockaddr *)&serv_addr);
+
                         
                     }
                     void EventUnsubscribe(int event_id)

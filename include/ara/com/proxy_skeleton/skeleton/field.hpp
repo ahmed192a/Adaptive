@@ -15,7 +15,7 @@
 // #include <string>
 // #include <future>
 #include <bits/stdc++.h>
-#include "ara/com/deserializer.hpp"
+
 #include "ara/com/proxy_skeleton/skeleton/event.hpp"
 namespace ara
 {
@@ -48,38 +48,38 @@ namespace ara
                                                  field_id)
                     {
                     }
-                    void handlecall(ara::com::proxy_skeleton::event_info &msg,std::vector<uint8_t>&data, ara::com::proxy_skeleton::Client_udp_Info client)
-                    {
-                        ara::com::Deserializer dser;
-                        ara::com::Serializer ser;
-                        switch (msg.operation)
-                        {
-                        case 0:
-                            // new value
-                            // event_data = msg_data;
-                            break;
-                        case 1:
-                            Event<T>::set_subscriber(client);
-                            Event<T>::print_subscribers();
-                            break;
-                        case 2:
-                            Event<T>::Del_subscriber(client);
-                            // Event<T>::print_subscribers();
-                            break;
-                        case 3:
-                            *(Event<T>::event_data) = dser.deserialize<T>(data,0);
-                            std::cout<<"data is seted***************\n\n\n";
-                            break;
+                    // void handlecall(ara::com::proxy_skeleton::event_info &msg,std::vector<uint8_t>&data, ara::com::proxy_skeleton::Client_udp_Info client)
+                    // {
+                    //     ara::com::Deserializer dser;
+                    //     ara::com::Serializer ser;
+                    //     switch (msg.operation)
+                    //     {
+                    //     case 0:
+                    //         // new value
+                    //         // event_data = msg_data;
+                    //         break;
+                    //     case 1:
+                    //         Event<T>::set_subscriber(client);
+                    //         Event<T>::print_subscribers();
+                    //         break;
+                    //     case 2:
+                    //         Event<T>::Del_subscriber(client);
+                    //         // Event<T>::print_subscribers();
+                    //         break;
+                    //     case 3:
+                    //         Event<T>::event_data = dser.deserialize<T>(data,0);
+                    //         std::cout<<"data is seted***************\n\n\n";
+                    //         break;
 
-                        case 4:
-                            ser.serialize(*(Event<T>::event_data));
-                            data = ser.Payload();
-                            msg.data_size = data.size();
-                            break;
-                        default:
-                            break;
-                        }
-                    }
+                    //     case 4:
+                    //         ser.serialize(Event<T>::event_data);
+                    //         data = ser.Payload();
+                    //         msg.data_size = data.size();
+                    //         break;
+                    //     default:
+                    //         break;
+                    //     }
+                    // }
 
                     virtual ~Field() {}
                    

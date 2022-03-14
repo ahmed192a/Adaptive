@@ -21,8 +21,13 @@
 #include <iterator>
 #include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
 #include <arpa/inet.h>
-// extern void (*g_handler)(int, siginfo_t *, void *);
-
+#include "ara/com/proxy_skeleton/skeleton/shared_sub/file.hpp"
+#include "ara/com/deserializer.hpp"
+#include "ara/com/serializer.hpp"
+/**
+ * @brief 
+ * @todo  mutex on read and write file subcribers
+ */
 namespace ara
 {
     namespace com
@@ -50,14 +55,14 @@ namespace ara
                     void notify(T value)
                     {
                         std::vector<ara::com::proxy_skeleton::Client_udp_Info>::iterator itr;
-
-                        for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
+                        std::vector<ara::com::proxy_skeleton::Client_udp_Info> subs = subscribers_data.getrows(subname_file.data());
+                        for (itr =subs.begin(); itr !=subs.end(); itr++)
                         {
                             sockaddr_in fg;
                             fg.sin_family = AF_INET;
                             fg.sin_port = (*itr).port;
                             inet_pton(AF_INET, (*itr).addr.data(), &fg.sin_addr);
-                            m_service->SendEvent<T>(m_event_id, *event_data, &fg);
+                            m_service->SendEvent<T>(m_event_id, event_data, fg);
                         }
                     }
 
@@ -65,8 +70,10 @@ namespace ara
                     ServiceSkeleton *m_service;
                     std::string m_name;
                     uint32_t m_event_id; 
-                    std::shared_ptr<T> event_data;
-                    std::vector<ara::com::proxy_skeleton::Client_udp_Info> subscribers_data;
+                    T event_data;
+                    Subscriber subscribers_data;
+                    std::string subname_file;
+                    //std::mutex mu;
 
                 public:
                     Event(
@@ -77,30 +84,36 @@ namespace ara
                           m_name{name},
                           m_event_id{event_id}
                     {
-                        event_data = std::make_shared<T>();
+                        subname_file = m_name + m_service->m_service_id.toString()+ std::to_string(event_id); 
+                        subscribers_data.clear(subname_file.data());  
                     }
                     ~Event() {}
 
                     void set_subscriber(ara::com::proxy_skeleton::Client_udp_Info client_id)
                     {
-                        subscribers_data.push_back(client_id);
+                        //mu.lock();
+                        subscribers_data.write(subname_file.data(),client_id );
+                        //mu.unlock();
                     }
 
                     void Del_subscriber(ara::com::proxy_skeleton::Client_udp_Info client_id)
                     {
-                        subscribers_data.erase(std::remove(subscribers_data.begin(), subscribers_data.end(), client_id), subscribers_data.end());
+                        //mu.lock();
+                        subscribers_data.delete_record(subname_file.data(),client_id );
+                        //mu.unlock();
                     }
 
                     void print_subscribers()
                     {
-                        if(subscribers_data.empty())
+                        if(subscribers_data.getrows(subname_file.data()).empty())
                         {
                             std::cout << "the subscribers list of " << m_name << " is empty\n";
                             return ;
                         }
                         std::vector<ara::com::proxy_skeleton::Client_udp_Info>::iterator itr;
                         std::cout << "the subscribers of " << m_name << " are : \n";
-                        for (itr = this->subscribers_data.begin(); itr != this->subscribers_data.end(); itr++)
+                        std::vector<ara::com::proxy_skeleton::Client_udp_Info> subs = subscribers_data.getrows(subname_file.data());
+                        for (itr = subs.begin(); itr != subs.end(); itr++)
                         {
                             std::cout << "\t\t=> "
                                       << ": " << (*itr).port << "\n";
@@ -109,13 +122,17 @@ namespace ara
 
                     void update(T value)
                     {
-                        *event_data = value;
+                        event_data = value;
                         std::cout << m_name << " is Udpated " << std::endl;
+                        //mu.lock();
                         notify(value);
+                        //mu.unlock();
                     }
 
-                    void handlecall(ara::com::proxy_skeleton::event_info &msg, ara::com::proxy_skeleton::Client_udp_Info client)
+                    void handlecall(ara::com::proxy_skeleton::event_info &msg,std::vector<uint8_t>&data, ara::com::proxy_skeleton::Client_udp_Info client)
                     {
+                        ara::com::Deserializer dser;
+                        ara::com::Serializer ser;
                         switch (msg.operation)
                         {
                         case 0:
@@ -130,13 +147,22 @@ namespace ara
                             Del_subscriber(client);
                             print_subscribers();
                             break;
+                        case 3:
+                            event_data = dser.deserialize<T>(data,0);
+                            break;
+
+                        case 4:
+                            ser.serialize(event_data);
+                            data = ser.Payload();
+                            msg.data_size = data.size();
+                            break;
                         default:
                             break;
                         }
                     }
                     std::vector<ara::com::proxy_skeleton::Client_udp_Info> getsub()
                     {
-                        return subscribers_data;
+                        return subscribers_data.getrows(subname_file.data());
                     }
 
                 }; // Event
