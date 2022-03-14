@@ -2,6 +2,7 @@
 #define ARA_SM_TRIGGER_IN_H
 
 #include "ara/sm/Trigger.hpp"
+#include "arm"
 
 //[SWS_SM_91007]
 
@@ -29,6 +30,7 @@ namespace ara
             Trigger<T> mTrigger;
 
         public:
+         
             TriggerIn(T &state, TriggerHandler handler) : mTrigger(state, handler)
             {
             }
