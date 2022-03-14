@@ -53,9 +53,21 @@ namespace ara
                 {
                 };
 
+                struct GetSwPackagesOutput
+                {
+                   SwPackageInfoVectorType Packages;
+                };
+
                 struct GetSwProcessProgressOutput
                 {
+                    uint8_t progress;
                 };
+
+                struct GetSwClusterInfoOutput
+                {
+                    SwClusterInfoVectorType SwInfo;
+                };
+                
 
                 struct ProcessSwPackageOutput
                 {
@@ -68,6 +80,28 @@ namespace ara
                 struct RollbackOutput
                 {
                 };
+
+                struct GetSwClusterDescriptionOutput
+                {
+                    SwDescVectorType SoftwareClusterDescriptions;
+                };
+
+                struct GetSwClusterChangeInfoOutput
+                {
+                    SwClusterInfoVectorType SwInfo;
+                };
+
+                struct GetIdOutput
+                {
+                    UCMIdentifierType id;
+                };
+
+                struct GetHistoryOutput
+                {
+                    GetHistoryVectorType history;
+                };
+                
+                
             }
         }
     } // namespace ucm

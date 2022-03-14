@@ -40,44 +40,61 @@ ara::ucm::pkgmgr::PackageManagement::FinishOutput PackageManagementSkeleton::Fin
 
 }
 
-void PackageManagementSkeleton::GetHistory(uint64_t timestampGE, uint64_t timestampLT, ara::ucm::pkgmgr::PackageManagement::GetHistoryVectorType &history)
+ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput PackageManagementSkeleton::GetHistory(uint64_t timestampGE, uint64_t timestampLT)
 {
 
 }
 
-void PackageManagementSkeleton::GetId(ara::ucm::pkgmgr::PackageManagement::UCMIdentifierType &id)
+ara::ucm::pkgmgr::PackageManagement::GetIdOutput PackageManagementSkeleton::GetId()
 {
 
 }
 
-void PackageManagementSkeleton::GetSwClusterChangeInfo(ara::ucm::pkgmgr::PackageManagement::SwClusterInfoVectorType &SwInfo)
+ara::ucm::pkgmgr::PackageManagement::GetSwClusterChangeInfoOutput  PackageManagementSkeleton::GetSwClusterChangeInfo()
 {
 
 }
 
-void PackageManagementSkeleton::GetSwClusterDescription(ara::ucm::pkgmgr::PackageManagement::SwDescVectorType &SwCluster)
+ara::ucm::pkgmgr::PackageManagement::GetSwClusterDescriptionOutput PackageManagementSkeleton::GetSwClusterDescription()
 {
 
 }
 
-void PackageManagementSkeleton::GetSwClusterInfo(ara::ucm::pkgmgr::PackageManagement::SwClusterInfoVectorType &SwInfo)
+ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput PackageManagementSkeleton::GetSwClusterInfo()
 {
 
 }
 
-void PackageManagementSkeleton::GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages)
+ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput PackageManagementSkeleton::GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages)
 {
   
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput PackageManagementSkeleton::GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, uint8_t &progress)
+ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput PackageManagementSkeleton::GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
    
 }
 
+std::vector<char> ReadAllBytes2(char const *filename)
+{
+    ifstream ifs(filename, ios::binary | ios::ate);
+    ifstream::pos_type pos = ifs.tellg();
+    std::vector<char> result(pos);
+    ifs.seekg(0, ios::beg);
+    ifs.read(&result[0], pos);
+    return result;
+}
+
 ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
-
+    CClient c1(SOCK_STREAM);
+    c1.OpenSocket();
+    c1.GetHost("127.0.0.1", 3600);
+    c1.ClientConnect();
+    std::vector<char> Temp_data2 = ReadAllBytes2("/home/bassant/Documents/GitHub/Adaptive/src/ara/ucm/pkgmgr/test.zip");
+    int x = Temp_data2.size();
+    c1.ClientWrite((void *)&x, sizeof(int));
+    c1.ClientWrite((void *)&Temp_data2[0], x);
 
 }
 

@@ -109,13 +109,13 @@ namespace ara
                     ara::ucm::pkgmgr::PackageManagement::CancelOutput Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput DeleteTransfer(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     ara::ucm::pkgmgr::PackageManagement::FinishOutput Finish();
-                    void GetHistory(uint64_t timestampGE, uint64_t timestampLT, ara::ucm::pkgmgr::PackageManagement::GetHistoryVectorType &history);
-                    void GetId(ara::ucm::pkgmgr::PackageManagement::UCMIdentifierType &id);
-                    void GetSwClusterChangeInfo(ara::ucm::pkgmgr::PackageManagement::SwClusterInfoVectorType &SwInfo);
-                    void GetSwClusterDescription(ara::ucm::pkgmgr::PackageManagement::SwDescVectorType &SwCluster);
-                    void GetSwClusterInfo(ara::ucm::pkgmgr::PackageManagement::SwClusterInfoVectorType &SwInfo);
-                    void GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages);
-                    ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, uint8_t &progress);
+                    ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput  GetHistory(uint64_t timestampGE, uint64_t timestampLT);
+                    ara::ucm::pkgmgr::PackageManagement::GetIdOutput GetId();
+                    ara::ucm::pkgmgr::PackageManagement::GetSwClusterChangeInfoOutput  GetSwClusterChangeInfo();
+                    ara::ucm::pkgmgr::PackageManagement::GetSwClusterDescriptionOutput GetSwClusterDescription();
+                    ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput GetSwClusterInfo();
+                    ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages);
+                    ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     ara::ucm::pkgmgr::PackageManagement::RevertProcessedSwPackagesOutput RevertProcessedSwPackages();
                     ara::ucm::pkgmgr::PackageManagement::RollbackOutput Rollback();
@@ -158,6 +158,9 @@ namespace ara
                             break;
                         case 9:
                             HandleCall(*this, &PackageManagementSkeleton::TransferExit, msg, cserver);
+                            break;
+                        case 10:
+                            HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, msg, cserver);
                             break;
                         default:
                             cserver.Send(&result, sizeof(int));

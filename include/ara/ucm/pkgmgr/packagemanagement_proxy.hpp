@@ -61,28 +61,40 @@ namespace ara
                     : ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle),
                      TransferStart(this),
                      TransferData(this),
-                     TransferExit(this)
-
-                      
+                     TransferExit(this),
+                     Rollback(this),
+                     RevertProcessedSwPackages(this),
+                     ProcessSwPackage(this),
+                     GetSwProcessProgress(this),
+                     GetSwPackages(this),
+                     GetSwClusterInfo(this),
+                     GetSwClusterDescription(this),
+                     GetSwClusterChangeInfo(this),
+                     GetId(this),
+                     GetHistory(this),
+                     Finish(this),
+                     DeleteTransfer(this),
+                     Cancel(this),
+                     Activate(this)
                     //  CurrentStatus(this, "CurrentStatus", 0)
                     {
 
                     }
 
-                    // methods::Activate Activate;
-                    // methods::Cancel Cancel;
-                    // methods::DeleteTransfer DeleteTransfer;
-                    // methods::Finish Finish;
-                    // methods::GetHistory GetHistory;
-                    // methods::GetId GetId;
-                    // methods::GetSwClusterChangeInfo GetSwClusterChangeInfo;
-                    // methods::GetSwClusterDescription GetSwClusterDescription;
-                    // methods::GetSwClusterInfo GetSwClusterInfo;
-                    // methods::GetSwPackages GetSwPackages;
-                    // methods::GetSwProcessProgress GetSwProcessProgress;
-                    // methods::ProcessSwPackage ProcessSwPackage;
-                    // methods::RevertProcessedSwPackages RevertProcessedSwPackages;
-                    // methods::Rollback Rollback;
+                    methods::Activate Activate;
+                    methods::Cancel Cancel;
+                    methods::DeleteTransfer DeleteTransfer;
+                    methods::Finish Finish;
+                    methods::GetHistory GetHistory;
+                    methods::GetId GetId;
+                    methods::GetSwClusterChangeInfo GetSwClusterChangeInfo;
+                    methods::GetSwClusterDescription GetSwClusterDescription;
+                    methods::GetSwClusterInfo GetSwClusterInfo;
+                    methods::GetSwPackages GetSwPackages;
+                    methods::GetSwProcessProgress GetSwProcessProgress;
+                    ara::ucm::pkgmgr::proxy::methods::ProcessSwPackage ProcessSwPackage;
+                    methods::RevertProcessedSwPackages RevertProcessedSwPackages;
+                    methods::Rollback Rollback;
                     ara::ucm::pkgmgr::proxy::methods::TransferData TransferData;
                     ara::ucm::pkgmgr::proxy::methods::TransferExit TransferExit;
                     ara::ucm::pkgmgr::proxy::methods::TransferStart TransferStart;
