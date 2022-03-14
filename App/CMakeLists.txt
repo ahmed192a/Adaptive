@@ -16,3 +16,5 @@ target_link_libraries(
     ara_lib  
 )
 add_subdirectory(EM_test_process)
+add_subdirectory(SM)
+

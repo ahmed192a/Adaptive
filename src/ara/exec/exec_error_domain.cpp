@@ -23,7 +23,6 @@
  		 */
  		 /*ExecException::ExecException(ara::core::ErrorCode errorCode) noexcept :  ara::core::Exception(errorCode)
  		 {
-
  		 	this->errorCode = errorCode;
  		 }*/
 
@@ -98,4 +97,3 @@
  		}
  	}
  }
-

@@ -18,13 +18,9 @@ namespace ara
         class WorkerThread
         {
         public:
-            WorkerThread(){
-
-            }
-            uint64_t GetRandom() noexcept{
-                return 0;
-            }
-            virtual ~WorkerThread();
+            WorkerThread(){}
+            uint64_t GetRandom() noexcept{ return 0;}
+            virtual ~WorkerThread(){}
         };
     } // namespace exec
 

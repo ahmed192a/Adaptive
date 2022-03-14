@@ -25,11 +25,17 @@ namespace ara
          */
         class FunctionGroupState
         {
+            private:
+            std::string mc_state;
+            std::string mFunction_group_name ;
             public:
-            std::string state = "run";
-            std::string Function_group_name ;
+
             // FunctionGroup f ; 
-            using CtorToken = std::string;
+            using CtorToken = struct{std::string fg_name; std::string c_state;};
+            void set_FGname(std::string fg_name);
+            void set_states(std::string state);
+            std::string get_FGname() const noexcept;
+            std::string get_states() const noexcept;
             // SWS_EM_02270
             /**
              * \brief Pre construction method for FunctionGroupState.
@@ -49,7 +55,7 @@ namespace ara
              * Thread-safe
              */
             // ara::core::StringView ---> std::string
-            static FunctionGroupState::CtorToken Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
+            static std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>  Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
 
             // SWS_EM_02271
             /**
