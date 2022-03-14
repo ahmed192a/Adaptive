@@ -45,8 +45,8 @@ namespace ara
 
                 typename std::decay<ArgumentType<I, Args...>>::type k;
                 v.push_back(sizeof(k));
-                std::cout << "sizes\n";
-                std::cout << v.back() << std::endl;
+                // std::cout << "sizes\n";
+                // std::cout << v.back() << std::endl;
             }
         };
         template <typename... Args>
@@ -56,8 +56,8 @@ namespace ara
             {
                 typename std::decay<ArgumentType<0, Args...>>::type k;
                 v.push_back(sizeof(k));
-                std::cout << "sizes\n";
-                std::cout << v.back() << std::endl;
+                // std::cout << "sizes\n";
+                // std::cout << v.back() << std::endl;
             }
         };
         template <typename... Args>

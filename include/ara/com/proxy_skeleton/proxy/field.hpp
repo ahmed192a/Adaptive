@@ -160,12 +160,15 @@ namespace ara
                 class FieldNoNotifier : public Event<T>
                 {
                 private:
-                    ServiceProxy *m_service;
-                    std::string m_name;
+                   
 
                 public:
-                    FieldNoNotifier(ServiceProxy *service, std::string name)
-                        : Event<T>(service, name)
+                    FieldNoNotifier(
+                        ServiceProxy *service,
+                        std::string name,
+                        uint32_t field_id) : Event<T>(service,
+                                                 name,
+                                                 field_id)
                     {
                     }
 
@@ -229,7 +232,7 @@ namespace ara
                 {
                     using type = typename FieldType<T, hasNotifier, hasGetter, hasSetter>::type;
                 };
-
+                
                 template <typename T>
                 struct FieldType<T, true, true, true>
                 {
