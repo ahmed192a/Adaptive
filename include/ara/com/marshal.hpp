@@ -1,5 +1,5 @@
 /**
- * @file marshal.h
+ * @file marshal.hpp
  * @author your name (you@domain.com)
  * @brief
  * @version 0.1

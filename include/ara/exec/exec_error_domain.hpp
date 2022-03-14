@@ -2,7 +2,7 @@
 #define ARA_EXEC_EXEC_ERROR_DOMAIN_H_
 
 /**
- * @file exec_error_domain.h
+ * @file exec_error_domain.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1

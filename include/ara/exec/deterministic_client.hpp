@@ -1,5 +1,5 @@
 /**
- * @file deterministic_client.h
+ * @file deterministic_client.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1

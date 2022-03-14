@@ -1,5 +1,5 @@
 /**
- * @file loadbalancing_option.h
+ * @file loadbalancing_option.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1

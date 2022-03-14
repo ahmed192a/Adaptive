@@ -1,3 +1,15 @@
+/**
+ * @file file.hpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-14
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#ifndef _SUBSCRIBER_FILE_H_
+#define _SUBSCRIBER_FILE_H_
 #include <fstream>
 #include <string>
 #include <string.h>
@@ -150,3 +162,5 @@ public:
         ofs.close();
     }
 };
+
+#endif

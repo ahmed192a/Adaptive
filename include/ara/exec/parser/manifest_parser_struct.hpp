@@ -1,5 +1,5 @@
 /**
- * @file manifest_parser_struct.h
+ * @file manifest_parser_struct.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1

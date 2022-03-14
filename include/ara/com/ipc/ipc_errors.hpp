@@ -1,5 +1,5 @@
 /**
- * @file errors.h
+ * @file ipc_errors.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1

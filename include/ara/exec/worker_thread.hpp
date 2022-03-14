@@ -1,5 +1,5 @@
 /**
- * @file worker_thread.h
+ * @file worker_thread.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
