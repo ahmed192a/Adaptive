@@ -55,6 +55,7 @@ target_link_libraries(
   nlohmann_json::nlohmann_json
   # Boost::bind
   # Boost::asio
+  Boost::uuid
 )
 
 target_compile_features(
