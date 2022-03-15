@@ -12,6 +12,9 @@
 #ifndef RETURN_TYPES_H_
 #define RETURN_TYPES_H_
 
+#include "powermode_types.hpp"
+
+
 namespace ara
 {
     namespace sm
@@ -20,9 +23,11 @@ namespace ara
         {
             struct MessagePowermodeOutput
             {
+                PowerModeMsg msg;
             };
             struct EventPowermodeOutput
             {
+                PowerModeRespMsg respMsg;
             };
         } // namespace powermode
 

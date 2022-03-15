@@ -10,23 +10,28 @@ namespace ara
         {
             namespace proxy
             {
+                using TriggerOutType = int;
                 namespace events
                 {
                 }
                 namespace fields
                 {
-                   // using notifier = int;
                     // getter  ,  setter ,  notifier
-                   using Notifier = ara::com::proxy_skeleton::proxy::FieldType<::ara::sm::TriggerOut, true, false, true>::type;
+                   using Notifier = ara::com::proxy_skeleton::proxy::FieldType<TriggerOutType, true, true, true>::type;
                 }
-                class Trigger_Out_Proxy
+                class Trigger_Out_Proxy : public ara::com::proxy_skeleton::proxy::ServiceProxy
                 {
                 public:
                     // Fields
-                        Trigger_Out_Proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle);
+                        Trigger_Out_Proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle)
+                        : ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle),
+                        Notifier(this, "Notifier", 0)
+                        {
+
+                        }
                         ~Trigger_Out_Proxy();   
                         // Fields
-                         fields::Notifier notifier;  
+                        fields::Notifier Notifier;  
                 };
             }
         }

@@ -11,8 +11,6 @@
 #include "ara/com/proxy_skeleton/proxy/field.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
 
-
-
 namespace ara
 {
     namespace sm
@@ -21,32 +19,26 @@ namespace ara
         {
             namespace proxy
             {
+                using TriggerInOutType = int;
                 namespace fields
                 {
                     // getter  ,  setter ,  notifier
-                   using Notifier = ara::com::proxy_skeleton::proxy::FieldType<ara::sm::TriggerInOut, true, false, true>::type;
-                   using Trigger = ara::com::proxy_skeleton::proxy::FieldType<ara::sm::TriggerInOut, false, true, false>::type;
+                    using Notifier = ara::com::proxy_skeleton::proxy::FieldType<TriggerInOutType, true, true, true>::type;
+                    using Trigger = ara::com::proxy_skeleton::proxy::FieldType<TriggerInOutType, true, true, true>::type;
                 }
 
-                class Trigger_InOut_Proxy
+                class Trigger_InOut_Proxy : public ara::com::proxy_skeleton::proxy::ServiceProxy
                 {
                 public:
-                    /* explicit TriggerInOutProxy()
-                          Trigger_Out_Skeleton(
-                         ara::com::InstanceIdentifier instance,
-                         ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent
-                         // , notifier(this, "notifier")
-                            ,trigger(this,"trigger")
-
-                     )
-                     */
-                    Trigger_InOut_Proxy();
+                    Trigger_InOut_Proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle)
+                        : ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle),
+                          Notifier(this, "Notifier", 0),
+                          Trigger(this, "Trigger", 1)
+                    {
+                    }
                     ~Trigger_InOut_Proxy();
-                    fields::Notifier notifier;  
-                    fields::Trigger trigger; 
-                        
- 
-    
+                    fields::Notifier Notifier;
+                    fields::Trigger Trigger;
                 };
             }
         }
