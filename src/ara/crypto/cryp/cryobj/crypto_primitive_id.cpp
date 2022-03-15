@@ -7,7 +7,7 @@ namespace ara
         namespace cryp
         {
            
-            CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () noexcept
+          /*  CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () noexcept
             {
                 return ;
             }
@@ -34,7 +34,7 @@ namespace ara
             CryptoPrimitiveId::AlgId GetRequiredHashAlgId () noexcept
             {
                 return ;
-            }
+            }*/
         }
     }
 }
