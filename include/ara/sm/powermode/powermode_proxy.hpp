@@ -11,7 +11,7 @@
 
 #include "ara/com/proxy_skeleton/proxy/field.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
-
+#include "powermode_common.hpp"
 
 namespace ara
 {
@@ -25,9 +25,16 @@ namespace ara
                 class PowerMode : public ara::com::proxy_skeleton::proxy::ServiceProxy
                 {
                 public:
-                        powermode(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle);
-                        ~powermode();   
-          
+                    PowerMode(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle)
+                        : ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle),
+                        MessagePowerMode(this),
+                        EventPowerMode(this)
+                    {
+                    }
+                    ~PowerMode();
+
+                    ara::sm::powermode::proxy::methods::MessagePowerMode MessagePowerMode;
+                    ara::sm::powermode::proxy::methods::MessagePowerMode EventPowerMode;
                 };
             }
         }
