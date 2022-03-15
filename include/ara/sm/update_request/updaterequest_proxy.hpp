@@ -17,9 +17,9 @@
 #include "functional"
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
+#include "ara/sm/update_request/update_request_common.hpp"
 
 using namespace std;
-using SD_data = ara::com::proxy_skeleton::SD_data;
 namespace ara
 {
     namespace sm
@@ -28,62 +28,37 @@ namespace ara
         {
             namespace proxy
             {
-                namespace events
-                {
-
-                }
-                namespace fields
-                {
-
-                }
                 namespace methods
                 {
-                    // using ResetMachine = int;
-                    // using StopUpdateSession = int;
-                    // using StartUpdateSession = int;
-                    // using PrepareUpdate = int;
-                    // using VerifyUpdate = int;
-                    // using PrepareRollback = int;
+                    using ResetMachine = ara::sm::update_request::ResetMachine;
+                    using StopUpdateSession = ara::sm::update_request::StopUpdateSession;
+                    using StartUpdateSession = ara::sm::update_request::StartUpdateSession;
+                    using PrepareUpdate = ara::sm::update_request::PrepareUpdate;
+                    using VerifyUpdate = ara::sm::update_request::VerifyUpdate;
+                    using PrepareRollback = ara::sm::update_request::PrepareRollback;
                 }
 
-                // struct C_Info
-                // {
-                //     int process_id;
-                //     char method_name[30];
-                //     int param1;
-                //     int param2;
-                // };
-
-                class update_request_proxy
+                class update_request_proxy : public ara::com::proxy_skeleton::proxy::ServiceProxy
                 {
-                private:
-                    /* data */
-                    int portNumber;
-                    int service_id;
-                    int service_descovery_port_number;
-                    CServer s1;
-                    struct sockaddr_in cliaddr;
-
                 public:
-                    update_request_proxy(
-                        /* ara::com::InstanceIdentifier instance,
-                         ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent*/
-                    );
-
-                    // Events
-
-                    // Fields
+                    update_request_proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle)
+                    :ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle),
+                    ResetMachine(this),
+                    StopUpdateSession(this),
+                    StartUpdateSession(this),
+                    PrepareUpdate(this),
+                    VerifyUpdate(this),
+                    PrepareRollback(this)
+                    {}
 
                     // Methods
-                    virtual int ResetMachine();
-                    virtual int StopUpdateSession();
-                    virtual int StartUpdateSession();
-                    virtual int PrepareUpdate();
-                    virtual int VerifyUpdate();
-                    virtual int PrepareRollback();
+                    methods::ResetMachine ResetMachine;
+                    methods::StopUpdateSession StopUpdateSession;
+                    methods::StartUpdateSession StartUpdateSession;
+                    methods::PrepareUpdate PrepareUpdate;
+                    methods::VerifyUpdate VerifyUpdate;
+                    methods::PrepareRollback PrepareRollback;
 
-                    // init
-                    // init();
                 };
             }
         }

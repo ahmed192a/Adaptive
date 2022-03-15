@@ -11,18 +11,15 @@
 #ifndef ARA_SM_UPDATEREQUEST_SKELETON_H_
 #define ARA_SM_UPDATEREQUEST_SKELETON_H_
 
-#include <iostream>
 #include <unistd.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include "functional"
-#include "ara/com/ipc/server/socket_Server.hpp"
-#include <vector>
+#include <iostream>
+#include <string.h>
 #include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
+#include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
-using namespace std;
-using SD_data = ara::com::proxy_skeleton::SD_data;
+
+#include "ara/sm/update_request/update_request_return_types.hpp"
 
 namespace ara
 {
@@ -30,138 +27,67 @@ namespace ara
     {
         namespace update_request
         {
-            namespace proxy_skeleton
+            namespace skeleton
             {
-                namespace events
-                {
-                    //define events here
-                }
-                namespace fields
-                {
-                    //define fields here
-                }
-                namespace methods
-                {
-                    //define methods here
 
-                    // using ResetMachine = int;
-                    // using StopUpdateSession = int;
-                    // using StartUpdateSession = int;
-                    // using PrepareUpdate = int;
-                    // using VerifyUpdate = int;
-                    // using PrepareRollback = int;
-                }
-
-
-
-                // class Service_skeleton;
-
+                /// class update_request_Skeleton
                 class update_request_Skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
-
                 {
                 private:
-                    /* data */
-                    int portNumber;
-                    int service_id;
-                    int service_descovery_port_number;
-                    CServer s1;
                     struct sockaddr_in cliaddr;
+                    ara::com::InstanceIdentifier serviceid;
 
                 public:
                     update_request_Skeleton(
-                        ara::com::InstanceIdentifier instance,
-                        ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent)
-                        : ara::com::proxy_skeleton::skeleton::ServiceSkeleton("update_request_Skeleton", instance, mode),
-                          s1(SOCK_DGRAM)
+                        ara::com::InstanceIdentifier instance, 
+                        ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle)
+                        : ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid,instance,skeleton_handle),
+                        serviceid(43)
+
                     {
                     }
-
-                    // Events
-
-                    // Fields
 
                     // Methods
-                    virtual void ResetMachine();
+                    virtual ResetMachineOutput ResetMachine();
                     virtual void StopUpdateSession();
-                    virtual void StartUpdateSession();
-                    virtual void PrepareUpdate();
-                    virtual void VerifyUpdate();
-                    virtual void PrepareRollback();
+                    virtual StartUpdateSessionOutput StartUpdateSession();
+                    virtual PrepareUpdateOutput PrepareUpdate();
+                    virtual VerifyUpdateOutput VerifyUpdate();
+                    virtual PrepareRollbackOutput PrepareRollback();
 
-                    using FunctionGroupNameType = std::string;
+                    
+                    void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
+                   {
+                        ara::com::Deserializer dser;
+                        int methodID = dser.deserialize<int>(message,0);
+                        cout<<"\t[SERVER] Dispatch " << methodID << endl;
+                        std::vector<uint8_t> msg;
+                        msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
 
-                    // [SWS_SM_91018]
-                    /*
-                     * Name        : FunctionGroupListType
-                     * Subelements : FunctionGroupNameType
-                     * Description : A list of FunctionGroups.
-                     */
-                    using FunctionGroupListType = std::vector<FunctionGroupNameType>;
 
-                    void start_service()
-                    {
-                        // s1(SOCK_DGRAM);
-                        this->s1.OpenSocket(portNumber);
-                        this->s1.BindServer();
-                        SD_data service = {service_id, getpid(), portNumber, true};
-
-                        // struct sockaddr_in  cliaddr;
-                        this->cliaddr.sin_family = AF_INET; // IPv4
-                        this->cliaddr.sin_addr.s_addr = INADDR_ANY;
-                        this->cliaddr.sin_port = htons(service_descovery_port_number);
-
-                        this->s1.UDPSendTo((void *)&service, sizeof(service), ( struct sockaddr *)&this->cliaddr);
-
-                        // this->s1.CloseSocket();
-                    }
-
-                    void StopOfferService()
-                    {
-                        // CServer s1(SOCK_DGRAM);
-                        // s1.OpenSocket(portNumber);
-                        // s1.BindServer();
-                        SD_data service = {service_id, getpid(), portNumber, false};
-
-                        // struct sockaddr_in  cliaddr;
-                        // cliaddr.sin_family = AF_INET; // IPv4
-                        // cliaddr.sin_addr.s_addr = INADDR_ANY;
-                        // cliaddr.sin_addr.s_addr = INADDR_ANY;
-                        // cliaddr.sin_port = htons(service_descovery_port_number);
-
-                        this->s1.UDPSendTo((void *)&service, sizeof(service), (struct sockaddr *)&this->cliaddr);
-                        int x;
-                        socklen_t len = sizeof(this->cliaddr);
-                        // (struct sockaddr *) &cliaddr
-                        this->s1.UDPRecFrom(&x, sizeof(int), (struct sockaddr *)&this->cliaddr, &len);
-                        this->s1.CloseSocket();
-                    }
-
-                    void method_dispatch(struct ara::com::proxy_skeleton::Message &message, CServer &cserver)
-                    {
-                        cout << "Dispatch " << message.method_name << endl;
-                        if (strcmp(message.method_name, "ResetMachine") == 0)
+                        if (methodID == 0)
                         {
-                            HandleCall(*this, &update_request_Skeleton::ResetMachine, message, cserver);
+                            HandleCall(*this, &update_request_Skeleton::ResetMachine, msg, cserver);
                         }
-                        else if (strcmp(message.method_name, "StopUpdateSession") == 0)
+                        else if (methodID == 1)
                         {
-                            HandleCall(*this, &update_request_Skeleton::StopUpdateSession, message, cserver);
+                            HandleCall(*this, &update_request_Skeleton::StopUpdateSession, msg, cserver);
                         }
-                        else if (strcmp(message.method_name, "StartUpdateSession") == 0)
+                        else if (methodID == 2)
                         {
-                            HandleCall(*this, &update_request_Skeleton::StartUpdateSession, message, cserver);
+                            HandleCall(*this, &update_request_Skeleton::StartUpdateSession, msg, cserver);
                         }
-                        else if (strcmp(message.method_name, "PrepareUpdate") == 0)
+                        else if (methodID == 3)
                         {
-                            HandleCall(*this, &update_request_Skeleton::PrepareUpdate, message, cserver);
+                            HandleCall(*this, &update_request_Skeleton::PrepareUpdate, msg, cserver);
                         }
-                        else if (strcmp(message.method_name, "VerifyUpdate") == 0)
+                        else if (methodID == 4)
                         {
-                            HandleCall(*this, &update_request_Skeleton::VerifyUpdate, message, cserver);
+                            HandleCall(*this, &update_request_Skeleton::VerifyUpdate, msg, cserver);
                         }
-                        else if (strcmp(message.method_name, "PrepareRollback") == 0)
+                        else if (methodID == 5)
                         {
-                            HandleCall(*this, &update_request_Skeleton::PrepareRollback, message, cserver);
+                            HandleCall(*this, &update_request_Skeleton::PrepareRollback, msg, cserver);
                         }
                         else
                         {
@@ -169,7 +95,7 @@ namespace ara
                             cserver.SendServer(&result, sizeof(int));
                             cserver.ClientClose();
                         }
-                    }
+                   }
                 };
             }
         }

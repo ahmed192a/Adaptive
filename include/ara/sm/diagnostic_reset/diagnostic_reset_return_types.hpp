@@ -12,7 +12,7 @@
 #ifndef RETURN_TYPES_H_
 #define RETURN_TYPES_H_
 
-namespace ara
+#include "ara/sm/diagnostic_reset/diagnostic_reset_types.hpp"namespace ara
 {
     namespace sm
     {
@@ -20,9 +20,11 @@ namespace ara
         {
             struct MessageDiagnosticOutput
             {
+                DiagnosticResetMsg msg;
             };
             struct EventDiagnosticOutput
             {
+                DiagnosticResetRespMsg respMsg;
             };
         } // namespace DiagnosticReset
 

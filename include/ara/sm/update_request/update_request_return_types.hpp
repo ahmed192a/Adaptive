@@ -11,7 +11,7 @@
 
 #ifndef RETURN_TYPES_H_
 #define RETURN_TYPES_H_
-
+#include "ara/sm/sm_error_domain.hpp"
 namespace ara
 {
     namespace sm
@@ -20,21 +20,29 @@ namespace ara
         {
             struct ResetMachineOutput
             {
+                bool status; 
+                errorDomains error ;
             };
-            struct StopUpdateSessionOutput
+
+            struct StartUpdateSessionOutput
             {
-            };
-            struct RequestUpdateSessionOutput
-            {
+                bool status; 
+                errorDomains error ;
             };
             struct PrepareUpdateOutput
             {
+                bool status; 
+                errorDomains error ;
             };
             struct VerifyUpdateOutput
             {
+                bool status; 
+                errorDomains error ;
             };
             struct PrepareRollbackOutput
             {
+                bool status; 
+                errorDomains error ;
             };
         } // namespace update_request
 

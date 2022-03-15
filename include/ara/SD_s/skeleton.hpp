@@ -8,7 +8,6 @@
  * @copyright Copyright (c) 2022
  *
  */
-#include "ara/com/ipc/server/socket_Server.hpp"
 #include <unistd.h>
 #include "functional"
 #include <iostream>

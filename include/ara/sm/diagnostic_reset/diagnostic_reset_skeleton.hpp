@@ -13,6 +13,7 @@
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_skeleton.hpp"
 
+#include "ara/sm/diagnostic_reset/diagnostic_reset_return_types.hpp"
 
 namespace ara
 {
@@ -22,19 +23,54 @@ namespace ara
         {
             namespace skeleton
             {
-                class PowerMode
+                class diagnostic_reset
                 {
+                private:
+                    struct sockaddr_in cliaddr;
+                    ara::com::InstanceIdentifier serviceid;
                 public:
-                    diagnostic_reset(
-                        // ara::com::InstanceIdentifier instance,
-                        // ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent){}
                     
-                        diagnostic_reset(ara::com::proxy_skeleton::Skeleton::ServiceSkeleton::SP_Handle skeleton_handle);
-                        ~diagnostic_reset();
+
+                    diagnostic_reset(
+                        ara::com::InstanceIdentifier instance, 
+                        ara::com::proxy_skeleton::Skeleton::ServiceSkeleton::SP_Handle skeleton_handle)
+                        : ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid,instance,skeleton_handle),
+                        serviceid(14)
+                        {}
+                    ~diagnostic_reset();
+
                     /*sends DiagnosticResetMsg defined in 9.1 Type definition to all Processes in a SoftwareCluster.*/
-                    ara::sm::diagnostic_reset::skeleton::MessageDiagnosticOutput message(DiagnosticResetMsg msg);
+                    virtual MessageDiagnosticOutput message();
+
                     /*All Processes which got a DiagnosticReset request sends this as answer to State Management*/
-                    ara::sm::diagnostic_reset::skeleton::EventDiagnosticOutput event(DiagnosticResetRespMsg respMsg);
+                    virtual EventDiagnosticOutput event();
+
+                   void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
+                   {
+                        ara::com::Deserializer dser;
+                        int methodID = dser.deserialize<int>(message,0);
+                        cout<<"\t[SERVER] Dispatch " << methodID << endl;
+                        std::vector<uint8_t> msg;
+                        msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
+
+
+                        if (methodID == 0)
+                        {
+                            HandleCall(*this, &diagnostic_reset::message, msg, cserver);
+                        }
+                        else if (methodID == 1)
+                        {
+                            HandleCall(*this, &diagnostic_reset::event, msg, cserver);
+                        }
+                        else
+                        {
+                            int result = -1;
+                            cserver.SendServer(&result, sizeof(int));
+                            cserver.ClientClose();
+                        }
+                   }
+
+                    
                 };
             }
         }
