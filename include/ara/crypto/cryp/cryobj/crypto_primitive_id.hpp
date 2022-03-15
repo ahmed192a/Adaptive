@@ -75,7 +75,7 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (const CryptoPrimitiveId &other)=default;
+                CryptoPrimitiveId& operator= (const CryptoPrimitiveId &other);
                 /**
                  * SWS_CRYPT_30213
                  * @brief 
@@ -83,20 +83,20 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (CryptoPrimitiveId &&other)=default;
+                CryptoPrimitiveId& operator= (CryptoPrimitiveId &&other);
                 /**
                  * SWS_CRYPT_23311
                  *  @brief Get the Hash Alg Id object
                  * Get an ID of hash algorithm used for this signature object production.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual CryptoPrimitiveId::AlgId GetHashAlgId () const noexcept=0;
+                virtual AlgId GetHashAlgId () const noexcept=0;
                 /**
                  * @brief Get the Required Hash Alg Id object
                  * Get an ID of hash algorithm required by current signature algorithm.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual CryptoPrimitiveId::AlgId GetRequiredHashAlgId () const noexcept=0;
+                virtual AlgId GetRequiredHashAlgId () const noexcept=0;
 
             };
         }
