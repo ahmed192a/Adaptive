@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     }
     server_proxy_ptr->TransferExit(result.id);
 
-    // server_proxy_ptr->CurrentStatus
+    server_proxy_ptr->ProcessSwPackage(result.id);
 
     while (1)
     {
