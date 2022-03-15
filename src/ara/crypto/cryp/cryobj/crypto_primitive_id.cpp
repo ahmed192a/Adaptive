@@ -6,10 +6,8 @@ namespace ara
     {
         namespace cryp
         {
-             CryptoPrimitiveId :: ~CryptoPrimitiveId () noexcept
-            {
-
-            }
+            CryptoPrimitiveId :: ~CryptoPrimitiveId () noexcept=default;
+            
             CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () noexcept
             {
 
