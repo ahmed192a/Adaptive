@@ -17,4 +17,5 @@ target_link_libraries(
 )
 add_subdirectory(EM_test_process)
 add_subdirectory(SM)
+add_subdirectory(OTA)
 
