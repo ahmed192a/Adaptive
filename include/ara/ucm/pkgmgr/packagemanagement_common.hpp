@@ -340,7 +340,7 @@ namespace ara
                 template <std::size_t... index>
                 ara::ucm::pkgmgr::PackageManagement::TransferDataOutput send(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter, std::index_sequence<index...>)
                 {
-                    TransferDataOutput result = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(methodid, id, blockCounter, data[index]...);
+                    ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(methodid, id, blockCounter, data[index]...);
                     return result;
                 }
             };
