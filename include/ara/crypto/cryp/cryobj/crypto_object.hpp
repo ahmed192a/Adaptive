@@ -1,8 +1,8 @@
-#ifndef ARA_CRYPTO_CRYP_CRYPTOOBJECT_H_
-#define ARA_CRYPTO_CRYP_CRYPTOOBJECT_H_
+#ifndef CRYPTO_OBJECT_H_
+#define CRYPTO_OBJECT_H_
 #include <memory>
 #include <iostream>
-#include<ara/core/StringView.hpp>
+#include <ara/core/StringView.hpp>
 
 
 namespace ara
@@ -116,6 +116,6 @@ namespace ara
         }
     }
 }
+
+
 #endif
-
-
