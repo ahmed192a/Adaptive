@@ -6,12 +6,9 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
-#include "ara/ucm/pkgmgr/packagemanagement_common.hpp"
-#include "ara/ucm/pkgmgr/ucm_error.hpp"
 
-using namespace ara::ucm::pkgmgr::skeleton;
-using namespace ara::ucm;
+#include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
+
 
 void SaveBlock(const char *filename, std::vector<uint8_t> &data_block)
 {
@@ -20,57 +17,57 @@ void SaveBlock(const char *filename, std::vector<uint8_t> &data_block)
     outfile.close();
 }
 
-ara::ucm::pkgmgr::PackageManagement::ActivateOutput PackageManagementSkeleton::Activate()
+ara::ucm::pkgmgr::PackageManagement::ActivateOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Activate()
 {
  
 }
 
-ara::ucm::pkgmgr::PackageManagement::CancelOutput PackageManagementSkeleton::Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+ara::ucm::pkgmgr::PackageManagement::CancelOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput PackageManagementSkeleton::DeleteTransfer(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::DeleteTransfer(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
  
 }
 
-ara::ucm::pkgmgr::PackageManagement::FinishOutput PackageManagementSkeleton::Finish()
+ara::ucm::pkgmgr::PackageManagement::FinishOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Finish()
 {
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput PackageManagementSkeleton::GetHistory(uint64_t timestampGE, uint64_t timestampLT)
+ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetHistory(uint64_t timestampGE, uint64_t timestampLT)
 {
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetIdOutput PackageManagementSkeleton::GetId()
+ara::ucm::pkgmgr::PackageManagement::GetIdOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetId()
 {
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetSwClusterChangeInfoOutput  PackageManagementSkeleton::GetSwClusterChangeInfo()
+ara::ucm::pkgmgr::PackageManagement::GetSwClusterChangeInfoOutput  ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwClusterChangeInfo()
 {
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetSwClusterDescriptionOutput PackageManagementSkeleton::GetSwClusterDescription()
+ara::ucm::pkgmgr::PackageManagement::GetSwClusterDescriptionOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwClusterDescription()
 {
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput PackageManagementSkeleton::GetSwClusterInfo()
+ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwClusterInfo()
 {
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput PackageManagementSkeleton::GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages)
+ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages)
 {
   
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput PackageManagementSkeleton::GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
    
 }
@@ -85,7 +82,7 @@ std::vector<char> ReadAllBytes2(char const *filename)
     return result;
 }
 
-ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
     CClient c1(SOCK_STREAM);
     c1.OpenSocket();
@@ -98,16 +95,16 @@ ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput PackageManagementSke
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::RevertProcessedSwPackagesOutput PackageManagementSkeleton::RevertProcessedSwPackages()
+ara::ucm::pkgmgr::PackageManagement::RevertProcessedSwPackagesOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::RevertProcessedSwPackages()
 {
    
 }
-ara::ucm::pkgmgr::PackageManagement::RollbackOutput PackageManagementSkeleton::Rollback()
+ara::ucm::pkgmgr::PackageManagement::RollbackOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Rollback()
 {
     
 }
 
-ara::ucm::pkgmgr::PackageManagement::TransferDataOutput PackageManagementSkeleton::TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
+ara::ucm::pkgmgr::PackageManagement::TransferDataOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
 {
     ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result;
     if (TransferInfoData.id == id)
@@ -157,7 +154,7 @@ ara::ucm::pkgmgr::PackageManagement::TransferDataOutput PackageManagementSkeleto
 
 }
 
-ara::ucm::pkgmgr::PackageManagement::TransferExitOutput PackageManagementSkeleton::TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+ara::ucm::pkgmgr::PackageManagement::TransferExitOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
     ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
     std::cout << buffer.size() << std::endl;
@@ -166,7 +163,7 @@ ara::ucm::pkgmgr::PackageManagement::TransferExitOutput PackageManagementSkeleto
 }
 
 
-ara::ucm::pkgmgr::PackageManagement::TransferStartOutput PackageManagementSkeleton::TransferStart(uint64_t size)
+ara::ucm::pkgmgr::PackageManagement::TransferStartOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferStart(uint64_t size)
 {
     ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result;
     TransferInfoData.localBlockCounter = 0;
