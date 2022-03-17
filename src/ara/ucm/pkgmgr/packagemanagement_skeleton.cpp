@@ -83,7 +83,7 @@ std::vector<char> ReadAllBytes2(char const *filename)
 //     c1.ClientWrite((void *)&Temp_data2[0], x);
 // }
 
-std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
     std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> f = std::async([&]()
     {
@@ -101,7 +101,7 @@ ara::ucm::pkgmgr::PackageManagement::RollbackOutput ara::ucm::pkgmgr::skeleton::
 {
 }
 
-std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> PackageManagementSkeleton::TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
+std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
 {
      std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> f = std::async([&, id, data, blockCounter]()
     {
@@ -161,7 +161,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> PackageMana
     return f;
 }
 
-std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> PackageManagementSkeleton::TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> f = std::async([&, id]()
     {
@@ -173,7 +173,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> PackageMana
     return f;
 }
 
-std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> PackageManagementSkeleton::TransferStart(uint64_t size)
+std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferStart(uint64_t size)
 {
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> f = std::async([&]()
     {
