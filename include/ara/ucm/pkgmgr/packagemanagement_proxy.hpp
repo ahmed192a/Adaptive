@@ -12,7 +12,7 @@
 #ifndef ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_PROXY_H_
 #define ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_PROXY_H_
 
-#include "ara/ucm/pkgmgr/inc.hpp"
+#include "packagemanagement_common.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
 
 namespace ara
@@ -32,31 +32,42 @@ namespace ara
                     /**
                      * @brief The current status of UCM.
                      * 
-                     * @todo update typedef:
-                     *       field: CurrentStatus of type: PackageManagementStatusType
-                     * @note int de ay haga mo2ktn
                      * 
                      */
                     using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType, true, false, true>::type;
                 }
+                namespace methods
+                {
+                    using Activate = ara::ucm::pkgmgr::Activate;
+                    using Cancel = ara::ucm::pkgmgr::Cancel;
+                    using DeleteTransfer = ara::ucm::pkgmgr::DeleteTransfer;
+                    using Finish = ara::ucm::pkgmgr::Finish;
+                    using GetHistory = ara::ucm::pkgmgr::GetHistory;
+                    using GetId = ara::ucm::pkgmgr::GetId;
+                    using GetSwClusterChangeInfo = ara::ucm::pkgmgr::GetSwClusterChangeInfo;
+                    using GetSwClusterDescription = ara::ucm::pkgmgr::GetSwClusterDescription;
+                    using GetSwClusterInfo = ara::ucm::pkgmgr::GetSwClusterInfo;
+                    using GetSwPackages = ara::ucm::pkgmgr::GetSwPackages;
+                    using GetSwProcessProgress = ara::ucm::pkgmgr::GetSwProcessProgress;
+                    using ProcessSwPackage = ara::ucm::pkgmgr::ProcessSwPackage;
+                    using RevertProcessedSwPackages = ara::ucm::pkgmgr::RevertProcessedSwPackages;
+                    using Rollback = ara::ucm::pkgmgr::Rollback;
+                    using TransferData= ara::ucm::pkgmgr::TransferData;
+                    using TransferExit = ara::ucm::pkgmgr::TransferExit;
+                    using TransferStart = ara::ucm::pkgmgr::TransferStart;
+ 
+                } // namespace methods
+                 
                 /**
                  * @brief implementation of PackageManagementProxy interface
                  * 
                  * @note . It is an instance of a C++ class local to the application/client, which uses the service.
                  *       . ref: 6.2 Proxy Class in exp_aracomAPI
                  * 
-                 * @todo inherit from ara::com::proxy_skeleton::proxy::ServiceProxy
                  */
                 class PackageManagementProxy : public ara::com::proxy_skeleton::proxy::ServiceProxy
                 {
                 public:
-                    /**
-                         * @todo: - ctor
-                         *        - Events
-                         *        - Fields
-                         *        - Methods
-                         *        - findservice function
-                         */
                     PackageManagementProxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle)
                     : ara::com::proxy_skeleton::proxy::ServiceProxy(proxy_handle),
                      TransferStart(this),
@@ -92,12 +103,12 @@ namespace ara
                     methods::GetSwClusterInfo GetSwClusterInfo;
                     methods::GetSwPackages GetSwPackages;
                     methods::GetSwProcessProgress GetSwProcessProgress;
-                    ara::ucm::pkgmgr::proxy::methods::ProcessSwPackage ProcessSwPackage;
+                    methods::ProcessSwPackage ProcessSwPackage;
                     methods::RevertProcessedSwPackages RevertProcessedSwPackages;
                     methods::Rollback Rollback;
-                    ara::ucm::pkgmgr::proxy::methods::TransferData TransferData;
-                    ara::ucm::pkgmgr::proxy::methods::TransferExit TransferExit;
-                    ara::ucm::pkgmgr::proxy::methods::TransferStart TransferStart;
+                    methods::TransferData TransferData;
+                    methods::TransferExit TransferExit;
+                    methods::TransferStart TransferStart;
                     // fields::CurrentStatus CurrentStatus;
                     
                 };
