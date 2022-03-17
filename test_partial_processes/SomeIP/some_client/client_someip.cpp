@@ -1,5 +1,5 @@
-#include "../src/ara/com/ipc/server/socket_Server.h"
-#include "../src/ara/com/ipc/client/socket_Client.h"
+#include "ara/com/ipc/server/socket_Server.hpp"
+#include "ara/com/ipc/client/socket_Client.hpp"
 
 #include <iostream>
 #include <vector>
@@ -57,6 +57,9 @@ int main()
     //cout<<"x : "<<x<<endl;
 
     cin>>x;
+    /*
+    int a=result
+    */
 
     //sd.sa_data;
 

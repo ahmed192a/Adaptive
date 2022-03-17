@@ -76,7 +76,7 @@ namespace ara
                 virtual std::vector<uint8_t> BasePayload(uint8_t &optionIndex) const;
 
             public:
-                virtual ~Entry() noexcept = default;
+                ~Entry() noexcept {};
 
                 /// @brief Get entry type
                 /// @returns Entry type

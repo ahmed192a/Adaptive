@@ -36,6 +36,9 @@ add_subdirectory(test_partial_processes/SD_TEST/ucm_client)
 add_subdirectory(test_partial_processes/SD_TEST/ucm_server)
 add_subdirectory(test_partial_processes/SD_TEST/Classic)
 
+add_subdirectory(test_partial_processes/SomeIP/some_client)
+add_subdirectory(test_partial_processes/SomeIP/some_server)
+
 
 # set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
 

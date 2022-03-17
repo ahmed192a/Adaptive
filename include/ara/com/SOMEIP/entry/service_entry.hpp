@@ -43,6 +43,7 @@ namespace ara
 
             public:
                 ServiceEntry() = delete;
+                ~ServiceEntry(){};
 
                 /// @brief Get minor version
                 /// @returns Service minor version

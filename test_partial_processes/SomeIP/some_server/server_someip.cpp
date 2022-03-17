@@ -1,10 +1,10 @@
-#include "../src/ara/com/ipc/server/socket_Server.h"
+#include "ara/com/ipc/server/socket_Server.hpp"
 #include <iostream>
 #include <vector>
-#include "../src/ara/com/SOMEIP/SomeipSDMessage.h"
-#include "../src/ara/com/SOMEIP/option/ipv4_endpoint_option.h"
-#include "../src/ara/com/SOMEIP/helper/ipv4_address.h"
-#include "../src/ara/com/SOMEIP/entry/service_entry.h"
+#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
+#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
+#include "ara/com/SOMEIP/entry/service_entry.hpp"
 #include <unistd.h>
 using namespace std;
 using namespace ara::com::entry;
@@ -21,8 +21,8 @@ void write(CServer &fd ,const vector<uint8_t> &arg)
 {
     uint32_t size = arg.size();
     cout<<size<<endl;
-    fd.UDPSendTo(&size, sizeof(size), (const sockaddr *)&sd);
-    fd.UDPSendTo((const char*)arg.data(), arg.size(), (const sockaddr *)&sd) ;
+    fd.UDPSendTo(&size, sizeof(size), ( sockaddr *)&sd);
+    fd.UDPSendTo((void*)arg.data(), arg.size(), ( sockaddr *)&sd) ;
     // for (vector<uint8_t>::const_iterator it = arg.begin(); it != arg.end(); it++)
     // {
     //     fd.UDPSendTo(&(*it), sizeof(uint8_t), (const sockaddr *)&sd) ;
