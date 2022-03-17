@@ -19,25 +19,64 @@
 #include <cstdlib>
 #include <iostream>
 
-#define SERVER_PORT 5365
-#define SD_PORT 1690
-#define MAX_QUEUE_CLIENTS 5
-#define SERVICE_ID 32
-#define NUM_THREADS 3
+#define SERVER_PORT         5365
+#define SD_PORT             1690
+#define MAX_QUEUE_CLIENTS   5
+#define SERVICE_ID          32
+#define NUM_THREADS         3
 
 using namespace std;
-void Handle_IO();
 
-// Socket for methods
-// Socket for events
+// server 
 CServer server_main_socket_DG(SOCK_DGRAM);
 
 ara::com::InstanceIdentifier instance(SERVICE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
-skeleton server_skeleton_obj(instance, skeleton_handle);
+std::shared_ptr<skeleton> server_skeleton_ptr = std::make_shared<skeleton>(instance, skeleton_handle);
 
-static skeleton *server_skeleton_ptr;
 
+ara::com::InstanceIdentifier instance1(47);
+std::shared_ptr<skeleton> server_skeleton_ptr1 = std::make_shared<skeleton>(instance1, skeleton_handle);
+
+void Handle_IO();
+void *pthread0(void *v_var);
+void *pthread1(void *v_var);
+
+int main()
+{
+    pthread_t threads[NUM_THREADS];
+
+    int th1 , th2;
+    int i = 0;
+
+        th1 = pthread_create(&threads[0] , NULL , pthread0 , (void *)&i);
+        if(th1)
+        {
+            cout << "ERRor" << th1 << endl;
+            exit(-1);
+
+        }
+        i = 1;
+        th2 = pthread_create(&threads[1] , NULL , pthread1 , (void *)&i);
+        if(th2)
+        {
+            cout << "ERRor" << th2 << endl;
+            exit(-1);
+
+        }
+    
+    pthread_exit(NULL);
+    return 0;
+}
+
+
+/**************************************************** skeleton handle
+ * @brief 
+ * @todo send service id in the methods msg
+ * 
+ * @param v_var 
+ * @return void* 
+ */
 void *pthread0(void *v_var)
 {
     CServer server_main_socket(SOCK_STREAM);
@@ -57,6 +96,7 @@ void *pthread0(void *v_var)
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
 
     server_skeleton_ptr->OfferService();
+    server_skeleton_ptr1->OfferService();
 
     cout << "shared " << server_skeleton_ptr << endl;
     cout << "\t[SERVER]  Ready" << endl;
@@ -73,12 +113,7 @@ void *pthread0(void *v_var)
     msg.resize(msg_size);
     Sclient.Receive((void *)&msg[0], sizeof(msg));
 
-    // Sclient.Receive((void *)&x, sizeof(x));
-
-    // print the requested method
-    // cout << blue << "\t[SERVER] " << x.method_name << endl;
-
-    // Perform the requested method then send the result
+ 
     server_skeleton_ptr->method_dispatch(msg, Sclient);
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -121,6 +156,12 @@ void *pthread0(void *v_var)
     server_skeleton_ptr->StopOfferService();
 }
 
+
+/******************************************************        Event handler    ************************************************
+ * @brief 
+ * 
+ */
+
 void *pthread1(void *v_var)
 {
     server_main_socket_DG.OpenSocket(SERVER_PORT);
@@ -129,39 +170,6 @@ void *pthread1(void *v_var)
     while (1)
         Handle_IO();
 }
-
-int main()
-{
-    server_skeleton_ptr = (skeleton *)mmap(NULL, sizeof *server_skeleton_ptr, PROT_READ | PROT_WRITE,
-                                           MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-    memcpy(server_skeleton_ptr, &server_skeleton_obj, sizeof(server_skeleton_obj));
-    
-
-    pthread_t threads[NUM_THREADS];
-
-    int th1 , th2;
-    int i = 0;
-
-        th1 = pthread_create(&threads[0] , NULL , pthread0 , (void *)&i);
-        if(th1)
-        {
-            cout << "ERRor" << th1 << endl;
-            exit(-1);
-
-        }
-        i = 1;
-        th2 = pthread_create(&threads[1] , NULL , pthread1 , (void *)&i);
-        if(th2)
-        {
-            cout << "ERRor" << th2 << endl;
-            exit(-1);
-
-        }
-    
-    pthread_exit(NULL);
-    return 0;
-}
-
 void Handle_IO()
 {
     sockaddr_in echoClntAddr;                    /* Address of datagram source */
