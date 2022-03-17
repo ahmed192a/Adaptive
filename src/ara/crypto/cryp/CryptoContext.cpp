@@ -9,7 +9,7 @@ class CryptoContext {
 	//Return CryptoPrimitivId instance containing instance identification.//
 	virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept = 0;
 	//Check if the crypto context is already initialized and ready to use. It checks all required values//
-      //including: key value, IV / seed, etc...//
+        //including: key value, IV / seed, etc...//
 	virtual bool IsInitialized() const noexcept = 0;
 	//Copy-assign another CryptoContext to this instance//
 	CryptoContext& operator= (const CryptoContext& other) = default;
