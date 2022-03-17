@@ -3,17 +3,17 @@
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
- * @date 2022-03-07
+ * @date 2022-03-06
  * 
  * @copyright Copyright (c) 2022
  * 
  */
 #include "ara/exec/parser/manifest_parser.hpp"
-
+#include <boost/variant2/variant.hpp>
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
-
+// #include <stdexcept>
+// #include <memory>
 namespace ara
 {
     namespace exec
@@ -25,13 +25,13 @@ namespace ara
             /**
              * @brief checks of the json object has the key value in its children. if it doesn't exist, it will return false
              *          and if it exists, it will return true and get the json tree where key is the parent in put it in output_value
-             * 
-             * @tparam T            type of the output 
+             *
+             * @tparam T            type of the output
              * @param json_obj      json object struct
              * @param key           the value which we want to find in the children of json_obj
              * @param output_value  the output json object if we found the key
-             * @return true 
-             * @return false 
+             * @return true
+             * @return false
              */
             template <typename T>
             bool read_value(const json &json_obj, const std::string &key, T &output_value) noexcept
@@ -53,11 +53,12 @@ namespace ara
                 output_value = tmp;
                 return true;
             }
+
             /**
              * @brief read the exection manifest file and checks if its valid then pasring its content into struct of type ExecutionManifest
-             * 
+             *
              * @param path                  var contain the path of the file
-             * @return ExecutionManifest 
+             * @return ExecutionManifest
              */
             ExecutionManifest ManifestParser::parse_execution_manifest(const std::string &path) noexcept(false)
             {
@@ -96,6 +97,7 @@ namespace ara
                                         read_value(startup_option, kStartupOptionsOptionKind, option.kind);
                                         read_value(startup_option, kStartupOptionsOptionName, option.name);
                                         read_value(startup_option, kStartupOptionsOptionArg, option.arg);
+
                                         config.startup_options.push_back(option);
                                     }
                                 }
@@ -139,9 +141,9 @@ namespace ara
             }
             /**
              * @brief read the machine manifest file and checks if its valid then pasring its content into struct of type MachineManifest
-             * 
-             * @param path 
-             * @return MachineManifest 
+             *
+             * @param path
+             * @return MachineManifest
              */
             MachineManifest ManifestParser::parse_machine_manifest(const std::string &path) noexcept(false)
             {
@@ -158,34 +160,52 @@ namespace ara
                 json mode_declaration_groups{};
                 if (read_value(manifest_json_content, kModeDeclarationGroup, mode_declaration_groups))
                 {
+                    std::string FG_name;
                     for (auto &mode_declaration_group : mode_declaration_groups)
                     {
-                        MachineManifest::ModeDeclarationGroup mdg{};
-                        read_value(mode_declaration_group, kFunctionGroupName, mdg.function_group_name);
-
-                        json mode_declarations{};
-                        if (read_value(mode_declaration_group, kModeDeclarations, mode_declarations))
-                        {
-                            for (auto &mode_declaration : mode_declarations)
-                            {
-                                MachineManifest::ModeDeclarationGroup::ModeDeclaration md{};
-
-                                read_value(mode_declaration, kMode, md.mode);
-                                mdg.mode_declarations.push_back(md);
-                            }
-                        }
-                        man.mode_declaration_groups.push_back(mdg);
+                        std::shared_ptr<FunctionGroup> fg_ptr(new FunctionGroup(std::move(mode_declaration_group)));
+                        
+                        man.mode_declaration_groups.push_back(fg_ptr);
                     }
                 }
                 return man;
             }
+            MachineManifest ManifestParser::pares_test(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
+                    false)
+            {
+                using namespace MMJsonKeys;
+                auto manifest_json_full = read_manifest_file(path);
+                MachineManifest man{};
+                validate_content(manifest_json_full, kAsVector);
+
+                json manifest_json_content{};
+                read_value(manifest_json_full, kMachineManifest, manifest_json_content);
+
+                read_value(manifest_json_content, kMachineManifestId, man.manifest_id);
+
+                while(1)
+                {
+                    boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(path);
+                    if(_functionGroup.index()==0)
+                        break;
+                    //cout<<"finish FG : " <<u++<<endl;
+                    std::shared_ptr<FunctionGroup> fg =std::make_shared<FunctionGroup>(std::move(get<1>(_functionGroup)));
+                    sys_FG[fg->get_FGname()].c_FG = fg;
+                    FunctionGroupState::CtorToken token={fg->get_FGname(),fg->get_states()[0]};
+                    sys_FG[fg->get_FGname()].current_FGS = std::make_shared<FunctionGroupState>(std::move(token));
+                }
+                return man;
+
+            }
+
+
             /**
              * @brief read the mainfest file and convert it into json object
-             * 
-             * @param path 
-             * @return json 
+             *
+             * @param path
+             * @return json
              */
-            json ManifestParser::read_manifest_file(const std::string &path) noexcept(false)
+            json read_manifest_file(const std::string &path) noexcept(false)
             {
                 std::ifstream manifest_content(path, std::ifstream::binary);
                 if (not manifest_content.is_open())
@@ -213,12 +233,12 @@ namespace ara
             }
             /**
              * @brief checks if the file is the requested manifest by checking the first child name to match the first json_key
-             * 
-             * @param json_obj 
-             * @param json_keys 
+             *
+             * @param json_obj
+             * @param json_keys
              */
-            void ManifestParser::validate_content(const json &json_obj,
-                                                  const std::vector<std::string> &json_keys) const
+            void validate_content(const json &json_obj,
+                                                  const std::vector<std::string> &json_keys) 
                 noexcept(false)
             {
                 // If validation will end with failure, this method will throw std::runtime_error
@@ -237,5 +257,3 @@ namespace ara
         } // namespace parser
     }     // namespace exec
 } // namespace ara
-
-

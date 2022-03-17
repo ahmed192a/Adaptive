@@ -29,6 +29,7 @@ namespace ara
             Trigger<T> mTrigger;
 
         public:
+         
             TriggerIn(T &state, TriggerHandler handler) : mTrigger(state, handler)
             {
             }

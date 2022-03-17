@@ -23,10 +23,12 @@ namespace ara
     {
         namespace proxy_skeleton
         {
-
+            /// @brief transport layer protocol
             enum class TransportLayerProtocolEnum : uint8_t
             {
+                /// (value 0x00 or 0) UDP
                 udp = 0,
+                /// (value 0x01 or 1) TCP
                 tcp = 1
             };
 

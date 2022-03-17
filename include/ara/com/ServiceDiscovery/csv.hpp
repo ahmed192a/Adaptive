@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2022
  * 
  */
+#ifndef _SD_CSV_H_
+#define _SD_CSV_H_
 #include <fstream>
 #include <string>
 #include <string.h>
@@ -185,3 +187,5 @@ class CSV{
         ofs.close();
     }
 };
+
+#endif

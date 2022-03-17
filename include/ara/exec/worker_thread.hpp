@@ -1,5 +1,5 @@
 /**
- * @file worker_thread.h
+ * @file worker_thread.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
@@ -18,13 +18,9 @@ namespace ara
         class WorkerThread
         {
         public:
-            WorkerThread(){
-
-            }
-            uint64_t GetRandom() noexcept{
-                return 0;
-            }
-            virtual ~WorkerThread();
+            WorkerThread(){}
+            uint64_t GetRandom() noexcept{ return 0;}
+            virtual ~WorkerThread(){}
         };
     } // namespace exec
 

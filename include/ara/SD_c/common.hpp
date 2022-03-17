@@ -1,5 +1,5 @@
 /**
- * @file common.h
+ * @file common.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1

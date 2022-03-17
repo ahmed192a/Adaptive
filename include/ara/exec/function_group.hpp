@@ -1,5 +1,5 @@
 /**
- * @file function_group.h
+ * @file function_group.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
@@ -12,6 +12,10 @@
 #define ARA_EXEC_FUNCTION_GROUP_H_
 #include <string>
 #include <vector>
+#include "ara/exec/exec_error_domain.hpp"
+#include <nlohmann/json.hpp>
+#include <boost/variant2/variant.hpp>
+// #include <variant>
 namespace ara
 {
     namespace exec
@@ -20,13 +24,19 @@ namespace ara
         /**
          * Class representing Function Group defined in meta-model (ARXML).
          */
-        class FunctionGroup
+        class FunctionGroup final
         {
-
+        private:
+            std::string mFunction_group_name;
+            std::vector<std::string> mstates;
         public:
-            std::string Function_group_name;
-            std::string state = "run";
-            using CtorToken = std::string;
+
+            using CtorToken = nlohmann::json; //std::string;
+            void set_FGname(std::string fg_name) ;
+            void set_states(std::vector<std::string> states);
+            std::string get_FGname() const noexcept;
+            std::vector<std::string> get_states() const noexcept;
+
 
             // SWS_EM_02264
             /**
@@ -50,7 +60,7 @@ namespace ara
              */
             // ara::core::StringView ---> std::string
             // 
-            static FunctionGroup::CtorToken Preconstruct(std::string metaModelIdentifier) noexcept;
+            static boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>  Preconstruct(std::string metaModelIdentifier) noexcept;
 
             // SWS_EM_02265
             /**
@@ -61,6 +71,7 @@ namespace ara
              * \note Please note that token is destructed during object construction!
              */
             FunctionGroup(FunctionGroup::CtorToken &&token) noexcept; 
+
 
             // SWS_EM_02266
             /**
@@ -95,6 +106,10 @@ namespace ara
              * Thread-safe
              */
             bool operator!=(FunctionGroup const &other) const noexcept;
+
+
+            FunctionGroup &operator=(FunctionGroup &&other);
+
         };
 
 

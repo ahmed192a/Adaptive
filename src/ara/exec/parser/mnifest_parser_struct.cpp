@@ -1,3 +1,13 @@
+/**
+ * @file mnifest_parser_struct.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-06
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "ara/exec/parser/manifest_parser_struct.hpp"
 #include <iostream>
 #include "errno.h"
@@ -7,7 +17,7 @@
 #include <sys/wait.h>
 #include "sys/stat.h"
 #include <signal.h>
-
+// #include <string>
 using namespace ara::exec::parser;
 using namespace std;
 
@@ -35,12 +45,12 @@ bool Process::operator!=(const Process &other) const noexcept
 bool Process::start(){
     if (_pid != 0) {
         //TRACE_ERROR("EM: Invalid call for Start(): the process is already running");
-        std::cout<<"EM: Invalid call for Start(): the process is already running"<<endl;
+        cout<<"EM: Invalid call for Start(): the process is already running"<<endl;
         return false;
     }
     //TRACE_INFO("EM: Starting executable " << executable_);
-    std::cout<<"EM: Starting executable "+name<<endl;
-    
+    cout<<"EM: Starting executable "+name<<endl;
+
     if (mkfifo("processes/execution_client_fifo", 0666) == -1)
     {
         if (errno != EEXIST)
@@ -52,16 +62,16 @@ bool Process::start(){
     int pid = fork();
     if (pid < 0) {
         //TRACE_ERROR("EM: fork() failed" << ", errno: " << errno);
-        std::cout<<"EM: fork() failed" << ", errno: " << errno<<endl;
+        cout<<"EM: fork() failed" << ", errno: " << errno<<endl;
         return false;
     }
     if (pid == 0) {
         // The child process
 
         // Change working directory to application root
-        if (chdir("processes") != 0) {
+        if (chdir(W_DIR) != 0) {
             //TRACE_FATAL("EM: chdir() failed for dir " << childWorkDir << ",errno: " << errno);
-            std::cout<<"EM(child): chdir() failed for dir processes/,errno: " << errno<<endl;
+            cout<<"EM(child): chdir() failed for dir " << W_DIR << ",errno: " << errno<<endl;
         } else {
             // Set environment variables
             //for (const auto& variable : environment_) {
@@ -69,8 +79,8 @@ bool Process::start(){
             //}
 
             // Redirect terminal output for application to /var/redirected/<application_name_>
-            //utility::RedirectProcessOutput(("/var/redirected/"+name).c_str());
-
+            // utility::RedirectProcessOutput(("/var/redirected/"+name).c_str());
+            freopen (("redirected/"+name+".txt").c_str(), "w", stdout);
 
             //cout<<"EM(child): in dir "<<get_current_dir_name()<<endl;
             // Execute the executable with the specified arguments
@@ -83,7 +93,7 @@ bool Process::start(){
             // When execv() is successful, the current process is replaced by the child.
             // Otherwise, the following code will be reached.
             //TRACE_FATAL("EM: execv() failed for executable " << childPath<< ", errno: " << errno);
-            std::cout<<"EM(child): execv() failed for executable " << name.c_str() << ", errno: " << errno<<endl;
+            cout<<"EM(child): execv() failed for executable " << name.c_str() << ", errno: " << errno<<endl;
         }
 
 
@@ -98,7 +108,7 @@ bool Process::start(){
         // get file discreptor
         int fd = open("processes/execution_client_fifo", O_RDONLY);
         if(fd == -1) {
-            std::cout<< "EM:[ERROR] => can't open fifo";
+            cout<< "EM:[ERROR] => can't open fifo";
         }else{
             ara::exec::ExecutionState state;
             if (read(fd, &state, sizeof(state)) == -1)
@@ -109,7 +119,7 @@ bool Process::start(){
             close(fd);
             unlink("processes/execution_client_fifo");
             if(state == ara::exec::ExecutionState::kRunning) 
-            std::cout<<"EM: report succeed "<<(int) state<<endl;
+            cout<<"EM: report succeed "<<(int) state<<endl;
         }
 
 
@@ -123,7 +133,7 @@ bool Process::start(){
         _pid = pid;
 
         //TRACE_INFO("EM: Forked child ’" << executable_ << "’ with PID " <<_pid);
-        std::cout<<"EM: Forked child ’" << name << "’ with PID " <<_pid<<endl;
+        cout<<"EM: Forked child ’" << name << "’ with PID " <<_pid<<endl;
         // The only successfull return
         return true;
 
@@ -186,27 +196,27 @@ bool MachineManifest::operator!=(const MachineManifest &other) const noexcept
     return !(*this == other);
 }
 
-bool MachineManifest::ModeDeclarationGroup::operator==(const ModeDeclarationGroup &other) const
-    noexcept
-{
-    return (function_group_name == other.function_group_name) &&
-            (mode_declarations == other.mode_declarations);
-}
+// bool MachineManifest::ModeDeclarationGroup::operator==(const ModeDeclarationGroup &other) const
+//     noexcept
+// {
+//     return (function_group_name == other.function_group_name) &&
+//             (mode_declarations == other.mode_declarations);
+// }
 
-bool MachineManifest::ModeDeclarationGroup::operator!=(const ModeDeclarationGroup &other) const
-    noexcept
-{
-    return !(*this == other);
-}
+// bool MachineManifest::ModeDeclarationGroup::operator!=(const ModeDeclarationGroup &other) const
+//     noexcept
+// {
+//     return !(*this == other);
+// }
 
-bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator==(
-    const ModeDeclaration &other) const noexcept
-{
-    return (mode == other.mode);
-}
+// bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator==(
+//     const ModeDeclaration &other) const noexcept
+// {
+//     return (mode == other.mode);
+// }
 
-bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator!=(
-    const ModeDeclaration &other) const noexcept
-{
-    return !(*this == other);
-}
+// bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator!=(
+//     const ModeDeclaration &other) const noexcept
+// {
+//     return !(*this == other);
+// }

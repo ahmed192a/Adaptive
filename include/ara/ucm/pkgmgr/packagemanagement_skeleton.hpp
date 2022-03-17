@@ -94,7 +94,7 @@ namespace ara
                         // ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent
                         ara::com::InstanceIdentifier instance,
                         ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle) : serviceid(45),
-                                                                                                          ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle)
+                            ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle)
 
                     {
                     }

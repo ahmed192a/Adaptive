@@ -1,9 +1,9 @@
 /**
- * @file manifest_parser_struct.h
+ * @file manifest_parser_struct.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
- * @date 2022-03-07
+ * @date 2022-03-06
  * 
  * @copyright Copyright (c) 2022
  * 
@@ -11,11 +11,12 @@
 #ifndef ARA_EXEC_PARSER_MANIFEST_PARSER_class_H_
 #define ARA_EXEC_PARSER_MANIFEST_PARSER_class_H_
 
-#include <string>
-#include <vector>
+// #include <string>
+// #include <vector>
 #include "ara/exec/execution_client.hpp"
-#define  W_DIR "test_partial_processes/"
-
+#include "ara/exec/function_group.hpp"
+#include <memory>
+#define  W_DIR "processes"
 
 namespace ara
 {
@@ -91,25 +92,25 @@ namespace ara
             class MachineManifest
             {
                 public:
-                class ModeDeclarationGroup
-                {
-                    public:
-                    class ModeDeclaration
-                    {
-                        public:
-                        std::string mode{};
-                        bool operator==(const ModeDeclaration &) const noexcept;
-                        bool operator!=(const ModeDeclaration &) const noexcept;
-                    };
+                // class ModeDeclarationGroup
+                // {
+                //     public:
+                //     class ModeDeclaration
+                //     {
+                //         public:
+                //         std::string mode{};
+                //         bool operator==(const ModeDeclaration &) const noexcept;
+                //         bool operator!=(const ModeDeclaration &) const noexcept;
+                //     };
 
-                    std::string function_group_name{};
-                    std::vector<ModeDeclaration> mode_declarations{};
-                    bool operator==(const ModeDeclarationGroup &) const noexcept;
-                    bool operator!=(const ModeDeclarationGroup &) const noexcept;
-                };
+                //     std::string function_group_name{};
+                //     std::vector<ModeDeclaration> mode_declarations{};
+                //     bool operator==(const ModeDeclarationGroup &) const noexcept;
+                //     bool operator!=(const ModeDeclarationGroup &) const noexcept;
+                // };
                 // mach_id/fuG_ID
                 std::string manifest_id{};
-                std::vector<ModeDeclarationGroup> mode_declaration_groups{};
+                std::vector<std::shared_ptr<FunctionGroup>> mode_declaration_groups{};
                 bool operator==(const MachineManifest &) const noexcept;
                 bool operator!=(const MachineManifest &) const noexcept;
             };

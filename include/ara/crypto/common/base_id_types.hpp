@@ -6,9 +6,6 @@ namespace ara
   namespace crypto
   {
   
-    
-    namespace cryp
-    {
      //SWS_CRYPT_10016
      /**
       * defines all types of crypto objects (types of content that can be stored to a key slot)
@@ -22,7 +19,6 @@ namespace ara
          kSignature=4,
          kSecretSeed=5
       };
-    }
       
       //SWS_CRYPT_10018
       /**
@@ -49,3 +45,8 @@ namespace ara
        kSigVerify= 7,
        kSigGenerate= 8
       };
+
+  } // namespace crypto
+} // namespace ara
+
+#endif // ARA_CRYPTO_BASE_ID_TYPES_H

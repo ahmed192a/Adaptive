@@ -1,5 +1,5 @@
 /**
- * @file eventgroup_entry.h
+ * @file eventgroup_entry.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1

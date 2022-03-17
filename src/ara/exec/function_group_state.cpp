@@ -1,45 +1,82 @@
 /**
  * @file function_group_state.cpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-03-07
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #include "ara/exec/function_group_state.hpp"
 #include <string>
 
 using namespace ara::exec;
-using namespace std;
-
-FunctionGroupState::CtorToken FunctionGroupState::Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept
+namespace ara
 {
-    return "";
-}
+    namespace exec
+    {
 
-FunctionGroupState::FunctionGroupState(FunctionGroupState::CtorToken &&token) noexcept
-{
-    int f = token.find('/');
-    this->Function_group_name =  token.substr(0, f); 
-    this->state = token.substr(f+1, token.length()-f-1); 
-}
+        boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> FunctionGroupState::Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept
+        {
+            boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> token;
+            int sl = metaModelIdentifier.find('/');
+            if (functionGroup.get_FGname() != metaModelIdentifier.substr(0, sl))
+            {
+                token.emplace<0>(ara::exec::ExecErrc::kMetaModelError);
+                return token;
+            }
+            FunctionGroupState::CtorToken ctoken;
+            ctoken.fg_name = functionGroup.get_FGname();
+            ctoken.c_state = metaModelIdentifier.substr(sl + 1, metaModelIdentifier.size() - sl - 1);
+            token.emplace<1>(ctoken);
+            return token;
+        }
 
-FunctionGroupState::~FunctionGroupState() noexcept{
+        FunctionGroupState::FunctionGroupState(FunctionGroupState::CtorToken &&token) noexcept
+        {
+            this->mFunction_group_name = token.fg_name;
+            this->mc_state = token.c_state;
+        }
 
-}
+        FunctionGroupState::~FunctionGroupState() noexcept
+        {
+        }
 
-bool FunctionGroupState::operator==(FunctionGroupState const &other) const noexcept{
-    if(this->Function_group_name == other.Function_group_name){
-        return true;
-    }
-    return false;
-}
+        void FunctionGroupState::set_FGname(std::string fg_name)
+        {
+            mFunction_group_name = fg_name;
+        }
+        void FunctionGroupState::set_states(std::string state)
+        {
+            mc_state = state;
+        }
+        std::string FunctionGroupState::get_FGname() const noexcept
+        {
+            return mFunction_group_name;
+        }
+        std::string FunctionGroupState::get_states() const noexcept
+        {
+            return mc_state;
+        }
 
-bool FunctionGroupState::operator!=(FunctionGroupState const &other) const noexcept{
-        if(this->Function_group_name == other.Function_group_name){
-        return false;
-    }
-    return true;
-}
+        bool FunctionGroupState::operator==(FunctionGroupState const &other) const noexcept
+        {
+            if (this->mFunction_group_name == other.mFunction_group_name)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        bool FunctionGroupState::operator!=(FunctionGroupState const &other) const noexcept
+        {
+            if (this->mFunction_group_name == other.mFunction_group_name)
+            {
+                return false;
+            }
+            return true;
+        }
+    } // namespace exec
+
+} // namespace ara

@@ -1,5 +1,5 @@
 /**
- * @file socket_Client.h
+ * @file socket_Client.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
@@ -15,6 +15,7 @@
 #include<string>
 #include"ara/com/ipc/ipc_errors.hpp"
 
+/// @brief CClient class for any tcp or udp client sockets
 class CClient
 {
 private:

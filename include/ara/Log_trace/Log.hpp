@@ -1,5 +1,5 @@
 /**
- * @file Log.h
+ * @file Log.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
@@ -26,16 +26,16 @@ enum class LogType : uint8_t
 class Log
 {
 public:
-    // location of FIFO to communicate between EM & SM
+    /// location of FIFO to communicate between EM & SM
     char fifo_l[30] = "Log_File.txt";
 
     ofstream myFile_Handler;
 
-    //using TimeStamp = std::chrono::time_point<ara::core::SteadyClock>;
+    ///using TimeStamp = std::chrono::time_point<ara::core::SteadyClock>;
     
-    // using TimeStamp = std::chrono::time_point<std::chrono::system_clock> ;
+    /// using TimeStamp = std::chrono::time_point<std::chrono::system_clock> ;
 
-    // TimeStamp Activated;
+    /// TimeStamp Activated;
     Log() noexcept;
     ~Log() noexcept;
     void Insert(std::string data, std::string from, LogType T = LogType::INFO);

@@ -1,9 +1,9 @@
 /**
- * @file state_client.h
+ * @file state_client.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
- * @date 2022-03-07
+ * @date 2022-03-06
  * 
  * @copyright Copyright (c) 2022
  * 
@@ -11,13 +11,10 @@
 #ifndef ARA_EXEC_STATE_CLIENT_H
 #define ARA_EXEC_STATE_CLIENT_H
 
-#include <string>
-#include "ara/exec/function_group.hpp"
 #include "ara/exec/function_group_state.hpp"
-// #include "error_code.h"
-#include "ara/core/future.hpp"
-#include "ara/core/result.hpp"
-
+#include "ara/exec/exec_error_domain.hpp"
+#include <variant>
+#include <future>
 namespace ara
 {
     namespace exec
@@ -83,8 +80,7 @@ namespace ara
              *
              * Thread-safe
              */
-            // ara::core::Future<void> 
-            void SetState(FunctionGroupState const &state) const noexcept;
+            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> SetState(FunctionGroupState const &state) const noexcept;
 
             // SWS_EM_02279
             /**
@@ -109,7 +105,7 @@ namespace ara
              * Thread-safe
              */
             // ara::core::Future<void> 
-            void GetInitialMachineStateTransitionResult() const noexcept;
+            std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> GetInitialMachineStateTransitionResult() const noexcept;
         };
     } // namespace exec
 

@@ -1,9 +1,9 @@
 /**
- * @file manifest_parser.h
+ * @file manifest_parser.hpp
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
- * @date 2022-03-07
+ * @date 2022-03-06
  * 
  * @copyright Copyright (c) 2022
  * 
@@ -11,10 +11,17 @@
 #ifndef ARA_EXEC_PARSER_MANIFEST_PARSER_H_
 #define ARA_EXEC_PARSER_MANIFEST_PARSER_H_
 
-#include <memory>
-#include <nlohmann/json.hpp>
 #include "ara/exec/parser/manifest_parser_struct.hpp"
+#include "ara/exec/function_group_state.hpp"
+using namespace ara::exec;
+using namespace ara::exec::parser;
+using namespace std;
 
+struct GLOB{
+    std::shared_ptr<FunctionGroup>c_FG;
+    vector<Process> processes;
+    std::shared_ptr<FunctionGroupState> current_FGS;
+};
 namespace ara
 {
     namespace exec
@@ -41,11 +48,12 @@ namespace ara
 
                 virtual MachineManifest parse_machine_manifest(const std::string &path) noexcept(
                     false) override;
+                MachineManifest pares_test(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
+                    false);
 
             private:
-                json read_manifest_file(const std::string &path) noexcept(false);
-                void validate_content(const json &json_obj, const std::vector<std::string> &json_keys) const
-                    noexcept(false);
+                
+                
             };
 
             namespace EMJsonKeys
@@ -94,9 +102,15 @@ namespace ara
                                                             kModeDeclarations, kMode};
             } // namespace MMJsonKeys
 
+
+            template <typename T>
+            bool read_value(const json &json_obj, const std::string &key, T &output_value) noexcept;
+            json read_manifest_file(const std::string &path) noexcept(false);
+            void validate_content(const json &json_obj, const std::vector<std::string> &json_keys) 
+                    noexcept(false);
+
         } // namespace parser
     }     // namespace exec
 } // namespace ara
 
 #endif // ARA_EXEC_PARSER_MANIFEST_PARSER_H_
-
