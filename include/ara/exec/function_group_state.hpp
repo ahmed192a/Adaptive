@@ -12,6 +12,7 @@
 #define ARA_EXEC_FUNCTION_GROUP_STATE_H_
 #include <string>
 #include "ara/exec/function_group.hpp"
+
 namespace ara
 {
     namespace exec
@@ -55,7 +56,7 @@ namespace ara
              * Thread-safe
              */
             // ara::core::StringView ---> std::string
-            static std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>  Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
+            static boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>  Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
 
             // SWS_EM_02271
             /**

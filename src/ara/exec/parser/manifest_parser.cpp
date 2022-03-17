@@ -9,7 +9,7 @@
  * 
  */
 #include "ara/exec/parser/manifest_parser.hpp"
-
+#include <boost/variant2/variant.hpp>
 #include <fstream>
 #include <iostream>
 // #include <stdexcept>
@@ -185,7 +185,7 @@ namespace ara
 
                 while(1)
                 {
-                    std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(path);
+                    boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(path);
                     if(_functionGroup.index()==0)
                         break;
                     //cout<<"finish FG : " <<u++<<endl;

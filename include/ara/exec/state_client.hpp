@@ -80,8 +80,7 @@ namespace ara
              *
              * Thread-safe
              */
-            // ara::core::Future<void> 
-            ara::exec::ExecErrc SetState(FunctionGroupState const &state) const noexcept;
+            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> SetState(FunctionGroupState const &state) const noexcept;
 
             // SWS_EM_02279
             /**
@@ -106,7 +105,7 @@ namespace ara
              * Thread-safe
              */
             // ara::core::Future<void> 
-            void GetInitialMachineStateTransitionResult() const noexcept;
+            std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> GetInitialMachineStateTransitionResult() const noexcept;
         };
     } // namespace exec
 

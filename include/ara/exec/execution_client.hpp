@@ -13,6 +13,8 @@
 
 #include <cstdint>
 #include <string>
+#include <boost/variant2/variant.hpp>
+#include "ara/exec/exec_error_domain.hpp"
 // #include <iostream>
 
 namespace ara
@@ -34,7 +36,7 @@ namespace ara
          * \brief Class to implement operations on Execution Client.
          * 
          */
-        class ExecutionClient
+        class ExecutionClient final
         {
             // location of FIFO to communicate between EM & SM
             char fifo_l[30] = "execution_client_fifo";
@@ -60,11 +62,14 @@ namespace ara
              * 
              * \param state     Value of the Execution State
              * 
-             * \return          An instance of ara::core::Result. The instance holds
-             *                  an ErrorCode containing either one of the specified
-             *                  errors or a void-value.
+             * \return          An instance of Boost::varient2::variant<void, ExecErrc>.
+             *                  - The instance holds an ExecErrc containing either
+             *                      -ara::exec::ExecErrc::kGeneralError     if some unspecified error occurred
+             *                      -ara::exec::ExecErrc::kCommunication    Error Communication error between Application 
+             *                                                              and Execution Management, e.g. unable to report 
+             *                                                              state for Non-reporting Process.
              */
-            /*ara::core::Result<void>*/ void ReportExecutionState(ExecutionState state) const noexcept;
+            boost::variant2::variant<boost::variant2::monostate , ExecErrc> ReportExecutionState(ExecutionState state) const noexcept;
         };
     } // namespace exec
 

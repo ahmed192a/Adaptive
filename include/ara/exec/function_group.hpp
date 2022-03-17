@@ -14,7 +14,8 @@
 #include <vector>
 #include "ara/exec/exec_error_domain.hpp"
 #include <nlohmann/json.hpp>
-#include <variant>
+#include <boost/variant2/variant.hpp>
+// #include <variant>
 namespace ara
 {
     namespace exec
@@ -59,7 +60,7 @@ namespace ara
              */
             // ara::core::StringView ---> std::string
             // 
-            static std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>  Preconstruct(std::string metaModelIdentifier) noexcept;
+            static boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>  Preconstruct(std::string metaModelIdentifier) noexcept;
 
             // SWS_EM_02265
             /**

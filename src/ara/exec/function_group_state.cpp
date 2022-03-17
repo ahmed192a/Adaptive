@@ -17,9 +17,9 @@ namespace ara
     namespace exec
     {
 
-        std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> FunctionGroupState::Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept
+        boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> FunctionGroupState::Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept
         {
-            std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> token;
+            boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> token;
             int sl = metaModelIdentifier.find('/');
             if (functionGroup.get_FGname() != metaModelIdentifier.substr(0, sl))
             {
