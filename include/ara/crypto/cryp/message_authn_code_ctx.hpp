@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "../common/base_id_types.hpp"
+//#include "../common/base_id_types.hpp"
 
 namespace ara {
     namespace crypto {
@@ -17,13 +17,19 @@ namespace ara {
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
             class CryptoContext {};
+            enum class CryptoTransform : std::uint16_t {
+                kMacGenerate = 0
+            };
             class Signature {
                 public:
                 using Uptrc = std::uint16_t;
             };
             class SymmetricKey {};
             class RestrictedUseObject{};
-            class ReadOnlyMemRegion{};
+            class ReadOnlyMemRegion{
+                public:
+                bool empty();
+            };
             class SecretSeed{};
             class DigestService{ 
                 public:
