@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 
+#include "../common/base_id_types.hpp"
+
 namespace ara {
     namespace crypto {
         namespace cryp {
@@ -20,9 +22,6 @@ namespace ara {
                 using Uptrc = std::uint16_t;
             };
             class SymmetricKey {};
-            enum class CryptoTransform : std::uint8_t{
-                kMacGenerate = 0
-            };
             class RestrictedUseObject{};
             class ReadOnlyMemRegion{};
             class SecretSeed{};
@@ -41,7 +40,7 @@ namespace ara {
                 
                 
                 virtual void Reset() noexcept = 0;
-                virtual void SetKey(const SymmetricKey &key,CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;
+                virtual void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;
                 
                 virtual bool Check(const Signature &expected) const noexcept = 0;
 
