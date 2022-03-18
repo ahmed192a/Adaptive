@@ -35,7 +35,6 @@ namespace ara {
                 public:
                 bool empty();
             };
-
             class SecretSeed{};
             
             ///////////////////////////////////////////////////////////

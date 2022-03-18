@@ -25,6 +25,7 @@ namespace ara {
                 private:
                 // pointer to the hash function context used to implement this algorithm
                 HashFunctionCtx::Uptr hashFunction;
+                SymmetricKey key;
 
 
                 public:
@@ -32,8 +33,16 @@ namespace ara {
                 bool IsInitialized();
 
                 void Reset() noexcept;
-                //void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept;
+                void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept;
 
+                void Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept;
+                // void Start(const SecretSeed &iv) noexcept;
+
+                // bool Check(const Signature &expected) const noexcept;
+
+                // void Update(const RestrictedUseObject &in) noexcept;
+                // void Update(ReadOnlyMemRegion in) noexcept;
+                void Update(std::uint8_t in) noexcept;
 
 
                 Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept;
