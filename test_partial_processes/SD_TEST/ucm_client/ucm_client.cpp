@@ -32,7 +32,9 @@ CClient client_event_h (SOCK_DGRAM);
 CServer ssevent(SOCK_DGRAM);
 ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handler;
 ara::com::FindServiceHandle findhandle{SERVICE_ID, 45, SD_PORT};
-static ara::ucm::pkgmgr::proxy::PackageManagementProxy *server_proxy_ptr;
+
+//static ara::ucm::pkgmgr::proxy::PackageManagementProxy *server_proxy_ptr;
+std::shared_ptr<ara::ucm::pkgmgr::proxy::PackageManagementProxy> server_proxy_ptr ;
 // static CClient *client_event_ptr;
 Color::Modifier green(Color::FG_GREEN);
 Color::Modifier def(Color::FG_DEFAULT);
@@ -52,17 +54,8 @@ Color::Modifier def(Color::FG_DEFAULT);
 int main(int argc, char **argv)
 {    
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (ara::ucm::pkgmgr::proxy::PackageManagementProxy::FindService(findhandle)[0]);
-
     hand.UDP_port = UDP_PORT_EVENTS;
-
-    ara::ucm::pkgmgr::proxy::PackageManagementProxy server_proxy_obj(hand);
-    server_proxy_ptr = (ara::ucm::pkgmgr::proxy::PackageManagementProxy *)mmap(NULL, sizeof *server_proxy_ptr, PROT_READ | PROT_WRITE, 
-                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-    // client_event_ptr = (CClient *)mmap(NULL, sizeof *client_event_ptr, PROT_READ | PROT_WRITE, 
-    //                 MAP_SHARED | MAP_ANONYMOUS, -1, 0);  
-    
-    memcpy(server_proxy_ptr, &server_proxy_obj, sizeof(server_proxy_obj));
-    // memcpy(client_event_ptr, &client_event_h, sizeof(client_event_h));
+    server_proxy_ptr = std::make_shared<ara::ucm::pkgmgr::proxy::PackageManagementProxy>(hand);
 
     ssevent.OpenSocket(UDP_PORT_EVENTS);
     ssevent.BindServer();
