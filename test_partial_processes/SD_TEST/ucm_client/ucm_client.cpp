@@ -28,6 +28,8 @@ std::vector<char> ReadAllBytes(char const *filename)
 #include "ara/com/ipc/server/socket_Server.hpp"
 #define SD_PORT 1690
 #define SERVICE_ID 45
+#define UDP_PORT_EVENTS  7575
+
 CClient client_event_h (SOCK_DGRAM);
 CServer ssevent(SOCK_DGRAM);
 ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handler;
@@ -53,7 +55,7 @@ int main(int argc, char **argv)
 {    
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (ara::ucm::pkgmgr::proxy::PackageManagementProxy::FindService(findhandle)[0]);
 
-    hand.m_client_UPD = &client_event_h;
+    hand.UDP_port = UDP_PORT_EVENTS;
 
     ara::ucm::pkgmgr::proxy::PackageManagementProxy server_proxy_obj(hand);
     server_proxy_ptr = (ara::ucm::pkgmgr::proxy::PackageManagementProxy *)mmap(NULL, sizeof *server_proxy_ptr, PROT_READ | PROT_WRITE, 
@@ -64,7 +66,7 @@ int main(int argc, char **argv)
     memcpy(server_proxy_ptr, &server_proxy_obj, sizeof(server_proxy_obj));
     // memcpy(client_event_ptr, &client_event_h, sizeof(client_event_h));
 
-    ssevent.OpenSocket(7575);
+    ssevent.OpenSocket(UDP_PORT_EVENTS);
     ssevent.BindServer();
 
 

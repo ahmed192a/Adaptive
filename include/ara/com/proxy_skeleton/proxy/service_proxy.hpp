@@ -47,7 +47,7 @@ namespace ara
                 public:
                     struct SP_Handle 
                     {
-                        CClient *m_client_UPD;
+                        int UDP_port;
                         SD_data m_server_com;
             
                     };
@@ -177,7 +177,7 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        int pport = htons(7575);
+                        int pport = htons(m_proxy_handle.UDP_port);
 
                         event_info e_info;
                         e_info.operation = 1;
@@ -185,10 +185,10 @@ namespace ara
                         e_info.service_id = m_proxy_handle.m_server_com.service_id;
                         e_info.data_size = (sizeof(pport));
 
-  
-
-                        m_proxy_handle.m_client_UPD->UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
-                        m_proxy_handle.m_client_UPD->UDPSendTo((void *)&pport, sizeof(pport), (sockaddr *)&serv_addr);
+                        service_proxy_udp.OpenSocket();
+                        service_proxy_udp.UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)&pport, sizeof(pport), (sockaddr *)&serv_addr);
+                        service_proxy_udp.CloseSocket();
 
                         
                     }
@@ -206,7 +206,9 @@ namespace ara
                         e_info.event_id = event_id;
                         e_info.service_id = m_proxy_handle.m_server_com.service_id;
                         e_info.data_size = 0;
-                        m_proxy_handle.m_client_UPD->UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        service_proxy_udp.OpenSocket();
+                        service_proxy_udp.UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        service_proxy_udp.CloseSocket();
                     }
 
                     void Field_get(ara::com::proxy_skeleton::event_info &f_get, std::vector<uint8_t> &data)
@@ -219,10 +221,11 @@ namespace ara
                             printf("\nInvalid address/ Address not supported \n");
                         }
                         f_get.data_size = 0;
-
+                        service_proxy_udp.OpenSocket();
                         service_proxy_udp.UDPSendTo((void *)&f_get, sizeof(f_get), (sockaddr *)&serv_addr);
                         socklen_t slen = sizeof(serv_addr);
                         service_proxy_udp.UDPRecFrom((void *)&data[0], data.size(), (sockaddr *)&serv_addr, &slen);
+                        service_proxy_udp.CloseSocket();
                     }
                     void Field_set(ara::com::proxy_skeleton::event_info &f_set, std::vector<uint8_t> &data)
                     {
@@ -234,8 +237,10 @@ namespace ara
                             printf("\nInvalid address/ Address not supported \n");
                         }
                         f_set.data_size = data.size();
-                        m_proxy_handle.m_client_UPD->UDPSendTo((void *)&f_set, sizeof(f_set), (sockaddr *)&serv_addr);
-                        m_proxy_handle.m_client_UPD->UDPSendTo((void *)&data[0], data.size(), (sockaddr *)&serv_addr);
+                        service_proxy_udp.OpenSocket();
+                        service_proxy_udp.UDPSendTo((void *)&f_set, sizeof(f_set), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)&data[0], data.size(), (sockaddr *)&serv_addr);
+                        service_proxy_udp.CloseSocket();
                     }
                 };
 
