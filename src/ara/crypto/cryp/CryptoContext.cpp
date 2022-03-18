@@ -1,6 +1,6 @@
 
-#include "CryptoContext.h"
-
+#include "ara/crypto/cryp/CryptoContext.hpp"
+#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
 using namespace ara::crypto::cryp;
 
 class CryptoContext {
