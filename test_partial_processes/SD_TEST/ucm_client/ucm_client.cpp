@@ -21,9 +21,7 @@ std::vector<char> ReadAllBytes(char const *filename)
 #include <arpa/inet.h>
 #include <sys/mman.h>
 #include <sys/ipc.h>
-#include <sys/shm.h>	/*  This file is necessary for using shared
-			    memory constructs
-			*/
+#include <sys/shm.h>	
 #include "ara/com/ipc/client/socket_Client.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
 #define SD_PORT 1690
@@ -88,7 +86,7 @@ int main(int argc, char **argv)
     // server_proxy_obj->FindService(32);
 
     std::cout << "\t\t\t[CLIENT] Result of TransferStart : ";
-    std::vector<char> Temp_data = ReadAllBytes("/home/bassant/Documents/GitHub/Adaptive/test_partial_processes/SD_TEST/ucm_server/myfile.zip");
+    std::vector<char> Temp_data = ReadAllBytes("../../../myfile.zip");
     std::vector<uint8_t> small_data;
 
     result = server_proxy_ptr->TransferStart(Temp_data.size());

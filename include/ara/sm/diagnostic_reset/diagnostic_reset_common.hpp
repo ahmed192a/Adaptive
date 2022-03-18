@@ -1,12 +1,12 @@
 /**
  * @file diagnostic_reset_common.hpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-03-14
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #ifndef COMMON_H_
@@ -22,33 +22,51 @@ namespace ara
         {
             class message_diagnostic
             {
-            
+
             private:
-            ara::com::proxy_skeleton::proxy::ServiceProxy * service_proxy_ptr;
-            const int methodid = 0;
+                ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
+                const int methodid = 0;
+
             public:
-            message_diagnostic(ara::com::proxy_skeleton::proxy::ServiceProxy * service):service_proxy_ptr{service}
-            {}
-            MessageDiagnosticOutput operator()()
-            {
-                // return app error krejected
-                return service_proxy_ptr->SendRequest<MessageDiagnosticOutput>(methodid);
-            }
+                message_diagnostic(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
+                {
+                }
+
+                std::future<ara::sm::diagnostic_reset::MessageDiagnosticOutput> operator()()
+                {
+
+                    std::future<ara::sm::diagnostic_reset::MessageDiagnosticOutput> result = std::async([&]()
+                    {
+
+                        // add function code
+                    return service_proxy_ptr->SendRequest<ara::sm::diagnostic_reset::MessageDiagnosticOutput>(methodid); 
+                    });
+                    // return app error krejected
+                    return result;
+                }
             };
+
             class event_diagnostic
             {
-                
-              private:
-            ara::com::proxy_skeleton::proxy::ServiceProxy * service_proxy_ptr;
-            const int methodid = 1;
+
+            private:
+                ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
+                const int methodid = 1;
+
             public:
-            event_diagnostic(ara::com::proxy_skeleton::proxy::ServiceProxy * service):service_proxy_ptr{service}
-            {}
-            EventDiagnosticOutput operator()()
-            {
-                // return app error krejected
-                return service_proxy_ptr->SendRequest<EventDiagnosticOutput>(methodid);
-            }
+                event_diagnostic(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
+                {
+                }
+                std::future<ara::sm::diagnostic_reset::EventDiagnosticOutput> operator()()
+                {
+                    std::future<ara::sm::diagnostic_reset::EventDiagnosticOutput> result = std::async([&]()
+                    {
+                        // add function code
+                       return service_proxy_ptr->SendRequest<ara::sm::diagnostic_reset::EventDiagnosticOutput>(methodid); 
+                    });
+                    // return app error krejected
+                    return result;
+                }
             };
         } // namespace DiagnosticReset
 

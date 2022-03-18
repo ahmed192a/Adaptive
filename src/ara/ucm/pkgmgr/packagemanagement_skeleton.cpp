@@ -166,7 +166,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> f = std::async([&, id]()
     {
         ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
-        SaveBlock("/home/bassant/Documents/GitHub/Adaptive/src/ara/ucm/pkgmgr/test.zip", PackageManagementSkeleton::buffer); // gamda ya Bassant
+        SaveBlock("ucm_server/test.zip", PackageManagementSkeleton::buffer); // gamda ya Bassant
         return result;
     });
 

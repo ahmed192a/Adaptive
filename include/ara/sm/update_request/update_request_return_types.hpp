@@ -44,6 +44,11 @@ namespace ara
                 bool status; 
                 errorDomains error ;
             };
+            struct RequestUpdateSessionOutput
+            {
+                bool status; 
+                errorDomains error ;
+            };
         } // namespace update_request
 
     } // namespace sm

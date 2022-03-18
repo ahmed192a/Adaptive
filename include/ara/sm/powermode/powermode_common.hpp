@@ -1,12 +1,12 @@
 /**
  * @file powermode_common.hpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-03-14
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #ifndef COMMON_H_
@@ -41,9 +41,15 @@ namespace ara
 
                         const std::string getMethodName();
 
-                        MessagePowermodeOutput operator()()
+                        std::future<ara::sm::powermode::MessagePowermodeOutput> operator()()
                         {
-                            return service_proxy->SendRequest<ara::sm::powermode::MessagePowermodeOutput>(methodid);
+                            std::future<ara::sm::powermode::MessagePowermodeOutput> result = std::async([&]()
+                            {
+
+                                // add function code
+                                return service_proxy->SendRequest<ara::sm::powermode::MessagePowermodeOutput>(methodid); 
+                            });
+                            return result;
                         }
                     };
 
@@ -60,12 +66,18 @@ namespace ara
                             this->service_proxy = service_proxy;
                         }
 
-                        const std::string getMethodName();
-
-                        EventPowermodeOutput operator()()
+                        const std::string getMethodName();                        
+                        std::future<ara::sm::powermode::EventPowermodeOutput> operator()()
                         {
-                            return service_proxy->SendRequest<ara::sm::powermode::EventPowermodeOutput>(methodid);
+                            std::future<ara::sm::powermode::EventPowermodeOutput> result = std::async([&]()
+                            {
+
+                                // add function code
+                                return service_proxy->SendRequest<ara::sm::powermode::EventPowermodeOutput>(methodid); 
+                            });
+                            return result;
                         }
+                        
                     };
                 }
             }
