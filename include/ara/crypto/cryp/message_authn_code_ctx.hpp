@@ -16,6 +16,7 @@ namespace ara {
 
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
+
             class CryptoContext {
                 public:
                 virtual bool IsInitialized();
@@ -26,7 +27,7 @@ namespace ara {
             };
             class Signature {
                 public:
-                using Uptrc = std::uint16_t;
+                using Uptrc = std::unique_ptr<const Signature>;
             };
             class SymmetricKey {};
             class RestrictedUseObject{};
@@ -34,20 +35,32 @@ namespace ara {
                 public:
                 bool empty();
             };
+
             class SecretSeed{};
-            class DigestService{ 
-                public:
-                using Uptr = std::uint16_t;
-            };
+            
             ///////////////////////////////////////////////////////////
             //////////////////////////////////////////////////////////
 
+
+            enum class MessageAuthnCodeCtx_Status : std::uint8_t {
+                notInitialized = 0,
+                initialized = 1,
+                started = 2,
+
+            };
 
             class MessageAuthnCodeCtx : public CryptoContext {
 
                 using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;  
 
-                bool IsInitialized();
+
+                protected:
+                // this pointer will point to the resulting signature
+                Signature::Uptrc signature_ptr;
+
+                // The current status of the context
+                MessageAuthnCodeCtx_Status status = MessageAuthnCodeCtx_Status::notInitialized;
+                
 
 
                 virtual void Reset() noexcept = 0;
@@ -66,7 +79,8 @@ namespace ara {
                 
                 virtual Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept = 0;
                 
-                virtual DigestService::Uptr GetDigestService() const noexcept = 0;
+
+                //virtual DigestService::Uptr GetDigestService() const noexcept = 0;
                 //virtual std::vector<ara::core::Byte> GetDigest(std::size_t offset = 0) const noexcept = 0;
                 // template <typename Alloc = <implementation-defined>>
                 // ara::core::Result<ByteVector<Alloc> > GetDigest(std::size_t offset = 0) const noexcept;
