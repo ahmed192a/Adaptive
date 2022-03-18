@@ -16,7 +16,7 @@ class CryptoContext {
 	//Move-assign another CryptoContext to this instance.//
 	CryptoContext& operator= (CryptoContext&& other) = default;
 	//Get a reference to Crypto Provider of this context.//
-	virtual CryptoProvider& MyProvider() const noexcept = 0;
+	//virtual CryptoProvider& MyProvider() const noexcept = 0;
 
 
 
