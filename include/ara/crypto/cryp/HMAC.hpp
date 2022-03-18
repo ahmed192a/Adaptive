@@ -45,6 +45,11 @@ namespace ara {
                 void Update(std::uint8_t in) noexcept;
 
 
+                // DigestService::Uptr GetDigestService() const noexcept;
+                // std::vector<byte> GetDigest(std::size_t offset = 0) const noexcept;
+
+
+
                 Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept;
             };
 

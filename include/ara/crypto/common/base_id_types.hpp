@@ -1,10 +1,13 @@
 #ifndef ARA_CRYPTO_BASE_ID_TYPES_H
 #define ARA_CRYPTO_BASE_ID_TYPES_H
-#include<string>
+#include <string>
 namespace ara
 {
   namespace crypto
   {
+    // not in the Crypto documentation but we need it in all classes
+    using byte = uint8_t;
+
     //SWS_CRYPT_10014
     /**
      * @brief Container type of the Crypto Algorithm Identifier.
@@ -58,7 +61,6 @@ namespace ara
        kSigVerify= 7,
        kSigGenerate= 8
       };
-
   } // namespace crypto
 } // namespace ara
 

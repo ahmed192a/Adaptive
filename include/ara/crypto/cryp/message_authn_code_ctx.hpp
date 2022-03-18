@@ -7,6 +7,7 @@
 
 #include "ara/crypto/common/mem_region.hpp"
 #include "ara/crypto/common/base_id_types.hpp"
+#include "ara/crypto/cryp/HMAC_digest_service.hpp"
 
 namespace ara {
     namespace crypto {
@@ -74,8 +75,8 @@ namespace ara {
                 virtual Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept = 0;
                 
 
-                //virtual DigestService::Uptr GetDigestService() const noexcept = 0;
-                //virtual std::vector<ara::core::Byte> GetDigest(std::size_t offset = 0) const noexcept = 0;
+                virtual DigestService::Uptr GetDigestService() const noexcept = 0;
+                virtual std::vector<byte> GetDigest(std::size_t offset = 0) const noexcept = 0;
                 // template <typename Alloc = <implementation-defined>>
                 // ara::core::Result<ByteVector<Alloc> > GetDigest(std::size_t offset = 0) const noexcept;
                 
