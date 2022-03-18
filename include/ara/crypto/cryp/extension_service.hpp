@@ -21,31 +21,56 @@ namespace ara {
                 
                 public:
                 
+                /// @brief Unique smart pointer of this interface => ExtensionService
                 using Uptr = std::unique_ptr<ExtensionService>;
+
 
                 /// @brief Destructor
                 virtual ~ExtensionService() noexcept = default;
 
 
-                /// @brief Get actual bit-length of a key loaded to the context. If no key was set to the context yet then 0 is returned 
-                /// @param 
+                /// @brief Get actual bit-length of a key loaded to the context
                 /// @returns the actual bit length of key, otherwise if no key it returns zero
                 virtual std::size_t GetActualKeyBitLength() const noexcept = 0;
 
-                /// @brief Get the COUID of the key deployed to the context this extension service is attached to. If no key was set to the context yet then an empty COUID (Nil) is returned.
+
+                /// @brief Get the COUID of the key deployed to the context this extension service is attached to.
+                /// @return the COUID of the CryptoObject(key). If no key return null
                 virtual CryptoObjectUid GetActualKeyCOUID() const noexcept = 0;
+
+
+                /// @brief 
+                /// @return 
                 virtual AllowedUsageFlags GetAllowedUsage() const noexcept = 0;
 
+
+                /// @brief Get maximum supported key length in bits
+                /// @return std::size_t
                 virtual std::size_t GetMaxKeyBitLength() const noexcept = 0;
+
+
+                /// @brief Get minimal supported key length in bits
+                /// @return std::size_t
                 virtual std::size_t GetMinKeyBitLength() const noexcept = 0;
 
+
+                /// @brief Verify supportness of specific key length by the context
+                /// @param[in] keyBitLength is the length of the key in bits
+                /// @return true if provided value of the key length is supported                
                 virtual bool IsKeyBitLengthSupported(std::size_t keyBitLength) const noexcept = 0;
+                
+
+                /// @brief Check if a key has been set to this context
+                /// @return false if no key has been set
                 virtual bool IsKeyAvailable() const noexcept = 0;
 
+
+                /// @brief copy assignment operator
                 ExtensionService& operator=(const ExtensionService &other) = default;
+
+
+                /// @brief move assignment operator
                 ExtensionService& operator=(ExtensionService &&other) = default;
-
-
 
             };
 
