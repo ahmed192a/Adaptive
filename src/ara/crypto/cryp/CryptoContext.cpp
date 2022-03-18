@@ -1,6 +1,5 @@
-
-#include "CryptoContext.h"
-
+#include "ara/crypto/cryp/CryptoContext.hpp"
+#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
 using namespace ara::crypto::cryp;
 
 class CryptoContext {
@@ -16,7 +15,7 @@ class CryptoContext {
 	//Move-assign another CryptoContext to this instance.//
 	CryptoContext& operator= (CryptoContext&& other) = default;
 	//Get a reference to Crypto Provider of this context.//
-	virtual CryptoProvider& MyProvider() const noexcept = 0;
+//	virtual CryptoProvider& MyProvider() const noexcept = 0;
 
 
 
