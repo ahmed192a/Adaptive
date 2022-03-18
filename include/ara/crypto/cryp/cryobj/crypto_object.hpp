@@ -1,4 +1,4 @@
-#ifndef CRYPTO_OBJECT_H_
+ #ifndef CRYPTO_OBJECT_H_
 #define CRYPTO_OBJECT_H_
 #include <memory>
 #include <iostream>

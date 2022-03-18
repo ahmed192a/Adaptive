@@ -16,7 +16,11 @@ namespace ara {
 
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
-            class CryptoContext {};
+            class CryptoContext {
+                public:
+                virtual bool IsInitialized();
+
+            };
             enum class CryptoTransform : std::uint16_t {
                 kMacGenerate = 0
             };
@@ -41,10 +45,11 @@ namespace ara {
 
             class MessageAuthnCodeCtx : public CryptoContext {
 
-                 using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;  
+                using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;  
 
-                
-                
+                bool IsInitialized();
+
+
                 virtual void Reset() noexcept = 0;
                 virtual void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;
                 
