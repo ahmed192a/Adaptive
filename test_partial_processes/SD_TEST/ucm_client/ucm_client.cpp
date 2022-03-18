@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     std::cout << green;
     pid_t pid = getpid();
     std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
-    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result;
+    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */
 
     // Event
     // server_proxy_obj->FindService(32);
@@ -90,31 +90,35 @@ int main(int argc, char **argv)
     std::cout << "\t\t\t[CLIENT] Result of TransferStart : ";
     std::vector<char> Temp_data = ReadAllBytes("/home/bassant/Documents/GitHub/Adaptive/test_partial_processes/SD_TEST/ucm_server/myfile.zip");
     std::vector<uint8_t> small_data;
+
     result = server_proxy_ptr->TransferStart(Temp_data.size());
-    std::cout << "block size: " << result.BlockSize << std::endl;
+    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput transfer_start_output = result.get();
+
     int block_counter = 0;
      std::cout << Temp_data.size() << std::endl;
     for (int i=0; i<Temp_data.size(); i++)
     {
-        for(int j=0; j<result.BlockSize; j++)
+        for(int j=0; j<transfer_start_output.BlockSize; j++)
         {
-            if(i*result.BlockSize + j >= Temp_data.size()){
-                small_data.resize(result.BlockSize);
+            if(i*transfer_start_output.BlockSize+ j >= Temp_data.size()){
+                small_data.resize(transfer_start_output.BlockSize);
                 break;
             }
             else
-                small_data.push_back(Temp_data[i*result.BlockSize + j]);
-        }
-        std::cout << small_data.size() << std::endl;
+                small_data.push_back(Temp_data[i*transfer_start_output.BlockSize + j]);
+        }  
+        
         // don't change 64 (packagemanagementskeleton.cpp)
-        server_proxy_ptr->TransferData.operator()<64>(result.id, small_data, block_counter);
+        std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> result2 = 
+        server_proxy_ptr->TransferData(transfer_start_output.id, small_data, block_counter);   /* Saves TransferDataOutput */
+
+        ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result3;
+        result3 =result2.get();
         block_counter++;
         small_data.clear();
-        if(block_counter*result.BlockSize > Temp_data.size()) break;
+        if(block_counter*transfer_start_output.BlockSize > Temp_data.size()) break;
     }
-    server_proxy_ptr->TransferExit(result.id);
-
-    server_proxy_ptr->ProcessSwPackage(result.id);
+    server_proxy_ptr->TransferExit(transfer_start_output.id);
 
     while (1)
     {

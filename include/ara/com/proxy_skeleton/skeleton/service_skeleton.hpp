@@ -121,7 +121,7 @@ namespace ara
                 /*1 R ARGS*/
                     template <typename Class, typename R, typename... Args>
                     void HandleCall(Class &c,
-                                    R (Class::*method)(Args...),
+                                    std::future<R> (Class::*method)(Args...),
                                     std::vector<uint8_t> msg,
                                     Socket &binding)
                     {
@@ -140,7 +140,7 @@ namespace ara
                 /*3 R */
                     template <typename Class, typename R>
                     void HandleCall(Class &c,
-                                    R (Class::*method)(),
+                                    std::future<R> (Class::*method)(),
                                     Message msg,
                                     Socket &binding)
                     {
@@ -210,14 +210,15 @@ namespace ara
                 private:
                     template <typename Class, typename R, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
-                                     R (Class::*method)(Args...),
+                                      std::future<R> (Class::*method)(Args...),
                                      std::vector<uint8_t> msg,
                                      Socket &binding,
                                      std::index_sequence<index...>)
                     {
                         Marshal<Args...> unmarshaller(msg);
-                        R result = (c.*method)(unmarshaller.template unmarshal<index>()...);
-                        binding.Send(&result, sizeof(R));
+                        std::future<R> result = (c.*method)(unmarshaller.template unmarshal<index>()...);
+                        R rval = result.get();
+                        binding.Send(&rval, sizeof(R));
                         binding.CloseSocket();
                     }
                     template <typename Class, typename... Args, std::size_t... index>

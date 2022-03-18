@@ -53,7 +53,7 @@ void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
     switch (methodID)
     {
     case 5:
-        HandleCall(*this,&skeleton::ADD,msg,cserver);
+        //HandleCall(*this,&skeleton::ADD,msg,cserver);
 
         // result = Add(message);
         // cserver.Send(&result, sizeof(int));

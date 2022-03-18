@@ -42,7 +42,7 @@ namespace ara
             // close file descriptor
             close(fd);
         }
-        void ExecutionClient::ReportExecutionState(ara::exec::ExecutionState state) const noexcept
+        boost::variant2::variant<boost::variant2::monostate , ExecErrc> ExecutionClient::ReportExecutionState(ara::exec::ExecutionState state) const noexcept
         {
             std::string m = "run";
             if (write(fd, &state, sizeof(state)) == -1)

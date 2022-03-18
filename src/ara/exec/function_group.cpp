@@ -21,9 +21,9 @@ namespace ara
     namespace exec
     {
 
-        std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> FunctionGroup::Preconstruct(std::string metaModelIdentifier) noexcept
+        boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> FunctionGroup::Preconstruct(std::string metaModelIdentifier) noexcept
         {
-            std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> token;
+            boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> token;
             if (!std::filesystem::exists(metaModelIdentifier))
             {
                 token.emplace<0>(ara::exec::ExecErrc::kMetaModelError);

@@ -37,7 +37,8 @@ int main()
     token.c_state = "on";
     FunctionGroupState FGS(std::move(token));
     std::cout<<"[SM] FGS created "<<endl;
-    std::variant<ara::exec::ExecErrc, std::future<void>> var =sm_client.SetState(FGS);
+    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = sm_client.SetState(FGS);
+    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
     std::cout<<"[SM] state changed\n";
     cout<<"\t\t[SM] result "<<var.index()<<endl; fflush(stdout);
     // get<1>(var).get();

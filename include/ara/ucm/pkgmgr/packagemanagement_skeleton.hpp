@@ -17,6 +17,7 @@
 #include "ara/com/proxy_skeleton/definitions.hpp"
 #include "ara/ucm/pkgmgr/ucm_types.hpp"
 #include "ucm_return_types.hpp"
+#include "ucm_error.hpp"
 #include <future>
 
 #include <vector>
@@ -27,6 +28,7 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/random_generator.hpp>
+#include <boost/variant2/variant.hpp>
 #include <bits/stdc++.h>
 using namespace boost::uuids;
 
@@ -116,12 +118,14 @@ namespace ara
                     ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput GetSwClusterInfo();
                     ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages);
                     ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
-                    ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
+
+                    ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, uint8_t &progress);
+                    std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     ara::ucm::pkgmgr::PackageManagement::RevertProcessedSwPackagesOutput RevertProcessedSwPackages();
                     ara::ucm::pkgmgr::PackageManagement::RollbackOutput Rollback();
-                    ara::ucm::pkgmgr::PackageManagement::TransferDataOutput TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter);
-                    ara::ucm::pkgmgr::PackageManagement::TransferExitOutput TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
-                    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput TransferStart(uint64_t size);
+                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter);
+                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
+                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> TransferStart(uint64_t size);
 
                     void method_dispatch(std::vector<uint8_t> &message, Socket &cserver)
                     {
@@ -134,30 +138,31 @@ namespace ara
                         ara::ucm::pkgmgr::PackageManagement::ByteVectorType data;
                         uint64_t blockCounter;
                         ara::ucm::pkgmgr::PackageManagement::TransferIdType id;
-                        ara::ucm::pkgmgr::PackageManagement::TransferDataOutput ucm_result;
+                        std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> transfer_data_output;
                         int i;
+                        ara::ucm::pkgmgr::PackageManagement::TransferDataOutput rval;
                         switch (methodID)
                         {
                         case 7:
+                        cout << dser.deserialize<uint64_t>(msg, 0) << std::endl;
+                        // cout << "msgsize" << msg.size() << endl;
                             HandleCall(*this, &PackageManagementSkeleton::TransferStart, msg, cserver);
                             break;
                         case 8:
                             // HandleCall(*this, &PackageManagementSkeleton::TransferData, msg, cserver);
                             id = dser.deserialize<ara::ucm::pkgmgr::PackageManagement::TransferIdType>(msg, 0);
                             blockCounter = dser.deserialize<uint64_t>(msg, 16);
+                            data.clear();
+                            data.insert(data.begin(), msg.begin() + 24, msg.end());
 
-                            
-                            for(i = 24; i < msg.size(); i++)
-                            {
-                                data.push_back(dser.deserialize<uint8_t>(msg, i));
-                            }
-                            cout << "msgsize" << msg.size() << endl;
-                            ucm_result = TransferData(id, data, blockCounter);
-                            cserver.Send(&ucm_result, sizeof(ucm_result));
+                            // cout << "msgsize" << msg.size() << endl;
+                            transfer_data_output = TransferData(id, data, blockCounter);
+                            rval = transfer_data_output.get();
+                            cserver.Send(&rval, sizeof(rval));
                             cserver.CloseSocket();
                             break;
                         case 9:
-                            HandleCall(*this, &PackageManagementSkeleton::TransferExit, msg, cserver);
+                           HandleCall(*this, &PackageManagementSkeleton::TransferExit, msg, cserver);
                             break;
                         case 10:
                             HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, msg, cserver);

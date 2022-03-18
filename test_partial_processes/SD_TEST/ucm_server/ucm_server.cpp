@@ -79,7 +79,7 @@ int main()
             // Receive a struct from client containing the method name and parameters
             Sclient.Receive((void *)&msg_size, sizeof(msg_size));
             msg.resize(msg_size);
-            Sclient.Receive((void *)&msg[0], sizeof(msg));
+            Sclient.Receive((void *)&msg[0], msg.size());
 
             // Perform the requested method then send the result
             server_skeleton_ptr->method_dispatch(msg, Sclient);

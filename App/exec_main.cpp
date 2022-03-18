@@ -43,10 +43,18 @@ void change_state(std::string n_FG, std::string n_state);
 void view_out();
 void create_man();
 
+// Backup streambuffers of  cout
+streambuf* stream_buffer_cout = cout.rdbuf();
+streambuf* stream_buffer_cin = cin.rdbuf();
+
 int main(int, char **)
 {
     std::filesystem::create_directories("processes/redirected");
-    freopen("processes/redirected/EM.txt", "w", stdout);
+    // freopen("processes/redirected/EM.txt", "w", stdout);
+
+    fstream file;
+    file.open("processes/redirected/EM.txt", ios::out);
+    cout.rdbuf(file.rdbuf());
     // 1. parsing the Mahcine manifest
     // 2. parsing the Execution manifest
     // 3. start state management
@@ -86,6 +94,8 @@ int main(int, char **)
     close(fd);
     unlink(SM_FIFO);
 
+    cout.rdbuf(stream_buffer_cout);
+    file.close();
     view_out();
     return 0;
 }
@@ -177,8 +187,8 @@ void view_out(){
         for (auto const & entry : fs::recursive_directory_iterator(root))
         {
             if (fs::is_regular_file(entry) && entry.path().extension() == ext){
-                system(("cd processes/redirected;gnome-terminal -- bash -c 'cat "+ std::string(entry.path().filename().c_str())+"; exec bash';").c_str());
                 cout<<entry.path().filename().c_str()<<endl;
+                system(("cd processes/redirected;cat "+ std::string(entry.path().filename().c_str())+";").c_str());
             }
                 //paths.emplace_back(entry.path().filename());
         }
