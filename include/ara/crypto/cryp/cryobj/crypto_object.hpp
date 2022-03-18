@@ -5,7 +5,7 @@
 #include <ara/crypto/common/io_interface.hpp>
 #include <ara/core/result.hpp>
 #include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
-
+#include <ara/crypto/common/base_id_types.hpp>
 namespace ara
 {
     namespace crypto
@@ -30,6 +30,7 @@ namespace ara
                  {
 
                  };
+
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
