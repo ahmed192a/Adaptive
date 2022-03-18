@@ -38,16 +38,18 @@ private:
     ara::com::InstanceIdentifier serviceid;
 
 public:
-
     event::event event1;
     event::event event2;
     field::field field1;
     skeleton(ara::com::InstanceIdentifier instance, ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle);
     ~skeleton();
     void method_dispatch(std::vector<uint8_t> &message, Socket &cserver);
-    int Add(std::vector<uint8_t> msg);
-    int ADD(int p1, int p2)
+
+    std::future<int> ADD(int p1, int p2)
     {
-        return p1+p2;
+        std::future<int> f = std::async([&, p1, p2]()
+        { return (p1 + p2); });
+        // return (val1 + val2);
+        return f;
     }
 };

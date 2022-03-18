@@ -48,12 +48,12 @@ namespace ara
                     }
 
                     // Methods
-                    virtual ResetMachineOutput ResetMachine();
-                    virtual void StopUpdateSession();
-                    virtual StartUpdateSessionOutput StartUpdateSession();
-                    virtual PrepareUpdateOutput PrepareUpdate();
-                    virtual VerifyUpdateOutput VerifyUpdate();
-                    virtual PrepareRollbackOutput PrepareRollback();
+                    std::future<ara::sm::update_request::ResetMachineOutput>  ResetMachine();
+                    std::future<void> StopUpdateSession();
+                    std::future<ara::sm::update_request::StartUpdateSessionOutput> StartUpdateSession();
+                    std::future<ara::sm::update_request::PrepareUpdateOutput> PrepareUpdate();
+                    std::future<ara::sm::update_request::VerifyUpdateOutput> VerifyUpdate();
+                    std::future<ara::sm::update_request::PrepareRollbackOutput> PrepareRollback();
 
                     
                     void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
