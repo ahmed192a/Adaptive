@@ -1,5 +1,8 @@
 #include "OTA/updateversion.hpp"
 
+using namespace std;
+
+
 UpdateVersion::UpdateVersion()
 {
 }
