@@ -1,7 +1,7 @@
 #ifndef METADATA_H
 #define METADATA_H
 
-#include "updateversion.h"
+#include "updateversion.hpp"
 #include "json/value.h"
 #include "json/json.h"
 class MetaData
