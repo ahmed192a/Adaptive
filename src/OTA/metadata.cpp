@@ -1,4 +1,5 @@
 #include "metadata.hpp"
+using namespace std;
 
 MetaData::MetaData()
 {
