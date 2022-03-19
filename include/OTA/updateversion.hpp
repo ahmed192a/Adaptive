@@ -1,28 +1,46 @@
+/**
+ * @file updateversion.hpp
+ * @author
+ * @brief  OTA::UpdateVersion class
+ * @details Used by the OTA to check the update version to get the new updates
+ ********************************************************************************/
+
+
 #ifndef UPDATEVERSION_H
 #define UPDATEVERSION_H
-
 #include <string>
-using namespace std;
 
+
+/// @brief A class used to stringify version and apply operation on version
 class UpdateVersion
 {
     int major;
     int minor;
     int patch;
-    string versionNo;
+    std::string versionNo;
 public:
-    // Constructor Overloading to support different types of initializations
+    /// @brief Constructor
     UpdateVersion();
-    UpdateVersion(int major, int minor, int patch);
-    UpdateVersion(string x);
 
-    // Enabling copy constructor
+    /// @brief Constructor Overloading to support different types of initializations
+    /// @param[in] the three parts of the version
+    UpdateVersion(int major, int minor, int patch);
+
+    /// @brief Constructor Overloading to support different types of initializations
+    /// @param[in] the string of the version
+    UpdateVersion(std::string x);
+
+    /// @brief Enabling copy constructor
+    /// @param[in] the version to which it is compared
     UpdateVersion(const UpdateVersion* v2);
 
-    //operator overloading for ">" sign
+    /// @brief operator overloading for the binary ">" operator sign to compare between versions
+    /// @return boolean to check which version is greater
     bool operator > (UpdateVersion v2);
 
-    string get_versionNo();
+    /// @brief Getting version of the update
+    /// @return string contain the version string
+    std::string get_versionNo();
 
 
 };
