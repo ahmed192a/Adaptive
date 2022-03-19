@@ -1,0 +1,78 @@
+#include "OTA/updateversion.hpp"
+
+UpdateVersion::UpdateVersion()
+{
+}
+
+UpdateVersion::UpdateVersion(int major, int minor, int patch)
+{
+    this->major = major;
+    this->minor = minor;
+    this->patch = patch;
+    this->versionNo = to_string(major);
+    versionNo.append(".");
+    versionNo.append(to_string(minor));
+    versionNo.append(".");
+    versionNo.append(to_string(patch));
+
+}
+
+UpdateVersion::UpdateVersion(string x)
+{
+    this->versionNo = x;
+    string major_str = x.substr(0,x.find("."));
+    x = x.substr(x.find(".") + 1);
+    string minor_str = x.substr(0,x.find("."));
+    x = x.substr(x.find(".") + 1);
+    string patch_str = x.substr(0);
+    this->major = stoi(major_str);
+    this->minor = stoi(minor_str);
+    this->patch = stoi(patch_str);
+
+}
+
+bool UpdateVersion::operator >(UpdateVersion v2)
+{
+    //1.1- check tha major part..
+    if(this->major > v2.major)
+    {
+        return true;
+    }
+    // 1.2- if major equals each other
+    else if(this->major == v2.major)
+    {
+        //2.1- if major equal test the minor parts..
+        if(this->minor > v2.minor)
+        {
+            return true;
+        }
+        // 2.2- if minor equals each other
+        else if(this->minor == v2.minor)
+        {
+            //3.1- if minor equal test the major parts..
+            if(this->patch > v2.patch){
+                return true;
+            }
+            //3.2- if equal or less return false
+            else{
+                return false;
+            }
+        }
+        //2.3- if minor in less than the other
+        else
+        {
+            return false;
+        }
+    }
+    //1.3- if major in less than the other
+    else
+    {
+        return false;
+    }
+}
+
+string UpdateVersion::get_versionNo()
+{
+    return this->versionNo;
+
+}
