@@ -93,9 +93,9 @@ unsigned long MetaData::get_sizeInBytes()
 
 }
 
-void MetaData::set_version(UpdateVersion version)
+void MetaData::set_version(string version)
 {
-    this->v = version;
+    this->v.set_versionNo(version);
 
 }
 
@@ -103,4 +103,27 @@ UpdateVersion MetaData::get_version()
 {
     return this->v;
 
+}
+
+istream &operator >>(istream &in, MetaData &c)
+{
+    std::string metaInput;
+    in >> metaInput;
+    c.set_appID(metaInput);
+    in >> metaInput;
+    c.set_appName(metaInput);
+    in >> metaInput;
+    c.set_version(metaInput);
+    in >> metaInput;
+    c.set_sizeInBytes(stoi(metaInput));
+    in >> metaInput;
+    c.set_platformName(metaInput);
+    return in;
+}
+
+ostream &operator <<(ostream &out, const MetaData &c)
+{
+    //std::string x = c.get_appID();
+    out << c.appID << " " << c.appName << " " << c.v.versionNo << " " << c.sizeInBytes << " " << c.platformName;
+    return out;
 }
