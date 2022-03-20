@@ -19,6 +19,9 @@ class MetaDataStorage {
     /// @brief the path of the file that carries the olf meta-data
     std::string fileName;
 
+    /// @brief the file stream to input and output data
+    std::fstream file;
+
 public:
     /// @brief Constructor 
     /// @param[in] fileName the file storage to communicate with for input or output
@@ -53,12 +56,11 @@ public:
     /// @brief deletes all the elements in the meta-data file (reset file)
     void empty_file(void); // removing all data in the file
 
- private:
+//  private:
 
     /// @brief Gets a single MetaData instance from the instances stored in the file storage 
-    /// @param[in] file the file stream to retrieve from
     /// @param[out] metaData to carry the meta data of a single application
-    void retrive_AppMetaData(ifstream file, MetaData& metaData); 
+    void retrive_AppMetaData(MetaData& metaData); 
 
 };
 

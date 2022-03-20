@@ -1,30 +1,23 @@
 #include "meta_data_storage.hpp"
 
-MetaDataStorage::MetaDataStorage(string fileName) {
+MetaDataStorage::MetaDataStorage(std::string fileName) {
     this->fileName = fileName;
 }
 
-void MetaDataStorage::set_fileName(string fileName) {
+void MetaDataStorage::set_fileName(std::string fileName) {
     this->fileName = fileName;
 }
 
-string MetaDataStorage::get_fileName() {
+std::string MetaDataStorage::get_fileName() {
     return fileName;
 }
 
 void MetaDataStorage::save_MetaData(MetaData & newData) {
-    ofstream file;
 
-    file.open(fileName, ios::app | ios::binary);
+    file.open(fileName, std::ios::app | std::ios::binary | std::ios::out);
+    file << newData << "\n";
 
-    file << newData.get_appID().data() << " ";
-    file << newData.get_appName().data() << " ";
-    file << newData.get_version().get_versionNo() << " ";
-    file << newData.get_sizeInBytes() << " ";
-    file << newData.get_platformName().data() << " ";
-    file << "\n";
-
-
+    return;
 }
 
 // vector<MetaData> MetaDataStorage::load_MetaData(void){
@@ -50,11 +43,10 @@ void MetaDataStorage::save_MetaData(MetaData & newData) {
 // }
 
 int MetaDataStorage::get_appsCount(void){
-    ifstream file;
-    string temp;
+    std::string temp;
     int count = 0;
 
-    file.open(fileName);
+    file.open(fileName, std::ios::in);
 
     while(getline(file, temp)) {
         count++;
@@ -65,47 +57,18 @@ int MetaDataStorage::get_appsCount(void){
 }
 
 void MetaDataStorage::empty_file(void) {
-    ofstream file;
 
-    file.open(this->fileName, ios::out);
+    file.open(this->fileName, std::ios::out);
     file.close();
 
     return;
 }
 
-// void MetaDataStorage::retrive_AppMetaData(ifstream file, MetaData& metaData) {
+void MetaDataStorage::retrive_AppMetaData(MetaData& metaData) {
     
-//     file.open(fileName, ios::binary);
-//     file.seekg(0, ios::beg);
-
-//     // temporary variables to carry the data
-//     std::string stringTemp;
-//     Version versionTemp;
-//     unsigned long sizeTemp;
-
-
-//     // retrieve the platform name
-//     file >> stringTemp;
-//     metaData.set_platformName(stringTemp);
-
-//     // retrieve the application name
-//     file >> stringTemp;
-//     metaData.set_appName(stringTemp);
-    
-//     // retrieve the application ID
-//     file >> stringTemp;
-//     metaData.set_appID(stringTemp);
-
-//     // retrieve the application version
-//     file >> versionTemp.major;
-//     file >> versionTemp.minor;
-//     file >> versionTemp.patch;
-//     metaData.set_version(versionTemp);
-
-//     // retrieve the application size
-//     file >> sizeTemp;
-//     metaData.set_sizeInBytes(sizeTemp);
-    
-
-//     return;
-// }
+    file.open(fileName, std::ios::binary);
+    file.seekg(0, std::ios::beg);
+    file >> metaData;
+   
+    return;
+}
