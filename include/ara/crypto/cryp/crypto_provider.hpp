@@ -2,6 +2,16 @@
 #define CRYPTO_PROVIDER_H_
 
 #include "ara/crypto/common/volatile_trusted_container.hpp"
+#include "ara/crypto/cryp/message_authn_code_ctx.hpp"
+//#include "ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
+//#include "ara/crypto/cryp/key_derivation_function_ctx.hpp"
+//#include "ara/crypto/cryp/auth_cipher_ctx.hpp"
+//#include "ara/crypto/cryp/cryobj/signature.hpp"
+//#include "ara/crypto/cryp/random_generator_ctx.hpp"
+//#include "ara/crypto/cryp/hash_function_ctx.hpp"
+//#include "ara/crypto/cryp/symmetric_block_cipher_ctx.hpp"
+//
+#include <string>
 namespace ara
 {
 	namespace crypto
@@ -21,9 +31,9 @@ namespace ara
 
 				virtual VolatileTrustedContainer::Uptr AllocVolatileContainer (std::pair< AlgId, CryptoObjectType > theObjectDef) noexcept=0;
 
-				virtual AlgId ConvertToAlgId (ara::core::StringView primitiveName) const noexcept=0;
+				virtual AlgId ConvertToAlgId (std::string primitiveName) const noexcept=0;
 
-				virtual ara::core::String ConvertToAlgName (AlgId algId) const noexcept=0;
+				virtual std::string ConvertToAlgName (AlgId algId) const noexcept=0;
 
 				virtual AuthCipherCtx::Uptr CreateAuthCipherCtx (AlgId algId) noexcept=0;
 
