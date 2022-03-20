@@ -22,6 +22,7 @@ namespace ara {
             class CryptoContext {
                 public:
                 virtual bool IsInitialized();
+                virtual ~CryptoContext () noexcept=default;
 
             };
             class Signature {
@@ -30,7 +31,31 @@ namespace ara {
             };
             class SymmetricKey {};
             class RestrictedUseObject{};
+            class AuthCipherCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<AuthCipherCtx>;
+            };
+            class HashFunctionCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<HashFunctionCtx>;
+            };
+            class RandomGeneratorCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<RandomGeneratorCtx>;
+            };
 
+            class SymmetricBlockCipherCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
+            };
+            class SymmetricKeyWrapperCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<SymmetricKeyWrapperCtx>;
+            };
+            class KeyDerivationFunctionCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>;
+            };
             class SecretSeed{};
             
             ///////////////////////////////////////////////////////////
