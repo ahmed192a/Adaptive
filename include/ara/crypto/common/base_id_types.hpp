@@ -14,6 +14,12 @@ namespace ara
      * @file base_id_types.hpp
      */
     using CryptoAlgId = std::uint64_t;
+    
+    const CryptoAlgId kAlgIdUndefined = 0u;
+
+    const CryptoAlgId kAlgIdDefault = kAlgIdUndefined;
+
+    const CryptoAlgId kAlgIdNone = kAlgIdUndefined;
     //SWS_CRYPT_10015
     /**
      * @brief A container type and constant bit-flags of allowed usages of a key or a secret seed object. 
