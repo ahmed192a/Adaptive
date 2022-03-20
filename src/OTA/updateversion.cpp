@@ -2,7 +2,6 @@
 
 using namespace std;
 
-
 UpdateVersion::UpdateVersion()
 {
 }
@@ -22,16 +21,7 @@ UpdateVersion::UpdateVersion(int major, int minor, int patch)
 
 UpdateVersion::UpdateVersion(string x)
 {
-    this->versionNo = x;
-    string major_str = x.substr(0,x.find("."));
-    x = x.substr(x.find(".") + 1);
-    string minor_str = x.substr(0,x.find("."));
-    x = x.substr(x.find(".") + 1);
-    string patch_str = x.substr(0);
-    this->major = stoi(major_str);
-    this->minor = stoi(minor_str);
-    this->patch = stoi(patch_str);
-
+    stringToVersion(x);
 }
 
 bool UpdateVersion::operator >(UpdateVersion v2)
@@ -77,5 +67,41 @@ bool UpdateVersion::operator >(UpdateVersion v2)
 string UpdateVersion::get_versionNo()
 {
     return this->versionNo;
+
+}
+
+void UpdateVersion::set_versionNo(string x)
+{
+    stringToVersion(x);
+
+}
+
+void UpdateVersion::stringToVersion(string x)
+{
+    this->versionNo = x;
+    string major_str = x.substr(0,x.find("."));
+    x = x.substr(x.find(".") + 1);
+    string minor_str = x.substr(0,x.find("."));
+    x = x.substr(x.find(".") + 1);
+    string patch_str = x.substr(0);
+    this->major = stoi(major_str);
+    this->minor = stoi(minor_str);
+    this->patch = stoi(patch_str);
+
+}
+
+istream &operator >>(istream &in, UpdateVersion &v)
+{
+    std::string versionInput;
+    in >> versionInput;
+    v.set_versionNo(versionInput);
+    return in;
+
+}
+
+ostream &operator <<(ostream &out, const UpdateVersion &v)
+{
+    out << v.versionNo;
+    return out;
 
 }
