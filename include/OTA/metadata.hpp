@@ -6,7 +6,7 @@
 #include "json/json.h"
 class MetaData
 {
-    //MetaData variables
+        //MetaData variables
     std::string platformName;
     std::string appName;
     std::string appID;
@@ -35,8 +35,12 @@ public:
     void set_sizeInBytes(unsigned long sizeInBytes);
     unsigned long get_sizeInBytes(void);
 
-    void set_version(UpdateVersion version);
+    void set_version(std::string version);
     UpdateVersion get_version();
+
+    friend std::istream & operator >> (std::istream &in,  MetaData &c);
+    friend std::ostream & operator << (std::ostream &out, const MetaData &c);
+
 
 };
 
