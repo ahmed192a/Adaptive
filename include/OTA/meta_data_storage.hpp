@@ -11,7 +11,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
-#include "metadata.hpp"
+#include "OTA/metadata.hpp"
 
 /// @brief A class that deals with the file system to store and load the old meta-data of apps
 class MetaDataStorage {
