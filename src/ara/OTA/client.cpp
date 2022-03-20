@@ -1,5 +1,10 @@
 
 #include "OTA/client.hpp"
+#include <string.h> //strlen
+#include <sys/socket.h> //socket
+#include <unistd.h>// close socket
+using namespace std;
+using namespace OTA;
 
 /*
     constructor
@@ -73,30 +78,33 @@ bool Client::sendData(string data)
 
 
 
-bool Client::requestMetadata(char * data){
+bool Client::requestMetadata(std::string  * data){
 
+    char buffer [OTA_METADATA_BUFFER_SIZE];
     if(this->sendData("Requesting Metadata")==0){
         return false;
     };
     
     //Receive a reply from the server
-    if( recv(sock ,data , BUFFER_SIZE, 0) < 0)
+    if( recv(sock ,buffer , OTA_METADATA_BUFFER_SIZE, 0) < 0)
     {
         cout<<"recv failed";
         return false;
     }
     cout<<"Received Metadata: ";
+    *data=buffer;
     return true;
     
 }
 
 bool Client::requestPackage(char * data){
 
+
     if(this->sendData("Requesting Package")==0){
         return false;
     };
     //Receive a reply from the server
-    if( recv(sock ,data ,BUFFER_SIZE , 0) < 0)
+    if( recv(sock ,data ,OTA_PACKAGE_BUFFER_SIZE , 0) < 0)
     {
         cout<<"recv failed";
         return false;
@@ -113,21 +121,27 @@ void Client::cloudDisconnect(){
 
 
 
-/*int main(int argc , char *argv[])
+int main(int argc , char *argv[])
 {
 
     Client c;
 
     //connect to the cloud
-    c.cloudConnect(IP_CLOUD , PORT_CLOUD);
+    c.cloudConnect(OTA_IP_CLOUD , OTA_PORT_CLOUD);
 
     //get metadata
-    char metadata [BUFFER_SIZE];
-    c.requestMetadata(metadata);
+
+    string metadata;
+    c.requestMetadata(&metadata);
     cout<<metadata<<endl;
 
+    string metadata2;
+    c.requestMetadata(&metadata2);
+    cout<<metadata2<<endl;
+    
+
     //get package
-    char package [BUFFER_SIZE];
+    char package [OTA_PACKAGE_BUFFER_SIZE];
     c.requestPackage(package);
     cout<<package<<endl;
    
@@ -138,4 +152,4 @@ void Client::cloudDisconnect(){
 
     //done
     return 0;
-}*/
+}
