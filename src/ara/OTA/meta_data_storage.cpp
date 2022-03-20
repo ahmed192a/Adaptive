@@ -1,5 +1,7 @@
 #include "OTA/meta_data_storage.hpp"
 
+using namespace ota;
+
 MetaDataStorage::MetaDataStorage(std::string fileName) {
     this->fileName = fileName;
 }
