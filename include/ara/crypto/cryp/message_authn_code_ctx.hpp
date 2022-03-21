@@ -9,24 +9,28 @@
 
 #include "ara/crypto/common/mem_region.hpp"
 #include "ara/crypto/common/base_id_types.hpp"
-// #include "ara/crypto/cryp/crypto_context.hpp"
+#include "ara/crypto/cryp/crypto_context.hpp"
 #include "ara/crypto/cryp/HMAC_digest_service.hpp"
+#include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
+// #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 
 namespace ara {
     namespace crypto {
         namespace cryp {
-            //This partition is only used for testing
 
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
-            class CryptoContext{};
+            ///////////////////////////////////////////////////////
+            //This partition is only used for testing
             class Signature {
                 public:
                 using Uptrc = std::unique_ptr<const Signature>;
             };
             class SymmetricKey {};
-            class RestrictedUseObject{};
             class ReadOnlyMemRegion{};
+            class SecretSeed{};
+
+
             class AuthCipherCtx : public CryptoContext {
             public:
             	using Uptr = std::unique_ptr<AuthCipherCtx>;
@@ -52,7 +56,10 @@ namespace ara {
             public:
             	using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>;
             };
-            class SecretSeed{};
+            ///////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////
             ///////////////////////////////////////////////////////////
             //////////////////////////////////////////////////////////
 

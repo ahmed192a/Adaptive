@@ -22,15 +22,32 @@ namespace ara {
 
             class HMAC : public MessageAuthnCodeCtx {
 
-                private:
                 // pointer to the hash function context used to implement this algorithm
                 HashFunctionCtx::Uptr hashFunction;
                 SymmetricKey key;
 
+                CryptoProvider * myProvider;
+
 
                 public:
-                // implementation of the CyrptoContext virtual function
+                /** Inherited from CryptoContext class**/
+                
+                /// @brief constructor
+                HMAC(CryptoProvider * provider);
+
+                /// @brief destructor
+                ~HMAC() noexcept = default;
+                
                 bool IsInitialized();
+
+				/*Return CryptoPrimitivId instance containing instance identification */
+				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
+
+				/* Get a reference to Crypto Provider of this context*/
+				CryptoProvider& MyProvider() const noexcept;
+
+
+            /** Inherited from MessageAuthnCode class**/
 
                 void Reset() noexcept;
                 void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept;

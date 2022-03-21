@@ -2,6 +2,12 @@
 
 using namespace ara::crypto::cryp;
 
+/** Inherited from CryptoContext class**/
+
+HMAC::HMAC(CryptoProvider * provider) {
+    this->myProvider = provider;
+}
+
 
 bool HMAC::IsInitialized() {
     if(status == MessageAuthnCodeCtx_Status::notInitialized)
@@ -9,6 +15,20 @@ bool HMAC::IsInitialized() {
     else
         return true;
 }
+
+
+// CryptoPrimitiveId::Uptr HMAC::GetCryptoPrimitiveId() const noexcept {
+
+// }
+
+
+CryptoProvider& HMAC::MyProvider() const noexcept {
+    return (*myProvider) ;
+}
+
+
+
+/** Inherited from MessageAuthnCode class**/
 
 void HMAC::Reset() {
     status = MessageAuthnCodeCtx_Status::notInitialized;
@@ -38,9 +58,9 @@ void HMAC::Update(std::uint8_t in) {
 
 }
 
-Signature::Uptrc HMAC::Finish(bool makeSignatureObject = false) noexcept {
-    if(makeSignatureObject == false)
-        return std::make_unique<Signature>(nullptr);
-    else
-        return std::make_unique<Signature>(); // should be initialized with the correct value
-}
+// Signature::Uptrc HMAC::Finish(bool makeSignatureObject = false) noexcept {
+//     if(makeSignatureObject == false)
+//         return std::make_unique<Signature>(nullptr);
+//     else
+//         return std::make_unique<Signature>(); // should be initialized with the correct value
+// }
