@@ -1,22 +1,26 @@
-#ifndef ARA_CRYPTO_MEM_REGION_H
-#define ARA_CRYPTO_MEM_REGION_H
+#ifndef ARA_CRYPTO_CRYPTOOBJECTUID_H
+#define ARA_CRYPTO_CRYPTOOBJECTUID_H
 
-#include <cstdint>
-#include <vector>
-
+#include <iostream>
+#include <ara/core/span.hpp>
 namespace ara
 {
-  namespace crypto
-  {
-    
-    // should be std::span but not supported in c++17
-    using ReadOnlyMemRegion = std::vector<const std::uint8_t>;
+	namespace crypto
+	{
+        //SWS_CRYPT_10033
+        /**
+         * @brief Read-Only Memory Region (intended for [in] arguments)
+         * 
+         */
+        using ReadOnlyMemRegion = ara::core::Span<const std::uint8_t>;
+        //SWS_CRYPT_10031
+        /**
+         * @brief Read-Write Memory Region (intended for [in/out] arguments)
+         * 
+         */
+        using ReadWriteMemRegion = ara::core::Span<std::uint8_t>;
 
-    // should be std::span but not supported in c++17
-    using ReadWriteMemRegion = std::vector<std::uint8_t>;
+    }
+}
 
-
-  } // namespace crypto
-} // namespace ara
-
-#endif // ARA_CRYPTO_MEM_REGION_H
+#endif

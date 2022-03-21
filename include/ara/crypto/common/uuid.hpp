@@ -1,6 +1,6 @@
 #ifndef ARA_CRYPTO_UUID_H
 #define ARA_CRYPTO_UUID_H
-
+#include <iostream>
 namespace ara
 {
 	namespace crypto

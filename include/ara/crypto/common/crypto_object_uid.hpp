@@ -1,7 +1,7 @@
 #ifndef ARA_CRYPTO_CRYPTOOBJECTUID_H
 #define ARA_CRYPTO_CRYPTOOBJECTUID_H
 
-#include "ara/crypto/common/uuid.h"
+#include <ara/crypto/common/uuid.hpp>
 
 namespace ara
 {
@@ -14,7 +14,7 @@ namespace ara
          */
         struct CryptoObjectUid
         {
-		Uuid mGeneratorUid;
+		   Uuid mGeneratorUid;
         };
 
     }
