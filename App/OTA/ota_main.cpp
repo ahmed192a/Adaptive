@@ -19,60 +19,54 @@ int main(void) {
 
     std::cout << std::endl << "[OTA] started ..." << std::endl;
 
-    while(true) {
+    while(true)
+    {
         // creating the cloud client and connecting to the server
         std::cout << "[OTA] connecting to the cloud server ..." << std::endl;
         Client cloud;
         
-        if( cloud.cloudConnect(OTA_IP_CLOUD, OTA_PORT_CLOUD) ) {
-            std::cout << "[OTA]\t connection succeeded ..." << std::endl;
+        if( true /*cloud.cloudConnect(OTA_IP_CLOUD, OTA_PORT_CLOUD) */)
+        {
 
 
-            // requesting the metaData
-            std::string json;
-            cloud.requestMetadata(&json);
+            std::cout << "[OTA] connection succeeded ..." << std::endl;
 
-            //////////////////////////////////////////////////////////
-            // temporary error handling
-            std::size_t size = json.size();
-            while(json[size-1] != '}') {
-                json.pop_back();
-                size--;
-                if(size == 0 )
-                    break;
-            }
-            //////////////////////////////////////////////////////////
+
+            // requesting the new metaData from the cloud server
+            std::string json = """{\"appID\": \"K134\",\"appName\":\"OTA_APP\",\"sizeInBytes\":137,\"platformName\":\"adaptive\",\"version\": \"1.0.4\",\"result\":\"ok\"}""";
+            // cloud.requestMetadata(&json);
             MetaData new_metaData(json);
+            
 
-
-            // // The instance that will deal with storing and retieving the meta-data
+            // retrieve the latest meta-data stored in the file 
             MetaDataStorage fileSystem(META_DATA_FILE_PATH);
             MetaData old_metaData;
-            fileSystem.retrive_LatestMetaData(old_metaData);
+            fileSystem.retrieve_LatestMetaData(old_metaData);
 
             
             // // comparing the application meta-data with old one stored in the file system
             if(new_metaData.get_version() > old_metaData.get_version()){
-                std::cout << "[OTA] downloading the new package ..." << std::endl;
+                std::cout << "\t[OTA] downloading the new package ..." << std::endl;
                 fileSystem.save_MetaData(new_metaData);
-                break;
             }
             else {
-                std::cout << "[OTA] no new versions in the cloud ..." << std::endl;
+                std::cout << "\t[OTA] no new versions in the cloud ..." << std::endl;
             }
 
 
             // disconnecting from the cloud connection
-            cloud.cloudDisconnect();
+            // cloud.cloudDisconnect();
 
         }
         else {
-            std::cout << "[OTA]\t connection failed..." << std::endl;
+            std::cout << "[OTA] connection failed..." << std::endl;
         }
 
         sleep(FREQUENCY);
 
     } // end of while(true)
+
+
 
     return 0;
 }

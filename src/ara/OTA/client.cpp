@@ -28,12 +28,12 @@ bool Client::cloudConnect(string address , int port)
         sock = socket(AF_INET , SOCK_STREAM , 0);
         if (sock == -1)
         {
-            cout<<"Could not create socket";
+            // cout<<"Could not create socket";
             return false;
 
         }
 
-        cout<<"Socket created\n";
+        // cout<<"Socket created\n";
     }
     else { /* OK , nothing */ }
     
@@ -46,11 +46,11 @@ bool Client::cloudConnect(string address , int port)
     //Connect to remote server
     if( connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0 )
     {
-        cout<<"connect failed. Error";
+        // cout<<"connect failed. Error";
         return false;
     }
 
-    cout<<"Connected\n";
+    // cout<<"Connected\n";
     return true;
 }
 
@@ -59,18 +59,18 @@ bool Client::cloudConnect(string address , int port)
 */
 bool Client::sendData(string data)
 {
-    cout<<"Sending data...";
-    cout<<data;
-    cout<<"\n";
+    // cout<<"Sending data...";
+    // cout<<data;
+    // cout<<"\n";
     
     // Send some data
     if( send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0)
     {
-        cout<<"Send failed";
+        // cout<<"Send failed";
         return false;
     }
     
-    cout<<"Data sent\n";
+    // cout<<"Data sent\n";
 
     return true;
 }
@@ -87,10 +87,10 @@ bool Client::requestMetadata(char  * data){
     //Receive a reply from the server
     if( recv(sock ,data , OTA_METADATA_BUFFER_SIZE, 0) < 0)
     {
-        cout<<"recv failed";
+        // cout<<"recv failed";
         return false;
     }
-    cout<<"Received Metadata: ";
+    // cout<<"Received Metadata: ";
     return true;
     
 }
@@ -104,10 +104,10 @@ bool Client::requestPackage(char * data){
     //Receive a reply from the server
     if( recv(sock ,data ,OTA_PACKAGE_BUFFER_SIZE , 0) < 0)
     {
-        cout<<"recv failed";
+        // cout<<"recv failed";
         return false;
     }
-    cout<<"Received Package: ";
+    // cout<<"Received Package: ";
    return true;
     
 }

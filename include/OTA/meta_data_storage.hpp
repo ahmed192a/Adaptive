@@ -53,7 +53,7 @@ namespace OTA {
 
         /// @brief gets the number of apps in the file system
         /// @return number of applications their meta-data is stored in the file system
-        int get_appsCount(void);
+        std::size_t get_appsCount(void);
 
 
         /// @brief deletes all the elements in the meta-data file (reset file)
@@ -63,7 +63,7 @@ namespace OTA {
 
         /// @brief Gets a single MetaData instance from the instances stored in the file storage 
         /// @param[out] metaData to carry the meta data of a single application
-        void retrive_LatestMetaData(MetaData& metaData); 
+        void retrieve_LatestMetaData(MetaData& metaData); 
 
     };
 

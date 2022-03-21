@@ -18,8 +18,9 @@ std::string MetaDataStorage::get_fileName() {
 
 void MetaDataStorage::save_MetaData(MetaData & newData) {
     
-    file.open(fileName, std::ios::app | std::ios::binary | std::ios::out);
+    file.open(fileName, std::ios::app | std::ios::out);
     file << newData << "\n";
+    file.close();
 
     return;
 }
@@ -46,9 +47,9 @@ void MetaDataStorage::save_MetaData(MetaData & newData) {
 //     return returnedVector;
 // }
 
-int MetaDataStorage::get_appsCount(void){
+std::size_t MetaDataStorage::get_appsCount(void){
     std::string temp;
-    int count = 0;
+    std::size_t count = 0;
 
     file.open(fileName, std::ios::in);
 
@@ -56,6 +57,7 @@ int MetaDataStorage::get_appsCount(void){
         count++;
     }
 
+    file.close();
     return count;
 
 }
@@ -68,13 +70,14 @@ void MetaDataStorage::empty_file(void) {
     return;
 }
 
-void MetaDataStorage::retrive_LatestMetaData(MetaData& metaData) {
-    
+void MetaDataStorage::retrieve_LatestMetaData(MetaData& metaData) {
+    std::size_t size = get_appsCount();
+
     file.open(fileName, std::ios::in);
     file.seekg(0, std::ios::beg);
+    for(std::size_t i = 0; i < size; i++)
+        file >> metaData; // save only the last value
 
-    if(get_appsCount() > 0)
-        while(file >> metaData); // save only the last value
-
+    file.close();
     return;
 }
