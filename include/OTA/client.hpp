@@ -54,7 +54,7 @@ private:
 
      */
 
-        bool requestMetadata(std::string  * data);
+        bool requestMetadata(char * data);
 
     
     
