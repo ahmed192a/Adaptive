@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include "ara/crypto/cryp/crypto_provider.hpp"
 
 #include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
 
@@ -10,7 +11,7 @@ namespace ara {
     namespace crypto {
         namespace cryp {
 
-            Class CryptoContext
+            class CryptoContext
             {
             public:
 				/* Destructor */
@@ -31,7 +32,7 @@ namespace ara {
 				/* Get a reference to Crypto Provider of this context*/
 				virtual CryptoProvider& MyProvider() const noexcept = 0;
 
-            }
+            };
 
         }
     }

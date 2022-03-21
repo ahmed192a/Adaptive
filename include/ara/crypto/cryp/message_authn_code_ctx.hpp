@@ -1,36 +1,32 @@
-#ifndef ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
-#define ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
-
 #include <iostream>
+
+// #ifndef ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+// #define ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+
+// #include <iostream>
 #include <memory>
 #include <vector>
 
 #include "ara/crypto/common/mem_region.hpp"
 #include "ara/crypto/common/base_id_types.hpp"
+// #include "ara/crypto/cryp/crypto_context.hpp"
 #include "ara/crypto/cryp/HMAC_digest_service.hpp"
 
 namespace ara {
     namespace crypto {
         namespace cryp {
-            
-
             //This partition is only used for testing
 
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
-
-            class CryptoContext {
-                public:
-                virtual bool IsInitialized();
-                virtual ~CryptoContext () noexcept=default;
-
-            };
+            class CryptoContext{};
             class Signature {
                 public:
                 using Uptrc = std::unique_ptr<const Signature>;
             };
             class SymmetricKey {};
             class RestrictedUseObject{};
+            class ReadOnlyMemRegion{};
             class AuthCipherCtx : public CryptoContext {
             public:
             	using Uptr = std::unique_ptr<AuthCipherCtx>;
@@ -57,7 +53,6 @@ namespace ara {
             	using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>;
             };
             class SecretSeed{};
-            
             ///////////////////////////////////////////////////////////
             //////////////////////////////////////////////////////////
 
@@ -70,22 +65,19 @@ namespace ara {
             };
 
             class MessageAuthnCodeCtx : public CryptoContext {
-
+                
+                public:
                 using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;  
 
-
-                protected:
                 // this pointer will point to the resulting signature
                 Signature::Uptrc signature_ptr;
 
                 // The current status of the context
                 MessageAuthnCodeCtx_Status status = MessageAuthnCodeCtx_Status::notInitialized;
-                
 
 
                 virtual void Reset() noexcept = 0;
                 virtual void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;
-                
                 virtual bool Check(const Signature &expected) const noexcept = 0;
 
 
@@ -95,18 +87,13 @@ namespace ara {
                 virtual void Update(const RestrictedUseObject &in) noexcept = 0;
                 virtual void Update(ReadOnlyMemRegion in) noexcept = 0;
                 virtual void Update(std::uint8_t in) noexcept = 0;
-                
-                
+
                 virtual Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept = 0;
-                
 
                 virtual DigestService::Uptr GetDigestService() const noexcept = 0;
                 virtual std::vector<byte> GetDigest(std::size_t offset = 0) const noexcept = 0;
                 // template <typename Alloc = <implementation-defined>>
                 // ara::core::Result<ByteVector<Alloc> > GetDigest(std::size_t offset = 0) const noexcept;
-                
-
-                
 
             };
 
@@ -118,4 +105,4 @@ namespace ara {
     } // namespace crypto
 } // namespace ara
 
-#endif // ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+// #endif // ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
