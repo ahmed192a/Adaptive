@@ -25,27 +25,26 @@ void MetaDataStorage::save_MetaData(MetaData & newData) {
     return;
 }
 
-// vector<MetaData> MetaDataStorage::load_MetaData(void){
-//     // file stream to read
-//     ifstream file;
+std::vector<MetaData> MetaDataStorage::load_MetaData(void){
 
-//     // temporary variables to carry the data in each iteration
-//     MetaData metaTemp;
+    // temporary variables to carry the data in each iteration
+    MetaData metaDataTemp;
+    std::size_t size = get_appsCount();
 
-//     vector<MetaData> returnedVector;
+    std::vector<MetaData> returnedVector;
 
+    file.open(fileName, std::ios::in);
+    file.seekg(0, std::ios::beg);
+ 
+    for(std::size_t i = 0; i < size; i++) {
+        file >> metaDataTemp;
+        std::cout << metaDataTemp << std::endl;
+        returnedVector.push_back(metaDataTemp);
+    }
 
-//     file.open(fileName, ios::binary);
-//     file.seekg(0, ios::beg);
-    
-//     std::size_t fileSize = get_appsCount();
-//     fileSize *= 5;
-//     for(std::size_t i = 0; i < fileSize; i++) {
-        
-//     }
-
-//     return returnedVector;
-// }
+    file.close();
+    return returnedVector;
+}
 
 std::size_t MetaDataStorage::get_appsCount(void){
     std::string temp;
