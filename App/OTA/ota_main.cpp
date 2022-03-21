@@ -25,14 +25,15 @@ int main(void) {
         std::cout << "[OTA] connecting to the cloud server ..." << std::endl;
         Client cloud;
         
-        if( true /*cloud.cloudConnect(OTA_IP_CLOUD, OTA_PORT_CLOUD) */)
+        if( cloud.cloudConnect(OTA_IP_CLOUD, OTA_PORT_CLOUD) )
         {
 
-            std::cout << "[OTA] connection succeeded ..." << std::endl;
+            std::cout << "\t[OTA] connection succeeded ..." << std::endl;
 
             // requesting the new metaData from the cloud server
-            std::string json = """{\"appID\": \"K134\",\"appName\":\"OTA_APP\",\"sizeInBytes\":137,\"platformName\":\"adaptive\",\"version\": \"1.0.4\",\"result\":\"ok\"}""";
-            // cloud.requestMetadata(&json);
+            char json_ptr[OTA_METADATA_BUFFER_SIZE];
+            cloud.requestMetadata(json_ptr);
+            std::string json = json_ptr;
             MetaData new_metaData(json);
             
             // retrieve the old meta-data stored in the file 
@@ -42,7 +43,7 @@ int main(void) {
             MetaData old_metaData;
 
             // getting the meta data of the same applicaton 
-            for(std::size_t i = 0; i < listSize; i++)
+            for(std::size_t i = (listSize - 1); i  >= 0; i--)
             {
                 if(new_metaData == metaDataList[i])
                 {
@@ -53,19 +54,44 @@ int main(void) {
 
             // // comparing the application meta-data with old one stored in the file system
             if(new_metaData.get_version() > old_metaData.get_version()){
+                
                 std::cout << "\t[OTA] downloading the new package ..." << std::endl;
-                fileSystem.save_MetaData(new_metaData);
+                
+                // downloading the package from the cloud
+                char package_ptr[OTA_PACKAGE_BUFFER_SIZE];
+                cloud.requestPackage(package_ptr);
+                std::string package = package_ptr;
+
+                std::cout << "\t[OTA] sending the package to the flashing adapter ..." << std::endl;
+
+                /** here should be the logic of sending the package binary to the flashing adapter**/
+                bool acknowlege = true; // this acknowle
+
+
+                if(acknowlege)
+                {
+                    // updating the stored meta-data
+                    std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;
+                    fileSystem.save_MetaData(new_metaData);
+                }
+                else
+                {
+                    // the package failed to be fetched
+                    std::cout << "\t[OTA] (rollback) package failed to be flashed ..." << std::endl;
+
+                }
+
             }
             else {
                 std::cout << "\t[OTA] no new versions in the cloud ..." << std::endl;
             }
 
             // disconnecting from the cloud connection
-            // cloud.cloudDisconnect();
+            cloud.cloudDisconnect();
 
         }
         else {
-            std::cout << "[OTA] connection failed..." << std::endl;
+            std::cout << "\t[OTA] connection failed..." << std::endl;
         }
 
         sleep(FREQUENCY);

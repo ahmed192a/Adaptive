@@ -38,7 +38,6 @@ std::vector<MetaData> MetaDataStorage::load_MetaData(void){
  
     for(std::size_t i = 0; i < size; i++) {
         file >> metaDataTemp;
-        std::cout << metaDataTemp << std::endl;
         returnedVector.push_back(metaDataTemp);
     }
 
