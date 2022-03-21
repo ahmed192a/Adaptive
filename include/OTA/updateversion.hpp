@@ -14,7 +14,7 @@
 /// @brief A class used to stringify version and apply operation on version
 class UpdateVersion
 {
-        int major;
+    int major;
     int minor;
     int patch;
     //std::string versionNo;

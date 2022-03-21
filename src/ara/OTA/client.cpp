@@ -91,7 +91,7 @@ bool Client::requestMetadata(std::string  * data){
         cout<<"recv failed";
         return false;
     }
-    cout<<"Received Metadata: ";
+    cout<<"Received Metadata: " << buffer << std::endl;
     *data=buffer;
     return true;
     
@@ -121,35 +121,35 @@ void Client::cloudDisconnect(){
 
 
 
-int main(int argc , char *argv[])
-{
+// int main(int argc , char *argv[])
+// {
 
-    Client c;
+//     Client c;
 
-    //connect to the cloud
-    c.cloudConnect(OTA_IP_CLOUD , OTA_PORT_CLOUD);
+//     //connect to the cloud
+//     c.cloudConnect(OTA_IP_CLOUD , OTA_PORT_CLOUD);
 
-    //get metadata
+//     //get metadata
 
-    string metadata;
-    c.requestMetadata(&metadata);
-    cout<<metadata<<endl;
+//     string metadata;
+//     c.requestMetadata(&metadata);
+//     cout<<metadata<<endl;
 
-    string metadata2;
-    c.requestMetadata(&metadata2);
-    cout<<metadata2<<endl;
+//     string metadata2;
+//     c.requestMetadata(&metadata2);
+//     cout<<metadata2<<endl;
     
 
-    //get package
-    char package [OTA_PACKAGE_BUFFER_SIZE];
-    c.requestPackage(package);
-    cout<<package<<endl;
+//     //get package
+//     char package [OTA_PACKAGE_BUFFER_SIZE];
+//     c.requestPackage(package);
+//     cout<<package<<endl;
    
-    //Disconnect to the cloud after finishing
-    c.cloudDisconnect();
+//     //Disconnect to the cloud after finishing
+//     c.cloudDisconnect();
 
 
 
-    //done
-    return 0;
-}
+//     //done
+//     return 0;
+// }

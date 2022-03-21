@@ -6,7 +6,7 @@
 #include "json/json.h"
 class MetaData
 {
-        //MetaData variables
+    //MetaData variables
     std::string platformName;
     std::string appName;
     std::string appID;
@@ -22,6 +22,9 @@ public:
     //operator overloading for ">" sign
     bool operator > (MetaData Meta2);
 
+    //operator overloading for "==" sign to compare the apppName, platformName & appID only 
+    bool operator == (MetaData Meta2);
+
     // setters and getters for the class members
     void set_platformName(std::string platformName);
     std::string get_platformName(void);
@@ -36,7 +39,7 @@ public:
     unsigned long get_sizeInBytes(void);
 
     void set_version(std::string version);
-    UpdateVersion get_version();
+    UpdateVersion& get_version();
 
     friend std::istream & operator >> (std::istream &in,  MetaData &c);
     friend std::ostream & operator << (std::ostream &out, const MetaData &c);

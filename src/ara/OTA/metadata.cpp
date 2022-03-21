@@ -48,6 +48,21 @@ bool MetaData::operator >(MetaData Meta2)
     }
 }
 
+bool MetaData::operator == (MetaData Meta2) {
+
+    // comparing the equivalence of the platformName, appName & appId only to check it is the same app
+
+    if ((this->platformName == Meta2.platformName) && \
+    (this->appName == Meta2.appName) && \
+    (this->appID == Meta2.appID))
+    {
+        return true;
+    }
+
+    return false;
+    
+}
+
 void MetaData::set_platformName(string platformName)
 {
     this->platformName = platformName;
@@ -99,7 +114,7 @@ void MetaData::set_version(string version)
 
 }
 
-UpdateVersion MetaData::get_version()
+UpdateVersion& MetaData::get_version()
 {
     return this->v;
 

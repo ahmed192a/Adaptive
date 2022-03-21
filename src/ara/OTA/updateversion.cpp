@@ -4,6 +4,10 @@ using namespace std;
 
 UpdateVersion::UpdateVersion()
 {
+    this->major = 0;
+    this->minor = 0;
+    this->patch = 0;
+    this->versionNo = "0.0.0";
 }
 
 UpdateVersion::UpdateVersion(int major, int minor, int patch)

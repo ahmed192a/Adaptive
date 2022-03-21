@@ -11,9 +11,10 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
+#include <iostream>
 #include "OTA/metadata.hpp"
 
-namespace ota {
+namespace OTA {
 
     /// @brief A class that deals with the file system to store and load the old meta-data of apps
     class MetaDataStorage {
@@ -62,10 +63,10 @@ namespace ota {
 
         /// @brief Gets a single MetaData instance from the instances stored in the file storage 
         /// @param[out] metaData to carry the meta data of a single application
-        void retrive_AppMetaData(MetaData& metaData); 
+        void retrive_LatestMetaData(MetaData& metaData); 
 
     };
 
-} // namespace ota
+} // namespace OTA
 
 #endif // OTA_META_DATA_STORAGE_H

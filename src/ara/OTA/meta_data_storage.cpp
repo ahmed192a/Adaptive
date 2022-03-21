@@ -1,9 +1,11 @@
 #include "OTA/meta_data_storage.hpp"
 
-using namespace ota;
+using namespace OTA;
 
 MetaDataStorage::MetaDataStorage(std::string fileName) {
     this->fileName = fileName;
+    file.open(fileName, std::ios::app);
+    file.close();
 }
 
 void MetaDataStorage::set_fileName(std::string fileName) {
@@ -15,7 +17,7 @@ std::string MetaDataStorage::get_fileName() {
 }
 
 void MetaDataStorage::save_MetaData(MetaData & newData) {
-
+    
     file.open(fileName, std::ios::app | std::ios::binary | std::ios::out);
     file << newData << "\n";
 
@@ -66,11 +68,13 @@ void MetaDataStorage::empty_file(void) {
     return;
 }
 
-void MetaDataStorage::retrive_AppMetaData(MetaData& metaData) {
+void MetaDataStorage::retrive_LatestMetaData(MetaData& metaData) {
     
-    file.open(fileName, std::ios::binary);
+    file.open(fileName, std::ios::in);
     file.seekg(0, std::ios::beg);
-    file >> metaData;
-   
+
+    if(get_appsCount() > 0)
+        while(file >> metaData); // save only the last value
+
     return;
 }
