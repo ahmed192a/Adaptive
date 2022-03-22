@@ -1,4 +1,4 @@
-#include "metadata.hpp"
+#include "OTA/metadata.hpp"
 using namespace std;
 
 MetaData::MetaData()
@@ -48,6 +48,21 @@ bool MetaData::operator >(MetaData Meta2)
     }
 }
 
+bool MetaData::operator == (MetaData Meta2) {
+
+    // comparing the equivalence of the platformName, appName & appId only to check it is the same app
+
+    if ((this->platformName == Meta2.platformName) && \
+    (this->appName == Meta2.appName) && \
+    (this->appID == Meta2.appID))
+    {
+        return true;
+    }
+
+    return false;
+    
+}
+
 void MetaData::set_platformName(string platformName)
 {
     this->platformName = platformName;
@@ -93,14 +108,37 @@ unsigned long MetaData::get_sizeInBytes()
 
 }
 
-void MetaData::set_version(UpdateVersion version)
+void MetaData::set_version(string version)
 {
-    this->v = version;
+    this->v.set_versionNo(version);
 
 }
 
-UpdateVersion MetaData::get_version()
+UpdateVersion& MetaData::get_version()
 {
     return this->v;
 
+}
+
+istream &operator >>(istream &in, MetaData &c)
+{
+    std::string metaInput;
+    in >> metaInput;
+    c.set_appID(metaInput);
+    in >> metaInput;
+    c.set_appName(metaInput);
+    in >> metaInput;
+    c.set_version(metaInput);
+    in >> metaInput;
+    c.set_sizeInBytes(stoi(metaInput));
+    in >> metaInput;
+    c.set_platformName(metaInput);
+    return in;
+}
+
+ostream &operator <<(ostream &out, const MetaData &c)
+{
+    //std::string x = c.get_appID();
+    out << c.appID << " " << c.appName << " " << c.v.versionNo << " " << c.sizeInBytes << " " << c.platformName;
+    return out;
 }
