@@ -69,7 +69,7 @@ namespace ara
                 service_proxy_tcp(SOCK_STREAM),
                 service_proxy_udp(SOCK_DGRAM)
                 {
-                    service_proxy_udp.OpenSocket();
+                    // service_proxy_udp.OpenSocket();
                     //m_proxy_handle.m_client_UPD = &service_proxy_udp;
                 }
                 ServiceProxy::~ServiceProxy()

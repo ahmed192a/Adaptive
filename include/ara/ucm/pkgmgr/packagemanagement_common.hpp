@@ -331,18 +331,41 @@ namespace ara
 
                 const std::string getMethodName();
 
-                template <std::size_t N>
-                ara::ucm::pkgmgr::PackageManagement::TransferDataOutput operator()(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
+                std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> operator()(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
                 {
-                    auto I = std::integer_sequence<std::size_t, N>();
-                    return send(id, data, blockCounter, std::make_index_sequence<N>{});
-                }
-                template <std::size_t... index>
-                ara::ucm::pkgmgr::PackageManagement::TransferDataOutput send(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter, std::index_sequence<index...>)
-                {
-                    ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(methodid, id, blockCounter, data[index]...);
+                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>result = std::async([&,id, blockCounter, data](){
+                    ara::com::Serializer ser;
+                    ser.serialize(methodid);
+                    ser.serialize(id);
+                    ser.serialize(blockCounter);
+                    std::vector<uint8_t> msgser = ser.Payload();
+                    msgser.insert(msgser.end(), data.begin(), data.end());
+
+                    return service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(msgser);
+                    
+                    });
                     return result;
+                
+                    // return send(id, data, blockCounter, std::make_index_sequence<N>{});
+                    
                 }
+                // template <std::size_t... index>
+                // std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> send(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter, std::index_sequence<index...>)
+                // {
+                //     // std::future<boost::variant2::variant<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput, ara::ucm::pkgmgr::PackageManagement::UCMErrorDomain>> result = service_proxy->SendRequest<std::future<boost::variant2::variant<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput, ara::ucm::pkgmgr::PackageManagement::UCMErrorDomain>>>(methodid, id, blockCounter, data[index]...);
+                //     // return result;
+
+                //     std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>result = std::async([&,id, blockCounter, data](){
+                //     for(int i = 0 ; i < 64; i++)
+                //     {
+                //         printf("%x", data[i]);
+                //     }
+                //     std::cout << std::endl;
+                //     return service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(methodid, id, blockCounter, data[index]...);
+                    
+                //     });
+                //     return result;
+                // }
             };
             class TransferExit
             {
@@ -359,9 +382,14 @@ namespace ara
 
                 const std::string getMethodName();
 
-                ara::ucm::pkgmgr::PackageManagement::TransferExitOutput operator()(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+                std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> operator()(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
                 {
-                    ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput>(methodid, id);
+                    // ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput>(methodid, id);
+                    // return result;
+                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> result = std::async([&, id](){
+                    return service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput>(methodid, id);
+                    
+                    });
                     return result;
                 }
             };
@@ -380,10 +408,16 @@ namespace ara
 
                 const std::string getMethodName();
 
-                ara::ucm::pkgmgr::PackageManagement::TransferStartOutput operator()(uint64_t size)
+                std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> operator()(uint64_t size)
                 {
-                    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput>(methodid, size);
+                    // cout << "size before: " << size << endl;
+                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result = std::async([&, size](){
+                        // cout << "size after: " << size << endl;
+                    return service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput>(methodid, size);
+                    
+                    });
                     return result;
+                    
                 }
             };
         }

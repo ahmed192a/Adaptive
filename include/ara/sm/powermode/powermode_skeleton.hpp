@@ -37,9 +37,9 @@ namespace ara
                     ~PowerMode();
                     /*sends PowerModeMsg defined in 9.1 Type definition to all Processes to request a PowerMode.
                      *Message to all running Processes in the system to indicate a request to enter this state.*/
-                    ara::sm::powermode::MessagePowermodeOutput MessagePowerMode(PowerModeMsg msg);
+                    std::future<ara::sm::powermode::MessagePowermodeOutput> MessagePowerMode(PowerModeMsg msg);
                     /*ResponseMessage from a Processes which received PowerMode request from State Management.*/
-                    ara::sm::powermode::EventPowermodeOutput EventPowerMode(PowerModeRespMsg respMsg);
+                    std::future<ara::sm::powermode::EventPowermodeOutput> MessagePowerMode(PowerModeRespMsg respMsg);
 
                     void method_dispatch(std::vector<uint8_t> &message, Socket &cserver)
                     {

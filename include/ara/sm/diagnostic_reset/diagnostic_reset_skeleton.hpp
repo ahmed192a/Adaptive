@@ -15,6 +15,8 @@
 
 #include "ara/sm/diagnostic_reset/diagnostic_reset_return_types.hpp"
 
+#include <future>
+
 namespace ara
 {
     namespace sm
@@ -40,10 +42,10 @@ namespace ara
                     ~diagnostic_reset();
 
                     /*sends DiagnosticResetMsg defined in 9.1 Type definition to all Processes in a SoftwareCluster.*/
-                    virtual MessageDiagnosticOutput message();
+                    std::future<ara::sm::diagnostic_reset::MessageDiagnosticOutput> message();
 
                     /*All Processes which got a DiagnosticReset request sends this as answer to State Management*/
-                    virtual EventDiagnosticOutput event();
+                    std::future<ara::sm::diagnostic_reset::EventDiagnosticOutput> event();
 
                    void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
                    {
