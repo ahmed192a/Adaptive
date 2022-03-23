@@ -6,6 +6,8 @@
 #include <ara/core/result.hpp>
 #include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
 #include <ara/crypto/common/base_id_types.hpp>
+// #include "ara/crypto/common/crypto_object_uid.h"
+
 namespace ara
 {
     namespace crypto
@@ -28,6 +30,8 @@ namespace ara
                  */
                 struct COIdentifier
                  {
+                  CryptoObjectType mCOType;
+                  CryptoObjectUid mCouid;
 
                  };
 

@@ -16,11 +16,6 @@ namespace ara
             */
             class CryptoPrimitiveId 
             {
-                enum CryptoAlgId 
-                {
-                    CR_ID //da just for test l mafroud hyge mn crypto key slot, bnst5dmo fe signeture
-                };
-               
                 public:
                 /** 
                  * SWS_CRYPT_10808
