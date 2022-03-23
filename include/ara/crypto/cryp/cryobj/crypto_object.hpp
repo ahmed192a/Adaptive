@@ -4,9 +4,9 @@
 #include <iostream>
 #include <ara/crypto/common/io_interface.hpp>
 #include <ara/core/result.hpp>
-#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
+#include <ara/crypto/cryp/cryobj/crypto_primitive_id.hpp>
 #include <ara/crypto/common/base_id_types.hpp>
-// #include "ara/crypto/common/crypto_object_uid.h"
+#include <ara/crypto/common/crypto_object_uid.hpp>
 
 namespace ara
 {
@@ -29,11 +29,10 @@ namespace ara
                  * 
                  */
                 struct COIdentifier
-                 {
-                  CryptoObjectType mCOType;
-                  CryptoObjectUid mCouid;
-
-                 };
+                {
+                    CryptoObjectType mCOType;
+                    CryptoObjectUid mCouid;
+                };
 
                  /*
                 * SWS_CRYPT_20502
