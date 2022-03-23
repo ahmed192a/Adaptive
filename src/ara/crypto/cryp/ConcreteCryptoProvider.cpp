@@ -9,7 +9,7 @@
 
 using namespace ara::crypto::cryp;
 
-CryptoProvider::AlgId ConcreteCryptoProvider::ConvertToAlgId (std::string primitiveName) const noexcept
+CryptoProvider::AlgId ConcreteCryptoProvider::ConvertToAlgId (std::string primitiveName) 
 {
 	//check the list of algorithm names supported
 	for(int i=0;i<ALGORITHMSNUMBER;i++)
@@ -22,7 +22,7 @@ CryptoProvider::AlgId ConcreteCryptoProvider::ConvertToAlgId (std::string primit
 }
 
 
- std::string ConcreteCryptoProvider::ConvertToAlgName (CryptoProvider::AlgId algId) const noexcept
+ std::string ConcreteCryptoProvider::ConvertToAlgName (CryptoProvider::AlgId algId)
  {
 	 //check if algId contains supported value
 	 if(algId==0||algId>ALGORITHMSNUMBER)
@@ -31,7 +31,7 @@ CryptoProvider::AlgId ConcreteCryptoProvider::ConvertToAlgId (std::string primit
 	 //return the common name saved in the supported algorithms list
 	 return algorithmNames[algId-1];
  }
- MessageAuthnCodeCtx::Uptr ConcreteCryptoProvider::CreateMessageAuthCodeCtx (AlgId algId) noexcept
+ MessageAuthnCodeCtx::Uptr ConcreteCryptoProvider::CreateMessageAuthCodeCtx (AlgId algId)
  {
 	 //if the algId not supported
 	 if(ConcreteCryptoProvider::ConvertToAlgName(algId)=="kUnkownIdentifier")
