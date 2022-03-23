@@ -6,8 +6,8 @@
  *****************************************************************/
 
 
-#ifndef ARA_CRYPTO_HMAC_H
-#define ARA_CRYPTO_HMAC_H
+#ifndef ARA_CRYPTO_AUTH_CIPHER_CTX_H
+#define ARA_CRYPTO_AUTH_CIPHER_CTX_H
 
 #include "crypto_context.hpp"
 #include"message_authn_code_ctx.hpp"
