@@ -2,6 +2,7 @@
 #define CRYPTO_PROVIDER_H_
 
 #include "ara/crypto/common/volatile_trusted_container.hpp"
+#include "ara/crypto/cryp/HMAC.hpp"
 //#include "ara/crypto/cryp/message_authn_code_ctx.hpp"
 //#include "ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
 //#include "ara/crypto/cryp/key_derivation_function_ctx.hpp"
