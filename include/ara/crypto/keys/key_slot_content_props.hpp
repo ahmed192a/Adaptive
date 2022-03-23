@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include "../crypto/cryp/cryobj/crypto_object.hpp"
+#include "../cryp/cryobj/crypto_object.hpp"
 namespace ara
 {
 	namespace crypto

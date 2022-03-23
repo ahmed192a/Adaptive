@@ -3,8 +3,8 @@
 #ifndef ARA_CRYPTO_CRYP_CONCRETE_CRYPTO_PROVIDER_HPP_
 #define ARA_CRYPTO_CRYP_CONCRETE_CRYPTO_PROVIDER_HPP_
 #include "crypto_provider.hpp"
-#include "HMAC.hpp"
-#include "../common/vendor_specific_algorithm_identifier.hpp"
+//#include "HMAC.hpp"
+//#include "../common/vendor_specific_algorithm_identifier.hpp"
 
 namespace ara
 {
