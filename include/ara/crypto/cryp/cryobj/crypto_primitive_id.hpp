@@ -3,6 +3,7 @@
 #include <memory>
 #include <iostream>
 #include<ara/core/StringView.hpp>
+#include <ara/crypto/common/base_id_types.hpp>
 
 namespace ara
 {
