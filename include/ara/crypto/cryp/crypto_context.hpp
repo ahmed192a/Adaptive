@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include <memory>
-#include "ara/crypto/cryp/crypto_provider.hpp"
 
-#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
+#include "../cryp/cryobj/crypto_primitive_id.hpp"
+#include "../cryp/crypto_provider.hpp"
 
 namespace ara {
     namespace crypto {
