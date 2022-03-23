@@ -7,12 +7,26 @@ namespace ara {
     namespace crypto {
         namespace cryp {
 
+            ///////////////////////////////////////////////////////
+            // dummy definitions that will be removed later
+            class SymmetricBlockCipherCtx {
+            public:
+                using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
+            };
+
+
 			class Authentication : public AuthCipherCtx
 			{
-                //@brief a pointer stores the instance of the crypto provider of the authentication context
-                CryptoProvider* myCryptoProvider;
+            protected:
+
+                ///@brief: pointer references the used mac context to authenticate the data
+                HMAC::Uptr macPtr;
+
+                ///@brief: pointer refetences the used symmetric block cipher context to encrypt the data
+                SymmetricBlockCipherCtx::Uptr blockCipherPtr;
 
 			public:
+                
                 /// @brief constructor
                 Authentication(CryptoProvider* myProvider);
                 

@@ -30,10 +30,14 @@ namespace ara {
             };
             class AuthCipherCtx : public CryptoContext
             {
-                
+            protected:
+
                 /// @brief: the current status of the authentication context
                 AuthCipherCtx_Status status = AuthCipherCtx_Status::notInitialized;
-    
+                
+                //@brief a pointer stores the instance of the crypto provider of the authentication context
+                CryptoProvider* myCryptoProvider;
+
             public:
 
                 /// @brief: Unique smart pointer of this interface => AuthCipherCtx
