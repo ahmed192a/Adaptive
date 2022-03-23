@@ -4,19 +4,19 @@
 * you have to cinfigure the project before any thing
 * build and run the project
 
-### First of all
-- open terminal in the project dir
-- change the dir to quick_test "cd quick_test"
-
-
 ### steps for configure
+- open terminal in the project dir
 - run this command "./configure.sh"
 ### steps for build
+- open terminal in the project dir
 - run this command "./build.sh"
 ### steps for run
-- run this command "./run.sh" 
+- open terminal in the project dir
+- run this command "./run.sh" (NOTE :: this will build and run)
 ### steps for test
+- open terminal in the project dir
 - run this command "./test.sh"
+
 
 ### steps for SD test
 - ./configure.sh -> one time
