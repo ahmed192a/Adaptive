@@ -1,5 +1,6 @@
 #include "../../../../include/ara/crypto/cryp/authentication.hpp"
 
+using namespace ara:: crypto;
 using namespace ara::crypto::cryp;
 
 ///@brief: a constructor saves the instance of the crypto provider of the Authentication context
@@ -51,8 +52,8 @@ CryptoProvider&  Authentication:: MyProvider() const noexcept
 ///@brief: Compare the calculated digest from MAC against an expected signature object
 bool Authentication:: Check(const Signature& expected) const noexcept
 {
-	// call the function Check of the mac context of this authentication instance and return a bool that is the same value
-	//returned from Check of the mac context
+	/* call the function Check of the mac context of this authentication instanceand return a bool that is the same value
+	returned from Check of the mac context */
 	return this->macPtr->Check(expected);
 }
 
@@ -68,22 +69,32 @@ void Authentication::Start(const SecretSeed& iv) noexcept
 
 }
 
-///@brief: Update the digest calculation by the specified RestrictedUseObject.
+///@brief: Update the mac digest calculation by the specified RestrictedUseObject.
 void Authentication::UpdateAssociatedData(const RestrictedUseObject& in) noexcept
 {
+	// update the digest through the Update function of the mac context in this authentication instance
 	this->macPtr->Update(in);
 }
 
-///@brief: Update the digest calculation by a new chunk of associated data
+///@brief: Update the mac digest calculation by a new chunk of associated data
 void Authentication::UpdateAssociatedData(ReadOnlyMemRegion in) noexcept
 {
+	// update the mac digest through the Update function of the mac context in this authentication instance
 	this->macPtr->Update(in);
 }
 
-///@brief: Update the digest calculation by the specified Byte
+///@brief: Update the mac digest calculation by the specified Byte
 void Authentication:: UpdateAssociatedData(std::uint8_t in) noexcept
 {
+	// update the digest through the Update function of the mac context in this authentication instance
 	this->macPtr->Update(in);
+}
+
+CryptoTransform Authentication::GetTransformation() const noexcept
+{
+	/* get the Transformation Type from the Symmetric Block cipher context of this authentication instance,
+	and return the same value returned from it */ 
+	return this->blockCipherPtr->GetTransformation();
 }
 
 /// @brief: resets the context

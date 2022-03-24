@@ -10,8 +10,9 @@ namespace ara {
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
             class SymmetricCipher : public SymmetricBlockCipherCtx {
-            /*public:
-                using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;*/
+            public:
+                using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
+                CryptoTransform GetTransformation() const noexcept;
             };
 
 

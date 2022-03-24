@@ -3,8 +3,12 @@
 
 #include "crypto_context.hpp"
 //#include "crypto_service.hpp"
-#include "ara/crypto/common/mem_region.hpp"
-#include "ara/core/result.hpp"
+
+#include "../common/mem_region.hpp"
+#include "../../core/result.hpp"
+
+//#include "ara/crypto/common/mem_region.hpp"
+//#include "ara/core/result.hpp"
 
 namespace ara {
     namespace crypto {
@@ -20,7 +24,7 @@ namespace ara {
                 //virtual CryptoService::Uptr GetCryptoService () const noexcept=0;
                 
                 /*Get the kind of transformation configured for this context: kEncrypt or kDecrypt*/
-                virtual ara::core::Result<CryptoTransform> GetTransformation () const noexcept=0;
+                virtual CryptoTransform GetTransformation () const noexcept=0;
                 
                 /*Indicate that the currently configured transformation accepts only complete blocks of input data*/
                 ara::core::Result<bool> IsMaxInputOnly () const noexcept;
