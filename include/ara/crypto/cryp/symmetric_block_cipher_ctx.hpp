@@ -4,7 +4,7 @@
 #include "crypto_context.hpp"
 //#include "crypto_service.hpp"
 #include "ara/crypto/common/mem_region.hpp"
-//#include "ara/core/result.hpp"
+#include "ara/core/result.hpp"
 
 namespace ara {
     namespace crypto {
