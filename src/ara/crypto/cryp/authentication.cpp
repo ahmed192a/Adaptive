@@ -12,11 +12,15 @@ Authentication::Authentication(CryptoProvider* myProvider)
 	this->status = AuthCipherCtx_Status::notInitialized;
 }
 
+                /***********************************************************************/
+				/***** implementation of inherited CyrptoContext virtual functions *****/
+				/***********************************************************************/
+
 //@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
 bool Authentication :: IsInitialized()
 {
 	//@ return false if the context is not initialized
-	if (status == AuthCipherCtx_Status::notInitialized)
+	if (this-> status == AuthCipherCtx_Status::notInitialized)
 	{
 		return false;
 	}
@@ -26,3 +30,21 @@ bool Authentication :: IsInitialized()
 		return true;
 	}
 }
+
+//@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
+CryptoPrimitiveId::Uptr Authentication:: GetCryptoPrimitiveId() const noexcept
+{
+
+}
+
+//@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
+CryptoProvider&  Authentication:: MyProvider() const noexcept
+{
+	//@return pointer references the Crypto Provider instance of the context
+	//return this-> (*myCryptoProvider) ;
+	return *myCryptoProvider;
+}
+                /*************************************************************************/
+
+                /***** implementation of auth_cipher_ctx inherited virtual functions *****/
+                /*************************************************************************/
