@@ -4,7 +4,7 @@
 #include "crypto_context.hpp"
 #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 #include "ara/crypto/common/mem_region.hpp"
-//#include "ara/core/result.hpp"
+#include "ara/core/result.hpp"
 
 namespace ara {
     namespace crypto {
