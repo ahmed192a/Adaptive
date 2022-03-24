@@ -9,9 +9,9 @@ namespace ara {
 
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
-            class SymmetricBlockCipherCtx {
-            public:
-                using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
+            class SymmetricCipher : public SymmetricBlockCipherCtx {
+            /*public:
+                using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;*/
             };
 
 
@@ -20,10 +20,11 @@ namespace ara {
             protected:
 
                 ///@brief: pointer references the used mac context to authenticate the data
-                HMAC::Uptr macPtr;
+                MessageAuthnCodeCtx::Uptr macPtr = std::make_unique<HMAC>();
 
                 ///@brief: pointer refetences the used symmetric block cipher context to encrypt the data
-                SymmetricBlockCipherCtx::Uptr blockCipherPtr;
+                ///////////// name of SymmetricCipher will be changed after including the correct class ///////////
+                SymmetricBlockCipherCtx::Uptr blockCipherPtr = std:: make_unique<SymmetricCipher>();
 
 			public:
                 

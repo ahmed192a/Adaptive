@@ -11,6 +11,7 @@
 
 #include "crypto_context.hpp"
 #include"message_authn_code_ctx.hpp"
+#include "symmetric_block_cipher_ctx.hpp"
 
 namespace ara {
     namespace crypto {
@@ -40,6 +41,7 @@ namespace ara {
 
             public:
 
+
                 /// @brief: Unique smart pointer of this interface => AuthCipherCtx
                 using Uptr = std::unique_ptr<AuthCipherCtx>;
                 
@@ -63,8 +65,7 @@ namespace ara {
                 ///@return: std::uint64_t => the maximal supported size of associated public data in bytes
                 virtual std::uint64_t GetMaxAssociatedDataSize() const noexcept = 0;
 
-                /*virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-                    ConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expected Tag = nullptr) noexcept = 0;*/
+                //virtual std:: vector<byte>  ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
 
                 //virtual void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
 
