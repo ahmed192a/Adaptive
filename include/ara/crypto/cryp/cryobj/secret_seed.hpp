@@ -3,7 +3,7 @@
 
 #include <ara/crypto/cryp/cryobj/restricted_use_object.hpp>
 #include <ara/core/result.hpp>
-#include <ara/crypto/common/mem_region.hpp>
+#include "ara/crypto/common/mem_region.hpp"
 
 namespace ara
 {
@@ -13,6 +13,7 @@ namespace ara
         {
             class SecretSeed : public RestrictedUseObject
             {
+                public:
                 //SWS_CRYPT_23001
                 /**
                  * @brief Unique smart pointer of a constant interface instance.
@@ -45,7 +46,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<SecretSeed::Uptr> 
                  */
-                virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegionxorDelta=ReadOnlyMemRegion()) const noexcept=0;
+                virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const noexcept=0;
 
                 //SWS_CRYPT_23012
                 /**

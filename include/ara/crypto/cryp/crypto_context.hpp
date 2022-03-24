@@ -14,6 +14,7 @@ namespace ara {
             class CryptoContext
             {
             public:
+				using AlgId = CryptoAlgId;
 				/* Destructor */
 				virtual ~CryptoContext() noexcept = default;
 
