@@ -60,13 +60,13 @@ bool Authentication:: Check(const Signature& expected) const noexcept
 ///@brief: Initialize the mac context of this authentication instance for a new data processing 
 void Authentication:: Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept
 {
-
+	this->macPtr->Start(iv);
 }
 
 ///@brief: Initialize the mac context of this authentication instance  for a new data processing
 void Authentication::Start(const SecretSeed& iv) noexcept
 {
-
+	this->macPtr->Start(iv);
 }
 
 ///@brief: Update the mac digest calculation by the specified RestrictedUseObject.
@@ -100,5 +100,7 @@ CryptoTransform Authentication::GetTransformation() const noexcept
 /// @brief: resets the context
 void Authentication:: Reset() noexcept
 {
-
+	this->macPtr->Reset();
+	this->blockCipherPtr->Reset();
+	this->status= AuthCipherCtx_status::notInitialized;
 }
