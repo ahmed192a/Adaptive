@@ -49,22 +49,11 @@ int main()
     write(servertest, payload);
     cout<<GBSD.MessageId().serivce_id<<endl;
     cout<<GBSD.MessageId().method_id<<endl;
+    cout<<"Length of message " <<GBSD.Length()<<endl;
 
-    // uint32_t size = GBSD.Length() ;
 
-
-    // cout<<size<<endl;
-    // std::string s(payload.begin(), payload.end());
-    // vector<uint8_t>v;
-    // v.reserve(1);
-    // v[0]=1;
-    // servertest.UDPSendTo(&size, sizeof(size), (const sockaddr *)&sd);
-    // //sleep(1);
-    // servertest.UDPSendTo(&v[0], sizeof(v[0]), (const sockaddr *)&sd);
    
 
-    int x;
-    cin>>x;
     return 0;
 }
 

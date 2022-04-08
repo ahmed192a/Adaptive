@@ -1,11 +1,20 @@
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/ipc/client/socket_Client.hpp"
 
+#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
+#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
+#include "ara/com/SOMEIP/entry/service_entry.hpp"
+
 #include <iostream>
 #include <vector>
 using namespace std;
 struct sockaddr_in cliaddr;
 socklen_t len = sizeof(cliaddr);
+
+
+SomeIpSDMessage GBSD;
+
 
 
 void read(CServer &fd, vector<uint8_t> &arg)
@@ -33,35 +42,18 @@ int main()
 
     vector<uint8_t>v;
     read(clienttest, v);
-
-    // v.reserve(1);
-
-    // uint32_t size;
-    // cout<<"client receive 1\n";
-    // clienttest.UDPRecFrom(&size, sizeof(size), (struct sockaddr *) &cliaddr, &len);
-    // fullmsg = new uint8_t[size];
-    // cout<<"client receive 2\n";
-    // clienttest.UDPRecFrom(&v[0], 1, (struct sockaddr *) &cliaddr, &len);
-    // cout<<"client convert \n";
+    GBSD.setdata(v);
+    cout<<"Length of message " <<GBSD.Length()<<endl;
 
 
-    //cout<<fullmsg[0]<<endl;
 
-    uint32_t x;// = (fullmsg[0]<<24) | (fullmsg[1]<<16) | (fullmsg[2]<<8) | (fullmsg[3]);
-    
-    //cout<<v[0]<<endl;
+    uint32_t x;
     uint16_t y = (v[0]<<8) | v[1];
     uint16_t z = (v[2]<<8) | v[3];
     printf("%d\n", y);
     printf("%d\n", z);
-    //cout<<"x : "<<x<<endl;
 
-    cin>>x;
-    /*
-    int a=result
-    */
 
-    //sd.sa_data;
 
     return 0;
 }
