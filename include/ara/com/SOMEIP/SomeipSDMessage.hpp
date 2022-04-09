@@ -13,6 +13,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <memory>
 #include <utility>
 #include "ara/com/SOMEIP/Message.hpp"
 #include "ara/com/SOMEIP/entry/entry.hpp"
@@ -75,16 +76,16 @@ namespace ara
                             switch(entry_type)
                             {
                                 case 0x01:
-                                    entries.push_back(new entry::ServiceEntry::CreateFindServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion));
+                                    entries.push_back(std::make_shared<ServiceEntry>(entry::ServiceEntry::CreateFindServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
                                     break;
                                 case 0x02:
-                                    entries.push_back(new entry::ServiceEntry::CreateOfferServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion));
+                                    entries.push_back(std::make_shared<ServiceEntry>(entry::ServiceEntry::CreateOfferServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
                                     break;
                                 case 0x03:
-                                    entries.push_back(new entry::ServiceEntry::CreateSubscribeServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion));
+                                    entries.push_back(std::make_shared<ServiceEntry>(entry::ServiceEntry::CreateSubscribeServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
                                     break;
                                 case 0x04:
-                                    entries.push_back(new entry::ServiceEntry::CreateUnsubscribeServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion));
+                                    entries.push_back(std::make_shared<ServiceEntry>(entry::ServiceEntry::CreateUnsubscribeServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
                                     break;
                                 default:
                                     break;
@@ -108,7 +109,7 @@ namespace ara
                                     switch(Ipv4EndpointOption_type)
                                     {
                                         case 0x04:
-                                            entries[i]->AddFirstOption(new option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr2+4],data[ptr2+5],data[ptr2+6],data[ptr2+7]),(Layer4ProtocolType)data[ptr2+9],data[ptr2+10] << 8 | data[ptr2+11]));
+                                            entries[i]->AddFirstOption(std::make_shared<Ipv4EndpointOption>(option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr2+4],data[ptr2+5],data[ptr2+6],data[ptr2+7]),(Layer4ProtocolType)data[ptr2+9],data[ptr2+10] << 8 | data[ptr2+11])).get());
                                             break;
                                         default:
                                             break;
@@ -131,7 +132,7 @@ namespace ara
                                     switch(Ipv4EndpointOption_type)
                                     {
                                         case 0x04:
-                                            entries[i]->AddFirstOption(new option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr1+4],data[ptr1+5],data[ptr1+6],data[ptr1+7]),(Layer4ProtocolType)data[ptr1+9],data[ptr1+10] << 8 | data[ptr1+11]));
+                                            entries[i]->AddFirstOption(std::make_shared<Ipv4EndpointOption>(option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr1+4],data[ptr1+5],data[ptr1+6],data[ptr1+7]),(Layer4ProtocolType)data[ptr1+9],data[ptr1+10] << 8 | data[ptr1+11])).get());
                                             break;
                                         default:
                                             break;
