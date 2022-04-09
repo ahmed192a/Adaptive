@@ -16,6 +16,7 @@
 #include <utility>
 #include "ara/com/SOMEIP/Message.hpp"
 #include "ara/com/SOMEIP/entry/entry.hpp"
+#include "ara/com/SOMEIP/entry/service_entry.hpp"
 #include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
 
 namespace ara
@@ -89,7 +90,7 @@ namespace ara
                                     break;
                             }
                             
-                            uint8_t index_first_option = date[16*i + 25];
+                            uint8_t index_first_option = data[16*i + 25];
                             uint8_t index_seconde_option = data[16*i + 26];
                             uint8_t c_option = data[16*i + 27];
                             uint32_t ptr2=elenght +24 +4, ptr1 = elenght +24 +4;
@@ -107,7 +108,7 @@ namespace ara
                                     switch(Ipv4EndpointOption_type)
                                     {
                                         case 0x04:
-                                            entries[i].AddFirstOption(new option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr2+4],data[ptr2+5],data[ptr2+6],data[ptr2+7]),(Layer4ProtocolType)data[ptr2+9],data[ptr2+10] << 8 | data[ptr2+11]));
+                                            entries[i]->AddFirstOption(new option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr2+4],data[ptr2+5],data[ptr2+6],data[ptr2+7]),(Layer4ProtocolType)data[ptr2+9],data[ptr2+10] << 8 | data[ptr2+11]));
                                             break;
                                         default:
                                             break;
@@ -130,7 +131,7 @@ namespace ara
                                     switch(Ipv4EndpointOption_type)
                                     {
                                         case 0x04:
-                                            entries[i].AddFirstOption(new option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr1+4],data[ptr1+5],data[ptr1+6],data[ptr1+7]),(Layer4ProtocolType)data[ptr1+9],data[ptr1+10] << 8 | data[ptr1+11]));
+                                            entries[i]->AddFirstOption(new option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr1+4],data[ptr1+5],data[ptr1+6],data[ptr1+7]),(Layer4ProtocolType)data[ptr1+9],data[ptr1+10] << 8 | data[ptr1+11]));
                                             break;
                                         default:
                                             break;
