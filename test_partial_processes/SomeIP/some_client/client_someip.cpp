@@ -9,6 +9,11 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+using namespace ara::com::entry;
+using namespace ara::com::SOMEIP_MESSAGE::sd;
+using namespace ara::com::option;
+using namespace ara::com::helper;
+
 struct sockaddr_in cliaddr;
 socklen_t len = sizeof(cliaddr);
 
