@@ -106,7 +106,7 @@ namespace ara
                                     switch(Ipv4EndpointOption_type)
                                     {
                                         case 0x04:
-                                            entries[i]->AddFirstOption(std::make_shared<option::Ipv4EndpointOption>(option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr2+4],data[ptr2+5],data[ptr2+6],data[ptr2+7]),(Layer4ProtocolType)data[ptr2+9],data[ptr2+10] << 8 | data[ptr2+11])).get());
+                                            entries[i]->AddFirstOption(std::make_shared<option::Ipv4EndpointOption>(option::Ipv4EndpointOption::CreateSdEndpoint(false,ara::com::helper::Ipv4Address(data[ptr2+4],data[ptr2+5],data[ptr2+6],data[ptr2+7]),(Layer4ProtocolType)data[ptr2+9],data[ptr2+10] << 8 | data[ptr2+11])).get());
                                             break;
                                         default:
                                             break;
@@ -129,7 +129,7 @@ namespace ara
                                     switch(Ipv4EndpointOption_type)
                                     {
                                         case 0x04:
-                                            entries[i]->AddFirstOption(std::make_shared<option::Ipv4EndpointOption>(option::Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(data[ptr1+4],data[ptr1+5],data[ptr1+6],data[ptr1+7]),(Layer4ProtocolType)data[ptr1+9],data[ptr1+10] << 8 | data[ptr1+11])).get());
+                                            entries[i]->AddFirstOption(std::make_shared<option::Ipv4EndpointOption>(option::Ipv4EndpointOption::CreateSdEndpoint(false,ara::com::helper::Ipv4Address(data[ptr1+4],data[ptr1+5],data[ptr1+6],data[ptr1+7]),(Layer4ProtocolType)data[ptr1+9],data[ptr1+10] << 8 | data[ptr1+11])).get());
                                             break;
                                         default:
                                             break;
