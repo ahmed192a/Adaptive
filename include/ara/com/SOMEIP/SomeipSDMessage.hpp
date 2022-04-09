@@ -75,17 +75,14 @@ namespace ara
 
                             switch(entry_type)
                             {
-                                case 0x01:
+                                case 0x00:
                                     entries.push_back(std::make_shared<entry::ServiceEntry>(entry::ServiceEntry::CreateFindServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
                                     break;
+                                case 0x01:
+                                    entries.push_back(std::make_shared<entry::ServiceEntry>(entry::ServiceEntry::CreateOfferServiceEntry (serivce_id,instanceId,majorVersion ,minorVersion,ttl)).get());
+                                    break;
                                 case 0x02:
-                                    entries.push_back(std::make_shared<entry::ServiceEntry>(entry::ServiceEntry::CreateOfferServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
-                                    break;
-                                case 0x03:
-                                    entries.push_back(std::make_shared<entry::ServiceEntry>(entry::ServiceEntry::CreateSubscribeServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
-                                    break;
-                                case 0x04:
-                                    entries.push_back(std::make_shared<entry::ServiceEntry>(entry::ServiceEntry::CreateUnsubscribeServiceEntry (serivce_id,ttl,instanceId,majorVersion ,minorVersion)).get());
+                                    entries.push_back(std::make_shared<entry::ServiceEntry>(entry::ServiceEntry::CreateStopOfferEntry (serivce_id,instanceId,majorVersion ,minorVersion)).get());
                                     break;
                                 default:
                                     break;
