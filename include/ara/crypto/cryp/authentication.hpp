@@ -13,6 +13,7 @@ namespace ara {
             public:
                 using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
                 CryptoTransform GetTransformation() const noexcept;
+                void Reset() noexcept;
             };
 
 
@@ -80,7 +81,7 @@ namespace ara {
                 /*ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
                     ConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expected Tag = nullptr) noexcept;*/
 
-                    //void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
+                //void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
 
                 /// @brief: resets the context
                 void Reset() noexcept;

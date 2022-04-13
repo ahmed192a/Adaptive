@@ -55,7 +55,7 @@ namespace ara {
                 //virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlocks (ReadOnlyMemRegion in) const noexcept=0;
                 
                 /*Clear the crypto context*/
-                virtual ara::core::Result<void> Reset () noexcept=0;
+                virtual void Reset () noexcept=0;
                 
                 /*Set (deploy) a key to the symmetric algorithm context*/
                 virtual ara::core::Result<void> SetKey (const SymmetricKey &key, CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;

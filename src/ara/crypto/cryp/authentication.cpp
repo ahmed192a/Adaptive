@@ -105,5 +105,5 @@ void Authentication:: Reset() noexcept
   	/*Clear the crypto context*/
 	this->macPtr->Reset();
 	this->blockCipherPtr->Reset();
-	this->status= AuthCipherCtx_status::notInitialized;
+	this->status= AuthCipherCtx_Status::notInitialized;
 }
