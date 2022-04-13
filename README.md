@@ -1,6 +1,9 @@
 # Adaptive 
 
-Adaptive AUTOSAR is a simulated _Adaptive Platform_ enviroment over Linux defined by [AUTOSAR](https://www.autosar.org/standards/adaptive-platform/).
+_Adaptive Autosar Platform_ enviroment over Linux defined by [AUTOSAR](https://www.autosar.org/standards/adaptive-platform/).<br>
+* For more information about the project refer to [wiki](https://github.com/ahmed192a/Adaptive/wiki/Project-Description)
+* For Project Documentation refer to [Github pages](https://ahmed192a.github.io/Adaptive)
+
 
 ## General steps
 -----
