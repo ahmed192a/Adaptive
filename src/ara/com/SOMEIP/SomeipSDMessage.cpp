@@ -232,7 +232,7 @@ namespace ara
                     {
                         auto option = option::OptionDeserializer::Deserialize(optionsPayload, optionsOffset);
                         options.push_back(option);
-                        optionsOffset +=12;// option->Length();
+                        optionsOffset += option->Length() + 3;
                     }
                     std::cout<<"Option ins extraction\n";
                     // Options insertion
