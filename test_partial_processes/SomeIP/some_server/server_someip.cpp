@@ -15,12 +15,12 @@ SomeIpSDMessage GBSD;
 ServiceEntry GBSE=ServiceEntry::CreateFindServiceEntry (1,2,3,10,11);
 Ipv4EndpointOption GBIP= Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(1,2,3,4),Layer4ProtocolType::Udp,2154);
 
-struct sockaddr_in sd ;
+struct sockaddr_in sd;
 
 void write(CServer &fd ,const vector<uint8_t> &arg)
 {
     uint32_t size = arg.size();
-    cout<<size<<endl;
+    cout<<"Write Size "<<size<<endl;
     fd.UDPSendTo(&size, sizeof(size), ( sockaddr *)&sd);
     fd.UDPSendTo((void*)arg.data(), arg.size(), ( sockaddr *)&sd) ;
     // for (vector<uint8_t>::const_iterator it = arg.begin(); it != arg.end(); it++)
@@ -47,8 +47,8 @@ int main()
     vector<uint8_t>payload=GBSD.Payload();
 
     write(servertest, payload);
-    cout<<GBSD.MessageId().serivce_id<<endl;
-    cout<<GBSD.MessageId().method_id<<endl;
+    cout<<"Service id " <<GBSD.MessageId().serivce_id<<endl;
+    cout<<"method id "<<GBSD.MessageId().method_id<<endl;
     cout<<"Length of message " <<GBSD.Length()<<endl;
 
 

@@ -55,6 +55,16 @@ namespace ara
             {
                 vector1.insert(vector1.end(), vector2.begin(), vector2.end());
             }
+
+            
+
+            std::vector<uint8_t> Extracts(const std::vector<uint8_t> &vector, size_t offset, size_t length)
+            {
+                std::vector<uint8_t> result(length);
+                memcpy(&result[0], &vector[offset], length);
+                return result;
+            }
+
         }
     }
 }

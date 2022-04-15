@@ -1,0 +1,102 @@
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
+#include "ara/com/SOMEIP/option/option.hpp"
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
+namespace ara{
+    namespace com{
+        namespace option{
+            class OptionDeserializer
+            {
+            public:
+                static Option* Deserialize(
+                    const std::vector<uint8_t> &payload,
+                    std::size_t offset) noexcept
+                    {
+                        offset +=2;
+                        Option* _result = nullptr;
+                        const OptionType _optionType = static_cast<OptionType>(payload[offset]);
+                        offset += 1;
+                        bool _discardable = payload[offset] & 0x01;
+                        offset += 1;
+                        switch(_optionType)
+                        {
+                            case OptionType::IPv4Endpoint:
+                            {
+                                helper::Ipv4Address _ipAddress(
+                                    payload[offset],
+                                    payload[offset + 1],
+                                    payload[offset + 2],
+                                    payload[offset + 3]);
+                                offset += 4;
+                                const uint8_t _reservedByte = payload[offset];
+                                offset += 1;
+                                const uint8_t _protocolByte = payload[offset];
+                                offset += 1;
+                                const uint16_t _port = helper::Extract<uint16_t>(payload, offset);
+                                offset += 2;
+                                _result = new Ipv4EndpointOption(
+                                    OptionType::IPv4Endpoint,
+                                    _discardable,
+                                    _ipAddress,
+                                    static_cast<Layer4ProtocolType>(_protocolByte),
+                                    _port);
+                                break;
+                            }
+                            case OptionType::IPv4Multicast:
+                            {
+                                helper::Ipv4Address _ipAddress(
+                                    payload[offset],
+                                    payload[offset + 1],
+                                    payload[offset + 2],
+                                    payload[offset + 3]);
+                                offset += 4;
+                                const uint8_t _reservedByte = payload[offset];
+                                offset += 1;
+                                const uint8_t _protocolByte = payload[offset];
+                                offset += 1;
+                                const uint16_t _port = helper::Extract<uint16_t>(payload, offset);
+                                offset += 2;
+                                _result = new Ipv4EndpointOption(
+                                    OptionType::IPv4Multicast,
+                                    _discardable,
+                                    _ipAddress,
+                                    static_cast<Layer4ProtocolType>(_protocolByte),
+                                    _port);
+                                break;
+                            }
+                            case OptionType::IPv4SdEndpoint:
+                            {
+                                helper::Ipv4Address _ipAddress(
+                                    payload[offset],
+                                    payload[offset + 1],
+                                    payload[offset + 2],
+                                    payload[offset + 3]);
+                                offset += 4;
+                                const uint8_t _reservedByte = payload[offset];
+                                offset += 1;
+                                const uint8_t _protocolByte = payload[offset];
+                                offset += 1;
+                                const uint16_t _port = helper::Extract<uint16_t>(payload, offset);
+                                offset += 2;
+                                _result = new Ipv4EndpointOption(
+                                    OptionType::IPv4SdEndpoint,
+                                    _discardable,
+                                    _ipAddress,
+                                    static_cast<Layer4ProtocolType>(_protocolByte),
+                                    _port);
+                                break;
+                            }
+                            case OptionType::LoadBalancing: // not implemented
+                            default:
+                            {
+                                _result = nullptr;
+                                break;
+                            }
+                        }
+                        return _result;
+
+                    }
+            };
+
+        }
+    }
+}

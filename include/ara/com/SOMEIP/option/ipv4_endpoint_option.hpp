@@ -32,7 +32,20 @@ namespace ara
                 Layer4ProtocolType GBL4Proto;
                 uint16_t GBPort;
 
-                constexpr Ipv4EndpointOption(
+                // constexpr Ipv4EndpointOption(
+                //     OptionType type,
+                //     bool discardable,
+                //     helper::Ipv4Address ipAddress,
+                //     Layer4ProtocolType protocol,
+                //     uint16_t port) noexcept : Option(type, discardable),
+                //                               GBIpAddress{ipAddress},
+                //                               GBL4Proto{protocol},
+                //                               GBPort{port}
+                // {
+                // }
+
+            public:
+            constexpr Ipv4EndpointOption(
                     OptionType type,
                     bool discardable,
                     helper::Ipv4Address ipAddress,
@@ -44,7 +57,6 @@ namespace ara
                 {
                 }
 
-            public:
                 Ipv4EndpointOption() = delete;
                 ~Ipv4EndpointOption(){}
                 virtual uint16_t Length() const noexcept override;

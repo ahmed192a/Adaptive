@@ -26,20 +26,30 @@ namespace ara
                 static const uint32_t NackTTL = 0x000000;
                 uint16_t GBEventgroupId;
 
-                EventgroupEntry(EntryType type,
-                                uint16_t serviceId,
-                                uint16_t instanceId,
-                                uint32_t ttl,
-                                uint8_t majorVersion,
-                                uint16_t eventgroupId) noexcept;
+                
 
                 bool isAcknowledge() const noexcept;
 
             protected:
                 virtual bool ValidateOption(
-                    const option::Option *option) const noexcept override;
+                    const option::Option *option) const noexcept override{return  false;}
 
             public:
+                EventgroupEntry(EntryType type,
+                                             uint16_t serviceId,
+                                             uint16_t instanceId,
+                                             uint32_t ttl,
+                                             uint8_t majorVersion,
+                                             uint16_t eventgroupId) noexcept : Entry(type, serviceId, instanceId, ttl, majorVersion),
+                                                                               GBEventgroupId{eventgroupId}
+                {
+                }
+                // EventgroupEntry(EntryType type,
+                //                 uint16_t serviceId,
+                //                 uint16_t instanceId,
+                //                 uint32_t ttl,
+                //                 uint8_t majorVersion,
+                //                 uint16_t eventgroupId) noexcept;
                 EventgroupEntry() = delete;
 
                 /// @brief Get event-group ID

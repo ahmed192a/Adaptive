@@ -81,6 +81,24 @@ namespace ara
                 /// @brief Get option payload
                 /// @returns Byte array
                 virtual std::vector<uint8_t> Payload()  = 0;
+
+                // Option * Deserialize(const std::vector<uint8_t> &payload, uint32_t offset) noexcept
+                // {
+                //     OptionType type = static_cast<OptionType>(payload[offset+2]);
+                //     switch(type)
+                //     {
+
+                //         case OptionType::IPv4Endpoint:
+                //             return new IPv4Endpoint(payload, offset);
+                //         case OptionType::IPv4Multicast:
+                //             return new IPv4Multicast(payload, offset);
+                //         case OptionType::IPv4SdEndpoint:
+                //             return new IPv4SdEndpoint(payload, offset);
+                //         default:
+                //             return nullptr;
+                //     }
+                    
+                // }
             };
         }
     }

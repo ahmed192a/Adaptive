@@ -63,7 +63,7 @@ namespace ara
                 /// @brief Validate an option for adding
                 /// @param option Option of interest
                 /// @returns True if the option is valid; otherwise false
-                virtual bool ValidateOption(const option::Option *option) const noexcept;
+                virtual bool ValidateOption(const option::Option *option) const noexcept =0;
 
                 /// @brief Indicate whether the entry contains a specific option type or not
                 /// @param optionType Option type of interest
@@ -73,10 +73,10 @@ namespace ara
                 /// @brief Get baseentity payload
                 /// @param optionIndex Index of the last added option
                 /// @returns Byte array
-                virtual std::vector<uint8_t> BasePayload(uint8_t &optionIndex) const;
+                std::vector<uint8_t> BasePayload(uint8_t &optionIndex) const;
 
             public:
-                ~Entry() noexcept {};
+                virtual ~Entry() noexcept = default;
 
                 /// @brief Get entry type
                 /// @returns Entry type

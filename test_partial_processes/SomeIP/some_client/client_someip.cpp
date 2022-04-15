@@ -47,16 +47,25 @@ int main()
 
     vector<uint8_t>v;
     read(clienttest, v);
-    GBSD.setdata(v);
+    // GBSD.setdata(v);
+    GBSD.Deserialize(v);
     cout<<"Length of message " <<GBSD.Length()<<endl;
+    // cout<<"Length of entry " <<GBSD.getEntriesLength()<<endl;
+    // cout<<"Length of option " <<GBSD.getOptionsLength()<<endl;
+    // std::vector<Entry *> entries = GBSD.Entries();
+    // for (std::vector<Entry *>::iterator it = entries.begin(); it != entries.end(); it++)
+    // {
+    //     cout<<"Service id " <<(*it)->ServiceId()<<endl;
+    //     cout<<"Instance id "<<(*it)->InstanceId()<<endl;
+    // }
 
 
 
-    uint32_t x;
-    uint16_t y = (v[0]<<8) | v[1];
-    uint16_t z = (v[2]<<8) | v[3];
-    printf("%d\n", y);
-    printf("%d\n", z);
+    // uint32_t x;
+    // uint16_t y = (v[0]<<8) | v[1];
+    // uint16_t z = (v[2]<<8) | v[3];
+    // printf("%d\n", y);
+    // printf("%d\n", z);
 
 
 

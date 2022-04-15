@@ -1,4 +1,6 @@
 #! /bin/sh
-cd ../build;
-./some_client/client_someip;
-./some_server/server_someip
+cd ../build/test_partial_processes/SomeIP;
+./some_client/cleint_someip;
+echo "SomeIP client finished";
+./some_server/server_someip;
+echo "SomeIP server finished";

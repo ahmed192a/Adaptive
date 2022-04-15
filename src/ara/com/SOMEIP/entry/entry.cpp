@@ -19,7 +19,7 @@ namespace ara
             Entry::Entry(EntryType type,
                          uint16_t serviceId,
                          uint16_t instanceId,
-                         uint32_t ttl,
+                         uint32_t ttl, 
                          uint8_t majorVersion) noexcept :GBType{type},
                                                          GBServiceId{serviceId},
                                                          GBInstanceId{instanceId},
