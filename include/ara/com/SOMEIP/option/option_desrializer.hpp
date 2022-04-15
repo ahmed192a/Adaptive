@@ -31,7 +31,7 @@ namespace ara{
                                 offset += 1;
                                 const uint8_t _protocolByte = payload[offset];
                                 offset += 1;
-                                const uint16_t _port = helper::Extract<uint16_t>(payload, offset);
+                                const uint16_t _port = (payload[offset] << 8) | payload[offset + 1];
                                 offset += 2;
                                 _result = new Ipv4EndpointOption(
                                     OptionType::IPv4Endpoint,
@@ -53,7 +53,7 @@ namespace ara{
                                 offset += 1;
                                 const uint8_t _protocolByte = payload[offset];
                                 offset += 1;
-                                const uint16_t _port = helper::Extract<uint16_t>(payload, offset);
+                                const uint16_t _port = (payload[offset] << 8) | payload[offset + 1];
                                 offset += 2;
                                 _result = new Ipv4EndpointOption(
                                     OptionType::IPv4Multicast,
@@ -75,7 +75,7 @@ namespace ara{
                                 offset += 1;
                                 const uint8_t _protocolByte = payload[offset];
                                 offset += 1;
-                                const uint16_t _port = helper::Extract<uint16_t>(payload, offset);
+                                const uint16_t _port = (payload[offset] << 8) | payload[offset + 1];
                                 offset += 2;
                                 _result = new Ipv4EndpointOption(
                                     OptionType::IPv4SdEndpoint,

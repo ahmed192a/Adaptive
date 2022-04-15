@@ -12,8 +12,10 @@ using namespace ara::com::SOMEIP_MESSAGE::sd;
 using namespace ara::com::option;
 using namespace ara::com::helper;
 SomeIpSDMessage GBSD;
-ServiceEntry GBSE=ServiceEntry::CreateFindServiceEntry (1,2,3,10,11);
-Ipv4EndpointOption GBIP= Ipv4EndpointOption::CreateSdEndpoint(false,Ipv4Address(1,2,3,4),Layer4ProtocolType::Udp,2154);
+// ServiceEntry GBSE=ServiceEntry::CreateFindServiceEntry (1,2,3,10,11);
+ServiceEntry GBSE = ServiceEntry::CreateOfferServiceEntry (1, 3, 10, 11);
+//false => repeated
+Ipv4EndpointOption GBIP = Ipv4EndpointOption::CreateSdEndpoint(false, Ipv4Address(127, 0, 0, 1), Layer4ProtocolType::Udp, 2025);
 
 struct sockaddr_in sd;
 
@@ -49,7 +51,7 @@ int main()
     cout<<"Service id " <<GBSD.MessageId().serivce_id<<endl;
     cout<<"method id "<<GBSD.MessageId().method_id<<endl;
     cout<<"Length of message " <<GBSD.Length()<<endl;
-    
+
     return 0;
 }
 

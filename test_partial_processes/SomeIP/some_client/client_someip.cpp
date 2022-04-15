@@ -3,6 +3,7 @@
 
 #include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
+#include "ara/com/SOMEIP/option/option.hpp"
 #include "ara/com/SOMEIP/helper/ipv4_address.hpp"
 #include "ara/com/SOMEIP/entry/service_entry.hpp"
 
@@ -60,6 +61,25 @@ int main()
             cout<<"Instance id "<<(*it)->InstanceId()<<endl;
             cout<<"TTL "<<(*it)->TTL()<<endl;
             // cout<<"Minor version "<<(*it)->MinorVersion()<<endl;
+        }
+        if((*it)->Type() == EntryType::Offering){
+            std::vector<Option *> options = (*it)->FirstOptions();
+            for (std::vector<Option *>::iterator itt = options.begin(); itt != options.end(); itt++)
+            {
+                // if((*itt)->Type() == OptionType::IPv4Endpoint)
+                {
+                    Ipv4EndpointOption *ipv4 = (Ipv4EndpointOption *)(*itt);
+                    int xxx = ipv4->IpAddress().Octets[0]; 
+                    int yyy = ipv4->IpAddress().Octets[1];
+                    int zzz = ipv4->IpAddress().Octets[2];
+                    int www = ipv4->IpAddress().Octets[3]; 
+                    cout<<"xxx "<<xxx<<endl;
+                    cout<<"yyy "<<yyy<<endl;
+                    cout<<"zzz "<<zzz<<endl;
+                    cout<<"www "<<www<<endl;
+                    cout<<"Port "<<ipv4->Port()<<endl;
+                }
+            }
         }
     }
 
