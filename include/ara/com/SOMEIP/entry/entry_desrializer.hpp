@@ -34,14 +34,14 @@ namespace ara
                 static Entry *Deserialize(const std::vector<uint8_t> &payload, std::size_t offset) {
                     Entry *_result = nullptr;
                     EntryType _type = static_cast<EntryType>(payload[offset]);
-                    offset +=3;
+                    offset += 4;
                     uint16_t _serviceId = (payload[offset ] << 8) | payload[offset +1];
                     uint16_t _instanceId = (payload[offset + 2] << 8) | payload[offset + 3];
-                    offset +=4;
+                    offset += 4;
                     uint8_t _majorVersion = payload[offset];
                     uint32_t _ttl = ((payload[offset + 1] << 16) | (payload[offset + 2] << 8) | payload[offset + 3]) & 0x00FFFFFF;
                     offset += 4;
-                    uint32_t _minorVersion  = payload[offset];
+                    uint32_t _minorVersion  = payload[offset]<<24 | payload[offset + 1]<<16 | payload[offset + 2]<<8 | payload[offset + 3];
                     uint16_t _groupId = _minorVersion & 0x0000FFFF;
                     switch (_type)
                     {

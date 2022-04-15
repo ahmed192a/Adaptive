@@ -52,12 +52,18 @@ int main()
     cout<<"Length of message " <<GBSD.Length()<<endl;
     // cout<<"Length of entry " <<GBSD.getEntriesLength()<<endl;
     // cout<<"Length of option " <<GBSD.getOptionsLength()<<endl;
-    // std::vector<Entry *> entries = GBSD.Entries();
-    // for (std::vector<Entry *>::iterator it = entries.begin(); it != entries.end(); it++)
-    // {
-    //     cout<<"Service id " <<(*it)->ServiceId()<<endl;
-    //     cout<<"Instance id "<<(*it)->InstanceId()<<endl;
-    // }
+    std::vector<Entry *> entries = GBSD.Entries();
+    for (std::vector<Entry *>::iterator it = entries.begin(); it != entries.end(); it++)
+    {
+        if((*it)->Type() == EntryType::Finding){
+            cout<<"Service id " <<(*it)->ServiceId()<<endl;
+            cout<<"Instance id "<<(*it)->InstanceId()<<endl;
+            // cout<<"Entry type "<<(*it)->Type()<<endl;
+            cout<<"TTL "<<(*it)->TTL()<<endl;
+            cout<<"Major version "<<(*it)->MajorVersion()<<endl;
+            // cout<<"Minor version "<<(*it)->MinorVersion()<<endl;
+        }
+    }
 
 
 
