@@ -30,7 +30,6 @@ void write(CServer &fd ,const vector<uint8_t> &arg)
 }
 int main()
 {
-    
     cout<<"server"<<endl;
     CServer servertest(SOCK_DGRAM);
     servertest.OpenSocket(2025);
@@ -50,10 +49,7 @@ int main()
     cout<<"Service id " <<GBSD.MessageId().serivce_id<<endl;
     cout<<"method id "<<GBSD.MessageId().method_id<<endl;
     cout<<"Length of message " <<GBSD.Length()<<endl;
-
-
-   
-
+    
     return 0;
 }
 

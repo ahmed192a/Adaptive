@@ -58,9 +58,7 @@ int main()
         if((*it)->Type() == EntryType::Finding){
             cout<<"Service id " <<(*it)->ServiceId()<<endl;
             cout<<"Instance id "<<(*it)->InstanceId()<<endl;
-            // cout<<"Entry type "<<(*it)->Type()<<endl;
             cout<<"TTL "<<(*it)->TTL()<<endl;
-            cout<<"Major version "<<(*it)->MajorVersion()<<endl;
             // cout<<"Minor version "<<(*it)->MinorVersion()<<endl;
         }
     }
