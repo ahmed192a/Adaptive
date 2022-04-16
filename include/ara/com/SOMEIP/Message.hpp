@@ -171,6 +171,37 @@ namespace ara
                 /// @brief Get message payload
                 /// @returns Byte array
                 virtual std::vector<uint8_t> Payload() ;
+
+				// void Deserialize(const std::vector<uint8_t> &payload)
+				// {
+				// 	uint32_t offset = 0;
+				// 	struct Message_ID _GBMessageID = {};
+				// 	_GBMessageID.serivce_id = payload[offset++];
+				// 	_GBMessageID.method_id = payload[offset++];
+				// 	uint32_t _GBlength = payload[offset++];
+				// 	struct Request_ID GBRequest_ID;
+				// 	GBRequest_ID.client_id = payload[offset++];
+				// 	GBRequest_ID.session_id = payload[offset++];
+				// 	uint8_t GBProtocol_Version = payload[offset++];
+				// 	uint8_t GBinterface_version = payload[offset++];
+				// 	MessageType GBMessageType = (MessageType)payload[offset++];
+				// 	ReturnCode GBReturnCode = (ReturnCode)payload[offset++];
+				// 	Header(
+				// 		_GBMessageID,
+				// 		GBRequest_ID,
+				// 		GBProtocol_Version,
+				// 		GBinterface_version,
+				// 		GBMessageType,
+				// 		GBReturnCode);	
+				// 	payload.erase(payload.begin(),payload.begin()+offset);
+					
+
+				// 	// Extract Header
+
+				// 	// Extract Payload
+				// 	// Deserialize Payload
+
+				// }
 			};
 
 		}

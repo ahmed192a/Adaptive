@@ -63,7 +63,7 @@ namespace ara
                 /// @brief Validate an option for adding
                 /// @param option Option of interest
                 /// @returns True if the option is valid; otherwise false
-                virtual bool ValidateOption(const option::Option *option) const noexcept =0;
+                virtual bool ValidateOption(const option::Option *option) const noexcept ;
 
                 /// @brief Indicate whether the entry contains a specific option type or not
                 /// @param optionType Option type of interest

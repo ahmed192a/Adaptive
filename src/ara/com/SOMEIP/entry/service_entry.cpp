@@ -26,6 +26,19 @@ namespace ara
             {
             }
 
+            bool ServiceEntry::ValidateOption(
+                const option::Option *option) const noexcept
+            {
+                bool _result = Entry::ValidateOption(option);
+
+                // Multicast option is not allowed in service entries.
+                _result &=
+                    (option->Type() != option::OptionType::IPv4Multicast) &&
+                    (option->Type() != option::OptionType::IPv6Multicast);
+
+                return _result;
+            }
+
             
             uint32_t ServiceEntry::MinorVersion() const noexcept
             {

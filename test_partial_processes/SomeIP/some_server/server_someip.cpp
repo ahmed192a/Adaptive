@@ -13,7 +13,9 @@ using namespace ara::com::option;
 using namespace ara::com::helper;
 SomeIpSDMessage GBSD;
 // ServiceEntry GBSE=ServiceEntry::CreateFindServiceEntry (1,2,3,10,11);
-ServiceEntry GBSE = ServiceEntry::CreateOfferServiceEntry (1, 3, 10, 11);
+// ServiceEntry GBSE = ServiceEntry::CreateOfferServiceEntry (1, 3, 10, 11);
+ServiceEntry GBSE = ServiceEntry::CreateStopOfferEntry (1, 3, 10, 11);
+
 //false => repeated
 Ipv4EndpointOption GBIP = Ipv4EndpointOption::CreateSdEndpoint(false, Ipv4Address(127, 0, 0, 1), Layer4ProtocolType::Udp, 2025);
 
