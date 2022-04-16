@@ -8,17 +8,7 @@ namespace ara {
     namespace crypto {
         namespace cryp {
 
-            
-            //This partition is only used for testing
-
-            ///////////////////////////////////////////////////////
-            // dummy definitions that will be removed later
-            class HashFunctionCtx {
-                public:
-                using Uptr = std::unique_ptr<HashFunctionCtx>;
-            };
-
-            //////////////////////////////////////////////////////////////
+        
 
             class HMAC : public MessageAuthnCodeCtx {
 
@@ -30,10 +20,11 @@ namespace ara {
 
 
                 public:
-                /** Inherited from CryptoContext class**/
-                
                 /// @brief constructor
                 HMAC(CryptoProvider * provider);
+
+                
+                /** Inherited from CryptoContext class**/
 
                 /// @brief destructor
                 ~HMAC() noexcept = default;
@@ -49,6 +40,7 @@ namespace ara {
 
             /** Inherited from MessageAuthnCode class**/
 
+
                 void Reset() noexcept;
                 void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept;
 
@@ -62,11 +54,9 @@ namespace ara {
                 void Update(std::uint8_t in) noexcept;
 
 
-                // DigestService::Uptr GetDigestService() const noexcept;
-                // std::vector<byte> GetDigest(std::size_t offset = 0) const noexcept;
-
-
-
+                DigestService::Uptr GetDigestService() const noexcept;
+                std::vector<ara::crypto::byte> GetDigest(std::size_t offset = 0) const noexcept;
+    
                 Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept;
             };
 

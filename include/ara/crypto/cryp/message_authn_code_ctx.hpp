@@ -6,12 +6,15 @@
 // #include <iostream>
 #include <memory>
 #include <vector>
+#include <boost/variant.hpp>
 
 #include "ara/crypto/common/mem_region.hpp"
 #include "ara/crypto/common/base_id_types.hpp"
 #include "ara/crypto/cryp/crypto_context.hpp"
 #include "ara/crypto/cryp/HMAC_digest_service.hpp"
 #include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
+#include "ara/crypto/cryp/cryobj/signature.hpp"
+#include "ara/crypto/cryp/random_generator_ctx.hpp"
 // #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 
 namespace ara {
@@ -21,54 +24,16 @@ namespace ara {
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
             ///////////////////////////////////////////////////////
-            //This partition is only used for testing
-            class Signature {
-                public:
-                using Uptrc = std::unique_ptr<const Signature>;
-            };
             class SymmetricKey {};
             class ReadOnlyMemRegion{};
-            class SecretSeed{};
-
-
-            class AuthCipherCtx : public CryptoContext {
-            public:
-            	using Uptr = std::unique_ptr<AuthCipherCtx>;
-            };
-            class HashFunctionCtx : public CryptoContext {
-            public:
-            	using Uptr = std::unique_ptr<HashFunctionCtx>;
-            };
-            class RandomGeneratorCtx : public CryptoContext {
-            public:
-            	using Uptr = std::unique_ptr<RandomGeneratorCtx>;
-            };
-
-            class SymmetricBlockCipherCtx : public CryptoContext {
-            public:
-            	using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
-            };
-            class SymmetricKeyWrapperCtx : public CryptoContext {
-            public:
-            	using Uptr = std::unique_ptr<SymmetricKeyWrapperCtx>;
-            };
-            class KeyDerivationFunctionCtx : public CryptoContext {
-            public:
-            	using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>;
-            };
             ///////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////
-
 
             enum class MessageAuthnCodeCtx_Status : std::uint8_t {
                 notInitialized = 0,
                 initialized = 1,
                 started = 2,
-
+                updated = 3,
+                finished = 4
             };
 
             class MessageAuthnCodeCtx : public CryptoContext {
@@ -76,11 +41,11 @@ namespace ara {
                 public:
                 using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;  
 
-                // this pointer will point to the resulting signature
-                Signature::Uptrc signature_ptr;
+                Signature::Uptrc signature_ptr; // this pointer will point to the resulting signature
 
-                // The current status of the context
-                MessageAuthnCodeCtx_Status status = MessageAuthnCodeCtx_Status::notInitialized;
+                MessageAuthnCodeCtx_Status status = MessageAuthnCodeCtx_Status::notInitialized; // // The current status of the context
+
+                std::vector<byte> digest; // The resulting digest
 
 
                 virtual void Reset() noexcept = 0;

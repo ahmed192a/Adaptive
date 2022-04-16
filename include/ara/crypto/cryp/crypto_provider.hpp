@@ -13,6 +13,44 @@
 //#include "ara/crypto/cryp/hash_function_ctx.hpp"
 //#include "ara/crypto/cryp/symmetric_block_cipher_ctx.hpp"
 //
+
+
+			///////////////////////////////////////////
+			//			Dummy Definitions
+			///////////////////////////////////////////
+
+            class AuthCipherCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<AuthCipherCtx>;
+            };
+            class HashFunctionCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<HashFunctionCtx>;
+            };
+            class RandomGeneratorCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<RandomGeneratorCtx>;
+            };
+
+            class SymmetricBlockCipherCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
+            };
+            class SymmetricKeyWrapperCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<SymmetricKeyWrapperCtx>;
+            };
+            class KeyDerivationFunctionCtx : public CryptoContext {
+            public:
+            	using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>;
+            };
+
+
+			///////////////////////////////////////////
+			///////////////////////////////////////////
+			///////////////////////////////////////////
+
+
 #include <string>
 namespace ara
 {

@@ -21,6 +21,8 @@ namespace ara
              */
             class Signature : public CryptoObject
             {
+
+                public:
                 //SWS_CRYPT_23302
                 /**
                  * @brief Signature object initialized.
