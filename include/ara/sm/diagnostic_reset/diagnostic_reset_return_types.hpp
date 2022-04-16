@@ -12,7 +12,10 @@
 #ifndef RETURN_TYPES_H_
 #define RETURN_TYPES_H_
 
-#include "ara/sm/diagnostic_reset/diagnostic_reset_types.hpp"namespace ara
+#include "ara/sm/diagnostic_reset/diagnostic_reset_types.hpp"
+
+
+namespace ara
 {
     namespace sm
     {

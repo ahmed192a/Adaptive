@@ -14,6 +14,8 @@
 #include "ara/sm/update_request/update_request_return_types.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
 
+using namespace std;
+
 // include the file  of the following types
 // [SWS_SM_91019]
 /*
@@ -47,10 +49,17 @@ namespace ara
                 ResetMahcine(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
                 {
                 }
-                ResetMachineOutput operator()()
+                
+                std::future<ara::sm::update_request::ResetMachineOutput> operator()()
                 {
+                    std::future<ara::sm::update_request::ResetMachineOutput> result = std::async([&]()
+                    {
+                        // add function code
+                        // return app error krejected
+                       return service_proxy_ptr->SendRequest<ara::sm::update_request::ResetMachineOutput>(methodid); 
+                    });
                     // return app error krejected
-                    return service_proxy_ptr->SendRequest<ResetMachineOutput>(methodid);
+                    return result;
                 }
             };
             class StopUpdateSession
@@ -63,10 +72,16 @@ namespace ara
                 StopUpdateSession(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
                 {
                 }
-                void operator()()
+                std::future<void> operator()()
                 {
-                    // fire and forget
-                    return service_proxy_ptr->SendRequest<void>(methodid);
+                    std::future<void> result = std::async([&]()
+                    {
+                        // add function code
+                        // fire and forget
+                       return service_proxy_ptr->SendRequest<void>(methodid); 
+                    });
+                    // return app error krejected
+                    return result;
                 }
             };
             class RequestUpdateSession
@@ -79,10 +94,17 @@ namespace ara
                 RequestUpdateSession(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
                 {
                 }
-                RequestUpdateSessionOutput operator()()
+                std::future<ara::sm::update_request::RequestUpdateSessionOutput> operator()()
                 {
+                    std::future<ara::sm::update_request::RequestUpdateSessionOutput> result = std::async([&]()
+                    {
+                        // add function code
+                        // return app error krejected
+                       return service_proxy_ptr->SendRequest<ara::sm::update_request::RequestUpdateSessionOutput>(methodid); 
+                    });
+                    
                     // return app error krejected
-                    return service_proxy_ptr->SendRequest<RequestUpdateSessionOutput>(methodid);
+                    return result;
                 }
             };
             class PrepareUpdate
@@ -95,11 +117,16 @@ namespace ara
                 PrepareUpdate(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
                 {
                 }
-                PrepareUpdateOutput operator()(FunctionGroupListType FunctionGroupList)
+                std::future<ara::sm::update_request::PrepareUpdateOutput> operator()(FunctionGroupListType FunctionGroupList)
                 {
+                    std::future<ara::sm::update_request::PrepareUpdateOutput> result = std::async([&, FunctionGroupList]()
+                    {
                     // under development
-                    // return app error krejected, kprepared_failed
-                    // return service_proxy_ptr->SendRequest<PrepareUpdateOutput>(methodid,FunctionGroupList);
+                       // return app error krejected, kprepared_failed
+                       //return service_proxy_ptr->SendRequest<ara::sm::update_request::PrepareUpdateOutput>(methodid,FunctionGroupList); 
+                    });
+                    // return app error krejected
+                    return result;
                 }
             };
             class VerifyUpdate
@@ -112,11 +139,15 @@ namespace ara
                 VerifyUpdate(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
                 {
                 }
-                VerifyUpdateOutput operator()(FunctionGroupListType FunctionGroupList)
+                std::future<ara::sm::update_request::VerifyUpdateOutput> operator()(FunctionGroupListType FunctionGroupList)
                 {
-                    // under development
-                    // return app error krejected, kverify_failed
-                    // return service_proxy_ptr->SendRequest<VerifyUpdateOutput>(methodid,FunctionGroupList);
+                    std::future<ara::sm::update_request::VerifyUpdateOutput> result = std::async([&, FunctionGroupList]()
+                    {
+                       // under development
+                       // return app error krejected, kverify_failed
+                       //return service_proxy_ptr->SendRequest<ara::sm::update_request::VerifyUpdateOutput>(methodid,FunctionGroupList); 
+                    });
+                    return result;
                 }
             };
             class PrepareRollback
@@ -129,11 +160,15 @@ namespace ara
                 PrepareRollback(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
                 {
                 }
-                PrepareRollbackOutput operator()(FunctionGroupListType FunctionGroupList)
+                std::future<ara::sm::update_request::PrepareRollbackOutput> operator()(FunctionGroupListType FunctionGroupList)
                 {
-                    // under development
-                    // return app error krejected, krollback_failed
-                    // return service_proxy_ptr->SendRequest<PrepareRollbackOutput>(methodid,FunctionGroupList);
+                    std::future<ara::sm::update_request::PrepareRollbackOutput> result = std::async([&, FunctionGroupList]()
+                    {
+                       // under development
+                       // return app error krejected, krollback_failed
+                       //return service_proxy_ptr->SendRequest<ara::sm::update_request::PrepareRollbackOutput>(methodid,FunctionGroupList); 
+                    });
+                    return result;
                 }
             };
         } // namespace update_request

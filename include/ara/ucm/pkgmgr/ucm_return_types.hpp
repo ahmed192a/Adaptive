@@ -31,6 +31,7 @@ namespace ara
 
                 struct TransferDataOutput
                 {
+                    int aya;
                 };
 
                 struct TransferExitOutput

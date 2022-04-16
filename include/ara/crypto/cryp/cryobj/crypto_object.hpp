@@ -1,9 +1,12 @@
-#ifndef CRYPTO_OBJECT_H_
+ #ifndef CRYPTO_OBJECT_H_
 #define CRYPTO_OBJECT_H_
 #include <memory>
 #include <iostream>
-#include <ara/core/StringView.hpp>
-
+#include <ara/crypto/common/io_interface.hpp>
+#include <ara/core/result.hpp>
+#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
+#include <ara/crypto/common/base_id_types.hpp>
+// #include "ara/crypto/common/crypto_object_uid.h"
 
 namespace ara
 {
@@ -12,13 +15,38 @@ namespace ara
         namespace cryp
         {
             /**
-            SWS_CRYPT_20500
+             * SWS_CRYPT_20500
             * @file crypto_object.hpp
             * @brief A common interface for all cryptograhic objects recognizable by the Crypto Provider.
             **/
             class CryptoObject 
             {
                 public:
+                /**
+                 * SWS_CRYPT_20504
+                 * @file crypto_object.hpp
+                 * @brief Unique identifier of this CryptoObject
+                 * 
+                 */
+                struct COIdentifier
+                 {
+                  CryptoObjectType mCOType;
+                  CryptoObjectUid mCouid;
+
+                 };
+
+                 /*
+                * SWS_CRYPT_20502
+                * Unique smart pointer of the constant interface.
+                */
+                using Uptrc = std::unique_ptr<const CryptoPrimitiveId>;
+                /*
+                * SWS_CRYPT_20501
+                * Unique smart pointer of the interface.
+                * smart pointer to allocate and free in memory automatically 
+                * and cant make a copy from it
+                */
+                using Uptr = std::unique_ptr<CryptoPrimitiveId>;
                 
                 /**
                 * SWS_CRYPT_20503

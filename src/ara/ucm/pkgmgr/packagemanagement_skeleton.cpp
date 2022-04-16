@@ -19,57 +19,46 @@ void SaveBlock(const char *filename, std::vector<uint8_t> &data_block)
 
 ara::ucm::pkgmgr::PackageManagement::ActivateOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Activate()
 {
- 
 }
 
 ara::ucm::pkgmgr::PackageManagement::CancelOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
-
 }
 
 ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::DeleteTransfer(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
- 
 }
 
 ara::ucm::pkgmgr::PackageManagement::FinishOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Finish()
 {
-
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetHistory(uint64_t timestampGE, uint64_t timestampLT)
 {
-
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetIdOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetId()
 {
-
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetSwClusterChangeInfoOutput  ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwClusterChangeInfo()
 {
-
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetSwClusterDescriptionOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwClusterDescription()
 {
-
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwClusterInfo()
 {
-
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages)
 {
-  
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
-   
 }
 
 std::vector<char> ReadAllBytes2(char const *filename)
@@ -82,107 +71,131 @@ std::vector<char> ReadAllBytes2(char const *filename)
     return result;
 }
 
-ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
-{
-    CClient c1(SOCK_STREAM);
-    c1.OpenSocket();
-    c1.GetHost("127.0.0.1", 3600);
-    c1.ClientConnect();
-    std::vector<char> Temp_data2 = ReadAllBytes2("/home/bassant/Documents/GitHub/Adaptive/src/ara/ucm/pkgmgr/test.zip");
-    int x = Temp_data2.size();
-    c1.ClientWrite((void *)&x, sizeof(int));
-    c1.ClientWrite((void *)&Temp_data2[0], x);
+// ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+// {
+//     CClient c1(SOCK_STREAM);
+//     c1.OpenSocket();
+//     c1.GetHost("127.0.0.1", 3600);
+//     c1.ClientConnect();
+//     std::vector<char> Temp_data2 = ReadAllBytes2("/home/bassant/Documents/GitHub/Adaptive/src/ara/ucm/pkgmgr/test.zip");
+//     int x = Temp_data2.size();
+//     c1.ClientWrite((void *)&x, sizeof(int));
+//     c1.ClientWrite((void *)&Temp_data2[0], x);
+// }
 
+std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+{
+    std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> f = std::async([&]()
+    {
+        ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput result;
+
+        return result;
+    });
+    return f;
 }
 
 ara::ucm::pkgmgr::PackageManagement::RevertProcessedSwPackagesOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::RevertProcessedSwPackages()
 {
-   
 }
 ara::ucm::pkgmgr::PackageManagement::RollbackOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Rollback()
 {
-    
 }
 
-ara::ucm::pkgmgr::PackageManagement::TransferDataOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
+std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter)
 {
-    ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result;
-    if (TransferInfoData.id == id)
+     std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> f = std::async([&, id, data, blockCounter]()
     {
+        // std::cout << "xxxx" << std::endl;
+        ara::ucm::pkgmgr::PackageManagement::TransferDataOutput  result;
         
-        if (blockCounter == TransferInfoData.localBlockCounter)
+        
+        if (TransferInfoData.id == id)
         {
-            std::cout << "data size: " << data.size() << std::endl;
+            
+
+            if (blockCounter == TransferInfoData.localBlockCounter)
+            {
+            // std::cout << "data size: " << data.size() << std::endl;
             /* Check if the received block size is equal the block size returned by TransferStart for the same TransferId */
             if (data.size() == TransferInfoData.BlockSize)
             {
-                std::cout << "xxxx" << std::endl;
+                
                 // uint32_t i = TransferInfoData.localBlockCounter * TransferInfoData.BlockSize;
                 // copy(data.begin(), data.end(), std::back_inserter(PackageManagementSkeleton::buffer));
-                for(int i = 0; i < TransferInfoData.BlockSize; i++)
+                for (int i = 0; i < TransferInfoData.BlockSize; i++)
                 {
                     buffer.push_back(data[i]);
-                }
+                }   
+                // std::cout << buffer.size() << std::endl;
                 
-                std::cout << buffer.size() << std::endl;
                 // this if reaches last block
                 // if ((TransferInfoData.localBlockCounter + 1) * TransferInfoData.BlockSize == TransferInfoData.size)
-                // {
-
-                // }
-                
+                // {    
+                // }    
                 //SaveBlock("/home/basmala/Desktop/Gradution_project/test1/myfile3.zip" , data);
+                struct ara::ucm::pkgmgr::PackageManagement::TransferDataOutput output = {1};
+                // result = output;
             }
-            else 
+            else
             {
+                // result = ara::ucm::pkgmgr::PackageManagement::IncorrectBlockSize;
                 // ApplicationError IncorrectBlockSize -> Too big block size received by UCM
-                // In case the received block size with TransferData 
+                // In case the received block size with TransferData
                 // exceeds the block size returned by TransferStart for the same TransferId
             }
+            }
+            else
+            {
+                // ApplicationError BlockInconsistent
+                // ApplicationError IncorrectBlock
+            }
+            TransferInfoData.localBlockCounter++;
         }
-        else 
+        else
         {
-            // ApplicationError BlockInconsistent
-            // ApplicationError IncorrectBlock
+            // ApplicationError InvalidTransferId
         }
-        TransferInfoData.localBlockCounter++;
-    }
-    else{
-        // ApplicationError InvalidTransferId
-    }
-    return result;
+        return result;
+    });
 
+    return f;
 }
 
-ara::ucm::pkgmgr::PackageManagement::TransferExitOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
-    ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
-    std::cout << buffer.size() << std::endl;
-    SaveBlock("/home/bassant/Documents/GitHub/Adaptive/src/ara/ucm/pkgmgr/test.zip", PackageManagementSkeleton::buffer); // gamda ya Bassant
-    return result;
+    std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> f = std::async([&, id]()
+    {
+        ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
+        SaveBlock("ucm_server/test.zip", PackageManagementSkeleton::buffer); // gamda ya Bassant
+        return result;
+    });
+
+    return f;
 }
 
-
-ara::ucm::pkgmgr::PackageManagement::TransferStartOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferStart(uint64_t size)
+std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferStart(uint64_t size)
 {
-    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result;
-    TransferInfoData.localBlockCounter = 0;
-    TransferInfoData.TransferExitFlag = false;
-    std::shared_ptr<std::promise<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput>> promise = std::make_shared<std::promise<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput>>();
-    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> future = promise->get_future();
-    uuid u;
-    u = (boost::uuids::random_generator()());
+    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> f = std::async([&]()
+    {
+        // std::cout << "size  : " << size << std::endl;
+        ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result;
+        TransferInfoData.localBlockCounter = 0;
+        TransferInfoData.TransferExitFlag = false;
+        uuid u;
+        u = (boost::uuids::random_generator()());
+        for (int i = 0; i < 16; i++)
+        {
+            TransferInfoData.id[i] = u.data[i];
+            result.id[i] = u.data[i];
 
-    for(int i = 0; i < 16; i++){
-        TransferInfoData.id[i] = u.data[i];
-        result.id[i] = u.data[i];
-    }
-
-    // don't change 64 (ucm_client.cpp)
-    TransferInfoData.BlockSize = 64;
-    TransferInfoData.size = size;
-    buffer.clear();
-    result.BlockSize = TransferInfoData.BlockSize;
-    
-    return result;
+        }
+        std::cout << std::endl;
+        // don't change 64 (ucm_client.cpp)
+        TransferInfoData.BlockSize = 64;
+        TransferInfoData.size = size;
+        buffer.clear();
+        result.BlockSize = TransferInfoData.BlockSize;
+        return result;
+    });
+    return f;
 }
