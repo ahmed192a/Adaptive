@@ -18,14 +18,11 @@ namespace ara {
 
                 CryptoProvider * myProvider;
 
-
                 public:
                 /// @brief constructor
                 HMAC(CryptoProvider * provider);
 
-                
                 /** Inherited from CryptoContext class**/
-
                 /// @brief destructor
                 ~HMAC() noexcept = default;
                 
@@ -52,7 +49,6 @@ namespace ara {
                 // void Update(const RestrictedUseObject &in) noexcept;
                 // void Update(ReadOnlyMemRegion in) noexcept;
                 void Update(std::uint8_t in) noexcept;
-
 
                 DigestService::Uptr GetDigestService() const noexcept;
                 std::vector<ara::crypto::byte> GetDigest(std::size_t offset = 0) const noexcept;
