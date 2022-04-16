@@ -34,7 +34,7 @@ namespace ara
 
             protected:
                 virtual bool ValidateOption(
-                    const option::Option *option) const noexcept override{return false;}
+                    const option::Option *option) const noexcept override;
 
             public:
                 ServiceEntry(EntryType type,
