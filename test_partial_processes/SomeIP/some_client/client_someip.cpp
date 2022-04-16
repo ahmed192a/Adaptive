@@ -11,6 +11,7 @@
 #include <vector>
 using namespace std;
 using namespace ara::com::entry;
+using namespace ara::com::SOMEIP_MESSAGE;
 using namespace ara::com::SOMEIP_MESSAGE::sd;
 using namespace ara::com::option;
 using namespace ara::com::helper;
@@ -48,11 +49,42 @@ int main()
 
     vector<uint8_t>v;
     read(clienttest, v);
+    Message BGMG = Message::Deserialize(v);
+    cout<<"Message ID "<<BGMG.MessageId().serivce_id<<endl;
+    cout<<"Message ID "<<BGMG.MessageId().method_id<<endl;
+    // print length
+    cout<<"Message Length "<<BGMG.Length()<<endl;
+    // clinet id
+    cout<<"Request ID "<<BGMG.ClientId()<<endl;
+    // session id
+    cout<<"Session ID "<<BGMG.SessionId()<<endl;
+    // protocol version
+    cout<<"Protocol Version "<<(int)BGMG.ProtocolVersion()<<endl;
+    // interface version
+    cout<<"Interface Version "<<(int)BGMG.InterfaceVersion()<<endl;
+    // message type
+    cout<<"Message Type "<<(int)BGMG.Messagetype()<<endl;
+    // return code
+    cout<<"Return Code "<<(int)BGMG.Returncode()<<endl;
+
+    int x = BGMG.getload()[0];
+    cout<<"x is "<<x<<endl;
+    x = BGMG.getload()[1];
+    cout<<"x is "<<x<<endl;
+    x = BGMG.getload()[2];
+    cout<<"x is "<<x<<endl;
+    x = BGMG.getload()[3];  
+    cout<<"x is "<<x<<endl;
+
+
+
+
+
     // GBSD.setdata(v);
+    /*
     GBSD.Deserialize(v);
     cout<<"Length of message " <<GBSD.Length()<<endl;
-    // cout<<"Length of entry " <<GBSD.getEntriesLength()<<endl;
-    // cout<<"Length of option " <<GBSD.getOptionsLength()<<endl;
+
     std::vector<Entry *> entries = GBSD.Entries();
     for (std::vector<Entry *>::iterator it = entries.begin(); it != entries.end(); it++)
     {
@@ -93,7 +125,7 @@ int main()
         }
 
     }
-
+*/
 
 
     // uint32_t x;

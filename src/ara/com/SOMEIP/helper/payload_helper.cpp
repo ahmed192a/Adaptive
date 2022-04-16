@@ -23,7 +23,7 @@ namespace ara
                 _byte = value >> 8;
                 vector.push_back(_byte);
 
-                _byte = value;
+                _byte = value & 0xFF;
                 vector.push_back(_byte);
             }
 

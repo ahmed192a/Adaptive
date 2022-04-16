@@ -52,7 +52,7 @@ namespace ara
                     
                     void AddEntry(entry::Entry *entry);
 
-                    uint32_t Length() const noexcept override;
+                    uint32_t Length()  noexcept override;
 
                     void SetSessionId(uint16_t sessionId) override;
 

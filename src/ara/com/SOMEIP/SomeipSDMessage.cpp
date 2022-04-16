@@ -72,7 +72,7 @@ namespace ara
                     entries.push_back(entry);
                 }
 
-                uint32_t SomeIpSDMessage::Length() const noexcept
+                uint32_t SomeIpSDMessage::Length()  noexcept
                 {
                     const uint32_t LengthFieldSize = 4;
                     // Request ID + Versions + Message Type + Return Code +Message ID
