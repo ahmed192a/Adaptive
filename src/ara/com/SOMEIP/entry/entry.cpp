@@ -57,8 +57,8 @@ namespace ara
                 case option::OptionType::IPv4SdEndpoint:
                 case option::OptionType::IPv6SdEndpoint:
                 {
-                    // Service discovery endpoints are not allowed in entries.
-                    _result = false;
+
+                    _result = true;
 
                     break;
                 }

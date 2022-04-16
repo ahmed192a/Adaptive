@@ -5,6 +5,7 @@
 #include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
 #include "ara/com/SOMEIP/helper/ipv4_address.hpp"
 #include "ara/com/SOMEIP/entry/service_entry.hpp"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 #include <unistd.h>
 using namespace std;
 using namespace ara::com::entry;
@@ -14,7 +15,10 @@ using namespace ara::com::helper;
 SomeIpSDMessage GBSD;
 // ServiceEntry GBSE=ServiceEntry::CreateFindServiceEntry (1,2,3,10,11);
 // ServiceEntry GBSE = ServiceEntry::CreateOfferServiceEntry (1, 3, 10, 11);
-ServiceEntry GBSE = ServiceEntry::CreateStopOfferEntry (1, 3, 10, 11);
+// ServiceEntry GBSE = ServiceEntry::CreateStopOfferEntry (1, 3, 10, 11);
+EventgroupEntry GBSE = EventgroupEntry::CreateSubscribeEventEntry (1, 3, 10, 11);
+// EventgroupEntry GBSE = EventgroupEntry::CreateUnsubscribeEventEntry (1, 3, 10, 11);
+
 
 //false => repeated
 Ipv4EndpointOption GBIP = Ipv4EndpointOption::CreateSdEndpoint(false, Ipv4Address(127, 0, 0, 1), Layer4ProtocolType::Udp, 2025);

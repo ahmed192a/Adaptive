@@ -6,7 +6,7 @@
 #include "ara/com/SOMEIP/option/option.hpp"
 #include "ara/com/SOMEIP/helper/ipv4_address.hpp"
 #include "ara/com/SOMEIP/entry/service_entry.hpp"
-
+#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -81,6 +81,17 @@ int main()
                 }
             }
         }
+        if((*it)->Type() == EntryType::Subscribing)
+        {
+            cout<<"Service id " <<(*it)->ServiceId()<<endl;
+            cout<<"Instance id "<<(*it)->InstanceId()<<endl;
+            cout<<"TTL "<<(*it)->TTL()<<endl;
+            int major = (*it)->MajorVersion();
+            cout<<"Major version "<<major<<endl;
+            EventgroupEntry *event = (EventgroupEntry *)(*it);
+            cout<<"EventgroupId id "<<event->EventgroupId()<<endl;
+        }
+
     }
 
 
