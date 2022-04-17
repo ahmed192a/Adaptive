@@ -53,10 +53,10 @@ namespace ara
                         switch (methodID)
                         {
                         case 0:
-                            HandleCall(*this, &PowerMode::MessagePowerMode, msg, cserver);
+                            //HandleCall(*this, &PowerMode::MessagePowerMode, msg, cserver);
                             break;
                         case 1:
-                            HandleCall(*this, &PowerMode::EventPowerMode, msg, cserver);
+                            //HandleCall(*this, &PowerMode::EventPowerMode, msg, cserver);
                            
                             break;
 

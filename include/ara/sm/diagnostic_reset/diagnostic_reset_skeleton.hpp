@@ -58,11 +58,11 @@ namespace ara
 
                         if (methodID == 0)
                         {
-                            HandleCall(*this, &diagnostic_reset::message, msg, cserver);
+                            //HandleCall(*this, &diagnostic_reset::message, msg, cserver);
                         }
                         else if (methodID == 1)
                         {
-                            HandleCall(*this, &diagnostic_reset::event, msg, cserver);
+                            //HandleCall(*this, &diagnostic_reset::event, msg, cserver);
                         }
                         else
                         {
