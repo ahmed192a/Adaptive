@@ -201,6 +201,10 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
+                        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
+                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateUnSubscribeEventEntry (m_proxy_handle.m_server_com.service_id, m_proxy_handle.m_server_com.service_id, 1, event_id);
+                        m_info.AddEntry(&event_gr_entry);
+                        ara::com::option::Ipv4EndpointOption sub_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, ara::com::helper::Ipv4Address(127, 0, 0, 1), option::Layer4ProtocolType::Udp, pport); 
                         event_info e_info;
                         e_info.operation = 2;
                         e_info.event_id = event_id;
