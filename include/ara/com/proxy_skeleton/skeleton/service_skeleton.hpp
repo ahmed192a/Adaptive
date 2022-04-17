@@ -73,14 +73,17 @@ namespace ara
                     void OfferService() 
                     {
                         this->m_skeleton_udp.OpenSocket();
-                        // this->m_skeleton_udp.BindServer();
-                        // some ip SD messahe
-                        // offer service entry
-                        // create option
-                        // get payload
-                        // send payload
-                        SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, true};
-                        this->m_skeleton_udp.UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+                        const uint32_t minorV= 0;
+                        const uint8_t majorV= 1;
+                        SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
+                        entry::ServiceEntry offer_service_e = entry::ServiceEntry::CreateOfferServiceEntry (m_service_id.GetInstanceId(),0, majorV, minorV);
+                        option::Ipv4EndpointOption optionA=option::Ipv4EndpointOption::CreateSdEndpoint(OfferService,0,127001,UDP,portnum);
+                        offer_service_e.AddFirstOption(&optionA);
+                        sd_msg.AddEntry(&offer_service_e);
+                        std::vector<uint8_t> _payload = sd_msg.Serializer();
+                        uint32_t _size=_payload.size();
+                        this->m_skeleton_udp.UDPSendTo((  void *)&_size, sizeof(_size), ( struct sockaddr *) &this->cliaddr);
+                        this->m_skeleton_udp.UDPSendTo((  void *)_payload.data(), _payload.size(), ( struct sockaddr *) &this->cliaddr);   
                         this->m_skeleton_udp.CloseSocket();
                     }
 
