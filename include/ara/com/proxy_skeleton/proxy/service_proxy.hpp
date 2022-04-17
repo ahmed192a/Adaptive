@@ -348,6 +348,7 @@ namespace ara
                         service_proxy_udp.UDPRecFrom((void *)&data[0], data.size(), (sockaddr *)&serv_addr, &slen);
                         service_proxy_udp.CloseSocket();
                     }
+                    
                     void Field_set(ara::com::proxy_skeleton::event_info &f_set, std::vector<uint8_t> &data)
                     {
                         struct sockaddr_in serv_addr;

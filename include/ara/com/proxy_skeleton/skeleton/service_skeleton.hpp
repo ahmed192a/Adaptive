@@ -162,6 +162,11 @@ namespace ara
                                     Message msg,
                                     Socket &binding)
                     {
+                        // create serialize object
+                        // serialize the result
+                        // create SOME IP message
+                        // Setpayload in message
+                        // send message
                         R result = (c.*method)();
                         binding.Send(&result, sizeof(int));
                         binding.CloseSocket();
