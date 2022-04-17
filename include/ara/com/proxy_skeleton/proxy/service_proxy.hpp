@@ -68,7 +68,7 @@ namespace ara
                     {
 
                         SOMEIP_MESSAGE::Message R_msg(
-                                SOMEIP_MESSAGE::Message_ID{ this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Message_ID{ (uint16_t)this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
                                 SOMEIP_MESSAGE::Request_ID{5,6},
                                 2, // protocol version
                                 7, // Interface Version
@@ -141,6 +141,45 @@ namespace ara
                         return result;
                     }
 
+
+                    template <typename R>
+                    R SendRequest(uint32_t method_id, std::vector<uint8_t> data)
+                    {
+                        SOMEIP_MESSAGE::Message R_msg(
+                                SOMEIP_MESSAGE::Message_ID{ (uint16_t)this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Request_ID{5,6},
+                                2, // protocol version
+                                7, // Interface Version
+                                SOMEIP_MESSAGE::MessageType::REQUEST);
+                        R_msg.SetPayload(data);
+                        std::vector<uint8_t> _payload = R_msg.Serializer();
+                        uint32_t _payload_size = _payload.size();
+                        R result; 
+                        int bufsize = 256;
+                        char buffer[bufsize];
+                        memset(buffer, '\0', bufsize);
+                        service_proxy_tcp.OpenSocket();
+                        service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
+                        service_proxy_tcp.ClientConnect();
+                        service_proxy_tcp.ClientRead(buffer, bufsize);
+                        service_proxy_tcp.ClientWrite((void *)&_payload_size, sizeof(_payload_size));
+                        service_proxy_tcp.ClientWrite((void *)_payload.data(), _payload_size);
+
+                        service_proxy_tcp.ClientRead((int *)&result, sizeof(result));
+                        service_proxy_tcp.CloseSocket();
+                        return result;
+                    }
+
+                    /**
+                     * @brief Send a request to the service
+                     * @todo This Method will be deleted in the future 
+                     *         because the service discovery will use method_id and data seperated
+                     *          Edit Flashing adapter ucm to seperate them then delete this method
+                     *          
+                     * @tparam R 
+                     * @param data 
+                     * @return R 
+                     */
                     template <typename R>
                     R SendRequest( std::vector<uint8_t> data)
                     {
@@ -164,6 +203,13 @@ namespace ara
                     template <typename... Args>
                     void SendFireAndForgetRequest(uint32_t method_id, Args &&...args)
                     {
+                        SOMEIP_MESSAGE::Message R_msg(
+                                SOMEIP_MESSAGE::Message_ID{ (uint16_t)this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Request_ID{5,6},
+                                2, // protocol version
+                                7, // Interface Version
+                                SOMEIP_MESSAGE::MessageType::REQUEST);
+
                         ara::com::Serializer ser;
                         ser.serialize(method_id);
                         (ser.serialize(std::forward<Args>(args)), ...);
@@ -175,9 +221,11 @@ namespace ara
                         service_proxy_tcp.ClientConnect();
                         service_proxy_tcp.ClientRead(buffer, bufsize);
                         std::vector<uint8_t> msgser = ser.Payload();
-                        int msg_size = msgser.size();
+                        R_msg.SetPayload(msgser);
+                        msgser = R_msg.Serializer();
+                        uint32_t msg_size = msgser.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
-                        service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
+                        service_proxy_tcp.ClientWrite((void *)msgser.data(), msg_size);
                         service_proxy_tcp.CloseSocket();
                     }
 
