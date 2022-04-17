@@ -76,7 +76,7 @@ int main()
     BGMG.SetPayload(payload1);
     cout<<"payload size "<<endl;
     std::vector<uint8_t> payload2;
-    payload2 = BGMG.Payload();
+    payload2 = BGMG.Serializer();
     cout<<"payload size "<<endl;
     write(servertest, payload2);
     cout<<"payload size "<<payload2.size()<<endl;

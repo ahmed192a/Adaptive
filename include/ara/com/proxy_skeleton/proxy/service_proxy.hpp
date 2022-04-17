@@ -66,12 +66,18 @@ namespace ara
                     template <typename R, typename... Args>
                     R SendRequest(uint32_t method_id, Args &&...args)
                     {
-                        // std::cout<<"Sending request\n";
+
+                        SOMEIP_MESSAGE::Message R_msg(
+                                SOMEIP_MESSAGE::Message_ID{ this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Request_ID{5,6},
+                                2, // protocol version
+                                7, // Interface Version
+                                SOMEIP_MESSAGE::MessageType::REQUEST);
+
                         R result; // to save the result of the method
                         ara::com::Serializer ser;
-                        ser.serialize(method_id);
+
                         (ser.serialize(std::forward<Args>(args)), ...);
-                        std::vector<uint8_t> resdes;
 
                         int bufsize = 256; // dummy buffer to get connection confirmation
                         char buffer[bufsize];
@@ -81,7 +87,16 @@ namespace ara
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
                         service_proxy_tcp.ClientRead(buffer, bufsize); // get confirmation
+
+                        // get payload of argumnets
                         std::vector<uint8_t> msgser = ser.Payload();
+                        // push the payload to the message
+                        R_msg.SetPayload(msgser);
+                        // get the serialized message
+                        msgser = R_msg.Serializer();
+
+
+
                         int msg_size = msgser.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
@@ -184,19 +199,28 @@ namespace ara
                         int pport = htons(m_proxy_handle.UDP_port);
 
                         ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
-                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry (1, 3, 10, event_id);
-                        m_info.AddEntry(&event_gr_entry);
-                        ara::com::option::Ipv4EndpointOption sub_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, ara::com::helper::Ipv4Address(127, 0, 0, 1), option::Layer4ProtocolType::Udp, pport); 
-                        std::vector<uint8_t>_payload = m_info.Serializer();
+                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry (this->m_proxy_handle.m_server_com.service_id, 
+                                                                                        this->m_proxy_handle.m_server_com.service_id,
+                                                                                         1, // major version
+                                                                                          event_id);
+
+                        ara::com::option::Ipv4EndpointOption sub_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, 
+                                                                                        ara::com::helper::Ipv4Address(127, 0, 0, 1),
+                                                                                         option::Layer4ProtocolType::Udp, 
+                                                                                         pport); 
                         event_gr_entry.AddFirstOption(&sub_option);
-                        event_info e_info;
-                        e_info.operation = 1;
-                        e_info.event_id = event_id;
-                        e_info.service_id = m_proxy_handle.m_server_com.service_id;
-                        e_info.data_size = (sizeof(pport));
+                        m_info.AddEntry(&event_gr_entry);
+
+                        std::vector<uint8_t>_payload = m_info.Serializer();
+                        uint32_t _payload_size = _payload.size();
+                        // event_info e_info;
+                        // e_info.operation = 1;
+                        // e_info.event_id = event_id;
+                        // e_info.service_id = m_proxy_handle.m_server_com.service_id;
+                        // e_info.data_size = (sizeof(pport));
                         service_proxy_udp.OpenSocket();
-                        service_proxy_udp.UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr)
-                        service_proxy_udp.UDPSendTo((void *)&pport, sizeof(pport), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
                         service_proxy_udp.CloseSocket();
 
                         
@@ -210,17 +234,31 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
-                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateUnSubscribeEventEntry (m_proxy_handle.m_server_com.service_id, m_proxy_handle.m_server_com.service_id, 1, event_id);
+                        SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
+                        entry::EventgroupEntry event_gr_entry = entry::EventgroupEntry::CreateUnsubscribeEventEntry (this->m_proxy_handle.m_server_com.service_id, 
+                                                                                        this->m_proxy_handle.m_server_com.service_id,
+                                                                                        1, // major version
+                                                                                        event_id);
+
+                        // int pport = htons(m_proxy_handle.UDP_port);
+                        // option::Ipv4EndpointOption sub_option = option::Ipv4EndpointOption::CreateSdEndpoint(false,
+                        //                                                                 helper::Ipv4Address(127, 0, 0, 1),
+                        //                                                                 option::Layer4ProtocolType::Udp,
+                        //                                                                 pport); 
+                        // event_gr_entry.AddFirstOption(&sub_option);
                         m_info.AddEntry(&event_gr_entry);
-                        ara::com::option::Ipv4EndpointOption sub_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, ara::com::helper::Ipv4Address(127, 0, 0, 1), option::Layer4ProtocolType::Udp, pport); 
-                        event_info e_info;
-                        e_info.operation = 2;
-                        e_info.event_id = event_id;
-                        e_info.service_id = m_proxy_handle.m_server_com.service_id;
-                        e_info.data_size = 0;
+
+                        std::vector<uint8_t>_payload = m_info.Serializer();
+                        uint32_t _payload_size = _payload.size();
+
+                        // event_info e_info;
+                        // e_info.operation = 2;
+                        // e_info.event_id = event_id;
+                        // e_info.service_id = m_proxy_handle.m_server_com.service_id;
+                        // e_info.data_size = 0;
                         service_proxy_udp.OpenSocket();
-                        service_proxy_udp.UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
                         service_proxy_udp.CloseSocket();
                     }
 
