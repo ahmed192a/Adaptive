@@ -20,6 +20,10 @@
 #include "ara/com/proxy_skeleton/definitions.hpp"
 #include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
 #include "ara/com/serializer.hpp"
+#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
+#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
 
 #include <cstring>
 #include <signal.h>
@@ -179,14 +183,19 @@ namespace ara
                         }
                         int pport = htons(m_proxy_handle.UDP_port);
 
+                        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
+                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry (1, 3, 10, event_id);
+                        m_info.AddEntry(&event_gr_entry);
+                        ara::com::option::Ipv4EndpointOption sub_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, ara::com::helper::Ipv4Address(127, 0, 0, 1), option::Layer4ProtocolType::Udp, pport); 
+                        std::vector<uint8_t>_payload = m_info.Serializer();
+                        event_gr_entry.AddFirstOption(&sub_option);
                         event_info e_info;
                         e_info.operation = 1;
                         e_info.event_id = event_id;
                         e_info.service_id = m_proxy_handle.m_server_com.service_id;
                         e_info.data_size = (sizeof(pport));
-
                         service_proxy_udp.OpenSocket();
-                        service_proxy_udp.UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)&e_info, sizeof(e_info), (sockaddr *)&serv_addr)
                         service_proxy_udp.UDPSendTo((void *)&pport, sizeof(pport), (sockaddr *)&serv_addr);
                         service_proxy_udp.CloseSocket();
 
