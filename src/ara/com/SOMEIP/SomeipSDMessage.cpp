@@ -112,10 +112,10 @@ namespace ara
                     return wrapped;
                 }
 
-                std::vector<uint8_t> SomeIpSDMessage::Payload() 
+                std::vector<uint8_t> SomeIpSDMessage::Serializer() 
                 {
                     // General SOME/IP header payload insertion
-                    std::vector<uint8_t> _result = Message::Payload();
+                    std::vector<uint8_t> _result = Message::Serializer();
 
                     if (Rebooted)
                     {

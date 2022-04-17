@@ -59,7 +59,7 @@ int main()
     cout<<"add entry\n";
     GBSD.AddEntry(&GBSE);
     cout<<"get payload\n";
-    vector<uint8_t>payload=GBSD.Payload();
+    vector<uint8_t>payload=GBSD.Serializer();
 
     // write(servertest, payload);
     cout<<"Service id " <<GBSD.MessageId().serivce_id<<endl;

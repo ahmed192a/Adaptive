@@ -58,7 +58,7 @@ namespace ara
 
                     bool IncrementSessionId() noexcept override;
 
-                    std::vector<uint8_t> Payload()  override;
+                    std::vector<uint8_t> Serializer()  override;
 
                     void Deserialize(const std::vector<uint8_t> &payload);
 

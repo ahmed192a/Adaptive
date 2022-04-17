@@ -135,7 +135,7 @@ namespace ara
 
                 /// @brief Get message payload
                 /// @returns Byte array
-                virtual std::vector<uint8_t> Payload() ;
+                virtual std::vector<uint8_t> Serializer() ;
 
                 /// @brief Get message length
                 /// @returns Message length including the payload length

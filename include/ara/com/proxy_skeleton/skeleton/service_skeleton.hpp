@@ -16,7 +16,7 @@
 #include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/ipc/client/socket_Client.hpp"
-
+#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #include "ara/com/marshal.hpp"
 #include <utility>
 #include <unistd.h>
@@ -86,9 +86,15 @@ namespace ara
 
                     void StopOfferService() 
                     {
+                        const uint32_t minorV= 0;
+                        const uint8_t majorV= 1;
+                        const uint32_t stop_ttl = 0;
                         this->m_skeleton_udp.OpenSocket();
                         SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, false};
-                        
+                        SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
+                        entry::ServiceEntry stop_offer_e = entry::ServiceEntry::CreateOfferServiceEntry (m_service_id.GetInstanceId(),0, majorV, minorV,stop_ttl);
+                        sd_msg.AddEntry(&stop_offer_e);
+                        std::vector<uint8_t> payload = sd_msg.Payload();
 
 
                         this->m_skeleton_udp.UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);

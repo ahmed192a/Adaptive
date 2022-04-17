@@ -130,7 +130,7 @@ namespace ara
                 return GBReturnCode;
             }
 
-            std::vector<uint8_t> Message::Payload() 
+            std::vector<uint8_t> Message::Serializer() 
             {
                 std::vector<uint8_t> result;
                 Message_ID mid = MessageId();
@@ -205,7 +205,7 @@ namespace ara
                 GBinterface_version = msg.InterfaceVersion();
                 GBMessageType = msg.Messagetype();
                 GBReturnCode = msg.Returncode();
-                payload = msg.Payload();
+                payload = msg.Serializer();
                 return *this;
             }
 
