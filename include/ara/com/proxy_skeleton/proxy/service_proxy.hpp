@@ -95,8 +95,6 @@ namespace ara
                         // get the serialized message
                         msgser = R_msg.Serializer();
 
-
-
                         int msg_size = msgser.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
@@ -109,17 +107,32 @@ namespace ara
                     template <typename R>
                     R SendRequest(uint32_t method_id)
                     {
+                        SOMEIP_MESSAGE::Message R_msg(
+                                SOMEIP_MESSAGE::Message_ID{ this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Request_ID{5,6},
+                                2, // protocol version
+                                7, // Interface Version
+                                SOMEIP_MESSAGE::MessageType::REQUEST);
+
                         R result; // to save the result of the method
                         ara::com::Serializer ser;
                         ser.serialize(method_id);
                         int bufsize = 256;
                         char buffer[bufsize];
                         memset(buffer, '\0', bufsize);
+
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
                         service_proxy_tcp.ClientRead(buffer, bufsize);
+
+                        // get payload of argumnets
                         std::vector<uint8_t> msgser = ser.Payload();
+                        // push the payload to the message
+                        R_msg.SetPayload(msgser);
+                        // get the serialized message
+                        msgser = R_msg.Serializer();
+                        
                         int msg_size = msgser.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
@@ -170,16 +183,25 @@ namespace ara
 
                     void SendFireAndForgetRequest(uint32_t method_id)
                     {
+                        SOMEIP_MESSAGE::Message R_msg(
+                                SOMEIP_MESSAGE::Message_ID{ this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Request_ID{5,6},
+                                2, // protocol version
+                                7, // Interface Version
+                                SOMEIP_MESSAGE::MessageType::REQUEST);
                         ara::com::Serializer ser;
                         ser.serialize(method_id);
                         int bufsize = 256;
                         char buffer[bufsize];
                         memset(buffer, '\0', bufsize);
+
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
                         service_proxy_tcp.ClientRead(buffer, bufsize); // read confirmation
+                        
                         std::vector<uint8_t> msgser = ser.Payload();
+                        R_msg.SetPayload(msgser);
                         int msg_size = msgser.size(); // sizeof = 4 bytes
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
