@@ -93,14 +93,14 @@ namespace ara
                         const uint8_t majorV= 1;
                         const uint32_t stop_ttl = 0;
                         this->m_skeleton_udp.OpenSocket();
-                        SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, false};
+                        // SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, false};
                         SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
                         entry::ServiceEntry stop_offer_e = entry::ServiceEntry::CreateOfferServiceEntry (m_service_id.GetInstanceId(),0, majorV, minorV,stop_ttl);
                         sd_msg.AddEntry(&stop_offer_e);
-                        std::vector<uint8_t> payload = sd_msg.Payload();
-
-
-                        this->m_skeleton_udp.UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
+                        std::vector<uint8_t> _payload = sd_msg.Serializer();
+                        uint32_t _size = _payload.size();
+                        this->m_skeleton_udp.UDPSendTo((  void *)&_size, sizeof(_size), ( struct sockaddr *) &this->cliaddr);
+                        this->m_skeleton_udp.UDPSendTo((  void *)_payload.data(), _payload.size(), ( struct sockaddr *) &this->cliaddr);
                         this->m_skeleton_udp.CloseSocket();
                     }
 
