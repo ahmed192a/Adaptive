@@ -16,6 +16,7 @@
 #include "ara/com/ServiceDiscovery/csv.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "color/color.hpp"
+#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #define CSV_FILE "data.csv"
 
 using namespace std;
@@ -32,6 +33,11 @@ int main()
     vector<SD_data> data;
     SD_data receive;
     CSV csv;
+
+    uint32_t _size= 0;
+    std::vector<uint8_t> _msg;
+    ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
+
     csv.clear(CSV_FILE);
     // use the child process for sercice discovery (Listen to all servers and get services information)
     if (process_id == 0)
@@ -48,9 +54,46 @@ int main()
         {
 
             // receive a struct containing the service information
-            s1.UDPRecFrom(&receive, sizeof(SD_data), (struct sockaddr *)&cliaddr, &len);
-            data.push_back(receive);
+            s1.UDPRecFrom(&_size, sizeof(_size), (struct sockaddr *) &cliaddr, &len);
+            _msg.reserve(_size);
+            s1.UDPRecFrom(&_msg[0], _size, (struct sockaddr *) &cliaddr, &len);
+            // s1.UDPRecFrom(&receive, sizeof(SD_data), (struct sockaddr *)&cliaddr, &len);
+            // data.push_back(receive);
             cout << red << "[SD] : receiving offers" << endl;
+            cout << "size is " << _size << endl;
+            sd_msg.Deserialize(_msg);
+            // Loop on entries
+            auto entrie = sd_msg.Entries();
+            for( auto entry : entrie)
+            {
+                switch(entry.Type())
+                {
+                    case ara::com::entry::EntryType::Finding:
+                        cout << "EntryType: Finding" << endl;
+                        uint32_t _service_id = entry.ServiceId();
+                        uint32_t _instance_id = entry.InstanceId();
+                        
+                        break;
+                    case ara::com::entry::EntryType::Offering:
+                        cout << "EntryType: Offering" << endl;
+                        auto first_option = entry.FirstOptions()[0];
+                        Ipv4EndpointOption * ipv4_option = (Ipv4EndpointOption *) option;
+                        cout << "IPv4: " << int(ipv4_option->Address().Octets[0] )<<  "." <<  int(ipv4_option->Address().Octets[1]) << "." << int(ipv4_option->Address().Octets[2]) << "." << int(ipv4_option->Address().Octets[3]) << endl;
+                        cout << "Port: " << ipv4_option->Port() << endl;
+                        uint16_t _port = ipv4_option->Port();
+                        uint32_t _service_id = entry.ServiceId();
+                        uint32_t _instance_id = entry.InstanceId();
+                        break;
+                    case ara::com::entry::EntryType::Subscribing:
+                        cout << "EntryType: Subscribing" << endl;
+                        break;
+                    case ara::com::entry::EntryType::Acknowledging:
+                    break;
+                }
+                
+
+            }
+               
             cout << red << "[SD] : Struct: " << receive.port_number << "-" << receive.service_id << "-" << receive.process_id << endl;
             // write these information into the csv file
 
