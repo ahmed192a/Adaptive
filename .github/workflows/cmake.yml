@@ -27,10 +27,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-      
-    # - name: Configure
-    #   run: cmake -B ${{github.workspace}}/build -S ${{github.workspace}}
-      
+
     - name: Build
       # working-directory: ${{github.workspace}}/build
       # Build your program with the given configuration
@@ -39,19 +36,15 @@ jobs:
     - name: Run
       working-directory: ${{github.workspace}}/build/App 
       run: ./Adaptive_Platform
-    # - name: Upload result 
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: buildfiles
-    #     path: ${{github.workspace}}/build
+
     - name: Test
       working-directory: ${{github.workspace}}/build/Testing
       run: ./Adaptive_Platform-ut
 
       # Generate Doxygen code dodumentation and publish it to the GitHub Pages
-    - uses: langroodi/doxygenize@v1.6
-      with:
-        doxygenconf: './doc/doxygen.conf'
-        htmloutput: './doc/html/'
-        darkmode: true
+    # - uses: langroodi/doxygenize@v1.6
+    #   with:
+    #     doxygenconf: './doc/doxygen.conf'
+    #     htmloutput: './doc/html/'
+    #     darkmode: true
 

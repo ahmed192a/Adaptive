@@ -37,8 +37,8 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     
     # - name: Run
-    #   working-directory: ${{github.workspace}}/quick_test
-    #   run: ./someip.sh
+      # working-directory: ${{github.workspace}}/quick_test
+      # run: ./someip.sh
       # working-directory: ${{github.workspace}}/build
       # run: ./some_client/client_someip ; ./some_server/server_someip
 

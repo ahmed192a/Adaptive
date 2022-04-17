@@ -74,6 +74,11 @@ namespace ara
                     {
                         this->m_skeleton_udp.OpenSocket();
                         // this->m_skeleton_udp.BindServer();
+                        // some ip SD messahe
+                        // offer service entry
+                        // create option
+                        // get payload
+                        // send payload
                         SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, true};
                         this->m_skeleton_udp.UDPSendTo(( SD_data*)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
                         this->m_skeleton_udp.CloseSocket();
@@ -83,6 +88,9 @@ namespace ara
                     {
                         this->m_skeleton_udp.OpenSocket();
                         SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, false};
+                        
+
+
                         this->m_skeleton_udp.UDPSendTo((  void *)&service, sizeof( SD_data), ( struct sockaddr *) &this->cliaddr);
                         this->m_skeleton_udp.CloseSocket();
                     }
