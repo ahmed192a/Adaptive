@@ -162,13 +162,20 @@ namespace ara
                                     Message msg,
                                     Socket &binding)
                     {
-                        // create serialize object
-                        // serialize the result
-                        // create SOME IP message
-                        // Setpayload in message
-                        // send message
                         R result = (c.*method)();
-                        binding.Send(&result, sizeof(int));
+                        // create serialize object
+                        ara::com::Serializer s1;
+                        // serialize the result
+                         s1.serialize(result);
+                        // create SOME IP message
+                        SOMEIP_MESSAGE::MessageType::RESPONSE
+                        // Setpayload in message
+                        R_msg.SetPayload(s1.Payload());
+                        // send message
+                        uint32_t msg_size = _payload.size();
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_payload.data(), msg_size);
+                        
                         binding.CloseSocket();
                     }
                 /*4 future <void>*/
