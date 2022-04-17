@@ -17,6 +17,7 @@
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/ipc/client/socket_Client.hpp"
 #include "ara/com/SOMEIP/SomeipSDMessage.hpp"
+#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
 #include "ara/com/marshal.hpp"
 #include <utility>
 #include <unistd.h>
@@ -77,7 +78,7 @@ namespace ara
                         const uint8_t majorV= 1;
                         SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
                         entry::ServiceEntry offer_service_e = entry::ServiceEntry::CreateOfferServiceEntry (m_service_id.GetInstanceId(),0, majorV, minorV);
-                        option::Ipv4EndpointOption optionA=option::Ipv4EndpointOption::CreateSdEndpoint(OfferService,0,127001,UDP,portnum);
+                        option::Ipv4EndpointOption optionA=option::Ipv4EndpointOption::CreateSdEndpoint(false ,helper::Ipv4Address(127, 0, 0, 1) ,option::Layer4ProtocolType::Udp,m_skeleton_handle.service_portnum);
                         offer_service_e.AddFirstOption(&optionA);
                         sd_msg.AddEntry(&offer_service_e);
                         std::vector<uint8_t> _payload = sd_msg.Serializer();
