@@ -13,6 +13,7 @@ namespace ara {
             public:
                 using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
                 CryptoTransform GetTransformation() const noexcept;
+                std::vector<byte> ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding = false) const noexcept;
                 void Reset() noexcept;
             };
 
@@ -78,10 +79,18 @@ namespace ara {
                 ///@return: std::uint64_t => the maximal supported size of associated public data in bytes
                 std::uint64_t GetMaxAssociatedDataSize() const noexcept;
 
-                /*ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-                    ConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expected Tag = nullptr) noexcept;*/
+                ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
+                //call, i.e.all associated data must have been already provided. The function will check 
+                //the authentication tag and only return the processed data if the tag is valid
+                ///@param[in]: in => the input buffer containing the full message
+                //             expectedTag => pointer to read only mem region
+                std::vector<byte>  ProcessConfidentialData (ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
 
-                //void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
+                ///@breif:The input buffer will be overwritten by the processed message After this method is called 
+                //no additional associated data may be updated
+                //@param[in]:inOut=> the input buffer containing the full message
+                //          expectedTag => pointer to read only mem region
+                void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
 
                 /// @brief: resets the context
                 void Reset() noexcept;

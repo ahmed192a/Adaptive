@@ -17,11 +17,6 @@ namespace ara {
     namespace crypto {
         namespace cryp {
 
-            ///////////////////////////////////////////////////////
-            // dummy definitions that will be removed later
-            ///////////////////////////////////////////////////////
-            class ReadWriteMemRegion {};
-
             /// @brief: enumeration represents the state of the Authentication Cipher context
             enum class AuthCipherCtx_Status : std::uint8_t {
                 notInitialized = 0,
@@ -65,9 +60,18 @@ namespace ara {
                 ///@return: std::uint64_t => the maximal supported size of associated public data in bytes
                 virtual std::uint64_t GetMaxAssociatedDataSize() const noexcept = 0;
 
-                //virtual std:: vector<byte>  ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
+                ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
+                //call, i.e.all associated data must have been already provided. The function will check 
+                //the authentication tag and only return the processed data if the tag is valid
+                ///@param[in]: in => the input buffer containing the full message
+                //             expectedTag => pointer to read only mem region
+                virtual std:: vector<byte>  ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
 
-                //virtual void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
+                ///@breif:The input buffer will be overwritten by the processed message After this method is called 
+                //no additional associated data may be updated
+                //@param[in]:inOut=> the input buffer containing the full message
+                //          expectedTag => pointer to read only mem region
+                virtual void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
 
                 /// @brief: resets the context
                 virtual void Reset() noexcept = 0;
