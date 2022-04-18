@@ -31,7 +31,7 @@ namespace ara
                 bool isAcknowledge() const noexcept;
 
             protected:
-                virtual bool ValidateOption(
+                bool ValidateOption(
                     const option::Option *option) const noexcept override;
 
             public:
@@ -56,7 +56,7 @@ namespace ara
                 /// @returns Event-group ID for subscription/unsubscription
                 uint16_t EventgroupId() const noexcept;
 
-                virtual std::vector<uint8_t> Payload(uint8_t &optionIndex) const override;
+                std::vector<uint8_t> Payload(uint8_t &optionIndex) const override;
 
                 /// @brief Subscribe to an event-group entry factory
                 /// @param serviceId Service in interest ID

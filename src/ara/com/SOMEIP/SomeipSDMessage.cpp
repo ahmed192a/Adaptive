@@ -114,6 +114,7 @@ namespace ara
 
                 std::vector<uint8_t> SomeIpSDMessage::Serializer() 
                 {
+
                     // General SOME/IP header payload insertion
                     std::vector<uint8_t> _result = Message::Serializer();
 
@@ -129,18 +130,27 @@ namespace ara
                         const uint32_t NotRebootedFlag = 0x60000000;
                         helper::Inject(_result, NotRebootedFlag);
                     }
-
                     uint8_t lastOptionIndex = 0;
                     std::vector<uint8_t> entriesPayload;
                     std::vector<uint8_t> optionsPayload;
                     for (auto entry : entries)
                     {
+                        // std::vector<uint8_t> entryPayload;
+                        // if(entry->Type() == entry::EntryType::Finding ||entry->Type() == entry::EntryType::Offering)
+                        // {
+                        //     entry::ServiceEntry * entry_ptr = (entry::ServiceEntry *)(entry);
+                        //     entryPayload = entry_ptr->Payload(lastOptionIndex);
+                        // }else{
+                        //     entry::EventgroupEntry * entry_ptr = (entry::EventgroupEntry *)(entry);
+                        //     entryPayload = entry_ptr->Payload(lastOptionIndex);
+                        // }
                         auto entryPayload = entry->Payload(lastOptionIndex);
                         helper::Concat(
                             entriesPayload, std::move(entryPayload));
 
                         for (auto firstOption : entry->FirstOptions())
                         {
+                            // option::Ipv4EndpointOption * ipv4Endpoint = (option::Ipv4EndpointOption *)(firstOption);
                             auto firstOptionPayload = firstOption->Payload();
                             helper::Concat(
                                 optionsPayload, std::move(firstOptionPayload));
@@ -149,6 +159,7 @@ namespace ara
 
                         for (auto secondOption : entry->SecondOptions())
                         {
+                            // option::Ipv4EndpointOption * ipv4Endpoint = (option::Ipv4EndpointOption *)(secondOption);
                             auto secondOptionPayload = secondOption->Payload();
                             helper::Concat(
                                 optionsPayload, std::move(secondOptionPayload));
@@ -160,6 +171,7 @@ namespace ara
                     uint32_t entriesLength = getEntriesLength();
                     helper::Inject(_result, entriesLength);
                     helper::Concat(_result, std::move(entriesPayload));
+
 
                     // Options length and payloads insertion
                     uint32_t optionsLength = getOptionsLength();
@@ -179,32 +191,32 @@ namespace ara
                     Rebooted = (flags & RebootedFlag) == RebootedFlag;
                     offset += 4;
                     
-                    std::cout<<"Entries payload extraction\n";
+                    // std::cout<<"Entries payload extraction\n";
                     // Entries payload extraction
                     uint32_t entriesLength = payload[offset]<<24 | payload[offset+1]<<16 | payload[offset+2]<<8 | payload[offset+3];
-                    std::cout<<"entriesLength "<<entriesLength<<std::endl;
+                    // std::cout<<"entriesLength "<<entriesLength<<std::endl;
                     offset += 4;
                     uint32_t entriesPayloadOffset = offset;
-                    std::cout<<"entriesPayloadOffset "<<entriesPayloadOffset<<std::endl;
+                    // std::cout<<"entriesPayloadOffset "<<entriesPayloadOffset<<std::endl;
                     // uint32_t entriesPayloadLength = entriesLength - 4;
                     std::vector<uint8_t> entriesPayload =
                         helper::Extracts(payload, entriesPayloadOffset, entriesLength);
                     offset += entriesLength;
 
-                    std::cout<<"Options payload extraction\n";
+                    // std::cout<<"Options payload extraction\n";
                     // Options payload extraction
                     uint32_t optionsLength = payload[offset]<<24 | payload[offset+1]<<16 | payload[offset+2]<<8 | payload[offset+3];
-                    std::cout<<"optionsLength "<<optionsLength<<std::endl;
+                    // std::cout<<"optionsLength "<<optionsLength<<std::endl;
                     offset += 4;
                     uint32_t optionsPayloadOffset = offset;
-                    std::cout<<"optionsPayloadOffset "<<optionsPayloadOffset<<std::endl;
+                    // std::cout<<"optionsPayloadOffset "<<optionsPayloadOffset<<std::endl;
                     // uint32_t optionsPayloadLength = optionsLength - 4;
                     std::vector<uint8_t> optionsPayload =
                         helper::Extracts(payload, optionsPayloadOffset, optionsLength);
                     offset += optionsLength;
-                    cout<<"offset "<<optionsPayload.size()<<endl;
+                    // cout<<"offset "<<optionsPayload.size()<<endl;
 
-                    std::cout<<"Entries extraction\n";
+                    // std::cout<<"Entries extraction\n";
                     // Entries extraction
                     uint32_t entriesOffset = 0;
                     std::vector<std::pair<uint8_t, uint8_t>> firstop;
@@ -224,7 +236,7 @@ namespace ara
                         entries.push_back(entry);
                         entriesOffset += 16;
                     }
-                    std::cout<<"Options extraction\n";
+                    // std::cout<<"Options extraction\n";
                     // Options extraction
                     std::vector<ara::com::option::Option *> options;
                     uint32_t optionsOffset = 0;
@@ -234,7 +246,7 @@ namespace ara
                         options.push_back(option);
                         optionsOffset += option->Length() + 3;
                     }
-                    std::cout<<"Option ins extraction\n";
+                    // std::cout<<"Option ins extraction\n";
                     // Options insertion
                     uint32_t entryIndex = 0;
                     for (auto entry : entries)

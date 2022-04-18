@@ -139,9 +139,7 @@ namespace ara
 
                 /// @brief Get message length
                 /// @returns Message length including the payload length
-                virtual uint32_t Length() noexcept {
-					return GBlength;
-				}
+                virtual uint32_t Length() noexcept ;
 
                 /// @brief Get client ID
                 /// @returns Client ID including ID prefix

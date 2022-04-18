@@ -68,7 +68,7 @@ namespace ara
                     {
 
                         SOMEIP_MESSAGE::Message R_msg(
-                                SOMEIP_MESSAGE::Message_ID{ this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Message_ID{ (uint16_t) this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
                                 SOMEIP_MESSAGE::Request_ID{5,6},
                                 2, // protocol version
                                 7, // Interface Version
@@ -108,7 +108,7 @@ namespace ara
                     R SendRequest(uint32_t method_id)
                     {
                         SOMEIP_MESSAGE::Message R_msg(
-                                SOMEIP_MESSAGE::Message_ID{ this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Message_ID{ (uint16_t) this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
                                 SOMEIP_MESSAGE::Request_ID{5,6},
                                 2, // protocol version
                                 7, // Interface Version
@@ -184,7 +184,7 @@ namespace ara
                     void SendFireAndForgetRequest(uint32_t method_id)
                     {
                         SOMEIP_MESSAGE::Message R_msg(
-                                SOMEIP_MESSAGE::Message_ID{ this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Message_ID{ (uint16_t) this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
                                 SOMEIP_MESSAGE::Request_ID{5,6},
                                 2, // protocol version
                                 7, // Interface Version
@@ -221,8 +221,8 @@ namespace ara
                         int pport = htons(m_proxy_handle.UDP_port);
 
                         ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
-                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry (this->m_proxy_handle.m_server_com.service_id, 
-                                                                                        this->m_proxy_handle.m_server_com.service_id,
+                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry ((uint16_t) this->m_proxy_handle.m_server_com.service_id, 
+                                                                                        (uint16_t) this->m_proxy_handle.m_server_com.service_id,
                                                                                          1, // major version
                                                                                           event_id);
 
@@ -257,8 +257,8 @@ namespace ara
                             printf("\nInvalid address/ Address not supported \n");
                         }
                         SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
-                        entry::EventgroupEntry event_gr_entry = entry::EventgroupEntry::CreateUnsubscribeEventEntry (this->m_proxy_handle.m_server_com.service_id, 
-                                                                                        this->m_proxy_handle.m_server_com.service_id,
+                        entry::EventgroupEntry event_gr_entry = entry::EventgroupEntry::CreateUnsubscribeEventEntry ((uint16_t) this->m_proxy_handle.m_server_com.service_id, 
+                                                                                        (uint16_t) this->m_proxy_handle.m_server_com.service_id,
                                                                                         1, // major version
                                                                                         event_id);
 

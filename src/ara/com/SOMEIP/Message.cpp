@@ -129,6 +129,9 @@ namespace ara
             {
                 return GBReturnCode;
             }
+            uint32_t Message::Length() noexcept {
+					return GBlength;
+				}
 
             std::vector<uint8_t> Message::Serializer() 
             {
@@ -136,8 +139,8 @@ namespace ara
                 Message_ID mid = MessageId();
 
                 helper::Inject(result, mid.serivce_id);
-                helper::Inject(result, mid.method_id);
-                helper::Inject(result, Length());
+                helper::Inject(result, mid.method_id); 
+                helper::Inject(result, GBlength);
                 helper::Inject(result, ClientId());
                 helper::Inject(result, SessionId());
                 result.push_back(ProtocolVersion());

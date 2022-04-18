@@ -59,7 +59,7 @@ namespace ara
 
                 Ipv4EndpointOption() = delete;
                 ~Ipv4EndpointOption(){}
-                virtual uint16_t Length() const noexcept override;
+                uint16_t Length() const noexcept override;
 
                 /// @brief Get IP address
                 /// @returns IPv4 address
@@ -73,7 +73,7 @@ namespace ara
                 /// @returns Network port number
                 uint16_t Port() const noexcept;
 
-                virtual std::vector<uint8_t> Payload()  override;
+                std::vector<uint8_t> Payload()  override;
 
                 /// @brief Unitcast endpoint factory
                 /// @param discardable Indicates whether the option can be discarded or not

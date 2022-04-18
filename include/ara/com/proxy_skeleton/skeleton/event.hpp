@@ -20,6 +20,7 @@
 #include <set>
 #include <iterator>
 #include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 #include <arpa/inet.h>
 #include "ara/com/proxy_skeleton/skeleton/shared_sub/file.hpp"
 #include "ara/com/deserializer.hpp"
@@ -129,37 +130,33 @@ namespace ara
                         //mu.unlock();
                     }
 
-                    void handlecall(ara::com::proxy_skeleton::event_info &msg,std::vector<uint8_t>&data, ara::com::proxy_skeleton::Client_udp_Info client)
+                    void subhandlecall(ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg, ara::com::proxy_skeleton::Client_udp_Info client)
                     {
+                        auto entry = (ara::com::entry::EventgroupEntry *)sd_msg.Entries()[0];
+                        auto option = (ara::com::option::Ipv4EndpointOption *)entry->FirstOptions()[0];
+                        client.port = option->Port();
+                        uint32_t TTL = entry->TTL();
+                        if(entry->Type() == ara::com::entry::EntryType::Subscribing)
+                        {
+                            if (TTL == 0)
+                            {
+                                Del_subscriber(client);
+                                print_subscribers();
+                            }else{
+                                set_subscriber(client);
+                                print_subscribers();
+                            }
+                        }
+
+
                         ara::com::Deserializer dser;
                         ara::com::Serializer ser;
-                        switch (msg.operation)
-                        {
-                        case 0:
-                            // new value
-                            // event_data = msg_data;
-                            break;
-                        case 1:
-                            set_subscriber(client);
-                            print_subscribers();
-                            break;
-                        case 2:
-                            Del_subscriber(client);
-                            print_subscribers();
-                            break;
-                        case 3:
-                            event_data = dser.deserialize<T>(data,0);
-                            break;
-
-                        case 4:
-                            ser.serialize(event_data);
-                            data = ser.Payload();
-                            msg.data_size = data.size();
-                            break;
-                        default:
-                            break;
-                        }
+                        //   event_data = dser.deserialize<T>(data,0);
+                        // ser.serialize(event_data);
+                        // data = ser.Payload();
+                        // msg.data_size = data.size();
                     }
+
                     std::vector<ara::com::proxy_skeleton::Client_udp_Info> getsub()
                     {
                         return subscribers_data.getrows(subname_file.data());
