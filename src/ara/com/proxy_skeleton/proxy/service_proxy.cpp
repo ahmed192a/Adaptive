@@ -74,8 +74,9 @@ namespace ara
                     _payload.clear();
                     // receive a struct
                     Client_SD.ClientRead(&_payload_size, sizeof(_payload_size));
-                    _payload.reserve(_payload_size);
+                    _payload.resize(_payload_size);
                     Client_SD.ClientRead(_payload.data(), _payload_size);
+                    std::cout<<"Find SEERIVEC _payload_size : "<<_payload_size<<"\n";
                     msg_info.Deserialize(_payload);
                     
                     Client_SD.CloseSocket();

@@ -170,8 +170,7 @@ void *pthread1(void *v_var)
 {
     server_main_socket_DG.OpenSocket(SERVER_PORT);
     server_main_socket_DG.BindServer();
-    cout << "shared " << server_skeleton_ptr << endl;
-    // while (1)
+    while (1)
         Handle_IO();
 }
 

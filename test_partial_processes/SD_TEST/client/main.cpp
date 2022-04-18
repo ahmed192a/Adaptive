@@ -97,10 +97,10 @@ void *pthread0(void *v_var)
     std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
     int result;
 
-    std::cout << "\t\t\t[CLIENT] Result of ADD : ";
-    result = server_proxy_ptr->ADD(7, 85);
-    std::cout << result << std::endl;
-    sleep(3);
+    // std::cout << "\t\t\t[CLIENT] Result of ADD : ";
+    // result = server_proxy_ptr->ADD(7, 85);
+    // std::cout << result << std::endl;
+    // sleep(3);
     server_proxy_ptr->ev1.Subscribe();
 
     // sleep(3);
