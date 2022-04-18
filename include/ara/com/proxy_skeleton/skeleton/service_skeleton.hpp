@@ -129,6 +129,12 @@ namespace ara
                         msg_.data_size = sermsg.size();
                         /* send the event info object then send the serialized data */
                         std::cout<<"send event to client "<< client_add.sin_port<<std::endl;
+                        // Create Mesaage {, event_id | 0x8000}, NOTIFICATION
+                        // SetPayload(sermsg)
+                        // vector jjj = mes.Serializer
+                        // size of vector
+        
+
                         this->m_skeleton_udp.OpenSocket();
                         this->m_skeleton_udp.UDPSendTo((void *)&msg_, sizeof(msg_), (sockaddr *)&client_add);
                         this->m_skeleton_udp.UDPSendTo((void *)&sermsg[0], sermsg.size(), (sockaddr *)&client_add);

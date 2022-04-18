@@ -334,6 +334,10 @@ namespace ara
                         }
                         f_get.data_size = 0;
                         service_proxy_udp.OpenSocket();
+                        // cre
+
+
+
                         service_proxy_udp.UDPSendTo((void *)&f_get, sizeof(f_get), (sockaddr *)&serv_addr);
                         socklen_t slen = sizeof(serv_addr);
                         service_proxy_udp.UDPRecFrom((void *)&data[0], data.size(), (sockaddr *)&serv_addr, &slen);
