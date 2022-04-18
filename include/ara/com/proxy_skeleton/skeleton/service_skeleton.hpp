@@ -130,14 +130,18 @@ namespace ara
                         /* send the event info object then send the serialized data */
                         std::cout<<"send event to client "<< client_add.sin_port<<std::endl;
                         // Create Mesaage {, event_id | 0x8000}, NOTIFICATION
+                        ara::com::SOMEIP_MESSAGE::Message M1({ this->m_service_id.GetInstanceId(), event_id|0x8000},{1,2},3,4,ara::com::SOMEIP_MESSAGE::MessageType::NOTIFICATION);
                         // SetPayload(sermsg)
+                        M1.SetPayload(sermsg);
                         // vector jjj = mes.Serializer
+                        std::vector<uint8_t> __payload= M1.Serializer();
                         // size of vector
+                        uint32_t size = __payload.size();
         
 
                         this->m_skeleton_udp.OpenSocket();
-                        this->m_skeleton_udp.UDPSendTo((void *)&msg_, sizeof(msg_), (sockaddr *)&client_add);
-                        this->m_skeleton_udp.UDPSendTo((void *)&sermsg[0], sermsg.size(), (sockaddr *)&client_add);
+                        this->m_skeleton_udp.UDPSendTo((void *)&size, sizeof(size), (sockaddr *)&client_add);
+                        this->m_skeleton_udp.UDPSendTo((void *)&__payload[0], __payload.size(), (sockaddr *)&client_add);
                         this->m_skeleton_udp.CloseSocket();
                     }
 
