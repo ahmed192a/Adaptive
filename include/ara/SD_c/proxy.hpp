@@ -43,7 +43,7 @@ namespace saam
 
         int Add(int x, int y);
 
-        add_output ADD;
+        methods::Add_out ADD;
         ~proxy();
     };
 

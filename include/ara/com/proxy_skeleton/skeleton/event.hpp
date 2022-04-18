@@ -132,25 +132,27 @@ namespace ara
 
                     void subhandlecall(ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg, ara::com::proxy_skeleton::Client_udp_Info client)
                     {
+
                         auto entry = (ara::com::entry::EventgroupEntry *)sd_msg.Entries()[0];
                         auto option = (ara::com::option::Ipv4EndpointOption *)entry->FirstOptions()[0];
                         client.port = option->Port();
                         uint32_t TTL = entry->TTL();
-                        if(entry->Type() == ara::com::entry::EntryType::Subscribing)
+
+
+                        if (TTL == 0)
                         {
-                            if (TTL == 0)
-                            {
-                                Del_subscriber(client);
-                                print_subscribers();
-                            }else{
-                                set_subscriber(client);
-                                print_subscribers();
-                            }
+                            Del_subscriber(client);
+                            print_subscribers();
+                        }else{
+
+                            set_subscriber(client);
+                            print_subscribers();
                         }
+                        
 
 
-                        ara::com::Deserializer dser;
-                        ara::com::Serializer ser;
+                        // ara::com::Deserializer dser;
+                        // ara::com::Serializer ser;
                         //   event_data = dser.deserialize<T>(data,0);
                         // ser.serialize(event_data);
                         // data = ser.Payload();

@@ -161,13 +161,17 @@ namespace ara
                 GBlength+=payload.size();
             }
 
+            std::vector<uint8_t> Message::GetPayload()
+            {
+                return payload;
+            }
+
             Message Message::Deserialize(const std::vector<uint8_t> &msg)
             {
                 // if (payload.size() < Header::HeaderSize)
                 // {
                 //     throw std::invalid_argument("Invalid payload size.");
                 // }
-                 std::cout<<"fsdfsdfsdf\n";
                 uint32_t offset = 0;
                 Message_ID _mid;
                 _mid.serivce_id = msg[offset]<<8 | msg[offset+1];
@@ -187,12 +191,9 @@ namespace ara
                 ReturnCode GBReturnCode = static_cast<ReturnCode>(msg[offset+3]);
                 offset += 4;
 
-                std::cout<<"fsdfsdfsdf\n";
                 Message m (_mid, _rid, GBProtocol_Version, GBinterface_version, GBMessageType, GBReturnCode);
                 if(length > Header::HeaderSize){
-                    cout<<"offset "<<offset<<" length "<<length<<"\n";
                     std::vector<uint8_t> pay = {msg.begin()+offset, msg.begin()+length};
-                    std::cout<<"fsdfsdfsdf\n";
                     m.SetPayload(pay);
                 }
                 return m;

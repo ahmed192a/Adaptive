@@ -264,7 +264,7 @@ namespace ara
                             7, // Interface Version
                             SOMEIP_MESSAGE::MessageType::RESPONSE);
                             
-                        Marshal<Args...> unmarshaller(msg);
+                        Marshal<Args...> unmarshaller(msg.GetPayload());
                         std::future<R> result = (c.*method)(unmarshaller.template unmarshal<index>()...);
                         R rval = result.get();
                         ara::com::Serializer ser;
@@ -291,7 +291,7 @@ namespace ara
                             7, // Interface Version
                             SOMEIP_MESSAGE::MessageType::RESPONSE);
 
-                        Marshal<Args...> unmarshaller(msg.payload);
+                        Marshal<Args...> unmarshaller(msg.GetPayload());
 
                         std::future<void> f = (c.*method)(unmarshaller.template unmarshal<index>()...);
                         f.get();
@@ -309,7 +309,7 @@ namespace ara
                                      Socket &binding,
                                      std::index_sequence<index...>)
                     {
-                        Marshal<Args...> unmarshaller(msg.payload);
+                        Marshal<Args...> unmarshaller(msg.GetPayload());
                         (c.*method)(unmarshaller.template unmarshal<index>()...);
                     }
 

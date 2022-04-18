@@ -35,20 +35,24 @@ skeleton::~skeleton()
 }
 
 
-void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
+void skeleton::method_dispatch(ara::com::SOMEIP_MESSAGE::Message& message, Socket& cserver)
 {
     ara::com::Deserializer dser;
-    int methodID = dser.deserialize<int>(message,0);
+    // int methodID = dser.deserialize<int>(message,0);
+
+    int methodID = message.MessageId().method_id;
+
+
     std::future<int> result;
     int result2;
 	cout<<"\t[SERVER] Dispatch " << methodID << endl;
-    std::vector<uint8_t> msg;
-    msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
+    // std::vector<uint8_t> msg = message.GetPayload();
+    // msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
 
     switch (methodID)
     {
     case 5:
-        //HandleCall(*this,&skeleton::ADD,msg,cserver);
+        HandleCall(*this,&skeleton::ADD,message,cserver);
 
         break;
     default:

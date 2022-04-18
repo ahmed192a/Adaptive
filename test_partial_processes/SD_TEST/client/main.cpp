@@ -97,23 +97,24 @@ void *pthread0(void *v_var)
     std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
     int result;
 
-    // std::cout << "\t\t\t[CLIENT] Result of ADD : ";
-    // result = server_proxy_ptr->ADD(7, 85);
-    // std::cout << result << std::endl;
-    // sleep(3);
+    std::cout << "\t\t\t[CLIENT] Result of ADD : ";
+    result = server_proxy_ptr->ADD(7, 85);
+    std::cout << result << std::endl;
+    sleep(3);
     server_proxy_ptr->ev1.Subscribe();
 
-    // sleep(3);
-    // server_proxy_ptr->ev2.Subscribe();
-    // sleep(3);
-    // server_proxy_ptr->fd1.Subscribe();
+    sleep(3);
+    server_proxy_ptr->ev2.Subscribe();
+    sleep(3);
+    server_proxy_ptr->ev2.UnSubscribe();
+    sleep(2);
+
+    server_proxy_ptr->fd1.Subscribe();
     // sleep(3);
     // int x = 565;
     // std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_ptr->fd1.Set(x) << std::endl;
     // sleep(2);
     // std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_ptr->fd1.Get() << std::endl;
-    // sleep(2);
-    // server_proxy_ptr->fd1.UnSubscribe();
 
     // std::cout << "\t\t\t[CLIENT] Result of ADD : ";
     // result = server_proxy_ptr1->ADD(7, 4);

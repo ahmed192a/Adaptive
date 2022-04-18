@@ -180,6 +180,10 @@ namespace ara
 				/// @param data Byte array
 				void SetPayload(std::vector<uint8_t> &data);
 
+				/// @brief Get message data payload
+				/// @returns Byte array
+				std::vector<uint8_t> GetPayload();
+
 				/// @brief Deserialize message payload
 				/// @param msg Byte array
 				static Message Deserialize(const std::vector<uint8_t> &msg);
@@ -189,6 +193,13 @@ namespace ara
 				Message& operator=(Message &msg);
 
 				std::vector<uint8_t> getload();
+
+				bool  check_Methode_ID(){
+					if((uint16_t)(this->GBMessageID.method_id&0x8000) == 0)
+						return true;
+					else
+						return false;
+				}
 				
 			};
 

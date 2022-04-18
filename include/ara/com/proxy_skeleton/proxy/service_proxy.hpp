@@ -24,7 +24,7 @@
 #include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 #include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
 #include "ara/com/SOMEIP/helper/ipv4_address.hpp"
-
+#include "ara/com/deserializer.hpp"
 #include <cstring>
 #include <signal.h>
 #include <future>
@@ -68,7 +68,7 @@ namespace ara
                     {
 
                         SOMEIP_MESSAGE::Message R_msg(
-                                SOMEIP_MESSAGE::Message_ID{ (uint16_t) this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                                SOMEIP_MESSAGE::Message_ID{ (uint16_t) this->m_proxy_handle.m_server_com.service_id, (uint16_t)(method_id&0x7F)},
                                 SOMEIP_MESSAGE::Request_ID{5,6},
                                 2, // protocol version
                                 7, // Interface Version
@@ -76,17 +76,14 @@ namespace ara
 
                         R result; // to save the result of the method
                         ara::com::Serializer ser;
+                        ara::com::Deserializer deser;
 
                         (ser.serialize(std::forward<Args>(args)), ...);
 
-                        int bufsize = 256; // dummy buffer to get connection confirmation
-                        char buffer[bufsize];
-                        memset(buffer, '\0', bufsize);
 
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
-                        service_proxy_tcp.ClientRead(buffer, bufsize); // get confirmation
 
                         // get payload of argumnets
                         std::vector<uint8_t> msgser = ser.Payload();
@@ -98,9 +95,21 @@ namespace ara
                         int msg_size = msgser.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
+                        std::cout<<"SEND REQUEST\n";
                         // receive the methods result
-                        service_proxy_tcp.ClientRead((void *)&result, sizeof(result));
+                        msgser.clear();
+                        service_proxy_tcp.ClientRead((void *)&msg_size, sizeof(msg_size));
+                        msgser.resize(msg_size);
+                        service_proxy_tcp.ClientRead((void *)&msgser[0], msg_size);
                         service_proxy_tcp.CloseSocket();
+
+
+                        // deserialize the result
+                        SOMEIP_MESSAGE::Message Res_msg = SOMEIP_MESSAGE::Message::Deserialize(msgser);
+                        // get the payload
+                        std::vector<uint8_t> _data_payload = Res_msg.GetPayload();
+                        // deserialize the payload
+                        result = deser.deserialize<R>(_data_payload,0);
                         return result;
                     }
 
@@ -116,6 +125,8 @@ namespace ara
 
                         R result; // to save the result of the method
                         ara::com::Serializer ser;
+                        ara::com::Deserializer deser;
+
                         ser.serialize(method_id);
                         int bufsize = 256;
                         char buffer[bufsize];
@@ -136,14 +147,26 @@ namespace ara
                         int msg_size = msgser.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
-                        service_proxy_tcp.ClientRead((int *)&result, sizeof(result));
+                        msgser.clear();
+                        service_proxy_tcp.ClientRead((void *)&msg_size, sizeof(msg_size));
+                        msgser.resize(msg_size);
+                        service_proxy_tcp.ClientRead((void *)&msgser[0], msg_size);
                         service_proxy_tcp.CloseSocket();
+
+                        // deserialize the result
+                        SOMEIP_MESSAGE::Message Res_msg = SOMEIP_MESSAGE::Message::Deserialize(msgser);
+                        // get the payload
+                        std::vector<uint8_t> _data_payload = Res_msg.GetPayload();
+                        // deserialize the payload
+                        result = deser.deserialize<R>(_data_payload,0);
+
                         return result;
                     }
 
                     template <typename R>
                     R SendRequest( std::vector<uint8_t> data)
                     {
+                        ara::com::Deserializer deser;
                         R result; 
                         int bufsize = 256;
                         char buffer[bufsize];
@@ -156,8 +179,19 @@ namespace ara
                         int msg_size = data.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
                         service_proxy_tcp.ClientWrite(&data[0], msg_size);
-                        service_proxy_tcp.ClientRead((int *)&result, sizeof(result));
+                        std::vector<uint8_t> msgser;
+                        service_proxy_tcp.ClientRead((void *)&msg_size, sizeof(msg_size));
+                        msgser.reserve(msg_size);
+                        service_proxy_tcp.ClientRead((void *)&msgser[0], msg_size);  
                         service_proxy_tcp.CloseSocket();
+
+                        // deserialize the result
+                        SOMEIP_MESSAGE::Message Res_msg = SOMEIP_MESSAGE::Message::Deserialize(msgser);
+                        // get the payload
+                        std::vector<uint8_t> _data_payload = Res_msg.GetPayload();
+                        // deserialize the payload
+                        result = deser.deserialize<R>(_data_payload,0);
+
                         return result;
                     }
 
@@ -226,15 +260,20 @@ namespace ara
                                                                                          1, // major version
                                                                                           event_id);
 
+
                         ara::com::option::Ipv4EndpointOption sub_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, 
                                                                                         ara::com::helper::Ipv4Address(127, 0, 0, 1),
                                                                                          option::Layer4ProtocolType::Udp, 
                                                                                          pport); 
+
+
+
                         event_gr_entry.AddFirstOption(&sub_option);
                         m_info.AddEntry(&event_gr_entry);
 
                         std::vector<uint8_t>_payload = m_info.Serializer();
                         uint32_t _payload_size = _payload.size();
+
                         // event_info e_info;
                         // e_info.operation = 1;
                         // e_info.event_id = event_id;
@@ -242,7 +281,7 @@ namespace ara
                         // e_info.data_size = (sizeof(pport));
                         service_proxy_udp.OpenSocket();
                         service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
-                        service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)&_payload[0], _payload_size, (sockaddr *)&serv_addr);
                         service_proxy_udp.CloseSocket();
 
                         
@@ -262,12 +301,12 @@ namespace ara
                                                                                         1, // major version
                                                                                         event_id);
 
-                        // int pport = htons(m_proxy_handle.UDP_port);
-                        // option::Ipv4EndpointOption sub_option = option::Ipv4EndpointOption::CreateSdEndpoint(false,
-                        //                                                                 helper::Ipv4Address(127, 0, 0, 1),
-                        //                                                                 option::Layer4ProtocolType::Udp,
-                        //                                                                 pport); 
-                        // event_gr_entry.AddFirstOption(&sub_option);
+                        int pport = htons(m_proxy_handle.UDP_port);
+                        option::Ipv4EndpointOption sub_option = option::Ipv4EndpointOption::CreateSdEndpoint(false,
+                                                                                        helper::Ipv4Address(127, 0, 0, 1),
+                                                                                        option::Layer4ProtocolType::Udp,
+                                                                                        pport); 
+                        event_gr_entry.AddFirstOption(&sub_option);
                         m_info.AddEntry(&event_gr_entry);
 
                         std::vector<uint8_t>_payload = m_info.Serializer();
