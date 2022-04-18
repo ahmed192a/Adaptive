@@ -51,9 +51,8 @@ namespace ara
                      *
                      * @todo edit the sigval to carry any type not just int
                      *
-                     * @param value
                      */
-                    void notify(T value)
+                    void notify()
                     {
                         std::vector<ara::com::proxy_skeleton::Client_udp_Info>::iterator itr;
                         std::vector<ara::com::proxy_skeleton::Client_udp_Info> subs = subscribers_data.getrows(subname_file.data());
@@ -126,7 +125,7 @@ namespace ara
                         event_data = value;
                         std::cout << m_name << " is Udpated " << std::endl;
                         //mu.lock();
-                        notify(value);
+                        notify();
                         //mu.unlock();
                     }
 
@@ -157,6 +156,38 @@ namespace ara
                         // ser.serialize(event_data);
                         // data = ser.Payload();
                         // msg.data_size = data.size();
+                    }
+
+                    void HandleCall(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
+                    {
+                        bool op = false;
+                        std::vector<uint8_t> _data = sd_msg.GetPayload();
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{ m_service->m_service_id.GetInstanceId(), msg.MessageId().method_id|0x8000},
+                            SOMEIP_MESSAGE::Request_ID{5,6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::RESPONSE);
+                        if(_data.size()>0) // SET
+                        {
+                            ara::com::Deserializer dser;
+                            event_data = dser.deserialize<T>(_data,0);
+                            op = true;
+
+                        }else{ // GET
+                            ara::com::Serializer ser;
+                            ser.serialize(event_data);
+                            _data = ser.Payload();
+                        }
+                        // Setpayload in message
+                        R_msg.SetPayload(_data);
+                        _data = R_msg.Serializer();
+                        uint32_t msg_size = _data.size();
+                        // send message
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_data.data(), msg_size);
+                        binding.CloseSocket();
+                        if(op) notify();
                     }
 
                     std::vector<ara::com::proxy_skeleton::Client_udp_Info> getsub()

@@ -120,6 +120,7 @@ void *pthread0(void *v_var)
     }else{
         // SET and GET REQUEST for fields
         cout<<"This is SET OR GET request \n";
+        server_skeleton_ptr->field_method_dispatch(Request_msg, Sclient);
     }
 
  

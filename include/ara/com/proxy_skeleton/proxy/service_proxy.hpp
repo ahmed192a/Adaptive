@@ -328,20 +328,28 @@ namespace ara
                         struct sockaddr_in serv_addr;
                         serv_addr.sin_family = AF_INET;
                         serv_addr.sin_port = htons(m_proxy_handle.m_server_com.port_number);
+                        socklen_t slen = sizeof(serv_addr);
+
                         if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        f_get.data_size = 0;
+                        ara::com::SOMEIP_MESSAGE::Message get_msg({f_get.service_id, f_get.event_id | 0x8000},
+                        {5,6},
+                        5, // protocol verion
+                        6, // interface version
+                        ara::com::SOMEIP_MESSAGE::MessageType::REQUEST);
+                        std::vector<uint8_t>_payload = get_msg.Serializer();
+                        uint32_t _payload_size = _payload.size();
                         service_proxy_udp.OpenSocket();
-                        // cre
-
-
-
-                        service_proxy_udp.UDPSendTo((void *)&f_get, sizeof(f_get), (sockaddr *)&serv_addr);
-                        socklen_t slen = sizeof(serv_addr);
-                        service_proxy_udp.UDPRecFrom((void *)&data[0], data.size(), (sockaddr *)&serv_addr, &slen);
+                        service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+                        _payload.clear();
+                        service_proxy_udp.UDPRecvFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
+                        service_proxy_udp.UDPRecvFrom((void *)_payload, _payload_size, (sockaddr *)&serv_addr, &slen);
+                        ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserializer(_payload);
                         service_proxy_udp.CloseSocket();
+                        data = R_get_msg.GetPayload();
                     }
                     void Field_set(ara::com::proxy_skeleton::event_info &f_set, std::vector<uint8_t> &data)
                     {
@@ -352,11 +360,23 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        f_set.data_size = data.size();
+                        ara::com::SOMEIP_MESSAGE::Message set_msg({f_set.service_id, f_set.event_id | 0x8000},
+                        {5,6},
+                        5, // protocol verion
+                        6, // interface version
+                        ara::com::SOMEIP_MESSAGE::MessageType::REQUEST);
+                        set_msg.SetPayload(data);
+                        std::vector<uint8_t>_payload = set_msg.Serializer();
+                        uint32_t _payload_size = _payload.size();
                         service_proxy_udp.OpenSocket();
-                        service_proxy_udp.UDPSendTo((void *)&f_set, sizeof(f_set), (sockaddr *)&serv_addr);
-                        service_proxy_udp.UDPSendTo((void *)&data[0], data.size(), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
+                        service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+                        _payload.clear();
+                        service_proxy_udp.UDPRecvFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
+                        service_proxy_udp.UDPRecvFrom((void *)_payload, _payload_size, (sockaddr *)&serv_addr, &slen);
+                        ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserializer(_payload);
                         service_proxy_udp.CloseSocket();
+                        data = R_get_msg.GetPayload();
                     }
                 };
 

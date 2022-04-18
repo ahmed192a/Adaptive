@@ -61,3 +61,23 @@ void skeleton::method_dispatch(ara::com::SOMEIP_MESSAGE::Message& message, Socke
         break;
     }
 }
+
+void skeleton::field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message& message, Socket& cserver)
+{
+    ara::com::Deserializer dser;
+    // int methodID = dser.deserialize<int>(message,0);
+
+    int event_id = message.MessageId().method_id&0x7FFF;
+        switch (event_id)
+    {
+    case 2:
+        field1.HandleCall(message, cserver);
+        break;
+    default:
+    	cserver.Send(&result2, sizeof(int));
+    	cserver.CloseSocket();
+       
+        break;
+    }
+}
+
