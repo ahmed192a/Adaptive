@@ -130,7 +130,7 @@ namespace ara
                         /* send the event info object then send the serialized data */
                         std::cout<<"send event to client "<< client_add.sin_port<<std::endl;
                         // Create Mesaage {, event_id | 0x8000}, NOTIFICATION
-                        ara::com::SOMEIP_MESSAGE::Message M1({ this->m_service_id.GetInstanceId(), event_id|0x8000},{1,2},3,4,ara::com::SOMEIP_MESSAGE::MessageType::NOTIFICATION);
+                        ara::com::SOMEIP_MESSAGE::Message M1({ (uint16_t) this->m_service_id.GetInstanceId(),(uint16_t) (event_id|0x8000)},{1,2},3,4,ara::com::SOMEIP_MESSAGE::MessageType::NOTIFICATION);
                         // SetPayload(sermsg)
                         M1.SetPayload(sermsg);
                         // vector jjj = mes.Serializer
@@ -179,7 +179,7 @@ namespace ara
                          s1.serialize(result);
                         // create SOME IP message
                         SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{ this->m_service_id.GetInstanceId(), msg.MessageId().method_id},
+                            SOMEIP_MESSAGE::Message_ID{ (uint16_t)this->m_service_id.GetInstanceId(), (uint16_t)(msg.MessageId().method_id&0x7fff) },
                             SOMEIP_MESSAGE::Request_ID{5,6},
                             2, // protocol version
                             7, // Interface Version

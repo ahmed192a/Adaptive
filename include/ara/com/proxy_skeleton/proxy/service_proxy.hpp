@@ -334,7 +334,7 @@ namespace ara
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        ara::com::SOMEIP_MESSAGE::Message get_msg({f_get.service_id, f_get.event_id | 0x8000},
+                        ara::com::SOMEIP_MESSAGE::Message get_msg({(uint16_t) (f_get.service_id), (uint16_t) (f_get.event_id | 0x8000)},
                         {5,6},
                         5, // protocol verion
                         6, // interface version
@@ -345,9 +345,9 @@ namespace ara
                         service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
                         service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
                         _payload.clear();
-                        service_proxy_udp.UDPRecvFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
-                        service_proxy_udp.UDPRecvFrom((void *)_payload, _payload_size, (sockaddr *)&serv_addr, &slen);
-                        ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserializer(_payload);
+                        service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
+                        service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
+                        ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(_payload);
                         service_proxy_udp.CloseSocket();
                         data = R_get_msg.GetPayload();
                     }
@@ -356,11 +356,13 @@ namespace ara
                         struct sockaddr_in serv_addr;
                         serv_addr.sin_family = AF_INET;
                         serv_addr.sin_port = htons(m_proxy_handle.m_server_com.port_number);
+                        socklen_t slen = sizeof(serv_addr);
+
                         if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
                         {
                             printf("\nInvalid address/ Address not supported \n");
                         }
-                        ara::com::SOMEIP_MESSAGE::Message set_msg({f_set.service_id, f_set.event_id | 0x8000},
+                        ara::com::SOMEIP_MESSAGE::Message set_msg({(uint16_t) f_set.service_id, (uint16_t) (f_set.event_id | 0x8000)},
                         {5,6},
                         5, // protocol verion
                         6, // interface version
@@ -372,9 +374,9 @@ namespace ara
                         service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
                         service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
                         _payload.clear();
-                        service_proxy_udp.UDPRecvFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
-                        service_proxy_udp.UDPRecvFrom((void *)_payload, _payload_size, (sockaddr *)&serv_addr, &slen);
-                        ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserializer(_payload);
+                        service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
+                        service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
+                        ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(_payload);
                         service_proxy_udp.CloseSocket();
                         data = R_get_msg.GetPayload();
                     }

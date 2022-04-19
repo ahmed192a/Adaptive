@@ -125,12 +125,13 @@ void *pthread0(void *v_var)
 
  
 
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // while (server_skeleton_ptr->event1.getsub().empty())
-    // {
-    // }
-    // std::cout << "\t[SERVER] : ";
-    // server_skeleton_ptr->event1.update(7);
+    /////////////////////////////////////////////////////////////////////////////////////
+    while (server_skeleton_ptr->event1.getsub().empty())
+    {
+        cout << "waiting for event1" << endl;
+    }
+    std::cout << "\t[SERVER] : ";
+    server_skeleton_ptr->event1.update(7);
 
     // sleep(1);
     // while (server_skeleton_ptr->event2.getsub().empty())

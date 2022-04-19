@@ -74,8 +74,8 @@ void skeleton::field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message& message,
         field1.HandleCall(message, cserver);
         break;
     default:
-    	cserver.Send(&result2, sizeof(int));
-    	cserver.CloseSocket();
+    	// cserver.Send(&result2, sizeof(int));
+    	// cserver.CloseSocket();
        
         break;
     }

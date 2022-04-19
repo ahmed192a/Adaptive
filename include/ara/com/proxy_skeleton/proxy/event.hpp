@@ -55,11 +55,10 @@ namespace ara
                         m_service->EventUnsubscribe(m_event_id);
                     }
 
-                    void handlecall(ara::com::proxy_skeleton::event_info& val, std::vector<uint8_t > &msg)
+                    void handlecall(std::vector<uint8_t > &msg)
                     {
                         ara::com::Deserializer dser;
                         *event_data = dser.deserialize<T>(msg, 0);
-                        // event_data = val.newdata;
                     }
                     T  get_value()
                     {

@@ -44,6 +44,7 @@ public:
     skeleton(ara::com::InstanceIdentifier instance, ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle);
     ~skeleton();
     void method_dispatch(ara::com::SOMEIP_MESSAGE::Message&message, Socket &cserver);
+    void field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message& message, Socket& cserver);
 
     std::future<int> ADD(int p1, int p2)
     {
