@@ -16,15 +16,15 @@ namespace ara
     {
         namespace entry
         {
-            EventgroupEntry::EventgroupEntry(EntryType type,
-                                             uint16_t serviceId,
-                                             uint16_t instanceId,
-                                             uint32_t ttl,
-                                             uint8_t majorVersion,
-                                             uint16_t eventgroupId) noexcept : Entry(type, serviceId, instanceId, ttl, majorVersion),
-                                                                               GBEventgroupId{eventgroupId}
-            {
-            }
+            // EventgroupEntry::EventgroupEntry(EntryType type,
+            //                                  uint16_t serviceId,
+            //                                  uint16_t instanceId,
+            //                                  uint32_t ttl,
+            //                                  uint8_t majorVersion,
+            //                                  uint16_t eventgroupId) noexcept : Entry(type, serviceId, instanceId, ttl, majorVersion),
+            //                                                                    GBEventgroupId{eventgroupId}
+            // {
+            // }
 
             bool EventgroupEntry::isAcknowledge() const noexcept
             {
@@ -75,6 +75,8 @@ namespace ara
 
                 return _result;
             }
+
+            
 
             uint16_t EventgroupEntry::EventgroupId() const noexcept
             {

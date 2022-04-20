@@ -42,7 +42,7 @@ namespace ara
                 {
                 }
 
-                virtual uint16_t Length() const noexcept override;
+                uint16_t Length() const noexcept override;
 
                 /// @brief Get priority
                 /// @returns Service instance priority
@@ -52,7 +52,7 @@ namespace ara
                 /// @returns Servince instance random selection weight
                 uint16_t Weight() const noexcept;
 
-                virtual std::vector<uint8_t> Payload()  override;
+                std::vector<uint8_t> Payload()  override;
             };
         }
     }

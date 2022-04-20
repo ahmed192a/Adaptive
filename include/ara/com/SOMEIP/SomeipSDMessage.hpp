@@ -13,9 +13,12 @@
 
 #include <stdint.h>
 #include <vector>
+#include <memory>
 #include <utility>
 #include "ara/com/SOMEIP/Message.hpp"
 #include "ara/com/SOMEIP/entry/entry.hpp"
+#include "ara/com/SOMEIP/entry/service_entry.hpp"
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
 
 namespace ara
 {
@@ -45,17 +48,19 @@ namespace ara
                     SomeIpSDMessage();
 
                     const std::vector<entry::Entry *> &Entries() const noexcept;
-
                     
                     void AddEntry(entry::Entry *entry);
 
-                    uint32_t Length() const noexcept override;
+                    uint32_t Length()  noexcept override;
 
                     void SetSessionId(uint16_t sessionId) override;
 
                     bool IncrementSessionId() noexcept override;
 
-                    std::vector<uint8_t> Payload()  override;
+                    std::vector<uint8_t> Serializer()  override;
+
+                    void Deserialize(const std::vector<uint8_t> &payload);
+
                 };
             }
         }

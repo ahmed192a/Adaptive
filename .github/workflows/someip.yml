@@ -1,10 +1,10 @@
-name: CMake
+name: SOMEIP
 
 on:
   push:
-    branches: [ master ]
+    branches: [ someip ]
   pull_request:
-    branches: [ master ]
+    branches: [ someip ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -27,24 +27,20 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-
+      
+    # - name: Configure
+    #   run: cmake -B ${{github.workspace}}/build -S ${{github.workspace}}
+      
     - name: Build
       # working-directory: ${{github.workspace}}/build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     
-    - name: Run
-      working-directory: ${{github.workspace}}/build/App 
-      run: ./Adaptive_Platform
+    # - name: Run
+      # working-directory: ${{github.workspace}}/quick_test
+      # run: ./someip.sh
+      # working-directory: ${{github.workspace}}/build
+      # run: ./some_client/client_someip ; ./some_server/server_someip
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build/Testing
-      run: ./Adaptive_Platform-ut
 
-      # Generate Doxygen code dodumentation and publish it to the GitHub Pages
-    # - uses: langroodi/doxygenize@v1.6
-    #   with:
-    #     doxygenconf: './doc/doxygen.conf'
-    #     htmloutput: './doc/html/'
-    #     darkmode: true
 

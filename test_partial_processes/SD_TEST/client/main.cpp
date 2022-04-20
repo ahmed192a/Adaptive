@@ -8,6 +8,8 @@
 #include <sys/shm.h> 
 #include "ara/com/ipc/client/socket_Client.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
+#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 
 #define SD_PORT 1690
 #define SERVICE_ID 32
@@ -19,10 +21,10 @@ using namespace std;
 
 CServer ssevent(SOCK_DGRAM);
 ara::com::FindServiceHandle findhandle{SERVICE_ID, 32, SD_PORT};
-ara::com::FindServiceHandle findhandle1{47, 47, SD_PORT};
+// ara::com::FindServiceHandle findhandle1{47, 47, SD_PORT};
 
 std::shared_ptr<saam::proxy> server_proxy_ptr ;
-std::shared_ptr<saam::proxy> server_proxy_ptr1 ;
+// std::shared_ptr<saam::proxy> server_proxy_ptr1 ;
 
 // static CClient *client_event_ptr;
 Color::Modifier green(Color::FG_GREEN);
@@ -45,9 +47,9 @@ int main(int argc, char **argv)
     server_proxy_ptr = std::make_shared<saam::proxy>(hand);
 
 
-    ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand1 = (saam::proxy::FindService(findhandle1)[0]);
-    hand1.UDP_port = UDP_PORT_EVENTS;
-    server_proxy_ptr1 = std::make_shared<saam::proxy>(hand1);
+    // ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand1 = (saam::proxy::FindService(findhandle1)[0]);
+    // hand1.UDP_port = UDP_PORT_EVENTS;
+    // server_proxy_ptr1 = std::make_shared<saam::proxy>(hand1);
 
 
 
@@ -105,17 +107,18 @@ void *pthread0(void *v_var)
     server_proxy_ptr->ev2.Subscribe();
     sleep(3);
     server_proxy_ptr->fd1.Subscribe();
+ 
     sleep(3);
-    int x = 565;
+    int x = 10;
     std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_ptr->fd1.Set(x) << std::endl;
     sleep(2);
     std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_ptr->fd1.Get() << std::endl;
     sleep(2);
-    server_proxy_ptr->fd1.UnSubscribe();
+    server_proxy_ptr->ev2.UnSubscribe();
 
-    std::cout << "\t\t\t[CLIENT] Result of ADD : ";
-    result = server_proxy_ptr1->ADD(7, 4);
-    std::cout << result << std::endl;
+    // std::cout << "\t\t\t[CLIENT] Result of ADD : ";
+    // result = server_proxy_ptr1->ADD(7, 4);
+    // std::cout << result << std::endl;
 
 
     while (1)
@@ -134,43 +137,46 @@ void *pthread1(void *v_var)
 {
     while (1)
         Event_Handler();
+
 }
 void Event_Handler()
 {
     sockaddr_in echoClntAddr;                    /* Address of datagram source */
     unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
 
-    ara::com::proxy_skeleton::event_info evr;
+    // ara::com::proxy_skeleton::event_info evr;
     std::vector<uint8_t> msg;
+    uint32_t msg_size;
 
-    ssevent.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
+    ssevent.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
+    msg.reserve(msg_size);
+    ssevent.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
     printf("\t[CLIENT]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
     fflush(stdout);
-    msg.resize(evr.data_size);
-    if (evr.data_size)
-    {
-        ssevent.UDPRecFrom((void *)&msg[0], msg.size(), (struct sockaddr *)&echoClntAddr, &clntLen);
-    }
 
     ara::com::proxy_skeleton::Client_udp_Info cudp;
     cudp.port = echoClntAddr.sin_port;
     cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
-    switch (evr.service_id)
+    ara::com::SOMEIP_MESSAGE::Message Nmsg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    msg = Nmsg.GetPayload();
+
+
+    switch (Nmsg.MessageId().serivce_id)
     {
     case SERVICE_ID:
-        switch (evr.event_id)
+        switch (Nmsg.MessageId().method_id&0x7FFF)
         {
         case 0:
-            server_proxy_ptr->ev1.handlecall(evr, msg);
+            server_proxy_ptr->ev1.handlecall( msg);
             std::cout << "NEW EVENT1 : " << server_proxy_ptr->ev1.get_value() << std::endl;
             break;
         case 1:
-            server_proxy_ptr->ev2.handlecall(evr, msg);
+            server_proxy_ptr->ev2.handlecall(msg);
             std::cout << "NEW EVENT2 : " << server_proxy_ptr->ev2.get_value() << std::endl;
 
             break;
         case 2:
-            server_proxy_ptr->fd1.handlecall(evr, msg);
+            server_proxy_ptr->fd1.handlecall( msg);
             std::cout << "NEW FIELD1 : " << server_proxy_ptr->fd1.get_value() << std::endl;
 
             break;

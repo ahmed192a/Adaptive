@@ -169,10 +169,7 @@ error_kind CServer::UDPSendTo(void *buffer, size_t n, sockaddr *address)
 	{
 		std::cerr << e.what() << '\n';
 	}
-	catch(const runtime_error& error)
-	{
-		std::cout << "run time error\n";
-	}
+ 
 
 	return Error;
 }

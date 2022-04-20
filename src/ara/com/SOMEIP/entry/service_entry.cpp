@@ -39,6 +39,7 @@ namespace ara
                 return _result;
             }
 
+            
             uint32_t ServiceEntry::MinorVersion() const noexcept
             {
                 return GBMinorVersion;

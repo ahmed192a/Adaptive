@@ -32,7 +32,20 @@ namespace ara
                 Layer4ProtocolType GBL4Proto;
                 uint16_t GBPort;
 
-                constexpr Ipv4EndpointOption(
+                // constexpr Ipv4EndpointOption(
+                //     OptionType type,
+                //     bool discardable,
+                //     helper::Ipv4Address ipAddress,
+                //     Layer4ProtocolType protocol,
+                //     uint16_t port) noexcept : Option(type, discardable),
+                //                               GBIpAddress{ipAddress},
+                //                               GBL4Proto{protocol},
+                //                               GBPort{port}
+                // {
+                // }
+
+            public:
+            constexpr Ipv4EndpointOption(
                     OptionType type,
                     bool discardable,
                     helper::Ipv4Address ipAddress,
@@ -44,10 +57,9 @@ namespace ara
                 {
                 }
 
-            public:
                 Ipv4EndpointOption() = delete;
                 ~Ipv4EndpointOption(){}
-                virtual uint16_t Length() const noexcept override;
+                uint16_t Length() const noexcept override;
 
                 /// @brief Get IP address
                 /// @returns IPv4 address
@@ -61,7 +73,7 @@ namespace ara
                 /// @returns Network port number
                 uint16_t Port() const noexcept;
 
-                virtual std::vector<uint8_t> Payload()  override;
+                std::vector<uint8_t> Payload()  override;
 
                 /// @brief Unitcast endpoint factory
                 /// @param discardable Indicates whether the option can be discarded or not

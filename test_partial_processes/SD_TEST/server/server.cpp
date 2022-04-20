@@ -34,9 +34,9 @@ ara::com::InstanceIdentifier instance(SERVICE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
 std::shared_ptr<skeleton> server_skeleton_ptr = std::make_shared<skeleton>(instance, skeleton_handle);
 
-
-ara::com::InstanceIdentifier instance1(47);
-std::shared_ptr<skeleton> server_skeleton_ptr1 = std::make_shared<skeleton>(instance1, skeleton_handle);
+bool stop =true;
+// ara::com::InstanceIdentifier instance1(47);
+// std::shared_ptr<skeleton> server_skeleton_ptr1 = std::make_shared<skeleton>(instance1, skeleton_handle);
 
 void Handle_IO();
 void *pthread0(void *v_var);
@@ -96,29 +96,39 @@ void *pthread0(void *v_var)
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
 
     server_skeleton_ptr->OfferService();
-    server_skeleton_ptr1->OfferService();
 
-    cout << "shared " << server_skeleton_ptr << endl;
+    // server_skeleton_ptr1->OfferService();
+
     cout << "\t[SERVER]  Ready" << endl;
     Socket Sclient = server_main_socket.AcceptServer();
     cout << "\t[SERVER]  accepted" << endl;
 
-    strcpy(buffer, "=> Server connected...\n");
+    // strcpy(buffer, "=> Server connected...\n");
 
-    // send a confirmation connect to client
-    Sclient.Send(buffer, strlen(buffer));
+    // // // send a confirmation connect to client
+    // Sclient.Send(buffer, strlen(buffer));
 
-    // Receive a struct from client containing the method name and parameters
+    // // Receive a struct from client containing the method name and parameters
     Sclient.Receive((void *)&msg_size, sizeof(msg_size));
     msg.resize(msg_size);
-    Sclient.Receive((void *)&msg[0], sizeof(msg));
+    Sclient.Receive((void *)&msg[0], msg_size);
+    ara::com::SOMEIP_MESSAGE::Message Request_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    if(Request_msg.check_Methode_ID() == true)
+    {
+        cout<<"This is method request \n";
+        server_skeleton_ptr->method_dispatch(Request_msg, Sclient);
+    }else{
+        // SET and GET REQUEST for fields
+        cout<<"This is SET OR GET request \n";
+        server_skeleton_ptr->field_method_dispatch(Request_msg, Sclient);
+    }
 
  
-    server_skeleton_ptr->method_dispatch(msg, Sclient);
 
     /////////////////////////////////////////////////////////////////////////////////////
     while (server_skeleton_ptr->event1.getsub().empty())
     {
+        cout << "waiting for event1" << endl;
     }
     std::cout << "\t[SERVER] : ";
     server_skeleton_ptr->event1.update(7);
@@ -139,15 +149,36 @@ void *pthread0(void *v_var)
     std::cout << "\t[SERVER] : ";
     server_skeleton_ptr->field1.update(y);
 
+    Socket Sclient1 = server_main_socket.AcceptServer();
+    cout << "\t[SERVER]  accepted" << endl;
+    Sclient1.Receive((void *)&msg_size, sizeof(msg_size));
+    msg.resize(msg_size);
+    Sclient1.Receive((void *)&msg[0], msg_size);
+    ara::com::SOMEIP_MESSAGE::Message Request_msg1 = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    server_skeleton_ptr->field_method_dispatch(Request_msg1, Sclient1);
+
+    Socket Sclient2 = server_main_socket.AcceptServer();
+    cout << "\t[SERVER]  accepted" << endl;
+    Sclient2.Receive((void *)&msg_size, sizeof(msg_size));
+    msg.resize(msg_size);
+    Sclient2.Receive((void *)&msg[0], msg_size);
+    ara::com::SOMEIP_MESSAGE::Message Request_msg2 = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    server_skeleton_ptr->field_method_dispatch(Request_msg2, Sclient2);
+
+
     while (!server_skeleton_ptr->field1.getsub().empty()) // test uns
     {
     }
 
-    cout << "\n\t[SERVER] Goodbye..." << endl;
+    // cout << "\n\t[SERVER] Goodbye..." << endl;
 
-    // always be awake to receive stuff from signal
-    while (1)
-    {
+    // // always be awake to receive stuff from signal
+    // while (1)
+    // {
+    //     printf(".\n");
+    //     sleep(1);
+    // }
+    while(stop){
         printf(".\n");
         sleep(1);
     }
@@ -166,72 +197,131 @@ void *pthread1(void *v_var)
 {
     server_main_socket_DG.OpenSocket(SERVER_PORT);
     server_main_socket_DG.BindServer();
-    cout << "shared " << server_skeleton_ptr << endl;
     while (1)
         Handle_IO();
 }
+
 void Handle_IO()
 {
     sockaddr_in echoClntAddr;                    /* Address of datagram source */
     unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
     ara::com::proxy_skeleton::event_info evr;
     std::vector<uint8_t> msg;
-    server_main_socket_DG.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
+    uint32_t msg_size;
 
-    msg.resize(evr.data_size);
-    ara::com::proxy_skeleton::Client_udp_Info cudp;
-    cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
-    if (evr.data_size)
+
+    server_main_socket_DG.UDPRecFrom((void *)&msg_size, sizeof(msg_size),(struct sockaddr *)& echoClntAddr, &clntLen);
+    msg.resize(msg_size);
+    server_main_socket_DG.UDPRecFrom((void *)&msg[0], msg_size,(struct sockaddr *)& echoClntAddr, &clntLen);
+
+
+    if(msg[14] = 0x02) // SD msg
     {
-        if (evr.operation == 1)
-        {
-            server_main_socket_DG.UDPRecFrom((void *)&cudp.port, evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
+
+        sd_msg.Deserialize(msg);
+        auto entry = (ara::com::entry::EventgroupEntry *)sd_msg.Entries()[0];
+
+        ara::com::proxy_skeleton::Client_udp_Info cudp;
+        cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
+        printf("\n[SERVER]  ->> Handling client %s   with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), msg_size);
+        switch(entry->Type()){
+            case ara::com::entry::EntryType::Subscribing:
+            switch(entry->ServiceId())
+            {
+                case SERVICE_ID:
+                    switch (entry->EventgroupId())
+                    {
+                        case 0:
+                            std::cout << "[server] sub event1 start\n";
+                            server_skeleton_ptr->event1.subhandlecall(sd_msg, cudp);
+                            // stop = false; // for debuging
+                            break;
+                        case 1:
+                            std::cout << "[server] sub event2 start\n";
+                            server_skeleton_ptr->event2.subhandlecall(sd_msg, cudp);
+                            break;
+                        case 2:
+                            std::cout << "[server] sub field1 start\n";
+                            server_skeleton_ptr->field1.subhandlecall(sd_msg, cudp);
+                            break;
+
+                        default: // error invalid eventgroup id
+                            break;
+                    }
+                break;
+            }
+            default: // reply with error invalid servic id
+            break;
         }
-        else
-        {
-            server_main_socket_DG.UDPRecFrom((void *)&msg[0], evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
-            std::cout << "got value of set\n";
-        }
+    }else{ // for get and set methods
+          // handle get and set methods is dispatch method
     }
-    printf("\n[SERVER]  ->> Handling client %s %d  with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), cudp.port, evr.data_size);
 
-    switch (evr.service_id)
-    {
-    case SERVICE_ID:
-        switch (evr.event_id)
-        {
-        case 0:
-            std::cout << "[server] sub event1 start\n";
-            server_skeleton_ptr->event1.handlecall(evr, msg, cudp);
 
-            break;
-        case 1:
-            std::cout << "[server] sub event2 start\n";
-            server_skeleton_ptr->event2.handlecall(evr, msg, cudp);
-
-            break;
-        case 2:
-            server_skeleton_ptr->field1.handlecall(evr, msg, cudp);
-            if (evr.operation == 4)
-            {
-                std::cout << "[server] get field1 " << std::endl;
-                server_main_socket_DG.UDPSendTo((void *)&msg[0], msg.size(), (struct sockaddr *)&echoClntAddr);
-            }
-            else if (evr.operation == 3)
-            {
-                std::cout << "[server] set field1 " << std::endl;
-            }
-            else
-            {
-                std::cout << "[server] sub field1 start\n";
-            }
-            break;
-
-        default:
-            break;
-        }
-        break;
-    default:
-        break;
-    }
 }
+// void Handle_IO()
+// {
+//     sockaddr_in echoClntAddr;                    /* Address of datagram source */
+//     unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
+//     ara::com::proxy_skeleton::event_info evr;
+//     std::vector<uint8_t> msg;
+//     server_main_socket_DG.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
+
+//     msg.resize(evr.data_size);
+//     ara::com::proxy_skeleton::Client_udp_Info cudp;
+//     cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
+//     if (evr.data_size)
+//     {
+//         if (evr.operation == 1)
+//         {
+//             server_main_socket_DG.UDPRecFrom((void *)&cudp.port, evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+//         }
+//         else
+//         {
+//             server_main_socket_DG.UDPRecFrom((void *)&msg[0], evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+//             std::cout << "got value of set\n";
+//         }
+//     }
+//     printf("\n[SERVER]  ->> Handling client %s %d  with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), cudp.port, evr.data_size);
+
+//     switch (evr.service_id)
+//     {
+//     case SERVICE_ID:
+//         switch (evr.event_id)
+//         {
+//         case 0:
+//             std::cout << "[server] sub event1 start\n";
+//             server_skeleton_ptr->event1.handlecall(evr, msg, cudp);
+
+//             break;
+//         case 1:
+//             std::cout << "[server] sub event2 start\n";
+//             server_skeleton_ptr->event2.handlecall(evr, msg, cudp);
+
+//             break;
+//         case 2:
+//             server_skeleton_ptr->field1.handlecall(evr, msg, cudp);
+//             if (evr.operation == 4)
+//             {
+//                 std::cout << "[server] get field1 " << std::endl;
+//                 server_main_socket_DG.UDPSendTo((void *)&msg[0], msg.size(), (struct sockaddr *)&echoClntAddr);
+//             }
+//             else if (evr.operation == 3)
+//             {
+//                 std::cout << "[server] set field1 " << std::endl;
+//             }
+//             else
+//             {
+//                 std::cout << "[server] sub field1 start\n";
+//             }
+//             break;
+
+//         default:
+//             break;
+//         }
+//         break;
+//     default:
+//         break;
+//     }
+// }

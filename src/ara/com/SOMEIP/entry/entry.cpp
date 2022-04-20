@@ -19,7 +19,7 @@ namespace ara
             Entry::Entry(EntryType type,
                          uint16_t serviceId,
                          uint16_t instanceId,
-                         uint32_t ttl,
+                         uint32_t ttl, 
                          uint8_t majorVersion) noexcept :GBType{type},
                                                          GBServiceId{serviceId},
                                                          GBInstanceId{instanceId},
@@ -30,38 +30,38 @@ namespace ara
 
             bool Entry::ValidateOption(const option::Option *option) const noexcept
             {
-                bool _result=true;
+                bool _result;
 
                 switch (option->Type())
                 {
                 case option::OptionType::Configuration:
                 {
                     bool _containsConfiguration =
-                        !ContainsOption(option::OptionType::Configuration);
+                        ContainsOption(option::OptionType::Configuration);
 
                     // Each entry can only have at maximum one configuration option.
-                    _result = _containsConfiguration;
+                    _result = !_containsConfiguration;
 
                     break;
                 }
                 case option::OptionType::LoadBalancing:
                 {
                     bool _containsLoadBalancing =
-                        !ContainsOption(option::OptionType::LoadBalancing);
+                        ContainsOption(option::OptionType::LoadBalancing);
 
                     // Each entry can only have at maximum one load balancing option.
-                    _result = _containsLoadBalancing;
+                    _result = !_containsLoadBalancing;
 
                     break;
                 }
-                // case option::OptionType::IPv4SdEndpoint:
-                // case option::OptionType::IPv6SdEndpoint:
-                // {
-                //     // Service discovery endpoints are not allowed in entries.
-                //     _result = false;
+                case option::OptionType::IPv4SdEndpoint:
+                case option::OptionType::IPv6SdEndpoint:
+                {
 
-                //     break;
-                // }
+                    _result = true;
+
+                    break;
+                }
                 default:
                 {
                     // Other options cannot be validated in the base entry class.
@@ -73,6 +73,8 @@ namespace ara
 
                 return _result;
             }
+
+            
 
             bool Entry::ContainsOption(option::OptionType optionType) const noexcept
             {
@@ -127,16 +129,10 @@ namespace ara
 
             void Entry::AddFirstOption(option::Option *firstOption)
             {
-                bool _valid = ValidateOption(firstOption);
-
-                if (_valid)
-                {
-                    GBFirstOptions.push_back(firstOption);
-                }
-                else
-                {
-                    throw std::invalid_argument("The option cannot be added.");
-                }
+                
+                     GBFirstOptions.push_back(firstOption);
+                
+            
             }
 
             const std::vector<option::Option *> &Entry::SecondOptions() const noexcept
@@ -146,16 +142,11 @@ namespace ara
 
             void Entry::AddSecondOption(option::Option *secondOption)
             {
-                bool _valid = ValidateOption(secondOption);
-
-                if (_valid)
-                {
+                
+                
                     GBSecondOptions.push_back(secondOption);
-                }
-                else
-                {
-                    throw std::invalid_argument("The option cannot be added.");
-                }
+                
+                
             }
 
             std::vector<uint8_t> Entry::BasePayload(uint8_t &optionIndex) const

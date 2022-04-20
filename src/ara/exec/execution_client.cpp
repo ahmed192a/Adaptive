@@ -44,12 +44,14 @@ namespace ara
         }
         boost::variant2::variant<boost::variant2::monostate , ExecErrc> ExecutionClient::ReportExecutionState(ara::exec::ExecutionState state) const noexcept
         {
+            boost::variant2::variant<boost::variant2::monostate , ExecErrc> result;
             std::string m = "run";
             if (write(fd, &state, sizeof(state)) == -1)
             {
                 // TO DO
                 // Log Error : counldn't send the state to fifo
             }
+            return result;
         }
 
     }

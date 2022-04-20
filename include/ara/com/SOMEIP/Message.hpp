@@ -72,6 +72,7 @@ namespace ara
 			class Header
 			{
 			public:
+				static const uint32_t HeaderSize = 16;
 				struct Message_ID GBMessageID;
 				uint32_t GBlength;
 				struct Request_ID GBRequest_ID;
@@ -83,7 +84,7 @@ namespace ara
 				{
 					GBMessageID.serivce_id = mID.serivce_id;
 					GBMessageID.method_id = mID.method_id;
-					//GBlength = length;
+					GBlength = HeaderSize;
 					GBRequest_ID.client_id = rID.client_id;
 					GBRequest_ID.session_id = rID.session_id;
 					GBProtocol_Version = protocol_version;
@@ -107,33 +108,38 @@ namespace ara
 					MessageType Mtype,
 					ReturnCode Rcode) noexcept;  
                     
-            protected:
+            // protected:	
+			public:
             Message(
-					struct Message_ID mID,
-					struct Request_ID rID,
+					Message_ID mID,
+					Request_ID rID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
 					MessageType Mtype
 					) noexcept;
             Message(
-					struct Request_ID rID,
-					struct Message_ID mID,
+					Request_ID rID,
+					Message_ID mID,
 					uint8_t protocol_version,
 					uint8_t interface_version,
-					MessageType Mtype,
-					ReturnCode Rcode) noexcept;  
+					ReturnCode Rcode,
+					MessageType Mtype) noexcept;  
 
 
-			public:
+
                 virtual ~Message() noexcept = default;
 
                 /// @brief Get message ID
                 /// @returns Message ID consisting service and method/event ID
                 struct Message_ID MessageId() const noexcept;
 
+                /// @brief Get message payload
+                /// @returns Byte array
+                virtual std::vector<uint8_t> Serializer() ;
+
                 /// @brief Get message length
                 /// @returns Message length including the payload length
-                virtual uint32_t Length() const noexcept = 0;
+                virtual uint32_t Length() noexcept ;
 
                 /// @brief Get client ID
                 /// @returns Client ID including ID prefix
@@ -168,9 +174,33 @@ namespace ara
                 /// @returns SOME/IP message return code
                 ReturnCode Returncode() const noexcept;
 
-                /// @brief Get message payload
-                /// @returns Byte array
-                virtual std::vector<uint8_t> Payload() ;
+
+
+				/// @brief Set message payload
+				/// @param data Byte array
+				void SetPayload(std::vector<uint8_t> &data);
+
+				/// @brief Get message data payload
+				/// @returns Byte array
+				std::vector<uint8_t> GetPayload();
+
+				/// @brief Deserialize message payload
+				/// @param msg Byte array
+				static Message Deserialize(const std::vector<uint8_t> &msg);
+
+
+				// operator =(Message &msg);
+				Message& operator=(Message &msg);
+
+				std::vector<uint8_t> getload();
+
+				bool  check_Methode_ID(){
+					if((uint16_t)(this->GBMessageID.method_id&0x8000) == 0)
+						return true;
+					else
+						return false;
+				}
+				
 			};
 
 		}

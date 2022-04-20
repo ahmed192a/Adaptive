@@ -26,27 +26,37 @@ namespace ara
                 static const uint32_t NackTTL = 0x000000;
                 uint16_t GBEventgroupId;
 
-                EventgroupEntry(EntryType type,
-                                uint16_t serviceId,
-                                uint16_t instanceId,
-                                uint32_t ttl,
-                                uint8_t majorVersion,
-                                uint16_t eventgroupId) noexcept;
+                
 
                 bool isAcknowledge() const noexcept;
 
             protected:
-                virtual bool ValidateOption(
+                bool ValidateOption(
                     const option::Option *option) const noexcept override;
 
             public:
+                EventgroupEntry(EntryType type,
+                                             uint16_t serviceId,
+                                             uint16_t instanceId,
+                                             uint32_t ttl,
+                                             uint8_t majorVersion,
+                                             uint16_t eventgroupId) noexcept : Entry(type, serviceId, instanceId, ttl, majorVersion),
+                                                                               GBEventgroupId{eventgroupId}
+                {
+                }
+                // EventgroupEntry(EntryType type,
+                //                 uint16_t serviceId,
+                //                 uint16_t instanceId,
+                //                 uint32_t ttl,
+                //                 uint8_t majorVersion,
+                //                 uint16_t eventgroupId) noexcept;
                 EventgroupEntry() = delete;
 
                 /// @brief Get event-group ID
                 /// @returns Event-group ID for subscription/unsubscription
                 uint16_t EventgroupId() const noexcept;
 
-                virtual std::vector<uint8_t> Payload(uint8_t &optionIndex) const override;
+                std::vector<uint8_t> Payload(uint8_t &optionIndex) const override;
 
                 /// @brief Subscribe to an event-group entry factory
                 /// @param serviceId Service in interest ID

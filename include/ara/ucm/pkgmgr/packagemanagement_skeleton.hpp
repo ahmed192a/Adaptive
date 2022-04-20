@@ -146,10 +146,10 @@ namespace ara
                         case 7:
                         cout << dser.deserialize<uint64_t>(msg, 0) << std::endl;
                         // cout << "msgsize" << msg.size() << endl;
-                            HandleCall(*this, &PackageManagementSkeleton::TransferStart, msg, cserver);
+                            //HandleCall(*this, &PackageManagementSkeleton::TransferStart, msg, cserver);
                             break;
                         case 8:
-                            // HandleCall(*this, &PackageManagementSkeleton::TransferData, msg, cserver);
+                            // //HandleCall(*this, &PackageManagementSkeleton::TransferData, msg, cserver);
                             id = dser.deserialize<ara::ucm::pkgmgr::PackageManagement::TransferIdType>(msg, 0);
                             blockCounter = dser.deserialize<uint64_t>(msg, 16);
                             data.clear();
@@ -162,10 +162,10 @@ namespace ara
                             cserver.CloseSocket();
                             break;
                         case 9:
-                           HandleCall(*this, &PackageManagementSkeleton::TransferExit, msg, cserver);
+                           //HandleCall(*this, &PackageManagementSkeleton::TransferExit, msg, cserver);
                             break;
                         case 10:
-                            HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, msg, cserver);
+                            //HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, msg, cserver);
                             break;
                         default:
                             cserver.Send(&result, sizeof(int));

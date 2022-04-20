@@ -67,27 +67,27 @@ namespace ara
 
                         if (methodID == 0)
                         {
-                            HandleCall(*this, &update_request_Skeleton::ResetMachine, msg, cserver);
+                            //HandleCall(*this, &update_request_Skeleton::ResetMachine, msg, cserver);
                         }
                         else if (methodID == 1)
                         {
-                            HandleCall(*this, &update_request_Skeleton::StopUpdateSession, msg, cserver);
+                            //HandleCall(*this, &update_request_Skeleton::StopUpdateSession, msg, cserver);
                         }
                         else if (methodID == 2)
                         {
-                            HandleCall(*this, &update_request_Skeleton::StartUpdateSession, msg, cserver);
+                            //HandleCall(*this, &update_request_Skeleton::StartUpdateSession, msg, cserver);
                         }
                         else if (methodID == 3)
                         {
-                            HandleCall(*this, &update_request_Skeleton::PrepareUpdate, msg, cserver);
+                            //HandleCall(*this, &update_request_Skeleton::PrepareUpdate, msg, cserver);
                         }
                         else if (methodID == 4)
                         {
-                            HandleCall(*this, &update_request_Skeleton::VerifyUpdate, msg, cserver);
+                            //HandleCall(*this, &update_request_Skeleton::VerifyUpdate, msg, cserver);
                         }
                         else if (methodID == 5)
                         {
-                            HandleCall(*this, &update_request_Skeleton::PrepareRollback, msg, cserver);
+                            //HandleCall(*this, &update_request_Skeleton::PrepareRollback, msg, cserver);
                         }
                         else
                         {

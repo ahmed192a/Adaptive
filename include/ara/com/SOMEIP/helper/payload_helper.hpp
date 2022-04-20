@@ -13,7 +13,7 @@
 
 #include <vector>
 #include <stdint.h>
-
+#include <cstring>
 namespace ara
 {
     namespace com
@@ -40,6 +40,17 @@ namespace ara
             /// @param vector1 First vector
             /// @param vector2 Second vector
             void Concat(std::vector<uint8_t> &vector1, std::vector<uint8_t> &&vector2);
+
+            template <typename T>
+            T Extract (const std::vector<uint8_t> &vector, size_t offset)
+            {
+                T result;
+                memcpy(&result, &vector[offset], sizeof(T));
+                return result;
+            }
+
+            std::vector<uint8_t> Extracts(const std::vector<uint8_t> &vector, size_t offset, size_t length);
+            
         }
     }
 }

@@ -30,25 +30,27 @@ namespace ara
 
                 uint32_t GBMinorVersion;
 
-                ServiceEntry(EntryType type,
-                             uint16_t serviceId,
-                             uint16_t instanceId,
-                             uint32_t ttl,
-                             uint8_t majorVersion,
-                             uint32_t minorVersion) noexcept;
+
 
             protected:
-                virtual bool ValidateOption(
+                bool ValidateOption(
                     const option::Option *option) const noexcept override;
 
             public:
+                ServiceEntry(EntryType type,
+                    uint16_t serviceId,
+                    uint16_t instanceId,
+                    uint32_t ttl,
+                    uint8_t majorVersion,
+                    uint32_t minorVersion) noexcept;
                 ServiceEntry() = delete;
+                // ~ServiceEntry(){};
 
                 /// @brief Get minor version
                 /// @returns Service minor version
                 uint32_t MinorVersion() const noexcept;
 
-                virtual std::vector<uint8_t> Payload(uint8_t &optionIndex) const override;
+                std::vector<uint8_t> Payload(uint8_t &optionIndex) const override;
 
                 /// @brief Find a service entry factory
                 /// @param serviceId Service in interest ID
