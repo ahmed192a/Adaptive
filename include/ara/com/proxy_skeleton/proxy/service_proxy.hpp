@@ -128,14 +128,11 @@ namespace ara
                         ara::com::Deserializer deser;
 
                         ser.serialize(method_id);
-                        int bufsize = 256;
-                        char buffer[bufsize];
-                        memset(buffer, '\0', bufsize);
+
 
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
-                        service_proxy_tcp.ClientRead(buffer, bufsize);
 
                         // get payload of argumnets
                         std::vector<uint8_t> msgser = ser.Payload();
@@ -168,13 +165,10 @@ namespace ara
                     {
                         ara::com::Deserializer deser;
                         R result; 
-                        int bufsize = 256;
-                        char buffer[bufsize];
-                        memset(buffer, '\0', bufsize);
+
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
-                        service_proxy_tcp.ClientRead(buffer, bufsize);
 
                         int msg_size = data.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
@@ -201,13 +195,9 @@ namespace ara
                         ara::com::Serializer ser;
                         ser.serialize(method_id);
                         (ser.serialize(std::forward<Args>(args)), ...);
-                        int bufsize = 256;
-                        char buffer[bufsize];
-                        memset(buffer, '\0', bufsize);
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
-                        service_proxy_tcp.ClientRead(buffer, bufsize);
                         std::vector<uint8_t> msgser = ser.Payload();
                         int msg_size = msgser.size();
                         service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
@@ -225,15 +215,11 @@ namespace ara
                                 SOMEIP_MESSAGE::MessageType::REQUEST);
                         ara::com::Serializer ser;
                         ser.serialize(method_id);
-                        int bufsize = 256;
-                        char buffer[bufsize];
-                        memset(buffer, '\0', bufsize);
+
 
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
-                        service_proxy_tcp.ClientConnect();
-                        service_proxy_tcp.ClientRead(buffer, bufsize); // read confirmation
-                        
+                        service_proxy_tcp.ClientConnect();                        
                         std::vector<uint8_t> msgser = ser.Payload();
                         R_msg.SetPayload(msgser);
                         int msg_size = msgser.size(); // sizeof = 4 bytes
@@ -341,14 +327,26 @@ namespace ara
                         ara::com::SOMEIP_MESSAGE::MessageType::REQUEST);
                         std::vector<uint8_t>_payload = get_msg.Serializer();
                         uint32_t _payload_size = _payload.size();
-                        service_proxy_udp.OpenSocket();
-                        service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
-                        service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+                        // service_proxy_udp.OpenSocket();
+                        // service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
+                        // service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+                        service_proxy_tcp.OpenSocket();
+                        service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
+                        service_proxy_tcp.ClientConnect();
+                        service_proxy_tcp.ClientWrite((void *)&_payload_size, sizeof(_payload_size));
+                        service_proxy_tcp.ClientWrite((void *)_payload.data(), _payload_size);
+
                         _payload.clear();
-                        service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
-                        service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
+                        service_proxy_tcp.ClientRead((void *)&_payload_size, sizeof(_payload_size));
+                        _payload.resize(_payload_size);
+                        service_proxy_tcp.ClientRead((void *)_payload.data(), _payload_size);
+                        service_proxy_tcp.CloseSocket();
+
+
+                        // service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
+                        // _payload.resize(_payload_size);
+                        // service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
                         ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(_payload);
-                        service_proxy_udp.CloseSocket();
                         data = R_get_msg.GetPayload();
                     }
                     void Field_set(ara::com::proxy_skeleton::event_info &f_set, std::vector<uint8_t> &data)
@@ -370,14 +368,29 @@ namespace ara
                         set_msg.SetPayload(data);
                         std::vector<uint8_t>_payload = set_msg.Serializer();
                         uint32_t _payload_size = _payload.size();
-                        service_proxy_udp.OpenSocket();
-                        service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
-                        service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+                        // service_proxy_udp.OpenSocket();
+                        // service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
+                        // service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+                        // _payload.clear();
+                        // service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
+                        // _payload.resize(_payload_size);
+                        // service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
+                        // service_proxy_udp.CloseSocket();
+                        service_proxy_tcp.OpenSocket();
+                        service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
+                        service_proxy_tcp.ClientConnect();
+                        service_proxy_tcp.ClientWrite((void *)&_payload_size, sizeof(_payload_size));
+                        service_proxy_tcp.ClientWrite((void *)_payload.data(), _payload_size);
+
                         _payload.clear();
-                        service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
-                        service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
+                        service_proxy_tcp.ClientRead((void *)&_payload_size, sizeof(_payload_size));
+                        _payload.resize(_payload_size);
+                        service_proxy_tcp.ClientRead((void *)_payload.data(), _payload_size);
+                        service_proxy_tcp.CloseSocket();
+
+
+
                         ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(_payload);
-                        service_proxy_udp.CloseSocket();
                         data = R_get_msg.GetPayload();
                     }
                 };

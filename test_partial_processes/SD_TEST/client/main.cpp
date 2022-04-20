@@ -106,15 +106,15 @@ void *pthread0(void *v_var)
     sleep(3);
     server_proxy_ptr->ev2.Subscribe();
     sleep(3);
-    // server_proxy_ptr->ev2.UnSubscribe();
-    // sleep(2);
-
     server_proxy_ptr->fd1.Subscribe();
-    // sleep(3);
-    // int x = 565;
-    // std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_ptr->fd1.Set(x) << std::endl;
-    // sleep(2);
-    // std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_ptr->fd1.Get() << std::endl;
+ 
+    sleep(3);
+    int x = 10;
+    std::cout << "\n\t\t\t[CLIENT] set field1 = " << server_proxy_ptr->fd1.Set(x) << std::endl;
+    sleep(2);
+    std::cout << "\n\t\t\t[CLIENT] get field1 = " << server_proxy_ptr->fd1.Get() << std::endl;
+    sleep(2);
+    server_proxy_ptr->ev2.UnSubscribe();
 
     // std::cout << "\t\t\t[CLIENT] Result of ADD : ";
     // result = server_proxy_ptr1->ADD(7, 4);
@@ -135,8 +135,8 @@ void *pthread0(void *v_var)
  */
 void *pthread1(void *v_var)
 {
-    // while (1)
-    //     Event_Handler();
+    while (1)
+        Event_Handler();
 
 }
 void Event_Handler()

@@ -111,7 +111,7 @@ void *pthread0(void *v_var)
     // // Receive a struct from client containing the method name and parameters
     Sclient.Receive((void *)&msg_size, sizeof(msg_size));
     msg.resize(msg_size);
-    Sclient.Receive((void *)&msg[0], sizeof(msg));
+    Sclient.Receive((void *)&msg[0], msg_size);
     ara::com::SOMEIP_MESSAGE::Message Request_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
     if(Request_msg.check_Methode_ID() == true)
     {
@@ -133,25 +133,42 @@ void *pthread0(void *v_var)
     std::cout << "\t[SERVER] : ";
     server_skeleton_ptr->event1.update(7);
 
-    // sleep(1);
-    // while (server_skeleton_ptr->event2.getsub().empty())
-    // {
-    // }
-    // std::cout << "\t[SERVER] : ";
+    sleep(1);
+    while (server_skeleton_ptr->event2.getsub().empty())
+    {
+    }
+    std::cout << "\t[SERVER] : ";
 
-    // server_skeleton_ptr->event2.update(9);
+    server_skeleton_ptr->event2.update(9);
 
-    // int y = 2;
-    // while (server_skeleton_ptr->field1.getsub().empty())
-    // {
-    // }
+    int y = 2;
+    while (server_skeleton_ptr->field1.getsub().empty())
+    {
+    }
 
-    // std::cout << "\t[SERVER] : ";
-    // server_skeleton_ptr->field1.update(y);
+    std::cout << "\t[SERVER] : ";
+    server_skeleton_ptr->field1.update(y);
 
-    // while (!server_skeleton_ptr->field1.getsub().empty()) // test uns
-    // {
-    // }
+    Socket Sclient1 = server_main_socket.AcceptServer();
+    cout << "\t[SERVER]  accepted" << endl;
+    Sclient1.Receive((void *)&msg_size, sizeof(msg_size));
+    msg.resize(msg_size);
+    Sclient1.Receive((void *)&msg[0], msg_size);
+    ara::com::SOMEIP_MESSAGE::Message Request_msg1 = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    server_skeleton_ptr->field_method_dispatch(Request_msg1, Sclient1);
+
+    Socket Sclient2 = server_main_socket.AcceptServer();
+    cout << "\t[SERVER]  accepted" << endl;
+    Sclient2.Receive((void *)&msg_size, sizeof(msg_size));
+    msg.resize(msg_size);
+    Sclient2.Receive((void *)&msg[0], msg_size);
+    ara::com::SOMEIP_MESSAGE::Message Request_msg2 = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    server_skeleton_ptr->field_method_dispatch(Request_msg2, Sclient2);
+
+
+    while (!server_skeleton_ptr->field1.getsub().empty()) // test uns
+    {
+    }
 
     // cout << "\n\t[SERVER] Goodbye..." << endl;
 
