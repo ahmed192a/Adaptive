@@ -42,9 +42,9 @@ jobs:
       run: ./Adaptive_Platform-ut
 
       # Generate Doxygen code dodumentation and publish it to the GitHub Pages
-    # - uses: langroodi/doxygenize@v1.6
-    #   with:
-    #     doxygenconf: './doc/doxygen.conf'
-    #     htmloutput: './doc/html/'
-    #     darkmode: true
+    - uses: langroodi/doxygenize@v1
+      with:
+        doxygenconf: './doc/doxygen.conf'
+        htmloutput: './doc/html/'
+        darkmode: true
 
