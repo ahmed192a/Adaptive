@@ -74,9 +74,9 @@ void HMAC::Update(std::uint8_t in) {
 
 
 
-DigestService::Uptr HMAC::GetDigestService() const noexcept {
-    //return std::make_unique<HMACDigestService>;
-}
+// DigestService::Uptr HMAC::GetDigestService() const noexcept {
+//     return std::make_unique<HMACDigestService>;
+// }
 
 
 

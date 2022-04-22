@@ -38,9 +38,10 @@ namespace ara {
 
             class MessageAuthnCodeCtx : public CryptoContext {
                 
-                protected:
-                
-                using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;  
+                public:
+                using Uptr = std::unique_ptr<MessageAuthnCodeCtx>; 
+
+                protected: 
 
                 Signature::Uptrc signature_ptr; // this pointer will point to the resulting signature
 
