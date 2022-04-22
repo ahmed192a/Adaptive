@@ -2,18 +2,36 @@
 #define ARA_CRYPTO_HMAC_H
 
 #include "message_authn_code_ctx.hpp"
+#include "ara/crypto/cryp/hashing_lib_temp/sha256.h" // temporariy till hash implementation is finished
 
 
 namespace ara {
     namespace crypto {
         namespace cryp {
 
-        
-
             class HMAC : public MessageAuthnCodeCtx {
+                
+                private:
+
+                int B = 64;  // bytes ==> length of each block
+
+                // constants to be XORed with the key to increase the hamming distance
+                std::uint8_t iPad = 0x36;
+                std::uint8_t oPad = 0x5C;
+
+                // Keys after XORing the constants
+                std::vector<byte> input_key;
+
+                // hashing function
+                void hash_sha256(std::vector<byte> &input, std::vector<byte> &output);
+
+                // hmac algorithm
+                void hmac_digestion(std::vector<byte> &plainText, std::vector<byte> &output);
+
+
 
                 // pointer to the hash function context used to implement this algorithm
-                HashFunctionCtx::Uptr hashFunction;
+                HashFunctionCtx::Uptr hashFunction = std::make_unique<HashFunctionCtx>(myProvider);;
                 SymmetricKey key;
 
                 CryptoProvider * myProvider;

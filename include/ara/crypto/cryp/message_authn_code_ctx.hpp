@@ -38,7 +38,8 @@ namespace ara {
 
             class MessageAuthnCodeCtx : public CryptoContext {
                 
-                public:
+                protected:
+                
                 using Uptr = std::unique_ptr<MessageAuthnCodeCtx>;  
 
                 Signature::Uptrc signature_ptr; // this pointer will point to the resulting signature
@@ -46,6 +47,9 @@ namespace ara {
                 MessageAuthnCodeCtx_Status status = MessageAuthnCodeCtx_Status::notInitialized; // // The current status of the context
 
                 std::vector<byte> digest; // The resulting digest
+                std::vector<byte> inputBuffer; // the input buttered
+
+                public:
 
 
                 virtual void Reset() noexcept = 0;
