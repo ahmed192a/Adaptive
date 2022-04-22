@@ -2,20 +2,12 @@
 #define  ARA_CRYPTO_AUTHENTICATION_H
 
 #include "auth_cipher_ctx.hpp"
+#include "HMAC.hpp"
+#include "symmetric_cipher.hpp"
 
 namespace ara {
     namespace crypto {
         namespace cryp {
-
-            ///////////////////////////////////////////////////////
-            // dummy definitions that will be removed later
-            class SymmetricCipher : public SymmetricBlockCipherCtx {
-            public:
-                using Uptr = std::unique_ptr<SymmetricBlockCipherCtx>;
-                CryptoTransform GetTransformation() const noexcept;
-                std::vector<byte> ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding = false) const noexcept;
-                void Reset() noexcept;
-            };
 
 
 			class Authentication : public AuthCipherCtx
@@ -26,8 +18,10 @@ namespace ara {
                 MessageAuthnCodeCtx::Uptr macPtr = std::make_unique<HMAC>();
 
                 ///@brief: pointer refetences the used symmetric block cipher context to encrypt the data
-                ///////////// name of SymmetricCipher will be changed after including the correct class ///////////
-                SymmetricBlockCipherCtx::Uptr blockCipherPtr = std:: make_unique<SymmetricCipher>();
+                SymmetricBlockCipherCtx::Uptr blockCipherPtr = std::make_unique<SymmetricCipher>();
+
+                ///@brief: flag indicates whether PocessConfedentialData is called or not
+                //byte ProcessConfDataFlag = 0;
 
 			public:
                 

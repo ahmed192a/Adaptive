@@ -74,31 +74,121 @@ void Authentication::Start(const SecretSeed& iv) noexcept
 ///@brief: Update the mac digest calculation by the specified RestrictedUseObject.
 void Authentication::UpdateAssociatedData(const RestrictedUseObject& in) noexcept
 {
-	// update the digest through the Update function of the mac context in this authentication instance
-	this->macPtr->Update(in);
+	// UpdateAssociatedData raises kProcessingNotStarted error if digest calculation is not initiated by calling Start() method
+	if (this->status == AuthCipherCtx_Status::started)
+	{
+		// update the digest through the Update function of the mac context in this authentication instance
+		this->macPtr->Update(in);
+
+		this->status == AuthCipherCtx_Status::updated;
+	}
+	
+	//// UpdateAssociatedData raises error if ProcessConfedentialData has been already called 
+	//if (this->status != AuthCipherCtx_Status:: processedData)
+	//{
+	//	// update the digest through the Update function of the mac context in this authentication instance
+	//	this->macPtr->Update(in);
+	//}
+
 }
 
 ///@brief: Update the mac digest calculation by a new chunk of associated data
 void Authentication::UpdateAssociatedData(ReadOnlyMemRegion in) noexcept
 {
-	// update the mac digest through the Update function of the mac context in this authentication instance
-	this->macPtr->Update(in);
+	// UpdateAssociatedData raises kProcessingNotStarted error if digest calculation is not initiated by calling Start() method
+	if (this->status == AuthCipherCtx_Status::started)
+	{
+		// update the digest through the Update function of the mac context in this authentication instance
+		this->macPtr->Update(in);
+
+		this->status == AuthCipherCtx_Status::updated;
+	}
+
+	//// UpdateAssociatedData raises error if ProcessConfedentialData has been already called 
+	//if (this->status != AuthCipherCtx_Status:: processedData)
+	//{
+	//	// update the mac digest through the Update function of the mac context in this authentication instance
+	//	this->macPtr->Update(in);
+	//}
 }
 
 ///@brief: Update the mac digest calculation by the specified Byte
 void Authentication:: UpdateAssociatedData(std::uint8_t in) noexcept
 {
-	// update the digest through the Update function of the mac context in this authentication instance
-	this->macPtr->Update(in);
+	// UpdateAssociatedData raises kProcessingNotStarted error if digest calculation is not initiated by calling Start() method
+	if (this->status == AuthCipherCtx_Status::started)
+	{
+		// update the digest through the Update function of the mac context in this authentication instance
+		this->macPtr->Update(in);
+
+		this->status == AuthCipherCtx_Status::updated;
+	}
+
+	//// UpdateAssociatedData raises error if ProcessConfedentialData has been already called 
+	//if (this->status != AuthCipherCtx_Status::processedData)
+	//{
+	//	// update the digest through the Update function of the mac context in this authentication instance
+	//	this->macPtr->Update(in);
+	//}
 }
 
 CryptoTransform Authentication::GetTransformation() const noexcept
 {
-	/* get the Transformation Type from the Symmetric Block cipher context of this authentication instance,
-	and return the same value returned from it */ 
-	return this->blockCipherPtr->GetTransformation();
+	
 }
 
+///@brief:The input buffer will be overwritten by the processed message. This function is the final 
+//call, i.e.all associated data must have been already provided. The function will check 
+//the authentication tag and only return the processed data if the tag is valid
+std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept
+{
+	std::vector<byte> encryptedOrDecreptedData;
+	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
+	if ((this->status == AuthCipherCtx_Status::started)|| (this->status == AuthCipherCtx_Status::updated))
+	{
+		/* If the transformation direction is kEncrypt, ProcessConfidentialData shall encrypt the provided plaintext data 
+		and return the ciphert*/
+		if (GetTransformation() == CryptoTransform::kEncrypt)
+		{
+			encryptedOrDecreptedData = this->blockCipherPtr->Process_Blocks(in);
+			// Mac calculation should be updated by the confedential data
+			macPtr->Update(in);
+		}
+		/* If the transformation direction is kDecrypt,ProcessConfidentialData shall also decrypt the provided plaintext data
+		and return the plaintext, only if the calculated MAC matches the provided expectedTag.*/ 
+		else if (GetTransformation() == CryptoTransform::kDecrypt)
+		{
+			encryptedOrDecreptedData = this->blockCipherPtr->Process_Blocks(in);
+			//Mac calculation should be updated by the confedential data
+			macPtr->Update(encryptedOrDecreptedData);
+			/* If the calculated MAC does not match the provided expectedTag, kAuthTagNotValid error shall be returned*/
+			//this->macPtr->Check(expectedTag);
+
+		}
+			
+		
+		
+
+		this->status == AuthCipherCtx_Status::processedData;
+	}
+}
+
+///@breif:The input buffer will be overwritten by the processed message After this method is called 
+				//no additional associated data may be updated
+void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
+{
+	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
+	if (this->status == AuthCipherCtx_Status::started)
+	{
+
+		this->status == AuthCipherCtx_Status::processedData;
+	}
+	////process the input message according to CryptoTransform direction
+	//std::vector<byte> encryptedData= this->blockCipherPtr->ProcessBlock(inOut);
+	////overwrite the input buffer
+	//inOut = encryptedData;
+
+}
 /// @brief: resets the context
 void Authentication:: Reset() noexcept
 {
