@@ -46,11 +46,7 @@ namespace ara {
 
                 MessageAuthnCodeCtx_Status status = MessageAuthnCodeCtx_Status::notInitialized; // // The current status of the context
 
-                std::vector<byte> digest; // The resulting digest
-                std::vector<byte> inputBuffer; // the input buttered
-
                 public:
-
 
                 virtual void Reset() noexcept = 0;
                 virtual void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;

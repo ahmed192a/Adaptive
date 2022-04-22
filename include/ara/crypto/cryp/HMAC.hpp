@@ -22,19 +22,20 @@ namespace ara {
                 // Keys after XORing the constants
                 std::vector<byte> input_key;
 
-                // hashing function
-                void hash_sha256(std::vector<byte> &input, std::vector<byte> &output);
-
-                // hmac algorithm
-                void hmac_digestion(std::vector<byte> &plainText, std::vector<byte> &output);
-
-
+                std::vector<byte> digest; // The resulting digest
+                std::vector<byte> inputBuffer; // the input buttered
 
                 // pointer to the hash function context used to implement this algorithm
                 HashFunctionCtx::Uptr hashFunction = std::make_unique<HashFunctionCtx>(myProvider);;
                 SymmetricKey key;
 
                 CryptoProvider * myProvider;
+
+                // hashing function
+                void hash_sha256(std::vector<byte> &input, std::vector<byte> &output);
+
+                // hmac algorithm
+                void hmac_digestion(std::vector<byte> &plainText, std::vector<byte> &output);
 
                 public:
                 /// @brief constructor

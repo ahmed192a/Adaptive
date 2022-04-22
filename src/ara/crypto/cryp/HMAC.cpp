@@ -4,7 +4,6 @@
 using namespace ara::crypto::cryp;
 
 
-
 HMAC::HMAC(CryptoProvider * provider) {
     // intializing the key
     input_key.resize(B);
@@ -12,7 +11,6 @@ HMAC::HMAC(CryptoProvider * provider) {
 
     this->myProvider = provider;
 }
-
 
 
 /** Inherited from CryptoContext class**/
@@ -24,19 +22,15 @@ bool HMAC::IsInitialized() {
 }
 
 
-
 CryptoProvider& HMAC::MyProvider() const noexcept {
     return (*myProvider) ;
 }
-
-
 
 
 // CryptoPrimitiveId::Uptr HMAC::GetCryptoPrimitiveId() const noexcept {
 //     return (this->myProvider->ConvertToAlgId("test"));
 
 // }
-
 
 
 
@@ -51,7 +45,7 @@ void HMAC::Reset() {
 
 
 
-// void HMAC::SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) {
+// void HMAC::SetKey(const   &key, CryptoTransform transform = CryptoTransform::kMacGenerate) {
         
 //     if(transform == CryptoTransform::kMacGenerate){
 //         // operations to check whether the key is valid or not
@@ -65,15 +59,12 @@ void HMAC::Reset() {
 
 
 
-
 void HMAC::Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) {
     
     Reset(); // resetting the context;
     status = MessageAuthnCodeCtx_Status::started; // change to the new state
     hashFunction = std::make_unique<HashFunctionCtx>(); // creating the needed algorithm
 }
-
-
 
 
 void HMAC::Update(std::uint8_t in) {
@@ -83,13 +74,9 @@ void HMAC::Update(std::uint8_t in) {
 
 
 
-
-
 DigestService::Uptr HMAC::GetDigestService() const noexcept {
     //return std::make_unique<HMACDigestService>;
 }
-
-
 
 
 
@@ -98,16 +85,18 @@ std::vector<ara::crypto::byte> HMAC::GetDigest(std::size_t offset = 0) const noe
 }
 
 
-
-
 Signature::Uptrc HMAC::Finish(bool makeSignatureObject = false) {
 
-   status = MessageAuthnCodeCtx_Status::finished; // changing the status
+  status = MessageAuthnCodeCtx_Status::finished; // changing the status
 
-    if(makeSignatureObject)
-        return nullptr;
-    else
-        return std::make_unique<Signature>();
+  // Generating the HMAC from the input buffer and putting the result in the digest vector
+  hmac_digestion(inputBuffer, digest);
+
+
+  if(makeSignatureObject)
+      return nullptr;
+  else
+      return std::make_unique<Signature>();
 
 }
 
@@ -131,6 +120,8 @@ void HMAC::hash_sha256(std::vector<byte> &input, std::vector<byte> &output) {
 
   return ;
 }
+
+
 
 void HMAC::hmac_digestion(std::vector<byte> &plainText, std::vector<byte> &output) {
   std::vector<byte> S1_vect;
