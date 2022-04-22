@@ -9,6 +9,11 @@
 
 using namespace ara::crypto::cryp;
 
+ara::crypto::VolatileTrustedContainer::Uptr ConcreteCryptoProvider::AllocVolatileContainer (std::size_t capacity=0) noexcept
+{
+	ConcreteIOInterface::Uptr ioptr= std::make_unique<ConcreteIOInterface>();
+	return ioptr->CreateVolatileContainer(capacity);
+}
 CryptoProvider::AlgId ConcreteCryptoProvider::ConvertToAlgId (std::string primitiveName) //const noexcept
 {
 	//check the list of algorithm names supported
