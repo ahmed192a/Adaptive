@@ -23,7 +23,7 @@ namespace ara {
                 virtual bool AddEntropy (ReadOnlyMemRegion entropy) noexcept=0;
                 
                 /*Return an allocated buffer with a generated random sequence of the requested size*/
-                virtual std::vector<byte> Generate (std::uint32_t count) noexcept=0;
+                virtual std::vector<ara::crypto::byte> Generate (std::uint32_t count) noexcept=0;
                 //virtual ara::core::Result<ara::core::Vector<ara::core::Byte>> Generate (std::uint32_t count) noexcept=0;
                 
                 /*Set the internal state of the RNG using the provided seed*/
