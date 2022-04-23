@@ -8,6 +8,8 @@
 #ifndef ARA_CRYPTO_HASH_FUNCTION_CTX_H
 #define ARA_CRYPTO_HASH_FUNCTION_CTX_H
 #include "ara/crypto/cryp/crypto_context.hpp"
+#include "ara/crypto/common/base_id_types.hpp"
+
 
 namespace ara {
     namespace crypto{
@@ -22,7 +24,7 @@ namespace ara {
 
                     /// @brief Finish the digest calculation and optionally produce the "signature" object. Only after call of this method the digest can be signed, verified, extracted or compared.
                     /// @returns unique smart pointer to created signature object,
-                    virtual std::vector<std::byte> Finish() noexcept=0;
+                    virtual std::vector<byte> Finish() noexcept=0;
 
 
                     /// @brief Get DigestService instance.
@@ -33,7 +35,7 @@ namespace ara {
                     /// @brief Get requested part of calculated digest.
                     /// @param[in] offset position of the first byte of digest that should be placed to the output buffer.
                     /// @returns number of digest bytes really stored to the output buffer
-                    virtual std::vector<std::byte> GetDigest (std::size_t offset=0) const noexcept=0;
+                    virtual std::vector<byte> GetDigest (std::size_t offset=0) const noexcept=0;
 
                     /// @brief Initialize the context for a new data stream processing or generation (depending on the primitive) without IV.
                     /// @returns ara::core::Result<void>
