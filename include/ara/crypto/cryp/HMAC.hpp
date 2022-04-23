@@ -2,7 +2,7 @@
 #define ARA_CRYPTO_HMAC_H
 
 #include "message_authn_code_ctx.hpp"
-#include "ara/crypto/cryp/hashing_lib_temp/sha256.h" // temporariy till hash implementation is finished
+#include "ara/crypto/cryp/sha256.hpp" // temporariy till hash implementation is finished
 
 
 namespace ara {
