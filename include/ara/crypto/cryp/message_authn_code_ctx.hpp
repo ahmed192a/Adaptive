@@ -1,9 +1,8 @@
 #include <iostream>
 
-// #ifndef ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
-// #define ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+#ifndef ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+#define ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
 
-// #include <iostream>
 #include <memory>
 #include <vector>
 #include <boost/variant.hpp>
@@ -78,4 +77,4 @@ namespace ara {
     } // namespace crypto
 } // namespace ara
 
-// #endif // ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+#endif // ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H

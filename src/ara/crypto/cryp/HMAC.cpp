@@ -1,5 +1,6 @@
 #include "ara/crypto/cryp/HMAC.hpp"
 #include "ara/crypto/cryp/HMAC_digest_service.hpp"
+#include "ara/crypto/cryp/hash_service.hpp"
 
 using namespace ara::crypto::cryp;
 
@@ -38,7 +39,6 @@ CryptoProvider& HMAC::MyProvider() const noexcept {
 void HMAC::Reset() {
     status = MessageAuthnCodeCtx_Status::notInitialized;
     signature_ptr = nullptr;
-    hashFunction = nullptr;
     digest.clear(); // shrink the vector size back as we started
     inputBuffer.clear();
 }
@@ -63,7 +63,6 @@ void HMAC::Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) {
     
     Reset(); // resetting the context;
     status = MessageAuthnCodeCtx_Status::started; // change to the new state
-    hashFunction = std::make_unique<HashFunctionCtx>(); // creating the needed algorithm
 }
 
 
@@ -104,21 +103,22 @@ Signature::Uptrc HMAC::Finish(bool makeSignatureObject = false) {
 
 void HMAC::hash_sha256(std::vector<byte> &input, std::vector<byte> &output) {
 
-  byte * intput_str = input.data();
+  // Creating a pointer to the hash function object that will be used for hashing
+  HashService::Uptr hash = std::make_unique<HashService>(myProvider);
+  
+  // initializing the context
+  hash->Start(); 
+  
+  // Sending the traget value to be hashed (byte by byte)
+  for(byte &b: input) { 
+    hash->Update(b);
+  }
 
-  SHA256 hashing;
+  // calculating the required digest
+  output = hash->Finish();
 
-  hashing.add(intput_str, input.size());
+  return;
 
-  std::string result = hashing.getHash();
-  std::uint8_t size = result.size() >> 1;
-  output.clear();
-  output.resize(size);
-
-  for (std::uint8_t i = 0; i < size; i++)
-    output[i] = std::stoi(result.substr(i*2, 2), nullptr, 16);
-
-  return ;
 }
 
 

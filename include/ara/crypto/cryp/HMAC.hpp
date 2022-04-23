@@ -25,8 +25,6 @@ namespace ara {
                 std::vector<byte> digest; // The resulting digest
                 std::vector<byte> inputBuffer; // the input buttered
 
-                // pointer to the hash function context used to implement this algorithm
-                HashFunctionCtx::Uptr hashFunction = std::make_unique<HashFunctionCtx>(myProvider);;
                 SymmetricKey key;
 
                 CryptoProvider * myProvider;
