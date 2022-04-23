@@ -34,7 +34,7 @@ void HashService::Update (uint8_t in)
 
 /// @brief Finish the digest calculation and optionally produce the "signature" object. Only after call of this method the digest can be signed, verified, extracted or compared.
 /// @returns unique smart pointer to created signature object,
-std::vector<std::byte> HashService::Finish()
+std::vector<byte> HashService::Finish()
 {
     SHA256 hashingObject;
     hashingObject.add(this->vectorToBeHashed.data(), vectorToBeHashed.size());
@@ -61,9 +61,9 @@ DigestService::Uptr HashService::GetDigestService() const
 /// @brief Get requested part of calculated digest.
 /// @param[in] offset position of the first byte of digest that should be placed to the output buffer.
 /// @returns number of digest bytes really stored to the output buffer
-std::vector<std::byte> HashService::GetDigest (std::size_t offset=0) const 
+std::vector<byte> HashService::GetDigest (std::size_t offset=0) const 
 {
-    std::vector<std::byte> result;
+    std::vector<byte> result;
     result.insert(result.begin(), this->hashedValue.begin()+offset, this->hashedValue.end())
 
     return result;
