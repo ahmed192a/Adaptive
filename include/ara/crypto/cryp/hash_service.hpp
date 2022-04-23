@@ -38,7 +38,7 @@ namespace ara {
 
                 /// @brief Finish the digest calculation and optionally produce the "signature" object. Only after call of this method the digest can be signed, verified, extracted or compared.
                 /// @returns unique smart pointer to created signature object,
-                std::vector<std::byte> Finish() noexcept;
+                std::vector<byte> Finish() noexcept;
 
 
                 /// @brief Get DigestService instance.
@@ -49,7 +49,7 @@ namespace ara {
                 /// @brief Get requested part of calculated digest.
                 /// @param[in] offset position of the first byte of digest that should be placed to the output buffer.
                 /// @returns number of digest bytes really stored to the output buffer
-                std::vector<std::byte> GetDigest (std::size_t offset=0) const noexcept;
+                std::vector<byte> GetDigest (std::size_t offset=0) const noexcept;
 
                 /// @brief Initialize the context for a new data stream processing or generation (depending on the primitive) without IV.
                 /// @returns ara::core::Result<void>
