@@ -2,6 +2,7 @@
 #define ARA_CRYPTO_RANDOM_GENERATOR_CTX_H
 
 #include "crypto_context.hpp"
+#include "../common/base_id_types.hpp"
 #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 #include "ara/crypto/common/mem_region.hpp"
 #include "ara/core/result.hpp"
