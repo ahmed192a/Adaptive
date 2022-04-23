@@ -50,7 +50,7 @@ CryptoProvider&  Authentication:: MyProvider() const noexcept
                 /*************************************************************************/
 
 ///@brief: Compare the calculated digest from MAC against an expected signature object
-bool Authentication:: Check(const Signature& expected) const noexcept
+bool Authentication::Check(const Signature& expected) const noexcept
 {
 	/* call the function Check of the mac context of this authentication instanceand return a bool that is the same value
 	returned from Check of the mac context */
@@ -58,7 +58,7 @@ bool Authentication:: Check(const Signature& expected) const noexcept
 }
 
 ///@brief: Initialize the mac context of this authentication instance for a new data processing 
-void Authentication:: Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept
+void Authentication::Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept
 {
 	/*Initialize the context for a new data processing or generation (depending from the primitive iv)*/
 	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set)) {
