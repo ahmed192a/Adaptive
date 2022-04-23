@@ -61,14 +61,18 @@ bool Authentication:: Check(const Signature& expected) const noexcept
 void Authentication:: Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept
 {
 	/*Initialize the context for a new data processing or generation (depending from the primitive iv)*/
-	this->macPtr->Start(iv);
+	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set)) {
+		this->status == AuthCipherCtx_Status::started;
+	}
 }
 
 ///@brief: Initialize the mac context of this authentication instance  for a new data processing
 void Authentication::Start(const SecretSeed& iv) noexcept
 {
 	/*Initialize the context for a new data processing or generation (depending from the primitive iv)*/
-	this->macPtr->Start(iv);
+	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set)) {
+		this->status == AuthCipherCtx_Status::started;
+	}
 }
 
 ///@brief: Update the mac digest calculation by the specified RestrictedUseObject.
@@ -132,10 +136,34 @@ void Authentication:: UpdateAssociatedData(std::uint8_t in) noexcept
 	//}
 }
 
-CryptoTransform Authentication::GetTransformation() const noexcept
+//Set (deploy) a key to the authenticated cipher symmetric algorithm context.//
+void Authentication::SetKey(const SymmetricKey& key, CryptoTransform transform = CryptoTransform::kEncrypt) noexcept
 {
+	if (((transform == CryptoTransform::kEncrypt) && (kAllowDataEncryption!=NULL)) || ((transform == CryptoTransform::kDecrypt) && (kAllowDataDecryption != NULL)))
+	{
+		Key_is_Set = 1;
+		CrptoTransform Transform_set = transform;
+		if (transform == CryptoTransform::kEncrpyt) {
+			this->macPtr->SetKey(&key, CryptoTransform::kMacGenerate);
+		}
+		else if (transform == CryptoTransform::kDecrypt)
+		{
+			this->macPtr->SetKey(&key, CryptoTransform::kMacVerify);
+		}
+	}
 	
 }
+
+
+CryptoTransform Authentication::GetTransformation() const noexcept
+{
+	if (Key_is_Set) {
+		return Transform_set;
+	}
+}
+
+
+
 
 ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
 //call, i.e.all associated data must have been already provided. The function will check 
