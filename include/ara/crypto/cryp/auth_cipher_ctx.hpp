@@ -19,10 +19,11 @@ namespace ara {
 
             /// @brief: enumeration represents the state of the Authentication Cipher context
             enum class AuthCipherCtx_Status : std::uint8_t {
-                notInitialized = 0,
-                initialized = 1,
-                started = 2,
-
+                notInitialized ,   
+                initialized ,
+                started ,        //if start() has been called
+                updated,         //if UpdateConfidentialData has been called
+                processedData    //if ProcessConfedentialData has been called
             };
             class AuthCipherCtx : public CryptoContext
             {
