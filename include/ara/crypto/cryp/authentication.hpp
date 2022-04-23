@@ -30,7 +30,10 @@ namespace ara {
                 
                 /// @brief destructor
                 ~Authentication() noexcept = default;
-
+		//if ara::crypto::cryp::AuthCipherCtx::SetKey has not been called before//
+                int Key_is_Set;
+                //Deployed Key of AuthCipherCtx//
+                CryptoTransform Transform_set;
                            /***********************************************************************/
 				           /***** implementation of inherited CyrptoContext virtual functions *****/
                            /***********************************************************************/
