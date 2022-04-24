@@ -1,10 +1,13 @@
 #ifndef ARA_CRYPTO_SYMMETRIC_KEY_WRAPPER_CTX_H
 #define ARA_CRYPTO_SYMMETRIC_KEY_WRAPPER_CTX_H
 
+#include "cryobj/secret_seed.hpp"
+#include "cryobj/symmetric_key.hpp"
+#include "../common/mem_region.hpp"
+#include "../common/base_id_types.hpp"
+#include "../../core/result.hpp"
 #include "crypto_context.hpp"
-#include "ara/crypto/cryp/cryobj/secret_seed.hpp"
-#include "ara/crypto/common/mem_region.hpp"
-#include "ara/core/result.hpp"
+#include "cryobj/restricted_use_object.hpp"
 
 namespace ara {
     namespace crypto {
