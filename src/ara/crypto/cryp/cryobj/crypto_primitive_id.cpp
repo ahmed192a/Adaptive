@@ -1,42 +1,49 @@
-#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
+#include "ara/crypto/cryp/cryobj/crypto_pr_id.hpp"
 #include <iostream>
+
 namespace ara
 {
     namespace crypto
     {
         namespace cryp
-        {
-           
-          /*  CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () noexcept
+        {    
+            
+            CryptoPrId:: CryptoPrId(const std::string &Sv) : name(Sv)
             {
-                return ;
+                ConcreteCryptoProvider *CC_PRO;
+                CryptoProvider :: AlgId cp = CC_PRO->ConvertToAlgId (Sv2);
+                id = cp ;
+            } 
+
+            CryptoPrId:: AlgId CryptoPrId:: GetPrimitiveId () const
+            {
+                return id;
             }
-            CryptoPrimitiveId:: AlgId  GetPrimitiveId () noexcept
+            const std::string CryptoPrId:: GetPrimitiveName () const
             {
-                return ;
+                return name ;
             }
-            const ara::core::StringView GetPrimitiveName () noexcept
+            //return a referance to it self
+            CryptoPrimitiveId& CryptoPrId:: operator= (const CryptoPrimitiveId &other)//assignment operator or copy operator
             {
-                return ;
-            }
-            CryptoPrimitiveId& CryptoPrimitiveId:: operator= (const CryptoPrimitiveId &other)
-            {
+                if(this != &other)
+                {
+                   id = other.GetPrimitiveId();
+                   //name = other.GetPrimitiveName();
+                }
                 return *this;
             }
-            CryptoPrimitiveId& CryptoPrimitiveId:: operator= (CryptoPrimitiveId &&other)
+            CryptoPrimitiveId& CryptoPrId:: operator= (CryptoPrimitiveId &&other)
             {
+                 if(this != &other)
+                {
+                   id = other.GetPrimitiveId();
+                  // name = other.GetPrimitiveName ();
+                }
                 return *this;
             }
-            CryptoPrimitiveId::AlgId GetHashAlgId () noexcept
-            {
-                return ;
-            }
-            CryptoPrimitiveId::AlgId GetRequiredHashAlgId () noexcept
-            {
-                return ;
-            }*/
         }
     }
 }
-
+        
 
