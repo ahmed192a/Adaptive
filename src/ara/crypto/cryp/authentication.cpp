@@ -165,18 +165,22 @@ CryptoTransform Authentication::GetTransformation() const noexcept
 //the authentication tag and only return the processed data if the tag is valid
 std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept
 {
-	std::vector<byte> calculatedMac;
 	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
 	if ((this->status == AuthCipherCtx_Status::started)|| (this->status == AuthCipherCtx_Status::updated))
 	{
 		/* If the transformation direction is kEncrypt, ProcessConfidentialData shall encrypt the provided plaintext data 
-		and return the ciphert*/
+		and return the ciphertext */
 		if (GetTransformation() == CryptoTransform::kEncrypt)
 		{
-			std::vector<byte> encryptedData= this->blockCipherPtr->Process_Blocks(in);
+			// vector of bytes to store the data after encryption 
+			std::vector<byte> encryptedData;
+			// encrypt the confidential data 
+			encryptedData= this->blockCipherPtr->Process_Blocks(in);
 			// Mac calculation should be updated by the confedential data
 			this->macPtr->Update(in);
+			//This function is the final call,all associated data must have been already provided, so finish the Mac context
 			this->macPtr->Finish();
+			//Update the stats of the auth_cipher context
 			this->status = AuthCipherCtx_Status::processedData;
 			// return the ciphertext
 			return encryptedData;
@@ -187,18 +191,19 @@ std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in,
 		{
 			uint8_t counter=0;
 			bool matching = true;
-			std::vector<byte> DecreptedData;
+			std::vector<byte> DecreptedData;     // vector of bytes to store the data after decryption 
+			std::vector<byte> calculatedDataMac; // vector of bytes to store the calculated MAC of the received data
 			
 			DecreptedData = this->blockCipherPtr->Process_Blocks(in);
 			//Mac calculation should be updated by the confedential data
 			this->macPtr->Update(DecreptedData);
-			//This is the final call, i.e. all associated data must have been already provided.
+			//This function is the final call,all associated data must have been already provided, so finish the Mac context
 			macPtr->Finish();
 			/* If the calculated MAC does not match the provided expectedTag, kAuthTagNotValid error shall be returned*/
-			calculatedMac= this->macPtr->GetDigest();
-			for (counter = 0; counter < calculatedMac.size(); counter++)
+			calculatedDataMac= this->macPtr->GetDigest();
+			for (counter = 0; counter < calculatedDataMac.size(); counter++)
 			{
-				if (calculatedMac[counter] != expectedTag[counter])
+				if (calculatedDataMac[counter] != expectedTag[counter])
 				{
 					matching = false;
 					break;
@@ -206,32 +211,80 @@ std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in,
 			}
 			if (matching == true)
 			{
+				this->status == AuthCipherCtx_Status::processedData;
 				return DecreptedData;
 			}
-			this->status == AuthCipherCtx_Status::processedData;
+			else
+			{
+				this->status == AuthCipherCtx_Status::processedData;
+				return ;
+			}
 		}
-			
-		
-	
 	}
 }
 
 ///@breif:The input buffer will be overwritten by the processed message After this method is called 
 				//no additional associated data may be updated
-//void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
-//{
-//	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
-//	if (this->status == AuthCipherCtx_Status::started)
-//	{
-//
-//		this->status == AuthCipherCtx_Status::processedData;
-//	}
-//	////process the input message according to CryptoTransform direction
-//	//std::vector<byte> encryptedData= this->blockCipherPtr->ProcessBlock(inOut);
-//	////overwrite the input buffer
-//	//inOut = encryptedData;
-//
-//}
+void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
+{
+	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
+	if ((this->status == AuthCipherCtx_Status::started) || (this->status == AuthCipherCtx_Status::updated))
+	{
+		/* If the transformation direction is kEncrypt, ProcessConfidentialData shall encrypt the provided plaintext data
+		and return the ciphertext */
+		if (GetTransformation() == CryptoTransform::kEncrypt)
+		{
+			// vector of bytes to store the data after encryption 
+			std::vector<byte> encryptedData;
+			// encrypt the confidential data 
+			encryptedData = this->blockCipherPtr->Process_Blocks(inOut);
+			// Mac calculation should be updated by the confedential data
+			this->macPtr->Update(inOut);
+			//This function is the final call,all associated data must have been already provided, so finish the Mac context
+			this->macPtr->Finish();
+			//Update the state of the auth_cipher context
+			this->status = AuthCipherCtx_Status::processedData;
+			// overwrite the message buffer with the encrypted data
+			inOut=encryptedData;
+		}
+		/* If the transformation direction is kDecrypt,ProcessConfidentialData shall also decrypt the provided plaintext data
+		and return the plaintext, only if the calculated MAC matches the provided expectedTag.*/
+		else if (GetTransformation() == CryptoTransform::kDecrypt)
+		{
+			uint8_t counter = 0;
+			bool matching = true;
+			std::vector<byte> DecreptedData;      // vector of bytes to store the data after decryption 
+			std::vector<byte> calculatedDataMac;  // vector of bytes to store the calculated MAC of the received data
+
+			DecreptedData = this->blockCipherPtr->Process_Blocks(inOut);
+			//Mac calculation should be updated by the confedential data
+			this->macPtr->Update(DecreptedData);
+			//This function is the final call,all associated data must have been already provided, so finish the Mac context
+			macPtr->Finish();
+			/* If the calculated MAC does not match the provided expectedTag, kAuthTagNotValid error shall be returned*/
+			calculatedDataMac = this->macPtr->GetDigest();
+			for (counter = 0; counter < calculatedDataMac.size(); counter++)
+			{
+				if (calculatedDataMac[counter] != expectedTag[counter])
+				{
+					matching = false;
+					break;
+				}
+			}
+			if (matching == true)
+			{
+				this->status == AuthCipherCtx_Status::processedData;
+				// overwrite the message buffer with the decrypted data
+				inOut= DecreptedData;
+			}
+			else
+			{
+				this->status == AuthCipherCtx_Status::processedData;
+			}
+		}
+	}
+
+}
 
 /// @brief: resets the context
 void Authentication:: Reset() noexcept
