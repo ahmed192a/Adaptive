@@ -2,7 +2,7 @@
 #define ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
 #include <memory>
 #include <iostream>
-#include<ara/core/StringView.hpp>
+#include <ara/core/StringView.hpp>
 #include <ara/crypto/common/base_id_types.hpp>
 
 namespace ara
@@ -18,6 +18,7 @@ namespace ara
             class CryptoPrimitiveId 
             {
                 public:
+                
                 /** 
                  * SWS_CRYPT_10808
                  * @brief Destroy the Crypto Primitive Id object
@@ -30,6 +31,11 @@ namespace ara
                  * Type definition of vendor specific binary Crypto Primitive ID.
                  */
                 using AlgId = CryptoAlgId; 
+                /**
+                 * @brief Construct a new Crypto Primitive Id object
+                 * 
+                 */
+                CryptoPrimitiveId();
                 /*
                 * SWS_CRYPT_20644
                 * Unique smart pointer of the constant interface.
@@ -47,7 +53,7 @@ namespace ara
                  * 
                  * @return CryptoPrimitiveId::Uptr 
                  */
-                virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
+                //virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;*/
                 /**
                  * SWS_CRYPT_20652
                  * @brief Get the Primitive Id object
@@ -63,7 +69,7 @@ namespace ara
                  * StringView instance should not exceed the life-time of this CryptoPrimitiveId instance!
                  * @return const ara::core::StringView 
                  */
-                virtual const ara::core::StringView GetPrimitiveName () const noexcept=0;
+                virtual const std::string GetPrimitiveName () const noexcept=0;
                 /**
                  * SWS_CRYPT_30212
                  * @brief 
