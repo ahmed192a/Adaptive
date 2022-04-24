@@ -11,7 +11,7 @@ namespace ara
             CryptoPrId:: CryptoPrId(const std::string &Sv) : name(Sv)
             {
                 ConcreteCryptoProvider *CC_PRO;
-                CryptoProvider :: AlgId cp = CC_PRO->ConvertToAlgId (Sv2);
+                CryptoProvider :: AlgId cp = CC_PRO->ConvertToAlgId (Sv);
                 id = cp ;
             } 
 
