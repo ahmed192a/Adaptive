@@ -1,12 +1,13 @@
- #ifndef CRYPTO_OBJECT_H_
+#ifndef CRYPTO_OBJECT_H_
 #define CRYPTO_OBJECT_H_
 #include <memory>
 #include <iostream>
-#include <ara/crypto/common/io_interface.hpp>
-#include <ara/core/result.hpp>
-#include <ara/crypto/cryp/cryobj/crypto_primitive_id.hpp>
-#include <ara/crypto/common/base_id_types.hpp>
-//#include <ara/crypto/common/crypto_object_uid.hpp>
+#include "ara/crypto/common/io_interface.hpp"
+#include "ara/core/result.hpp"
+#include "ara/crypto/cryp/cryobj/crypto_pr_id.hpp"
+#include "ara/crypto/common/base_id_types.hpp"
+#include "ara/crypto/cryp/crypto_context.hpp"
+#include "ara/crypto/cryp/crypto_provider.hpp"
 
 namespace ara
 {
@@ -23,6 +24,18 @@ namespace ara
             {
                 public:
                 /**
+                 * @brief required attributes to signature class
+                 * 
+                 */
+                std::size_t H_Req_Size ;
+                CryptoPrimitiveId::AlgId H_SingID;
+                /**
+                 * @brief required attributes to restricted class
+                 * 
+                 */
+                AllowedUsageFlags Allow_U;
+                
+                /**
                  * SWS_CRYPT_20504
                  * @file crypto_object.hpp
                  * @brief Unique identifier of this CryptoObject
@@ -33,19 +46,20 @@ namespace ara
                     CryptoObjectType mCOType;
                     CryptoObjectUid mCouid;
                 };
-
+                
+                CryptoObject::COIdentifier CO_ID;
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
                 */
-                using Uptrc = std::unique_ptr<const CryptoPrimitiveId>;
+                using Uptrc = std::unique_ptr<const CryptoObject>;
                 /*
                 * SWS_CRYPT_20501
                 * Unique smart pointer of the interface.
                 * smart pointer to allocate and free in memory automatically 
                 * and cant make a copy from it
                 */
-                using Uptr = std::unique_ptr<CryptoPrimitiveId>;
+                using Uptr = std::unique_ptr<CryptoObject>;
                 
                 /**
                 * SWS_CRYPT_20503
@@ -74,7 +88,7 @@ namespace ara
              * @brief Return the CryptoPrimitivId of this CryptoObject. 
             **/
             
-            virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
+            virtual CryptoPrId::Uptr GetCryptoPrimitiveId () const noexcept=0;
             
             /**
              * SWS_CRYPT_20514
