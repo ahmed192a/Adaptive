@@ -41,11 +41,6 @@ namespace ara {
                 /// @brief: Unique smart pointer of this interface => AuthCipherCtx
                 using Uptr = std::unique_ptr<AuthCipherCtx>;
                 
-                /// @brief: Compare the calculated digest against an expected signature object
-                /// @param[in]: expected => the signature object containing an expected digest value
-                /// @return: true if the compared values are identical, otherwise false
-                virtual bool Check(const Signature& expected) const noexcept = 0;
-
                 //virtual BlockService::Uptr GetBlockService() const noexcept = 0;
                 
                 /// @brief: Get the kind of transformation configured for this context whether kEncrypt or kDecrypt

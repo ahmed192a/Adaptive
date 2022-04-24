@@ -12,7 +12,7 @@ namespace ara {
 
 			class Authentication : public AuthCipherCtx
 			{
-            protected:
+            private:
 
                 ///@brief: pointer references the used mac context to authenticate the data
                 MessageAuthnCodeCtx::Uptr macPtr = std::make_unique<HMAC>();
@@ -20,20 +20,20 @@ namespace ara {
                 ///@brief: pointer refetences the used symmetric block cipher context to encrypt the data
                 SymmetricBlockCipherCtx::Uptr blockCipherPtr = std::make_unique<SymmetricCipher>();
 
-                ///@brief: flag indicates whether PocessConfedentialData is called or not
-                //byte ProcessConfDataFlag = 0;
+                ///@breif: a flag to state whether ara::crypto::cryp::AuthCipherCtx::SetKey has been called before or not
+                int Key_is_Set;
+
+                //@breif: configured transformation direction of AuthCipherCtx
+                CryptoTransform Transform_set;
 
 			public:
                 
                 /// @brief constructor
-                Authentication(CryptoProvider* myProvider);
+                Authentication(CryptoProvider* myProvider, CryptoTransform direction);
                 
                 /// @brief destructor
                 ~Authentication() noexcept = default;
-		//if ara::crypto::cryp::AuthCipherCtx::SetKey has not been called before//
-                int Key_is_Set;
-                //Deployed Key of AuthCipherCtx//
-                CryptoTransform Transform_set;
+
                            /***********************************************************************/
 				           /***** implementation of inherited CyrptoContext virtual functions *****/
                            /***********************************************************************/
@@ -55,11 +55,6 @@ namespace ara {
                           /*************************************************************************/
                           /***** implementation of auth_cipher_ctx inherited virtual functions *****/
                           /*************************************************************************/
-
-                /// @brief: Compare the calculated digest against an expected signature object
-                /// @param[in]: expected => the signature object containing an expected digest value
-                /// @return: true if the compared values are identical, otherwise false
-                bool Check(const Signature& expected) const noexcept;
 
                 //virtual BlockService::Uptr GetBlockService() const noexcept = 0;
 

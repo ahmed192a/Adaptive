@@ -4,10 +4,13 @@ using namespace ara:: crypto;
 using namespace ara::crypto::cryp;
 
 ///@brief: a constructor saves the instance of the crypto provider of the Authentication context
-Authentication::Authentication(CryptoProvider* myProvider)
+Authentication::Authentication(CryptoProvider* myProvider,CryptoTransform direction)
 {
 	//@ stores the crypto provider instance of the context in the member "myCryptoProvider" inherited from auth_cipher_ctx
 	this-> myCryptoProvider = myProvider;
+
+	//@ stored the transformation direction of the context in the member "Transform_set"
+	this->Transform_set = direction;
 
 	//@ set the status of the context as notInitialized
 	this->status = AuthCipherCtx_Status::notInitialized;
@@ -26,9 +29,13 @@ bool Authentication :: IsInitialized()
 		return false;
 	}
 	//@ return true if the context is initialized 
-	else
+	else 
 	{
-		return true;
+		// It checks all required values, including: key value
+		if (Key_is_Set)
+			return true;
+		else
+			return false;
 	}
 }
 
@@ -49,16 +56,8 @@ CryptoProvider&  Authentication:: MyProvider() const noexcept
                 /***** implementation of auth_cipher_ctx inherited virtual functions *****/
                 /*************************************************************************/
 
-///@brief: Compare the calculated digest from MAC against an expected signature object
-bool Authentication::Check(const Signature& expected) const noexcept
-{
-	/* call the function Check of the mac context of this authentication instanceand return a bool that is the same value
-	returned from Check of the mac context */
-	return this->macPtr->Check(expected);
-}
-
 ///@brief: Initialize the mac context of this authentication instance for a new data processing 
-void Authentication::Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept
+void Authentication:: Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept
 {
 	/*Initialize the context for a new data processing or generation (depending from the primitive iv)*/
 	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set)) {
@@ -136,41 +135,37 @@ void Authentication:: UpdateAssociatedData(std::uint8_t in) noexcept
 	//}
 }
 
-//Set (deploy) a key to the authenticated cipher symmetric algorithm context.//
-void Authentication::SetKey(const SymmetricKey& key, CryptoTransform transform = CryptoTransform::kEncrypt) noexcept
+//Set (deploy) the same key to the authenticated cipher symmetric algorithm context as well as the Mac context
+void Authentication::SetKey(const SymmetricKey & key, CryptoTransform transform = CryptoTransform::kEncrypt) noexcept
 {
-	if (((transform == CryptoTransform::kEncrypt) && (kAllowDataEncryption!=NULL)) || ((transform == CryptoTransform::kDecrypt) && (kAllowDataDecryption != NULL)))
+	if (((transform == CryptoTransform::kEncrypt) && (kAllowDataEncryption != NULL)) || ((transform == CryptoTransform::kDecrypt) && (kAllowDataDecryption != NULL)))
 	{
 		Key_is_Set = 1;
-		CrptoTransform Transform_set = transform;
-		if (transform == CryptoTransform::kEncrpyt) {
-			this->macPtr->SetKey(&key, CryptoTransform::kMacGenerate);
+		Transform_set = transform;
+		if (transform == CryptoTransform::kEncrypt) {
+			this->macPtr->SetKey(key, CryptoTransform::kMacGenerate);
 		}
 		else if (transform == CryptoTransform::kDecrypt)
 		{
-			this->macPtr->SetKey(&key, CryptoTransform::kMacVerify);
+			this->macPtr->SetKey(key, CryptoTransform::kMacVerify);
 		}
+		//@ set the status of the context as initialized
+		this->status = AuthCipherCtx_Status::initialized;
 	}
-	
+
 }
-
-
 CryptoTransform Authentication::GetTransformation() const noexcept
 {
 	if (Key_is_Set) {
 		return Transform_set;
 	}
 }
-
-
-
-
 ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
 //call, i.e.all associated data must have been already provided. The function will check 
 //the authentication tag and only return the processed data if the tag is valid
 std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept
 {
-	std::vector<byte> encryptedOrDecreptedData;
+	std::vector<byte> calculatedMac;
 	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
 	if ((this->status == AuthCipherCtx_Status::started)|| (this->status == AuthCipherCtx_Status::updated))
 	{
@@ -178,50 +173,74 @@ std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in,
 		and return the ciphert*/
 		if (GetTransformation() == CryptoTransform::kEncrypt)
 		{
-			encryptedOrDecreptedData = this->blockCipherPtr->Process_Blocks(in);
+			std::vector<byte> encryptedData= this->blockCipherPtr->Process_Blocks(in);
 			// Mac calculation should be updated by the confedential data
-			macPtr->Update(in);
+			this->macPtr->Update(in);
+			this->macPtr->Finish();
+			this->status = AuthCipherCtx_Status::processedData;
+			// return the ciphertext
+			return encryptedData;
 		}
 		/* If the transformation direction is kDecrypt,ProcessConfidentialData shall also decrypt the provided plaintext data
 		and return the plaintext, only if the calculated MAC matches the provided expectedTag.*/ 
 		else if (GetTransformation() == CryptoTransform::kDecrypt)
 		{
-			encryptedOrDecreptedData = this->blockCipherPtr->Process_Blocks(in);
+			uint8_t counter=0;
+			bool matching = true;
+			std::vector<byte> DecreptedData;
+			
+			DecreptedData = this->blockCipherPtr->Process_Blocks(in);
 			//Mac calculation should be updated by the confedential data
-			macPtr->Update(encryptedOrDecreptedData);
+			this->macPtr->Update(DecreptedData);
+			//This is the final call, i.e. all associated data must have been already provided.
+			macPtr->Finish();
 			/* If the calculated MAC does not match the provided expectedTag, kAuthTagNotValid error shall be returned*/
-			//this->macPtr->Check(expectedTag);
-
+			calculatedMac= this->macPtr->GetDigest();
+			for (counter = 0; counter < calculatedMac.size(); counter++)
+			{
+				if (calculatedMac[counter] != expectedTag[counter])
+				{
+					matching = false;
+					break;
+				}
+			}
+			if (matching == true)
+			{
+				return DecreptedData;
+			}
+			this->status == AuthCipherCtx_Status::processedData;
 		}
 			
 		
-		
-
-		this->status == AuthCipherCtx_Status::processedData;
+	
 	}
 }
 
 ///@breif:The input buffer will be overwritten by the processed message After this method is called 
 				//no additional associated data may be updated
-void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
-{
-	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
-	if (this->status == AuthCipherCtx_Status::started)
-	{
+//void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
+//{
+//	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
+//	if (this->status == AuthCipherCtx_Status::started)
+//	{
+//
+//		this->status == AuthCipherCtx_Status::processedData;
+//	}
+//	////process the input message according to CryptoTransform direction
+//	//std::vector<byte> encryptedData= this->blockCipherPtr->ProcessBlock(inOut);
+//	////overwrite the input buffer
+//	//inOut = encryptedData;
+//
+//}
 
-		this->status == AuthCipherCtx_Status::processedData;
-	}
-	////process the input message according to CryptoTransform direction
-	//std::vector<byte> encryptedData= this->blockCipherPtr->ProcessBlock(inOut);
-	////overwrite the input buffer
-	//inOut = encryptedData;
-
-}
 /// @brief: resets the context
 void Authentication:: Reset() noexcept
 {
   	/*Clear the crypto context*/
 	this->macPtr->Reset();
 	this->blockCipherPtr->Reset();
+	// set the status of the context as notInitialized
 	this->status= AuthCipherCtx_Status::notInitialized;
+	// clear the flag of setting the key
+	Key_is_Set = 0;
 }
