@@ -3,7 +3,8 @@
 
 #include <ara/crypto/cryp/cryobj/restricted_use_object.hpp>
 #include <ara/core/result.hpp>
-#include "ara/crypto/common/mem_region.hpp"
+#include <ara/crypto/common/mem_region.hpp>
+#include "ara/crypto/cryp/cryobj/crypto_obj.hpp"
 
 namespace ara
 {
@@ -14,6 +15,8 @@ namespace ara
             class SecretSeed : public RestrictedUseObject
             {
                 public:
+                std::int64_t seed_len;
+                std::int64_t seed_val;
                 //SWS_CRYPT_23001
                 /**
                  * @brief Unique smart pointer of a constant interface instance.
