@@ -13,7 +13,7 @@
 #define COMMON_H_
 #include "ara/sm/update_request/update_request_return_types.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
-
+#include "future"
 using namespace std;
 
 // include the file  of the following types
@@ -46,7 +46,8 @@ namespace ara
                 const int methodid = 1;
 
             public:
-                ResetMahcine(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
+                ResetMachine(ara::com::proxy_skeleton::proxy::ServiceProxy *service)
+                 : service_proxy_ptr{service}
                 {
                 }
                 
@@ -84,11 +85,34 @@ namespace ara
                     return result;
                 }
             };
-            class RequestUpdateSession
+           class StartUpdateSession
             {
             private:
                 ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
                 const int methodid = 3;
+                
+            public:
+
+                StartUpdateSession(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
+                {
+                }
+                std::future<ara::sm::update_request::StartUpdateSessionOutput> operator()()
+                {
+                    std::future<ara::sm::update_request::StartUpdateSessionOutput> result = std::async([&]()
+                    {
+                        // add function code
+                        // return app error krejected
+                       return service_proxy_ptr->SendRequest<ara::sm::update_request::StartUpdateSessionOutput>(methodid); 
+                    });
+                    // return app error krejected
+                    return result;
+                }
+            };
+            class RequestUpdateSession
+            {
+            private:
+                ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
+                const int methodid = 4;
 
             public:
                 RequestUpdateSession(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
@@ -111,7 +135,7 @@ namespace ara
             {
             private:
                 ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
-                const int methodid = 4;
+                const int methodid = 5;
 
             public:
                 PrepareUpdate(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
@@ -121,6 +145,8 @@ namespace ara
                 {
                     std::future<ara::sm::update_request::PrepareUpdateOutput> result = std::async([&, FunctionGroupList]()
                     {
+                        ara::sm::update_request::PrepareUpdateOutput f;
+                        return f;
                     // under development
                        // return app error krejected, kprepared_failed
                        //return service_proxy_ptr->SendRequest<ara::sm::update_request::PrepareUpdateOutput>(methodid,FunctionGroupList); 
@@ -133,7 +159,7 @@ namespace ara
             {
             private:
                 ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
-                const int methodid = 5;
+                const int methodid = 6;
 
             public:
                 VerifyUpdate(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
@@ -143,6 +169,8 @@ namespace ara
                 {
                     std::future<ara::sm::update_request::VerifyUpdateOutput> result = std::async([&, FunctionGroupList]()
                     {
+                        ara::sm::update_request::VerifyUpdateOutput f;
+                        return f;
                        // under development
                        // return app error krejected, kverify_failed
                        //return service_proxy_ptr->SendRequest<ara::sm::update_request::VerifyUpdateOutput>(methodid,FunctionGroupList); 
@@ -154,7 +182,7 @@ namespace ara
             {
             private:
                 ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
-                const int methodid = 6;
+                const int methodid = 7;
 
             public:
                 PrepareRollback(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
@@ -164,6 +192,8 @@ namespace ara
                 {
                     std::future<ara::sm::update_request::PrepareRollbackOutput> result = std::async([&, FunctionGroupList]()
                     {
+                        ara::sm::update_request::PrepareRollbackOutput f;
+                        return f;
                        // under development
                        // return app error krejected, krollback_failed
                        //return service_proxy_ptr->SendRequest<ara::sm::update_request::PrepareRollbackOutput>(methodid,FunctionGroupList); 

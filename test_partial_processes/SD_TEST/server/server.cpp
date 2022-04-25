@@ -215,7 +215,7 @@ void Handle_IO()
     server_main_socket_DG.UDPRecFrom((void *)&msg[0], msg_size,(struct sockaddr *)& echoClntAddr, &clntLen);
 
 
-    if(msg[14] = 0x02) // SD msg
+    if(msg[14] == 0x02) // SD msg
     {
         ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
 

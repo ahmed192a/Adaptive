@@ -189,6 +189,39 @@ namespace ara
                         return result;
                     }
 
+                    // template <typename R>
+                    // R SendRequest(uint32_t method_id, std::vector<uint8_t> data)
+                    // {
+                    //     ara::com::Deserializer deser;
+                    //     R result; 
+
+                        
+
+
+
+                    //     service_proxy_tcp.OpenSocket();
+                    //     service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
+                    //     service_proxy_tcp.ClientConnect();
+
+                    //     int msg_size = data.size();
+                    //     service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
+                    //     service_proxy_tcp.ClientWrite(&data[0], msg_size);
+                    //     std::vector<uint8_t> msgser;
+                    //     service_proxy_tcp.ClientRead((void *)&msg_size, sizeof(msg_size));
+                    //     msgser.reserve(msg_size);
+                    //     service_proxy_tcp.ClientRead((void *)&msgser[0], msg_size);  
+                    //     service_proxy_tcp.CloseSocket();
+
+                    //     // deserialize the result
+                    //     SOMEIP_MESSAGE::Message Res_msg = SOMEIP_MESSAGE::Message::Deserialize(msgser);
+                    //     // get the payload
+                    //     std::vector<uint8_t> _data_payload = Res_msg.GetPayload();
+                    //     // deserialize the payload
+                    //     result = deser.deserialize<R>(_data_payload,0);
+
+                    //     return result;
+                    // }
+
                     template <typename... Args>
                     void SendFireAndForgetRequest(uint32_t method_id, Args &&...args)
                     {
