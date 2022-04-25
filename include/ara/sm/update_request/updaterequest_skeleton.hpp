@@ -18,7 +18,6 @@
 #include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
-
 #include "ara/sm/update_request/update_request_return_types.hpp"
 
 namespace ara
@@ -56,44 +55,37 @@ namespace ara
                     std::future<ara::sm::update_request::PrepareRollbackOutput> PrepareRollback();
 
                     
-                    void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
+                    void method_dispatch(ara::com::SOMEIP_MESSAGE::Message&message, Socket& cserver)
                    {
                         ara::com::Deserializer dser;
-                        int methodID = dser.deserialize<int>(message,0);
+                        // int methodID = dser.deserialize<int>(message,0);
+                        int methodID = message.MessageId().method_id;
                         cout<<"\t[SERVER] Dispatch " << methodID << endl;
-                        std::vector<uint8_t> msg;
-                        msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
+                        // std::vector<uint8_t> msg;
+                        // msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
 
-
-                        if (methodID == 0)
+                        switch (methodID)
                         {
-                            //HandleCall(*this, &update_request_Skeleton::ResetMachine, msg, cserver);
-                        }
-                        else if (methodID == 1)
-                        {
-                            //HandleCall(*this, &update_request_Skeleton::StopUpdateSession, msg, cserver);
-                        }
-                        else if (methodID == 2)
-                        {
-                            //HandleCall(*this, &update_request_Skeleton::StartUpdateSession, msg, cserver);
-                        }
-                        else if (methodID == 3)
-                        {
-                            //HandleCall(*this, &update_request_Skeleton::PrepareUpdate, msg, cserver);
-                        }
-                        else if (methodID == 4)
-                        {
-                            //HandleCall(*this, &update_request_Skeleton::VerifyUpdate, msg, cserver);
-                        }
-                        else if (methodID == 5)
-                        {
-                            //HandleCall(*this, &update_request_Skeleton::PrepareRollback, msg, cserver);
-                        }
-                        else
-                        {
-                            int result = -1;
-                            cserver.SendServer(&result, sizeof(int));
-                            cserver.ClientClose();
+                        case 0:
+                            HandleCall(*this,&update_request_Skeleton::ResetMachine,message,cserver);
+                            break;
+                        case 1:
+                            HandleCall(*this,&update_request_Skeleton::StopUpdateSession,message,cserver);
+                            break;
+                        case 2:
+                            HandleCall(*this,&update_request_Skeleton::StartUpdateSession,message,cserver);
+                            break;
+                        case 3:
+                            HandleCall(*this,&update_request_Skeleton::PrepareUpdate,message,cserver);
+                            break;
+                        case 4:
+                            HandleCall(*this,&update_request_Skeleton::VerifyUpdate,message,cserver);
+                            break;
+                        case 5:               
+                            HandleCall(*this,&update_request_Skeleton::PrepareRollback,message,cserver);
+                            break;
+                        default:
+                            break;
                         }
                    }
                 };
