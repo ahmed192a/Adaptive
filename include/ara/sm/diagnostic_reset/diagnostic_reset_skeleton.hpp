@@ -1,14 +1,13 @@
 /**
  * @file diagnostic_reset_skeleton.hpp
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-03-14
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
-
 
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_skeleton.hpp"
@@ -30,15 +29,15 @@ namespace ara
                 private:
                     struct sockaddr_in cliaddr;
                     ara::com::InstanceIdentifier serviceid;
-                public:
-                    
 
+                public:
                     diagnostic_reset(
-                        ara::com::InstanceIdentifier instance, 
+                        ara::com::InstanceIdentifier instance,
                         ara::com::proxy_skeleton::Skeleton::ServiceSkeleton::SP_Handle skeleton_handle)
-                        : ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid,instance,skeleton_handle),
-                        serviceid(14)
-                        {}
+                        : ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle),
+                          serviceid(14)
+                    {
+                    }
                     ~diagnostic_reset();
 
                     /*sends DiagnosticResetMsg defined in 9.1 Type definition to all Processes in a SoftwareCluster.*/
@@ -47,32 +46,76 @@ namespace ara
                     /*All Processes which got a DiagnosticReset request sends this as answer to State Management*/
                     std::future<ara::sm::diagnostic_reset::EventDiagnosticOutput> event();
 
-                   void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
-                   {
-                        ara::com::Deserializer dser;
-                        int methodID = dser.deserialize<int>(message,0);
-                        cout<<"\t[SERVER] Dispatch " << methodID << endl;
-                        std::vector<uint8_t> msg;
-                        msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
+                    //    void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
+                    //    {
+                    //         ara::com::Deserializer dser;
+                    //         int methodID = dser.deserialize<int>(message,0);
+                    //         cout<<"\t[SERVER] Dispatch " << methodID << endl;
+                    //         std::vector<uint8_t> msg;
+                    //         msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
 
+                    //         if (methodID == 0)
+                    //         {
+                    //             //HandleCall(*this, &diagnostic_reset::message, msg, cserver);
+                    //         }
+                    //         else if (methodID == 1)
+                    //         {
+                    //             //HandleCall(*this, &diagnostic_reset::event, msg, cserver);
+                    //         }
+                    //         else
+                    //         {
+                    //             int result = -1;
+                    //             cserver.SendServer(&result, sizeof(int));
+                    //             cserver.ClientClose();
+                    //         }
+                    //    }
+
+                    void skeleton::method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
+                    {
+                        // int methodID = dser.deserialize<int>(message,0);
+
+                        int methodID = message.MessageId().method_id;
+
+                        std::future<int> result;
+                        int result2;
+                        cout << "\t[SERVER] Dispatch " << methodID << endl;
+                        // std::vector<uint8_t> msg = message.GetPayload();
+                        // msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
 
                         if (methodID == 0)
-                        {
-                            //HandleCall(*this, &diagnostic_reset::message, msg, cserver);
-                        }
-                        else if (methodID == 1)
-                        {
-                            //HandleCall(*this, &diagnostic_reset::event, msg, cserver);
-                        }
-                        else
-                        {
-                            int result = -1;
-                            cserver.SendServer(&result, sizeof(int));
-                            cserver.ClientClose();
-                        }
-                   }
+                            {
+                                //HandleCall(*this, &diagnostic_reset::message, msg, cserver);
+                            }
+                            else if (methodID == 1)
+                            {
+                                //HandleCall(*this, &diagnostic_reset::event, msg, cserver);
+                            }
+                            else
+                            {
+                                // int result = -1;
+                                // cserver.SendServer(&result, sizeof(int));
+                                // cserver.ClientClose();
+                            }
+                    }
 
-                    
+                    void skeleton::field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
+                    {
+                        ara::com::Deserializer dser;
+                        // int methodID = dser.deserialize<int>(message,0);
+
+                        int event_id = message.MessageId().method_id & 0x7FFF;
+                        switch (event_id)
+                        {
+                        case 2:
+                            field1.HandleCall(message, cserver);
+                            break;
+                        default:
+                            // cserver.Send(&result2, sizeof(int));
+                            // cserver.CloseSocket();
+
+                            break;
+                        }
+                    }
                 };
             }
         }
