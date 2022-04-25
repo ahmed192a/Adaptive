@@ -123,7 +123,7 @@ void *pthread0(void *v_var)
     ara::ucm::pkgmgr::PackageManagement::TransferStartOutput transfer_start_output = result.get();
 
     int block_counter = 0;
-     std::cout << Temp_data.size() << std::endl;
+    std::cout << Temp_data.size() << std::endl;
     for (int i=0; i<Temp_data.size(); i++)
     {
         for(int j=0; j<transfer_start_output.BlockSize; j++)

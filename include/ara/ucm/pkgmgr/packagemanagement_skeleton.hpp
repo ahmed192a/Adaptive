@@ -55,7 +55,7 @@ namespace ara
                      * @note int de ay haga mo2ktn
                      *
                      */
-                    using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<::ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType, true, true, false>::type;
+                    using CurrentStatus = ara::com::proxy_skeleton::skeleton::FieldType<::ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType, true, true, true>::type;
                 }
                 /**
                  * @brief implementation of PackageManagementSkeleton interface
@@ -95,7 +95,8 @@ namespace ara
                         // ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent
                         ara::com::InstanceIdentifier instance,
                         ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle) : serviceid(45),
-                                                                                                          ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle)
+                        ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle),
+                        CurrentStatus(this, "CurrentStatus", 0)
 
                     {
                     }
@@ -127,6 +128,26 @@ namespace ara
                     std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> TransferData(ara::ucm::pkgmgr::PackageManagement::TransferIdType id, ara::ucm::pkgmgr::PackageManagement::ByteVectorType data, uint64_t blockCounter);
                     std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> TransferStart(uint64_t size);
+                    fields::CurrentStatus CurrentStatus;
+
+                    void field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
+                    {
+                        ara::com::Deserializer dser;
+                        // int methodID = dser.deserialize<int>(message,0);
+
+                        int event_id = message.MessageId().method_id & 0x7FFF;
+                        switch (event_id)
+                        {
+                        case 0:
+                            CurrentStatus.HandleCall(message, cserver);
+                            break;
+                        default:
+                            // cserver.Send(&result2, sizeof(int));
+                            // cserver.CloseSocket();
+
+                            break;
+                        }
+                    }
 
                     void method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
                     {
@@ -138,11 +159,11 @@ namespace ara
 
                         switch (methodID)
                         {
-                        case 7:
+                        case 7://TransferStart
                             HandleCall(*this, &PackageManagementSkeleton::TransferStart, message, cserver);
 
                             break;
-                        case 8:
+                        case 8://TransferData
                         {
                             std::vector<uint8_t> msg = message.GetPayload();
                             ara::ucm::pkgmgr::PackageManagement::ByteVectorType data;
@@ -175,7 +196,6 @@ namespace ara
                             response_m.SetPayload(_payload);
                             _payload.clear();
                             _payload = response_m.Serializer();
-
 
                             uint32_t msg_size = _payload.size();
                             // send message

@@ -34,7 +34,7 @@ namespace ara
                      * 
                      * 
                      */
-                    using CurrentStatus = ara::com::proxy_skeleton::proxy::FieldType<ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType, true, false, true>::type;
+                    using CurrentStatus = ara::com::proxy_skeleton::proxy::FieldType<ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType, true, true, true>::type;
                 }
                 namespace methods
                 {

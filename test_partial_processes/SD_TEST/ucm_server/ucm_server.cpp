@@ -12,6 +12,8 @@
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
 #include "ara/com/deserializer.hpp"
+#include "ara/SD_s/skeleton.hpp"
+#include "ara/com/SOMEIP/Message.hpp"
 
 #include <sys/mman.h>
 #include <sys/ipc.h>
@@ -24,7 +26,6 @@
 
 using namespace std;
 using namespace ara::ucm::pkgmgr::skeleton;
-void Handle_IO();
 
 // Socket for methods
 // Socket for events
@@ -34,9 +35,9 @@ ara::com::InstanceIdentifier instance(SERVICE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
 // PackageManagementSkeleton server_skeleton_obj(instance, skeleton_handle);
 
-
-
 std::shared_ptr<PackageManagementSkeleton> server_skeleton_ptr = std::make_shared<PackageManagementSkeleton>(instance, skeleton_handle);
+
+bool stop = true;
 
 void Handle_IO();
 void *pthread0(void *v_var);
@@ -75,7 +76,7 @@ void *pthread0(void *v_var)
     /// VARIABLES
     char buffer[256];
     ara::com::proxy_skeleton::C_Info x;
-    std::vector<uint8_t> msg;
+    // std::vector<uint8_t> msg;
     int msg_size;
     ara::com::Deserializer dser;
 
@@ -95,24 +96,35 @@ void *pthread0(void *v_var)
     {
         Socket Sclient = server_main_socket.AcceptServer();
         cout << "\t[SERVER]  accepted" << endl;
-
-        strcpy(buffer, "=> Server connected...\n");
+        // strcpy(buffer, "=> Server connected...\n");
 
         // send a confirmation connect to client
-        Sclient.Send(buffer, strlen(buffer));
+        // Sclient.Send(buffer, strlen(buffer));
 
         // Receive a struct from client containing the method name and parameters
+        std::vector<uint8_t> msg;
         Sclient.Receive((void *)&msg_size, sizeof(msg_size));
         msg.resize(msg_size);
-        Sclient.Receive((void *)&msg[0], msg.size());
-
-        // Perform the requested method then send the result
-        server_skeleton_ptr->method_dispatch(msg, Sclient);
+        Sclient.Receive((void *)&msg[0], msg_size);
+        
+        cout << "\t[SERVER]  received" << endl;
+        ara::com::SOMEIP_MESSAGE::Message someip_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+      
+        
+        if (someip_msg.check_Methode_ID() == true)
+        {
+            cout << "This is method request " << endl;
+            server_skeleton_ptr->method_dispatch(someip_msg, Sclient);
+        }
+        else
+        {
+            cout << "This is SET OR GET request" << endl;
+            server_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
+        }
     }
-    cout << "\n\t[SERVER] Goodbye..." << endl;
 
     // always be awake to receive stuff from signal
-    while (1)
+    while (stop)
     {
         printf(".\n");
         sleep(1);
@@ -136,24 +148,66 @@ void Handle_IO()
     unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
     ara::com::proxy_skeleton::event_info evr;
     std::vector<uint8_t> msg;
-    server_main_socket_DG.UDPRecFrom((void *)&evr, sizeof(evr), (struct sockaddr *)&echoClntAddr, &clntLen);
+    uint32_t msg_size;
 
-    msg.resize(evr.data_size);
-    ara::com::proxy_skeleton::Client_udp_Info cudp;
-    cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
-    if (evr.data_size)
+    server_main_socket_DG.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
+    msg.resize(msg_size);
+    server_main_socket_DG.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+
+    // ara::com::proxy_skeleton::Client_udp_Info cudp;
+    // cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
+    if (msg[14] == 0x02)
     {
-        if (evr.operation == 1)
+        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
+
+        sd_msg.Deserialize(msg);
+        auto entry = (ara::com::entry::EventgroupEntry *)sd_msg.Entries()[0];
+
+        ara::com::proxy_skeleton::Client_udp_Info cudp;
+        cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
+        printf("\n[SERVER]  ->> Handling client %s   with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), msg_size);
+        switch (entry->Type())
         {
-            server_main_socket_DG.UDPRecFrom((void *)&cudp.port, evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
-        }
-        else
-        {
-            server_main_socket_DG.UDPRecFrom((void *)&msg[0], evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
-            std::cout << "got value of set\n";
+        case ara::com::entry::EntryType::Subscribing:
+            switch (entry->ServiceId())
+            {
+            case SERVICE_ID:
+                switch (entry->EventgroupId())
+                {
+                // case 0:
+                //     std::cout << "[server] sub event1 start\n";
+                //     server_skeleton_ptr->event1.subhandlecall(sd_msg, cudp);
+                //     // stop = false; // for debuging
+                //     break;
+                // case 1:
+                //     std::cout << "[server] sub event2 start\n";
+                //     server_skeleton_ptr->event2.subhandlecall(sd_msg, cudp);
+                //     break;
+                case 0:
+                    std::cout << "[server] sub field1 start\n";
+                    server_skeleton_ptr->CurrentStatus.subhandlecall(sd_msg, cudp);
+                    break;
+
+                default: // error invalid eventgroup id
+                    break;
+                }
+                break;
+            }
+        default: // reply with error invalid servic id
+            break;
         }
     }
-    printf("\n[SERVER]  ->> Handling client %s %d  with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), cudp.port, evr.data_size);
-
-   
+    // if (evr.data_size)
+    // {
+    //     if (evr.operation == 1)
+    //     {
+    //         server_main_socket_DG.UDPRecFrom((void *)&cudp.port, evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+    //     }
+    //     else
+    //     {
+    //         server_main_socket_DG.UDPRecFrom((void *)&msg[0], evr.data_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+    //         std::cout << "got value of set\n";
+    //     }
+    // }
+    // printf("\n[SERVER]  ->> Handling client %s %d  with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), cudp.port, evr.data_size);
 }

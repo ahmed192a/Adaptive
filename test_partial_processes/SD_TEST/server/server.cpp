@@ -25,7 +25,6 @@
 #define SERVICE_ID          32
 #define NUM_THREADS         3
 
-using namespace std;
 
 // server 
 CServer server_main_socket_DG(SOCK_DGRAM);

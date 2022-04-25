@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2022
  * 
  */
+#ifndef ARA_COM_SOMEIP_MESSAGE_HPP
+#define ARA_COM_SOMEIP_MESSAGE_HPP
 #include <stdint.h>
 #include <vector>
 #include <stdexcept>
@@ -206,3 +208,4 @@ namespace ara
 		}
 	}
 }
+#endif

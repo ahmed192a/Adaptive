@@ -335,13 +335,13 @@ namespace ara
                 {
                     std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>result = std::async([&,id, blockCounter, data](){
                     ara::com::Serializer ser;
-                    ser.serialize(methodid);
+                    // ser.serialize(methodid);
                     ser.serialize(id);
                     ser.serialize(blockCounter);
                     std::vector<uint8_t> msgser = ser.Payload();
                     msgser.insert(msgser.end(), data.begin(), data.end());
 
-                    return service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(msgser);
+                    return service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput>(methodid, msgser);
                     
                     });
                     return result;

@@ -9,6 +9,7 @@
  * 
  */
 #include"ara/com/SOMEIP/Message.hpp"
+#include <unistd.h>
 
 namespace ara
 {
@@ -192,6 +193,8 @@ namespace ara
                 offset += 4;
 
                 Message m (_mid, _rid, GBProtocol_Version, GBinterface_version, GBMessageType, GBReturnCode);
+               
+                // GBlength = Header::HeaderSize;
                 if(length > Header::HeaderSize){
                     std::vector<uint8_t> pay = {msg.begin()+offset, msg.begin()+length};
                     m.SetPayload(pay);
