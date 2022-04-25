@@ -139,7 +139,13 @@ namespace ara
                         switch (event_id)
                         {
                         case 0:
-                            CurrentStatus.HandleCall(message, cserver);
+                        if (message.Length() > 16){
+                            CurrentStatus.HandleGet(message, cserver); 
+                        }
+                        else{
+                            CurrentStatus.HandleSet(message, cserver);
+                        }
+                            // CurrentStatus.HandleCall(message, cserver);
                             break;
                         default:
                             // cserver.Send(&result2, sizeof(int));

@@ -45,13 +45,14 @@ namespace ara
                 template <typename T>
                 class Event
                 {
-                private:
+                protected:
                     /**
                      * @brief
                      *
                      * @todo edit the sigval to carry any type not just int
                      *
                      */
+                    
                     void notify()
                     {
                         std::vector<ara::com::proxy_skeleton::Client_udp_Info>::iterator itr;
@@ -66,7 +67,7 @@ namespace ara
                         }
                     }
 
-                protected:
+                
                     ServiceSkeleton *m_service;
                     std::string m_name;
                     uint32_t m_event_id; 
@@ -120,7 +121,7 @@ namespace ara
                         }
                     }
 
-                    void update(T value)
+                    virtual void update(T value)
                     {
                         event_data = value;
                         std::cout << m_name << " is Udpated " << std::endl;
@@ -158,37 +159,37 @@ namespace ara
                         // msg.data_size = data.size();
                     }
 
-                    void HandleCall(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
-                    {
-                        bool op = false;
-                        std::vector<uint8_t> _data = sd_msg.GetPayload();
-                        SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{ (uint16_t)m_service->m_service_id.GetInstanceId(),(uint16_t) (sd_msg.MessageId().method_id|0x8000)},
-                            SOMEIP_MESSAGE::Request_ID{5,6},
-                            2, // protocol version
-                            7, // Interface Version
-                            SOMEIP_MESSAGE::MessageType::RESPONSE);
-                        if(_data.size()>0) // SET
-                        {
-                            ara::com::Deserializer dser;
-                            event_data = dser.deserialize<T>(_data,0);
-                            op = true;
+                    // void HandleCall(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
+                    // {
+                    //     bool op = false;
+                    //     std::vector<uint8_t> _data = sd_msg.GetPayload();
+                    //     SOMEIP_MESSAGE::Message R_msg(
+                    //         SOMEIP_MESSAGE::Message_ID{ (uint16_t)m_service->m_service_id.GetInstanceId(),(uint16_t) (sd_msg.MessageId().method_id|0x8000)},
+                    //         SOMEIP_MESSAGE::Request_ID{5,6},
+                    //         2, // protocol version
+                    //         7, // Interface Version
+                    //         SOMEIP_MESSAGE::MessageType::RESPONSE);
+                    //     if(_data.size()>0) // SET
+                    //     {
+                    //         ara::com::Deserializer dser;
+                    //         event_data = dser.deserialize<T>(_data,0);
+                    //         op = true;
 
-                        }else{ // GET
-                            ara::com::Serializer ser;
-                            ser.serialize(event_data);
-                            _data = ser.Payload();
-                        }
-                        // Setpayload in message
-                        R_msg.SetPayload(_data);
-                        _data = R_msg.Serializer();
-                        uint32_t msg_size = _data.size();
-                        // send message
-                        binding.Send(&msg_size, sizeof(msg_size));
-                        binding.Send(_data.data(), msg_size);
-                        binding.CloseSocket();
-                        if(op) notify();
-                    }
+                    //     }else{ // GET
+                    //         ara::com::Serializer ser;
+                    //         ser.serialize(event_data);
+                    //         _data = ser.Payload();
+                    //     }
+                    //     // Setpayload in message
+                    //     R_msg.SetPayload(_data);
+                    //     _data = R_msg.Serializer();
+                    //     uint32_t msg_size = _data.size();
+                    //     // send message
+                    //     binding.Send(&msg_size, sizeof(msg_size));
+                    //     binding.Send(_data.data(), msg_size);
+                    //     binding.CloseSocket();
+                    //     if(op) notify();
+                    // }
 
                     std::vector<ara::com::proxy_skeleton::Client_udp_Info> getsub()
                     {

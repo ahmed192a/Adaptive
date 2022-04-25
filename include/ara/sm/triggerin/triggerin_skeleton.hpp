@@ -55,7 +55,13 @@ namespace ara
                         switch (event_id)
                         {
                         case 0:
-                            Trigger.HandleCall(message, cserver);
+                        if(message.Length() > 16){
+                            Trigger.HandleGet(message, cserver);
+                        }
+                        else{
+                            Trigger.HandleSet(message, cserver);
+                        }
+                            // Trigger.HandleCall(message, cserver);
                             break;
                         default:
                             // cserver.Send(&result2, sizeof(int));

@@ -51,206 +51,272 @@ namespace ara
                         ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
-                                                 name,
-                                                 field_id)
+                                                      name,
+                                                      field_id)
                     {
                     }
-                    // void handlecall(ara::com::proxy_skeleton::event_info &msg,std::vector<uint8_t>&data, ara::com::proxy_skeleton::Client_udp_Info client)
-                    // {
-                    //     ara::com::Deserializer dser;
-                    //     ara::com::Serializer ser;
-                    //     switch (msg.operation)
-                    //     {
-                    //     case 0:
-                    //         // new value
-                    //         // event_data = msg_data;
-                    //         break;
-                    //     case 1:
-                    //         Event<T>::set_subscriber(client);
-                    //         Event<T>::print_subscribers();
-                    //         break;
-                    //     case 2:
-                    //         Event<T>::Del_subscriber(client);
-                    //         // Event<T>::print_subscribers();
-                    //         break;
-                    //     case 3:
-                    //         Event<T>::event_data = dser.deserialize<T>(data,0);
-                    //         std::cout<<"data is seted***************\n\n\n";
-                    //         break;
+                    void HandleSet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
+                    {
+                        std::vector<uint8_t> _data = sd_msg.GetPayload();
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::RESPONSE);
 
-                    //     case 4:
-                    //         ser.serialize(Event<T>::event_data);
-                    //         data = ser.Payload();
-                    //         msg.data_size = data.size();
-                    //         break;
-                    //     default:
-                    //         break;
-                    //     }
-                    // }
+                        ara::com::Deserializer dser;
+                        this->event_data = dser.deserialize<T>(_data, 0);
 
+                        // Setpayload in message
+                        R_msg.SetPayload(_data);
+                        _data = R_msg.Serializer();
+                        uint32_t msg_size = _data.size();
+                        // send message
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_data.data(), msg_size);
+                        binding.CloseSocket();
+                        this->notify();
+                    }
+                    void HandleGet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
+                    {
+                        std::vector<uint8_t> _data;
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::RESPONSE);
+
+                        ara::com::Serializer ser;
+                        ser.serialize(this->event_data);
+                        _data = ser.Payload();
+
+                        // Setpayload in message
+                        R_msg.SetPayload(_data);
+                        _data = R_msg.Serializer();
+                        uint32_t msg_size = _data.size();
+                        // send message
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_data.data(), msg_size);
+                        binding.CloseSocket();
+                    }
                     virtual ~Field() {}
-                   
                 };
 
                 template <typename T>
-                class FieldNoSetter
+                class FieldNoSetter : public Event<T>
                 {
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-
                 public:
-                    FieldNoSetter(ServiceSkeleton *service, std::string name)
-                        : GetHandler(nullptr)
+                    FieldNoSetter( ServiceSkeleton *service,
+                        std::string name,
+                        uint32_t field_id) : Event<T>(service,
+                                                      name,
+                                                      field_id)
                     {
                     }
 
                     virtual ~FieldNoSetter() {}
 
-                    void Update(const T &data)
+                    void HandleGet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
-                        m_service->SendEvent(m_name, data, true);
-                    }
+                        std::vector<uint8_t> _data;
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::RESPONSE);
 
-                    void RegisterGetHandler(FieldGetHandler<T> getHandler)
-                    {
-                        GetHandler = getHandler;
-                    }
+                        ara::com::Serializer ser;
+                        ser.serialize(this->event_data);
+                        _data = ser.Payload();
 
-                    FieldGetHandler<T> GetHandler;
+                        // Setpayload in message
+                        R_msg.SetPayload(_data);
+                        _data = R_msg.Serializer();
+                        uint32_t msg_size = _data.size();
+                        // send message
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_data.data(), msg_size);
+                        binding.CloseSocket();
+                    }
                 };
 
                 template <typename T>
-                class FieldNoGetter
+                class FieldNoGetter : public Event<T>
                 {
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-
                 public:
-                    FieldNoGetter(ServiceSkeleton *service, std::string name)
-                        : SetHandler(nullptr)
+                    FieldNoGetter( ServiceSkeleton *service,
+                        std::string name,
+                        uint32_t field_id) : Event<T>(service,
+                                                      name,
+                                                      field_id)
                     {
-                        m_name = name;
-                        m_service = service;
+                        this->m_name = name;
+                        this->m_service = service;
                     }
 
                     virtual ~FieldNoGetter() {}
 
-                    void Update(const T &data)
+                    void HandleSet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
-                        m_service->SendEvent(m_name, data, true);
-                    }
+                        std::vector<uint8_t> _data = sd_msg.GetPayload();
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::RESPONSE);
 
-                    void RegisterSetHandler(FieldSetHandler<T> setHandler)
-                    {
-                        SetHandler = setHandler;
-                    }
+                        ara::com::Deserializer dser;
+                        this->event_data = dser.deserialize<T>(_data, 0);
 
-                    FieldSetHandler<T> SetHandler;
+                        // Setpayload in message
+                        R_msg.SetPayload(_data);
+                        _data = R_msg.Serializer();
+                        uint32_t msg_size = _data.size();
+                        // send message
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_data.data(), msg_size);
+                        binding.CloseSocket();
+                        this->notify();
+                    }
                 };
 
                 template <typename T>
-                class FieldNoGetterAndSetter
+                class FieldNoGetterAndSetter : public Event<T>
                 {
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-
                 public:
-                    FieldNoGetterAndSetter(ServiceSkeleton *service, std::string name)
+                    FieldNoGetterAndSetter( ServiceSkeleton *service,
+                        std::string name,
+                        uint32_t field_id) : Event<T>(service,
+                                                      name,
+                                                      field_id)
                     {
-                        m_name = name;
-                        m_service = service;
+                        this->m_name = name;
+                        this->m_service = service;
                     }
 
                     virtual ~FieldNoGetterAndSetter() {}
 
                     void Update(const T &data)
                     {
-                        m_service->SendEvent(m_name, data, true);
+                        this->m_service->SendEvent(this->m_name, data, true);
                     }
                 };
 
                 template <typename T>
-                class FieldNoNotifier
+                class FieldNoNotifier : public Event<T>
                 {
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-
                 public:
-                    FieldNoNotifier(ServiceSkeleton *service, std::string name)
-                        : GetHandler(nullptr), SetHandler(nullptr)
+                    FieldNoNotifier( ServiceSkeleton *service,
+                        std::string name,
+                        uint32_t field_id) : Event<T>(service,
+                                                      name,
+                                                      field_id)
                     {
-                        m_name = name;
-                        m_service = service;
+                        this->m_name = name;
+                        this->m_service = service;
                     }
 
                     virtual ~FieldNoNotifier() {}
-
-                    void RegisterGetHandler(FieldGetHandler<T> getHandler)
+                    void update(T value) override
                     {
-                        GetHandler = getHandler;
+                        this->event_data = value;
+                        std::cout << this->m_name << " is Udpated " << std::endl;
                     }
-
-                    void RegisterSetHandler(FieldSetHandler<T> setHandler)
-                    {
-                        SetHandler = setHandler;
-                    }
-
-                    FieldGetHandler<T> GetHandler;
-                    FieldSetHandler<T> SetHandler;
                 };
 
                 template <typename T>
-                class FieldNoNotifierAndSetter
+                class FieldNoNotifierAndSetter : public Event<T>
                 {
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-
                 public:
-                    FieldNoNotifierAndSetter(ServiceSkeleton *service, std::string name)
-                        : GetHandler(nullptr)
+                    FieldNoNotifierAndSetter( ServiceSkeleton *service,
+                        std::string name,
+                        uint32_t field_id) : Event<T>(service,
+                                                      name,
+                                                      field_id)
                     {
-                        m_name = name;
-                        m_service = service;
+                        this->m_name = name;
+                        this->m_service = service;
                     }
 
                     virtual ~FieldNoNotifierAndSetter() {}
-
-                    void RegisterGetHandler(FieldGetHandler<T> getHandler)
+                 
+                    void HandleGet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
-                        GetHandler = getHandler;
-                    }
+                        std::vector<uint8_t> _data;
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::RESPONSE);
 
-                    FieldGetHandler<T> GetHandler;
+                        ara::com::Serializer ser;
+                        ser.serialize(this->event_data);
+                        _data = ser.Payload();
+
+                        // Setpayload in message
+                        R_msg.SetPayload(_data);
+                        _data = R_msg.Serializer();
+                        uint32_t msg_size = _data.size();
+                        // send message
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_data.data(), msg_size);
+                        binding.CloseSocket();
+                    }
+                    void update(T value) override
+                    {
+                        this->event_data = value;
+                        std::cout << this->m_name << " is Udpated " << std::endl;
+                    }
                 };
 
                 template <typename T>
-                class FieldNoNotifierAndGetter
+                class FieldNoNotifierAndGetter : public Event<T>
                 {
-                private:
-                    ServiceSkeleton *m_service;
-                    std::string m_name;
-
                 public:
-                    FieldNoNotifierAndGetter(ServiceSkeleton *service, std::string name)
-                        : SetHandler(nullptr)
+                    FieldNoNotifierAndGetter( ServiceSkeleton *service,
+                        std::string name,
+                        uint32_t field_id) : Event<T>(service,
+                                                      name,
+                                                      field_id)
                     {
-                        m_name = name;
-                        m_service = service;
+                        this->m_name = name;
+                        this->m_service = service;
+                    }
+                    void update(T value) override
+                    {
+                        this->event_data = value;
+                        std::cout << this->m_name << " is Udpated " << std::endl;
                     }
 
                     virtual ~FieldNoNotifierAndGetter() {}
-
-                    void RegisterSetHandler(FieldSetHandler<T> setHandler)
+                    void HandleSet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
-                        SetHandler = setHandler;
-                    }
+                        std::vector<uint8_t> _data = sd_msg.GetPayload();
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::RESPONSE);
 
-                    FieldSetHandler<T> SetHandler;
+                        ara::com::Deserializer dser;
+                        this->event_data = dser.deserialize<T>(_data, 0);
+
+                        // Setpayload in message
+                        R_msg.SetPayload(_data);
+                        _data = R_msg.Serializer();
+                        uint32_t msg_size = _data.size();
+                        // send message
+                        binding.Send(&msg_size, sizeof(msg_size));
+                        binding.Send(_data.data(), msg_size);
+                        binding.CloseSocket();
+                        this->notify();
+                    }
                 };
 
                 /* Interface for creating field opject ddepending on the input (getter/notifier/setter)*/

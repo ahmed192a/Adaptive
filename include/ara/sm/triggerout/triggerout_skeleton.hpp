@@ -52,7 +52,13 @@ namespace ara
                         switch (event_id)
                         {
                         case 2:
-                            Notifier.HandleCall(message, cserver);
+                            if(message.Length() > 16){
+                                Notifier.HandleGet(message, cserver);
+                            }
+                            else{
+                                Notifier.HandleSet(message, cserver);
+                            }
+                            // Notifier.HandleCall(message, cserver);
                             break;
                         default:
                             // cserver.Send(&result2, sizeof(int));
