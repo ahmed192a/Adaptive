@@ -24,7 +24,7 @@ namespace ara
         {
             namespace skeleton
             {
-                class diagnostic_reset
+                class diagnostic_reset_skeleton
                 {
                 private:
                     struct sockaddr_in cliaddr;
@@ -46,72 +46,23 @@ namespace ara
                     /*All Processes which got a DiagnosticReset request sends this as answer to State Management*/
                     std::future<ara::sm::diagnostic_reset::EventDiagnosticOutput> event();
 
-                    //    void skeleton::method_dispatch(std::vector<uint8_t>& message, Socket& cserver)
-                    //    {
-                    //         ara::com::Deserializer dser;
-                    //         int methodID = dser.deserialize<int>(message,0);
-                    //         cout<<"\t[SERVER] Dispatch " << methodID << endl;
-                    //         std::vector<uint8_t> msg;
-                    //         msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
-
-                    //         if (methodID == 0)
-                    //         {
-                    //             //HandleCall(*this, &diagnostic_reset::message, msg, cserver);
-                    //         }
-                    //         else if (methodID == 1)
-                    //         {
-                    //             //HandleCall(*this, &diagnostic_reset::event, msg, cserver);
-                    //         }
-                    //         else
-                    //         {
-                    //             int result = -1;
-                    //             cserver.SendServer(&result, sizeof(int));
-                    //             cserver.ClientClose();
-                    //         }
-                    //    }
-
                     void skeleton::method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
                     {
-                        // int methodID = dser.deserialize<int>(message,0);
-
                         int methodID = message.MessageId().method_id;
-
-                        std::future<int> result;
-                        int result2;
                         cout << "\t[SERVER] Dispatch " << methodID << endl;
-                        // std::vector<uint8_t> msg = message.GetPayload();
-                        // msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
 
-                        if (methodID == 0)
-                            {
-                                //HandleCall(*this, &diagnostic_reset::message, msg, cserver);
-                            }
-                            else if (methodID == 1)
-                            {
-                                //HandleCall(*this, &diagnostic_reset::event, msg, cserver);
-                            }
-                            else
-                            {
-                                // int result = -1;
-                                // cserver.SendServer(&result, sizeof(int));
-                                // cserver.ClientClose();
-                            }
-                    }
-
-                    void skeleton::field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
-                    {
-                        ara::com::Deserializer dser;
-                        // int methodID = dser.deserialize<int>(message,0);
-
-                        int event_id = message.MessageId().method_id & 0x7FFF;
-                        switch (event_id)
+                        switch (methodID)
                         {
-                        case 2:
-                            field1.HandleCall(message, cserver);
+                        case 0:
+                            HandleCall(*this, &diagnostic_reset_skeleton::message, message, cserver);
+                            break;
+                        case 1:
+                            HandleCall(*this, &diagnostic_reset_skeleton::event, message, cserver);
                             break;
                         default:
-                            // cserver.Send(&result2, sizeof(int));
-                            // cserver.CloseSocket();
+                            // int result = -1;
+                            // cserver.SendServer(&result, sizeof(int));
+                            // cserver.ClientClose();
 
                             break;
                         }
