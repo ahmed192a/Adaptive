@@ -155,43 +155,5 @@ void Handle_IO()
     }
     printf("\n[SERVER]  ->> Handling client %s %d  with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), cudp.port, evr.data_size);
 
-    // switch (evr.service_id)
-    // {
-    // case SERVICE_ID:
-    //     switch (evr.event_id)
-    //     {
-    //     case 0:
-    //         std::cout << "[server] sub event1 start\n";
-    //         server_skeleton_ptr->event1.handlecall(evr, msg, cudp);
-
-    //         break;
-    //     case 1:
-    //         std::cout << "[server] sub event2 start\n";
-    //         server_skeleton_ptr->event2.handlecall(evr, msg,cudp);
-
-    //         break;
-    //     case 2:
-    //         server_skeleton_ptr->field1.handlecall(evr, msg, cudp);
-    //         if (evr.operation == 4)
-    //         {
-    //             std::cout << "[server] get field1 " << std::endl;
-    //             server_main_socket_DG.UDPSendTo((void *)&msg[0], msg.size(), (struct sockaddr *)&echoClntAddr);
-    //         }
-    //         else if (evr.operation == 3)
-    //         {
-    //             std::cout << "[server] set field1 " << std::endl;
-    //         }
-    //         else
-    //         {
-    //             std::cout << "[server] sub field1 start\n";
-    //         }
-    //         break;
-
-    //     default:
-    //         break;
-    //     }
-    //     break;
-    // default:
-    //     break;
-    // }
+   
 }
