@@ -12,7 +12,7 @@
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
 #include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
-
+#include "ara/sm/triggerinout/triggerinout_types.hpp"
 namespace ara
 {
     namespace sm
@@ -23,7 +23,6 @@ namespace ara
             {
                 namespace skeleton
                 {
-                    using TriggerInOutType = int;
                     namespace events
                     {
 
@@ -31,8 +30,8 @@ namespace ara
                     namespace fields
                     {
                         // getter  ,  setter ,  notifier
-                        using Notifier = ara::com::proxy_skeleton::skeleton::FieldType<TriggerInOutType, true, true, true>::type;
-                        using Trigger = ara::com::proxy_skeleton::skeleton::FieldType<TriggerInOutType, true, true, true>::type;
+                        using Notifier = ara::com::proxy_skeleton::skeleton::FieldType<ara::sm::triggerinout::TriggerInOutType, true, true, true>::type;
+                        using Trigger = ara::com::proxy_skeleton::skeleton::FieldType<ara::sm::triggerinout::TriggerInOutType, true, true, true>::type;
                     }
 
                     class Trigger_InOut_Skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
@@ -53,7 +52,6 @@ namespace ara
                         void field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
                         {
                             ara::com::Deserializer dser;
-                            // int methodID = dser.deserialize<int>(message,0);
 
                             int event_id = message.MessageId().method_id & 0x7FFF;
                             switch (event_id)

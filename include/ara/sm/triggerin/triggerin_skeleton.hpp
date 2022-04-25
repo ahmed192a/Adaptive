@@ -10,6 +10,7 @@
  */
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
 #include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
+#include "ara/sm/triggerin/triggerin_types.hpp"
 
 namespace ara
 {
@@ -19,14 +20,13 @@ namespace ara
         {
             namespace skeleton
             {
-                using TriggerInType = int;
                 namespace fields
                 {
                     /**
                      * @todo type: project specific
                      *
                      */
-                    using Trigger = ara::com::proxy_skeleton::skeleton::FieldType<ara::sm::triggerin::skeleton::TriggerInType, true, true, true>::type;
+                    using Trigger = ara::com::proxy_skeleton::skeleton::FieldType<ara::sm::triggerin::TriggerInType, true, true, true>::type;
                 }
                 class Trigger_In_Skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
                 {

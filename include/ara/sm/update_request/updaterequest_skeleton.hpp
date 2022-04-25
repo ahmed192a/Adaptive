@@ -58,12 +58,8 @@ namespace ara
                     void method_dispatch(ara::com::SOMEIP_MESSAGE::Message&message, Socket& cserver)
                    {
                         ara::com::Deserializer dser;
-                        // int methodID = dser.deserialize<int>(message,0);
                         int methodID = message.MessageId().method_id;
                         cout<<"\t[SERVER] Dispatch " << methodID << endl;
-                        // std::vector<uint8_t> msg;
-                        // msg.insert(msg.begin(), message.begin()+sizeof(int), message.end());
-
                         switch (methodID)
                         {
                         case 0:

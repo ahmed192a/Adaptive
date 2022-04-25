@@ -40,6 +40,13 @@ namespace ara
                 class Field : public Event<T>
                 {
                 public:
+                    /**
+                     * @brief Construct a new Field object
+                     * @todo edit all other fields
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     Field(
                         ServiceSkeleton *service,
                         std::string name,
