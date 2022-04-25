@@ -55,8 +55,7 @@ Color::Modifier def(Color::FG_DEFAULT);
 CServer ssevent(SOCK_DGRAM);
 ara::com::FindServiceHandle findhandle{SERVICE_ID, 45, SD_PORT};
 
-Color::Modifier green(Color::FG_GREEN);
-Color::Modifier def(Color::FG_DEFAULT);
+
 
 void Event_Handler();
 
@@ -168,51 +167,40 @@ void *pthread1(void *v_var)
 }
 void Event_Handler()
 {
-    // sockaddr_in echoClntAddr;                    /* Address of datagram source */
-    // unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
+    sockaddr_in echoClntAddr;                    /* Address of datagram source */
+    unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
 
-    // // ara::com::proxy_skeleton::event_info evr;
-    // std::vector<uint8_t> msg;
-    // uint32_t msg_size;
+     // ara::com::proxy_skeleton::event_info evr;
+    std::vector<uint8_t> msg;
+    uint32_t msg_size;
 
-    // ssevent.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
-    // msg.reserve(msg_size);
-    // ssevent.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
-    // printf("\t[CLIENT]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
-    // fflush(stdout);
+    ssevent.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
+    msg.reserve(msg_size);
+    ssevent.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+    printf("\t[CLIENT]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
+    fflush(stdout);
 
-    // ara::com::proxy_skeleton::Client_udp_Info cudp;
-    // cudp.port = echoClntAddr.sin_port;
-    // cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
-    // ara::com::SOMEIP_MESSAGE::Message Nmsg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
-    // msg = Nmsg.GetPayload();
+    ara::com::proxy_skeleton::Client_udp_Info cudp;
+    cudp.port = echoClntAddr.sin_port;
+    cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
+    ara::com::SOMEIP_MESSAGE::Message Nmsg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    msg = Nmsg.GetPayload();
 
-    // switch (Nmsg.MessageId().serivce_id)
-    // {
-    // case SERVICE_ID:
-    //     switch (Nmsg.MessageId().method_id & 0x7FFF)
-    //     {
-    //     case 0:
-    //         server_proxy_ptr->ev1.handlecall(msg);
-    //         std::cout << "NEW EVENT1 : " << server_proxy_ptr->ev1.get_value() << std::endl;
-    //         break;
-    //     case 1:
-    //         server_proxy_ptr->ev2.handlecall(msg);
-    //         std::cout << "NEW EVENT2 : " << server_proxy_ptr->ev2.get_value() << std::endl;
+    switch (Nmsg.MessageId().serivce_id)
+    {
+    case SERVICE_ID:
+        switch (Nmsg.MessageId().method_id & 0x7FFF)
+        {
+        case 0:
+            server_proxy_ptr->CurrentStatus.handlecall(msg);
+            std::cout << "NEW EVENT1 : " << server_proxy_ptr->CurrentStatus.get_value() << std::endl;
+            break;
+        default:
+            break;
+        }
+        break;
 
-    //         break;
-    //     case 2:
-    //         server_proxy_ptr->fd1.handlecall(msg);
-    //         std::cout << "NEW FIELD1 : " << server_proxy_ptr->fd1.get_value() << std::endl;
-
-    //         break;
-
-    //     default:
-    //         break;
-    //     }
-    //     break;
-
-    // default:
-    //     break;
-    // }
+    default:
+        break;
+    }
 }

@@ -10,6 +10,7 @@
 #define ARA_UCM_UCM_TYPES_H_
 #include <string>
 #include <vector>
+#include <array>
 namespace ara
 {
        namespace ucm
@@ -155,7 +156,7 @@ namespace ara
                              *  kCleaningUp      0x07    Making sure that the system is in a clean state.
                              *  kVerifying       0x08    UCM (via State Management) is checking that the processed packages have been properly restarted.
                              */
-                            using PackageManagerStatusType = uint8_t &;
+                            using PackageManagerStatusType = uint8_t;
                             /**
                              * @brief Represents the UCM action.
                              * Range/Symbol     Limit   Description
