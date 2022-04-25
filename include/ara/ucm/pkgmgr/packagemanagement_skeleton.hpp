@@ -94,7 +94,7 @@ namespace ara
                         // ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent
                         ara::com::InstanceIdentifier instance,
                         ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle) : serviceid(45),
-                            ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle)
+                                                                                                          ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle)
 
                     {
                     }
@@ -111,9 +111,9 @@ namespace ara
                     ara::ucm::pkgmgr::PackageManagement::CancelOutput Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput DeleteTransfer(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     ara::ucm::pkgmgr::PackageManagement::FinishOutput Finish();
-                    ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput  GetHistory(uint64_t timestampGE, uint64_t timestampLT);
+                    ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput GetHistory(uint64_t timestampGE, uint64_t timestampLT);
                     ara::ucm::pkgmgr::PackageManagement::GetIdOutput GetId();
-                    ara::ucm::pkgmgr::PackageManagement::GetSwClusterChangeInfoOutput  GetSwClusterChangeInfo();
+                    ara::ucm::pkgmgr::PackageManagement::GetSwClusterChangeInfoOutput GetSwClusterChangeInfo();
                     ara::ucm::pkgmgr::PackageManagement::GetSwClusterDescriptionOutput GetSwClusterDescription();
                     ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput GetSwClusterInfo();
                     ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages);
@@ -127,14 +127,17 @@ namespace ara
                     std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> TransferExit(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> TransferStart(uint64_t size);
 
-                    void method_dispatch(std::vector<uint8_t> &message, Socket &cserver)
+                    void method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
                     {
                         ara::com::Deserializer dser;
-                        int methodID = dser.deserialize<int>(message, 0);
-                        int result = -1;
+
+                        int methodID = message.MessageId().method_id;
+
+                        std::future<int> result;
+                        int result2;
                         cout << "\t[SERVER] Dispatch " << methodID << endl;
                         std::vector<uint8_t> msg;
-                        msg.insert(msg.begin(), message.begin() + sizeof(int), message.end());
+
                         ara::ucm::pkgmgr::PackageManagement::ByteVectorType data;
                         uint64_t blockCounter;
                         ara::ucm::pkgmgr::PackageManagement::TransferIdType id;
@@ -144,32 +147,33 @@ namespace ara
                         switch (methodID)
                         {
                         case 7:
-                        cout << dser.deserialize<uint64_t>(msg, 0) << std::endl;
-                        // cout << "msgsize" << msg.size() << endl;
-                            //HandleCall(*this, &PackageManagementSkeleton::TransferStart, msg, cserver);
+                            HandleCall(*this, &PackageManagementSkeleton::TransferStart, message, cserver);
+
                             break;
                         case 8:
                             // //HandleCall(*this, &PackageManagementSkeleton::TransferData, msg, cserver);
+                            msg = message.GetPayload();
+
                             id = dser.deserialize<ara::ucm::pkgmgr::PackageManagement::TransferIdType>(msg, 0);
                             blockCounter = dser.deserialize<uint64_t>(msg, 16);
                             data.clear();
                             data.insert(data.begin(), msg.begin() + 24, msg.end());
 
-                            // cout << "msgsize" << msg.size() << endl;
+                            cout << "msgsize" << msg.size() << endl;
                             transfer_data_output = TransferData(id, data, blockCounter);
                             rval = transfer_data_output.get();
                             cserver.Send(&rval, sizeof(rval));
                             cserver.CloseSocket();
                             break;
                         case 9:
-                           //HandleCall(*this, &PackageManagementSkeleton::TransferExit, msg, cserver);
+                            HandleCall(*this, &PackageManagementSkeleton::TransferExit, message, cserver);
                             break;
                         case 10:
-                            //HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, msg, cserver);
+                            HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, message, cserver);
                             break;
                         default:
-                            cserver.Send(&result, sizeof(int));
-                            cserver.CloseSocket();
+                            // cserver.Send(&result, sizeof(int));
+                            // cserver.CloseSocket();
                             break;
                         }
                     }
