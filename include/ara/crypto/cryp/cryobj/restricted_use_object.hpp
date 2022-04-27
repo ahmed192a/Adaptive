@@ -16,6 +16,7 @@ namespace ara
              * @brief A common interface for all objects supporting the usage restriction.
              * @file restricted_use_object
              */
+            class CryptoObject{};
             class RestrictedUseObject : public CryptoObject 
             {
                 public:
