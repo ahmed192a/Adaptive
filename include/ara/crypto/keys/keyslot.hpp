@@ -7,7 +7,8 @@ namespace ara
     {
         class KeySlot 
         {
-            
+        public:
+            using Uptr = std::unique_ptr<KeySlot>;
         };
 
     }
