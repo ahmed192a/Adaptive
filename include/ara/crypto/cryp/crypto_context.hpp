@@ -5,12 +5,12 @@
 #include <memory>
 
 #include "../cryp/cryobj/crypto_primitive_id.hpp"
-#include "../cryp/crypto_provider.hpp"
+//#include "../cryp/crypto_provider.hpp"
 
 namespace ara {
     namespace crypto {
         namespace cryp {
-
+		class CryptoProvider{};
             class CryptoContext
             {
             public:
