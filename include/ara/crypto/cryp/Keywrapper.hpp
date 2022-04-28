@@ -2,8 +2,8 @@
 #define ARA_CRYPTO_KEY_WRAPPER_H
 
 #include <string>
-#include "include/ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
-#include "include/ara/crypto/cryp/PRNG.hpp"
+#include "ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
+#include "ara/crypto/cryp/PRNG.hpp"
 
 namespace ara {
 	namespace crypto {
