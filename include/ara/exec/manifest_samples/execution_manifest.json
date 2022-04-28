@@ -28,6 +28,60 @@
                     }
                 ]
                 
+            },
+            {
+                "Process_name": "OTA",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "filename",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "ExecutionDependencies": [
+                            {
+                                "Process_name": "Proc_2",
+                                "Mode": "Running"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "FG_1",
+                                "Mode": "on"
+                            }
+                        ]
+                    }
+                ]
+                
+            },
+            {
+                "Process_name": "Flash",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "filename",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "ExecutionDependencies": [
+                            {
+                                "Process_name": "Proc_2",
+                                "Mode": "Running"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "FG_1",
+                                "Mode": "on"
+                            }
+                        ]
+                    }
+                ]
+                
             }
         ]
     }

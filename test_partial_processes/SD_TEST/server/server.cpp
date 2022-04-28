@@ -161,7 +161,7 @@ void *pthread0(void *v_var)
     Sclient2.Receive((void *)&msg_size, sizeof(msg_size));
     msg.resize(msg_size);
     Sclient2.Receive((void *)&msg[0], msg_size);
-    ara::com::SOMEIP_MESSAGE::Message Request_msg2 = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+    ara::com::SOMEIP_MECommitSSAGE::Message Request_msg2 = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
     server_skeleton_ptr->field_method_dispatch(Request_msg2, Sclient2);
 
 
