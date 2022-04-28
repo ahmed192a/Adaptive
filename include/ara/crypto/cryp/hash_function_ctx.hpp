@@ -14,7 +14,7 @@
 namespace ara {
     namespace crypto{
         namespace cryp{
-
+            class CryptoContext{};
             class HashFunctionCtx : public CryptoContext {
                 public:
 
