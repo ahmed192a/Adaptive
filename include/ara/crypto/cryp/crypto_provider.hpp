@@ -1,17 +1,17 @@
 #ifndef CRYPTO_PROVIDER_H_
 #define CRYPTO_PROVIDER_H_
 
-#include "ara/crypto/common/volatile_trusted_container.hpp"
+#include "ara/crypto/common/concrete_volatile_container.hpp"
 #include "ara/crypto/cryp/HMAC.hpp"
 #include "../common/vendor_specific_algorithm_identifier.hpp"
-#include "ara/crypto/cryp/message_authn_code_ctx.hpp"
-#include "ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
-#include "ara/crypto/cryp/key_derivation_function_ctx.hpp"
-#include "ara/crypto/cryp/auth_cipher_ctx.hpp"
+//#include "ara/crypto/cryp/message_authn_code_ctx.hpp"
+#include "ara/crypto/cryp/Keywrapper.hpp"
+//#include "ara/crypto/cryp/key_derivation_function_ctx.hpp"
+#include "ara/crypto/cryp/authentication.hpp"
 #include "ara/crypto/cryp/cryobj/signature.hpp"
-#include "ara/crypto/cryp/random_generator_ctx.hpp"
+#include "ara/crypto/cryp/PRNG.hpp"
 #include "ara/crypto/cryp/hash_function_ctx.hpp"
-#include "ara/crypto/cryp/symmetric_block_cipher_ctx.hpp"
+#include "ara/crypto/cryp/symmetric_cipher.hpp"
 
 
 /*
@@ -81,7 +81,7 @@ namespace ara
 
 				virtual HashFunctionCtx::Uptr CreateHashFunctionCtx (AlgId algId) noexcept=0;
 
-				virtual KeyDerivationFunctionCtx::Uptr CreateKeyDerivationFunctionCtx (AlgId algId) noexcept=0;
+				//virtual KeyDerivationFunctionCtx::Uptr CreateKeyDerivationFunctionCtx (AlgId algId) noexcept=0;
 
 				virtual MessageAuthnCodeCtx::Uptr CreateMessageAuthCodeCtx (AlgId algId) noexcept=0;
 
