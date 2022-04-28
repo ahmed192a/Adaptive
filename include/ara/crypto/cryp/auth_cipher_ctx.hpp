@@ -25,6 +25,7 @@ namespace ara {
                 updated,         //if UpdateConfidentialData has been called
                 processedData    //if ProcessConfedentialData has been called
             };
+            class CryptoContext{};
             class AuthCipherCtx : public CryptoContext
             {
             protected:
