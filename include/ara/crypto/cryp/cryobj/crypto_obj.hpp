@@ -24,7 +24,7 @@ namespace ara
                  * 
                  */
                
-                cryptoobj::COIdentifier CO_ID;
+                COIdentifier CO_ID;
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
