@@ -106,7 +106,9 @@ void *pthread0(void *v_var) {
 
             // requesting the new metaData from the cloud server
             char json_ptr[OTA_METADATA_BUFFER_SIZE];
+            std::cout << "before" << std::endl;
             cloud.requestMetadata(json_ptr);
+            std::cout << "after" << std::endl;
             std::string json = json_ptr;
             MetaData new_metaData(json);
             
