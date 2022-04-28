@@ -10,7 +10,7 @@
 namespace ara {
     namespace crypto {
         namespace cryp {
-
+            class SymmetricKey{};
             class RandomGeneratorCtx : public CryptoContext
             {
             public:
