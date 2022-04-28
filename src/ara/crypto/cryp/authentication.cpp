@@ -42,7 +42,9 @@ bool Authentication :: IsInitialized()
 ///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
 CryptoPrimitiveId::Uptr Authentication:: GetCryptoPrimitiveId() const noexcept
 {
-
+	AlgId myAlgorithmId = myCryptoProvider->ConvertToAlgId("Auth_Encrption/HMAC_AES");
+	CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("Auth_Encrption");
+	return myPrimitiveId;
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
