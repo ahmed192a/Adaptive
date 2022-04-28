@@ -9,6 +9,7 @@ namespace ara
     {
         namespace cryp
         {
+            class CryptoPrId{};
             /**
              * SWS_CRYPT_20500
             * @file crypto_obj.hpp
@@ -48,7 +49,7 @@ namespace ara
             *  
             **/ 
               
-            
+            using CryptoObject::Uptrc=std::unique_ptr<cryptoObject>;
             
             template <class ConcreteObject> static ara::core::Result<typename ConcreteObject::Uptrc> Downcast(CryptoObject::Uptrc &&object) noexcept;
                 
