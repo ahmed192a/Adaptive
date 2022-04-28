@@ -14,6 +14,7 @@
 
 #include "packagemanagement_common.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
+#include "ara/com/proxy_skeleton/proxy/field.hpp"
 
 namespace ara
 {
