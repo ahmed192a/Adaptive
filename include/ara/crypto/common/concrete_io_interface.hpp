@@ -9,7 +9,7 @@ namespace ara
 	{
         class ConcreteIOInterface : public IOInterface
 		{
-            friend class ara::crypto::cryp::ConcreteCryptoProvider
+            friend class ara::crypto::cryp::ConcreteCryptoProvider;
         bool Volatile;
         bool session;
         AllowedUsageFlags AllowedUsage;
@@ -31,28 +31,28 @@ namespace ara
         VolatileTrustedContainer::Uptr CreateVolatileContainer(std::size_t capacity=0);
       
 		public:
-             AllowedUsageFlags GetAllowedUsage () const noexcept=0;
+             AllowedUsageFlags GetAllowedUsage () const noexcept;
 
-				 std::size_t GetCapacity () const noexcept=0;
+				 std::size_t GetCapacity () const noexcept;
 
-				 CryptoObjectType GetCryptoObjectType () const noexcept=0;
+				 CryptoObjectType GetCryptoObjectType () const noexcept;
 
-				 CryptoObjectUid GetObjectId () const noexcept=0;
+				 CryptoObjectUid GetObjectId () const noexcept;
 
-				 std::size_t GetPayloadSize () const noexcept=0;
+				 std::size_t GetPayloadSize () const noexcept;
 
-				 CryptoAlgId GetPrimitiveId () const noexcept=0;
+				 CryptoAlgId GetPrimitiveId () const noexcept;
 
-				 CryptoObjectType GetTypeRestriction () const noexcept=0;
+				 CryptoObjectType GetTypeRestriction () const noexcept;
 
-				 bool IsObjectSession () const noexcept=0;
+				 bool IsObjectSession () const noexcept;
 
-				 bool IsVolatile () const noexcept=0;
+				 bool IsVolatile () const noexcept;
 
 				 ~ConcreteIOInterface () noexcept=default;
 
 
-        }
+        };
     }
 }
 
