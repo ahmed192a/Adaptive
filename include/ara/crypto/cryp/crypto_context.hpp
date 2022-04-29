@@ -6,7 +6,7 @@
 
 #include "../cryp/cryobj/crypto_primitive_id.hpp"
 #include "../cryp/cryobj/crypto_pr_id.hpp"
-#include "../cryp/crypto_provider.hp
+#include "../cryp/crypto_provider.hpp"
 
 namespace ara {
     namespace crypto {
