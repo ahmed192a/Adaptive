@@ -3,10 +3,11 @@
 
 #include <iostream>
 #include <memory>
-#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
-#include "ara/crypto/keys/key_slot_content_props.hpp"
-#include "ara/crypto/cryp/cryobj/crypto_object.hpp"
+//#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
 #include "ara/crypto/common/crypto_object_uid.hpp"
+#include "ara/crypto/keys/key_slot_content_props.hpp"
+//#include "ara/crypto/cryp/cryobj/crypto_object.hpp"
+
 
 namespace ara
 {
