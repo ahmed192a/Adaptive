@@ -13,6 +13,7 @@
 #define RETURN_TYPES_H_
 
 #include "ucm_types.hpp"
+#include "ucm_error.hpp"  
 
 namespace ara
 {
@@ -36,22 +37,27 @@ namespace ara
 
                 struct TransferExitOutput
                 {
+                    int error = 0;
                 };
 
                 struct ActivateOutput
                 {
+                    int error = 0;
                 };
 
                 struct CancelOutput
                 {
+                    int error = 0;
                 };
 
                 struct DeleteTransferOutput
                 {
+                    int error = 0;
                 };
 
                 struct FinishOutput
                 {
+                    int error = 0;
                 };
 
                 struct GetSwPackagesOutput
@@ -72,14 +78,17 @@ namespace ara
 
                 struct ProcessSwPackageOutput
                 {
+                    int error = 0;
                 };
 
                 struct RevertProcessedSwPackagesOutput
                 {
+                    int error = 0;
                 };
 
                 struct RollbackOutput
                 {
+                    int error = 0;
                 };
 
                 struct GetSwClusterDescriptionOutput

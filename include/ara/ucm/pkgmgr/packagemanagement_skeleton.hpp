@@ -105,9 +105,9 @@ namespace ara
                      *        - Fields
                      *        - Methods
                      */
-                    ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType CurrentStatus_Get()
-                    {
-                    }
+                    // ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType CurrentStatus_Get()
+                    // {
+                    // }
 
                     ara::ucm::pkgmgr::PackageManagement::ActivateOutput Activate();
                     ara::ucm::pkgmgr::PackageManagement::CancelOutput Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
