@@ -1,1 +1,1 @@
-{"appID" : "K234" , "appName": "OTA_APP"}
+{"platformName": "classic", "appID" : "K234" , "appName": "OTA_APP", "sizeInBytes": 145, "version": "1.2.4","result":"ok"}
