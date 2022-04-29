@@ -3,6 +3,7 @@
 
 #include <iostream> //string
 #include <arpa/inet.h> //inet_addr
+#include <vector>
 
 #define OTA_IP_CLOUD "127.0.0.1"
 #define OTA_PORT_CLOUD 8888
@@ -54,7 +55,7 @@ private:
 
      */
 
-        bool requestMetadata(char * data);
+        bool requestMetadata(std::string &data);
 
     
     
@@ -71,7 +72,7 @@ private:
 
      */
 
-        bool requestPackage(char * data);
+        bool requestPackage(std::vector<uint8_t> &data);
 
 
 

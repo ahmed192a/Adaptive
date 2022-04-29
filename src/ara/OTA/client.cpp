@@ -78,36 +78,41 @@ bool Client::sendData(string data)
 
 
 
-bool Client::requestMetadata(char  * data){
+bool Client::requestMetadata(std::string &data){
 
     if(this->sendData("Requesting Metadata")==0){
         return false;
     };
     
     //Receive a reply from the server
-    if( recv(sock ,data , OTA_METADATA_BUFFER_SIZE, 0) < 0)
+    
+    int metaDataSize;
+    recv(sock, &metaDataSize, sizeof(metaDataSize), 0);
+    data.resize(metaDataSize);
+    if( recv(sock ,&data[0] , metaDataSize, 0) < 0)
     {
         // cout<<"recv failed";
         return false;
     }
-    // cout<<"Received Metadata: ";
+    // cout<<"Received Metadata: " << data <<endl;
     return true;
     
 }
 
-bool Client::requestPackage(char * data){
+bool Client::requestPackage(std::vector<uint8_t> &data){
 
 
     if(this->sendData("Requesting Package")==0){
         return false;
     };
     //Receive a reply from the server
-    if( recv(sock ,data ,OTA_PACKAGE_BUFFER_SIZE , 0) < 0)
+    int packageDataSize;
+    recv(sock, &packageDataSize, sizeof(packageDataSize), 0);
+    data.resize(packageDataSize);
+    if(recv(sock ,data.data() ,packageDataSize , 0) < 0)
     {
-        // cout<<"recv failed";
         return false;
     }
-    // cout<<"Received Package: ";
    return true;
     
 }

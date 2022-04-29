@@ -71,10 +71,11 @@ namespace ara
                     struct TransferInfo
                     {
                         uint8_t TransferExitFlag; /* After calling TransferExit, can't call TransferData again */
-                        uint32_t BlockSize;       // 10, localCounter: 0 -> 9 (localCounter + 1) * BlockSize == size
+                        uint32_t BlockSize;       
                         ara::ucm::pkgmgr::PackageManagement::TransferIdType id;
-                        uint64_t size; // 100 bytes
+                        uint64_t size; 
                         uint64_t localBlockCounter = 0;
+                        uint64_t lastBlockCounter = 0;
                     } TransferInfoData;
 
                     std::vector<uint8_t> buffer;

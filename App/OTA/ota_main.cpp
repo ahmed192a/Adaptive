@@ -105,9 +105,9 @@ void *pthread0(void *v_var) {
             std::cout << "\t[OTA] connection succeeded ..." << std::endl;
 
             // requesting the new metaData from the cloud server
-            char json_ptr[OTA_METADATA_BUFFER_SIZE];
-            cloud.requestMetadata(json_ptr);
-            std::string json = json_ptr;
+            std::string  json;
+            cloud.requestMetadata(json);
+            
             MetaData new_metaData(json);
             
             // retrieve the old meta-data stored in the file 
@@ -135,9 +135,8 @@ void *pthread0(void *v_var) {
                 std::cout << "\t[OTA] downloading the new package ..." << std::endl;
                 
                 // downloading the package from the cloud
-                char package_ptr[OTA_PACKAGE_BUFFER_SIZE];
-                cloud.requestPackage(package_ptr);
-                std::string package = package_ptr;
+                std::vector<uint8_t> package;
+                cloud.requestPackage(package);
 
                 std::cout << "\t[OTA] sending the package to the flashing adapter ..." << std::endl;
 
@@ -146,11 +145,11 @@ void *pthread0(void *v_var) {
                 std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */
                 std::vector<uint8_t> small_data;
                 
-                result = server_proxy_ptr->TransferStart(package.size());
+                uint64_t package_size = package.size();
+                result = server_proxy_ptr->TransferStart(package_size);
                 ara::ucm::pkgmgr::PackageManagement::TransferStartOutput transfer_start_output = result.get();
 
                 int block_counter = 0;
-                std::cout << package.size() << std::endl;
                 for (int i=0; i<package.size(); i++)
                 {
                     for(int j=0; j<transfer_start_output.BlockSize; j++)

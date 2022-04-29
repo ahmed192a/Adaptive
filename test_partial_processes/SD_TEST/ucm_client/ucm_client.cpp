@@ -129,7 +129,10 @@ void *pthread0(void *v_var)
         for(int j=0; j<transfer_start_output.BlockSize; j++)
         {
             if(i*transfer_start_output.BlockSize+ j >= Temp_data.size()){
+                cout << "small_data.size(): " << small_data.size()  << endl;
                 small_data.resize(transfer_start_output.BlockSize);
+                cout << "small_data.size(): " << small_data.size()  << endl;
+
                 break;
             }
             else

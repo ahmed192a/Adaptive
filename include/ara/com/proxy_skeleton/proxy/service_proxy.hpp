@@ -29,6 +29,7 @@
 #include <signal.h>
 #include <future>
 #include <arpa/inet.h>
+#include "algorithm"
 
 #include <queue>
 using SD_data = ara::com::proxy_skeleton::SD_data;
@@ -110,6 +111,7 @@ namespace ara
 
                         // get payload of argumnets
                         std::vector<uint8_t> msgser = ser.Payload();
+
                         // push the payload to the message
                         R_msg.SetPayload(msgser);
                         // get the serialized message

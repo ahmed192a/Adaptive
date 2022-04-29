@@ -8,6 +8,7 @@
  */
 
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
+#include <cmath>
 
 void SaveBlock(const char *filename, std::vector<uint8_t> &data_block)
 {
@@ -135,7 +136,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> ara::ucm::p
 {
      std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> f = std::async([&, id, data, blockCounter]()
     {
-        // std::cout << "xxxx" << std::endl;
         ara::ucm::pkgmgr::PackageManagement::TransferDataOutput  result;
         
         
@@ -145,34 +145,28 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> ara::ucm::p
 
             if (blockCounter == TransferInfoData.localBlockCounter)
             {
-            // std::cout << "data size: " << data.size() << std::endl;
             /* Check if the received block size is equal the block size returned by TransferStart for the same TransferId */
-            if (data.size() == TransferInfoData.BlockSize)
-            {
-                
-                // uint32_t i = TransferInfoData.localBlockCounter * TransferInfoData.BlockSize;
-                // copy(data.begin(), data.end(), std::back_inserter(PackageManagementSkeleton::buffer));
-                for (int i = 0; i < TransferInfoData.BlockSize; i++)
+
+                if (data.size() == TransferInfoData.BlockSize)
                 {
-                    buffer.push_back(data[i]);
-                }   
-                // std::cout << buffer.size() << std::endl;
-                
-                // this if reaches last block
-                // if ((TransferInfoData.localBlockCounter + 1) * TransferInfoData.BlockSize == TransferInfoData.size)
-                // {    
-                // }    
-                //SaveBlock("/home/basmala/Desktop/Gradution_project/test1/myfile3.zip" , data);
-                struct ara::ucm::pkgmgr::PackageManagement::TransferDataOutput output = {1};
-                // result = output;
-            }
-            else
-            {
-                // result = ara::ucm::pkgmgr::PackageManagement::IncorrectBlockSize;
-                // ApplicationError IncorrectBlockSize -> Too big block size received by UCM
-                // In case the received block size with TransferData
-                // exceeds the block size returned by TransferStart for the same TransferId
-            }
+                    if(blockCounter == TransferInfoData.lastBlockCounter )
+                    {
+                        TransferInfoData.BlockSize = TransferInfoData.size % TransferInfoData.BlockSize;
+                    }
+                    for (int i = 0; i < TransferInfoData.BlockSize; i++)
+                    {
+                        buffer.push_back(data[i]);
+                    }   
+                    
+                    struct ara::ucm::pkgmgr::PackageManagement::TransferDataOutput output = {1};
+                    // result = output;
+                }
+                else
+                {
+                    // ApplicationError IncorrectBlockSize -> Too big block size received by UCM
+                    // In case the received block size with TransferData
+                    // exceeds the block size returned by TransferStart for the same TransferId
+                }
             }
             else
             {
@@ -196,7 +190,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> f = std::async([&, id]()
     {
         ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
-        SaveBlock("ucm_server/test.zip", PackageManagementSkeleton::buffer); // gamda ya Bassant
+        SaveBlock("ucm_server/test.zip", this->buffer); 
         return result;
     });
 
@@ -205,9 +199,10 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
 
 std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferStart(uint64_t size)
 {
-    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> f = std::async([&]()
+
+
+    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> f = std::async([&, size]()
     {
-        // std::cout << "size  : " << size << std::endl;
         ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result;
         TransferInfoData.localBlockCounter = 0;
         TransferInfoData.TransferExitFlag = false;
@@ -225,6 +220,9 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::
         TransferInfoData.size = size;
         buffer.clear();
         result.BlockSize = TransferInfoData.BlockSize;
+        
+        TransferInfoData.lastBlockCounter = ceil((double)TransferInfoData.size / TransferInfoData.BlockSize) - 1;
+
         return result;
     });
     return f;

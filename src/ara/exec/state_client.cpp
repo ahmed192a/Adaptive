@@ -45,18 +45,16 @@ namespace ara
         {
             std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> _future;
             _future = std::async([&]()
-                                  {
-                                      boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc> _variant;                                      std::string msg = state.get_FGname() + "/" + state.get_states();
-                                      std::cout << "not set state\n";
-                                      if (write(fd, &msg[0], msg.size()) == -1)
-                                      {
-                                          std::cout << "set state\n";
-                                          _variant.emplace<1>(ara::exec::ExecErrc::kCommunicationError);
-                                          return _variant;
-                                      }
-                                       _variant.emplace<0>();
-                                      return _variant;
-                                  });
+            {
+                boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc> _variant;                                      std::string msg = state.get_FGname() + "/" + state.get_states();
+                if (write(fd, &msg[0], msg.size()) == -1)
+                {
+                    _variant.emplace<1>(ara::exec::ExecErrc::kCommunicationError);
+                    return _variant;
+                }
+                _variant.emplace<0>();
+                return _variant;
+            });
 
             return _future;
         }

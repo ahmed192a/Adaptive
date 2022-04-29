@@ -12,7 +12,7 @@ FetchContent_MakeAvailable(googletest)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 if(build_tests)
-  file(GLOB_RECURSE TEST_SRC_FILES ./*.cpp)
+  file(GLOB_RECURSE TEST_SRC_FILES ./*.cpp ./EM/*.cpp)
   # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY src/test)
 
   enable_testing()

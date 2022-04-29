@@ -266,7 +266,11 @@ namespace ara
                             7, // Interface Version
                             SOMEIP_MESSAGE::MessageType::RESPONSE);
 
-                        Marshal<Args...> unmarshaller(msg.GetPayload());
+                        vector<uint8_t> payload = msg.getload();
+                        ara::com::Deserializer dser;
+                        uint64_t xx = dser.deserialize<uint64_t>(payload, 0);
+
+                        Marshal<Args...> unmarshaller(payload);
                         std::future<R> result = (c.*method)(unmarshaller.template unmarshal<index>()...);
                         R rval = result.get();
                         ara::com::Serializer ser;
