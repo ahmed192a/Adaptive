@@ -92,7 +92,6 @@ namespace ara
 		/**
 		 * \brief Defines a class representing the Execution Management error domain.
 		 * 
-		 * \uniqueId 0x8000�0000�0000�0202
 		 * 
 		 */
 		class ExecErrorDomain final : public ara::core::ErrorDomain
