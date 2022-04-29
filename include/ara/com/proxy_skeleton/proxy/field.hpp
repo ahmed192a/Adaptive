@@ -22,11 +22,22 @@ namespace ara
         {
             namespace proxy
             {
-
+                /**
+                 * @brief Base class for all fields.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class Field : public Event<T>
                 {
                 public:
+                    /**
+                     * @brief Construct a new Field object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     Field(
                         ServiceProxy *service,
                         std::string name,
@@ -37,7 +48,10 @@ namespace ara
                           m_field_id{field_id}
                     {
                     }
-
+                    /**
+                     * @brief Destroy the Field object
+                     * 
+                     */
                     ~Field() {}
 
                     /**
@@ -94,7 +108,11 @@ namespace ara
                     std::string m_name;
                     uint32_t m_field_id;
                 };
-
+                /**
+                 * @brief Class for field with no setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoSetter : public Event<T>
                 {
@@ -104,6 +122,13 @@ namespace ara
                     uint32_t m_field_id;
 
                 public:
+                    /**
+                     * @brief Construct a new Field No Setter object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoSetter(
                         ServiceProxy *service,
                         std::string name,
@@ -114,8 +139,16 @@ namespace ara
                           m_field_id{field_id}
                     {
                     }
+                    /**
+                     * @brief Destroy the Field No Setter object
+                     * 
+                     */
                     ~FieldNoSetter() {}
-
+                    /**
+                     * @brief Get the value of the field
+                     * 
+                     * @return T 
+                     */
                     T Get()
                     {
                         T value;
@@ -132,7 +165,11 @@ namespace ara
                         return value;
                     }
                 };
-
+                /**
+                 * @brief Class for field with no getter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoGetter : public Event<T>
                 {
@@ -142,6 +179,13 @@ namespace ara
                     uint32_t m_field_id;
 
                 public:
+                    /**
+                     * @brief Construct a new Field No Getter object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoGetter(
                         ServiceProxy *service,
                         std::string name,
@@ -152,8 +196,17 @@ namespace ara
                           m_field_id{field_id}
                     {
                     }
+                    /**
+                     * @brief Destroy the Field No Getter object
+                     * 
+                     */
                     ~FieldNoGetter() {}
-
+                    /**
+                     * @brief Set the value of the field
+                     * 
+                     * @param value 
+                     * @return T 
+                     */
                     T Set(T &value)
                     {
                         ara::com::Serializer ser;
@@ -168,7 +221,11 @@ namespace ara
                         return value;
                     }
                 };
-
+                /**
+                 * @brief Class for field with no getter and no setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoGetterAndSetter : public Event<T>
                 {
@@ -178,6 +235,13 @@ namespace ara
                     uint32_t m_field_id;
 
                 public:
+                    /**
+                     * @brief Construct a new Field No Getter And Setter object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoGetterAndSetter(
                         ServiceProxy *service,
                         std::string name,
@@ -188,9 +252,17 @@ namespace ara
                           m_field_id{field_id}
                     {
                     }
+                    /**
+                     * @brief Destroy the Field No Getter And Setter object
+                     * 
+                     */
                     ~FieldNoGetterAndSetter() {}
                 };
-
+                /**
+                 * @brief Class for field with no getter and no setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoNotifier : public Event<T>
                 {
@@ -200,6 +272,13 @@ namespace ara
                     uint32_t m_field_id;
 
                 public:
+                    /**
+                     * @brief Construct a new Field No Notifier object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoNotifier(
                         ServiceProxy *service,
                         std::string name,
@@ -210,8 +289,16 @@ namespace ara
                           m_field_id{field_id}
                     {
                     }
+                    /**
+                     * @brief Destroy the Field No Notifier object
+                     * 
+                     */
                     ~FieldNoNotifier() {}
-
+                    /**
+                     * @brief Get the value of the field
+                     * 
+                     * @return T 
+                     */
                     T Get()
                     {
                         T value;
@@ -227,7 +314,12 @@ namespace ara
                         value = dser.deserialize<T>(data, 0);
                         return value;
                     }
-
+                    /**
+                     * @brief Set the value of the field
+                     * 
+                     * @param value 
+                     * @return T 
+                     */
                     T Set(T &value)
                     {
                         ara::com::Serializer ser;
@@ -242,7 +334,11 @@ namespace ara
                         return value;
                     }
                 };
-
+                /**
+                 * @brief Class for field with no getter and no setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoNotifierAndSetter : public Event<T>
                 {
@@ -252,6 +348,13 @@ namespace ara
                     uint32_t m_field_id;
 
                 public:
+                    /**
+                     * @brief Construct a new Field No Notifier And Setter object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoNotifierAndSetter(
                         ServiceProxy *service,
                         std::string name,
@@ -262,8 +365,16 @@ namespace ara
                           m_field_id{field_id}
                     {
                     }
+                    /**
+                     * @brief Destroy the Field No Notifier And Setter object
+                     * 
+                     */
                     ~FieldNoNotifierAndSetter() {}
-
+                    /**
+                     * @brief Get the value of the field
+                     * 
+                     * @return T 
+                     */
                     T Get()
                     {
                         T value;
@@ -280,7 +391,11 @@ namespace ara
                         return value;
                     }
                 };
-
+                /**
+                 * @brief Class for field with no getter and no setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoNotifierAndGetter : public Event<T>
                 {
@@ -290,6 +405,13 @@ namespace ara
                     uint32_t m_field_id;
 
                 public:
+                    /**
+                     * @brief Construct a new Field No Notifier And Getter object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoNotifierAndGetter(
                         ServiceProxy *service,
                         std::string name,
@@ -300,8 +422,17 @@ namespace ara
                           m_field_id{field_id}
                     {
                     }
+                    /**
+                     * @brief Destroy the Field No Notifier And Getter object
+                     * 
+                     */
                     ~FieldNoNotifierAndGetter() {}
-
+                    /**
+                     * @brief Set the value of the field
+                     * 
+                     * @param value 
+                     * @return T 
+                     */
                     T Set(T &value)
                     {
                         ara::com::Serializer ser;
@@ -316,49 +447,84 @@ namespace ara
                         return value;
                     }
                 };
-
+                /**
+                 * @brief Class for field.
+                 * 
+                 * @tparam T 
+                 * @tparam hasGetter 
+                 * @tparam hasSetter 
+                 * @tparam hasNotifier 
+                 */
                 template <typename T, bool hasGetter, bool hasSetter, bool hasNotifier>
                 struct FieldType
                 {
                     using type = typename FieldType<T, hasNotifier, hasGetter, hasSetter>::type;
                 };
-
+                /**
+                 * @brief Class for field with getter, setter and notifier.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, true, true>
                 {
                     using type = Field<T>;
                 };
-
+                /**
+                 * @brief Class for field with no setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, true, false>
                 {
                     using type = FieldNoSetter<T>;
                 };
-
+                /**
+                 * @brief Class for field with no getter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, false, true, true>
                 {
                     using type = FieldNoGetter<T>;
                 };
-
+                /**
+                 * @brief Class for field with no getter and setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, false, true, false>
                 {
                     using type = FieldNoGetterAndSetter<T>;
                 };
-
+                /**
+                 * @brief Class for field with no notifier.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, false, true>
                 {
                     using type = FieldNoNotifier<T>;
                 };
-
+                /**
+                 * @brief Class for field with no notifier and setter.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, false, false>
                 {
                     using type = FieldNoNotifierAndSetter<T>;
                 };
-
+                /**
+                 * @brief Class for field with no getter and notifier.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, false, false, true>
                 {

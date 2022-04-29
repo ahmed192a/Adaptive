@@ -21,7 +21,11 @@ namespace ara
         {
             namespace proxy
             {
-
+                /**
+                 * @brief Base class for all events.
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class Event
                 {
@@ -32,6 +36,13 @@ namespace ara
                     uint32_t m_event_id;
 
                 public:
+                    /**
+                     * @brief Construct a new Event object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param event_id 
+                     */
                     Event(
                         ServiceProxy *service,
                         std::string name,
@@ -42,33 +53,52 @@ namespace ara
                     {
                         event_data = std::make_shared<T>();
                     }
+                    /**
+                     * @brief Destroy the Event object
+                     * 
+                     */
                     ~Event() {}
-
+                    /**
+                     * @brief Subscribe to event
+                     * 
+                     */
                     void Subscribe()
                     {
                         m_service->EventSubscribe(m_event_id);
-                        std::cout<<"subscribe -- \n";
+                        std::cout << "subscribe -- \n";
                     }
-
+                    /**
+                     * @brief Unsubscribe from event
+                     * 
+                     */
                     void UnSubscribe()
                     {
                         m_service->EventUnsubscribe(m_event_id);
                     }
-
-                    void handlecall(std::vector<uint8_t > &msg)
+                    /**
+                     * @brief Get the Event Data object
+                     * 
+                     * @param msg 
+                     */
+                    void handlecall(std::vector<uint8_t> &msg)
                     {
                         ara::com::Deserializer dser;
                         *event_data = dser.deserialize<T>(msg, 0);
                     }
-                    T  get_value()
+                    /**
+                     * @brief Get the value object
+                     * 
+                     * @return T 
+                     */
+                    T get_value()
                     {
                         return *event_data;
                     }
 
                 }; // Event
-            }      // proxy
-        }          // proxy_skeleton
-    }              // com
+            }// proxy
+        }// proxy_skeleton
+    }// com
 } // ara
 
 #endif // ARA_COM_PROXY_SKELETON_PROXY_EVENT_H_

@@ -41,7 +41,10 @@ namespace ara
         {
             namespace proxy
             {
-
+                /**
+                 * @brief ServiceProxy is the main class for the proxy skeleton.
+                 * 
+                 */
                 class ServiceProxy
                 {
                 private:
@@ -49,6 +52,10 @@ namespace ara
                     CClient service_proxy_udp;
 
                 public:
+                    /**
+                     * @brief struct for SP_Handle (ServiceProxyHandle)
+                     * 
+                     */
                     struct SP_Handle
                     {
                         int UDP_port;
@@ -59,9 +66,27 @@ namespace ara
                     // a struct to receive in it the process id & port number
                     //  of the server from service discovery
                     ServiceProxy(SP_Handle proxy_handle);
+                    /**
+                     * @brief Destroy the Service Proxy object
+                     * 
+                     */
                     virtual ~ServiceProxy();
+                    /**
+                     * @brief FindService 
+                     * 
+                     * @param FSH 
+                     * @return ServiceHandleContainer<SP_Handle> 
+                     */
                     static ServiceHandleContainer<SP_Handle> FindService(FindServiceHandle FSH); // we send to the service discovery a request for a specific service
-
+                    /**
+                     * @brief SendRequest 
+                     * 
+                     * @tparam R 
+                     * @tparam Args 
+                     * @param method_id 
+                     * @param args 
+                     * @return R 
+                     */
                     template <typename R, typename... Args>
                     R SendRequest(uint32_t method_id, Args &&...args)
                     {
@@ -109,7 +134,13 @@ namespace ara
                         result = deser.deserialize<R>(_data_payload, 0);
                         return result;
                     }
-
+                    /**
+                     * @brief SendRequest
+                     * 
+                     * @tparam R 
+                     * @param method_id 
+                     * @return R 
+                     */
                     template <typename R>
                     R SendRequest(uint32_t method_id)
                     {
@@ -155,7 +186,14 @@ namespace ara
 
                         return result;
                     }
-
+                    /**
+                     * @brief SendRequest
+                     * 
+                     * @tparam R 
+                     * @param method_id 
+                     * @param data 
+                     * @return R 
+                     */
                     template <typename R>
                     R SendRequest(uint32_t method_id, std::vector<uint8_t> data)
                     {
@@ -194,7 +232,10 @@ namespace ara
 
                         return result;
                     }
-
+                    /**
+                     * @brief SendRequest
+                     * 
+                     */
                     // template <typename R>
                     // R SendRequest(uint32_t method_id, std::vector<uint8_t> data)
                     // {
@@ -223,7 +264,13 @@ namespace ara
 
                     //     return result;
                     // }
-
+                    /**
+                     * @brief SendFireAndForgetRequest 
+                     * 
+                     * @tparam Args 
+                     * @param method_id 
+                     * @param args 
+                     */
                     template <typename... Args>
                     void SendFireAndForgetRequest(uint32_t method_id, Args &&...args)
                     {
@@ -239,7 +286,11 @@ namespace ara
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
                         service_proxy_tcp.CloseSocket();
                     }
-
+                    /**
+                     * @brief SendFireAndForgetRequest
+                     * 
+                     * @param method_id 
+                     */
                     void SendFireAndForgetRequest(uint32_t method_id)
                     {
                         SOMEIP_MESSAGE::Message R_msg(
@@ -261,7 +312,11 @@ namespace ara
                         service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
                         service_proxy_tcp.CloseSocket();
                     }
-
+                    /**
+                     * @brief EventSubscribe  
+                     * 
+                     * @param event_id 
+                     */
                     // event
                     void EventSubscribe(int event_id)
                     {
@@ -301,6 +356,11 @@ namespace ara
                         service_proxy_udp.UDPSendTo((void *)&_payload[0], _payload_size, (sockaddr *)&serv_addr);
                         service_proxy_udp.CloseSocket();
                     }
+                    /**
+                     * @brief EventUnsubscribe
+                     * 
+                     * @param event_id 
+                     */
                     void EventUnsubscribe(int event_id)
                     {
                         struct sockaddr_in serv_addr;
@@ -337,7 +397,12 @@ namespace ara
                         service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
                         service_proxy_udp.CloseSocket();
                     }
-
+                    /**
+                     * @brief Field_get 
+                     * 
+                     * @param f_get 
+                     * @param data 
+                     */
                     void Field_get(ara::com::proxy_skeleton::event_info &f_get, std::vector<uint8_t> &data)
                     {
                         struct sockaddr_in serv_addr;
@@ -377,6 +442,12 @@ namespace ara
                         ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(_payload);
                         data = R_get_msg.GetPayload();
                     }
+                    /**
+                     * @brief Field_set
+                     * 
+                     * @param f_set 
+                     * @param data 
+                     */
                     void Field_set(ara::com::proxy_skeleton::event_info &f_set, std::vector<uint8_t> &data)
                     {
                         struct sockaddr_in serv_addr;
