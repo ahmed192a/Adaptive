@@ -80,13 +80,10 @@ bool Client::sendData(string data)
 
 bool Client::requestMetadata(char  * data){
 
-    std::cout << "1" << std::endl;
-
     if(this->sendData("Requesting Metadata")==0){
         return false;
     };
     
-    std::cout << "2";
     //Receive a reply from the server
     if( recv(sock ,data , OTA_METADATA_BUFFER_SIZE, 0) < 0)
     {
