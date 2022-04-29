@@ -106,10 +106,12 @@ void *pthread0(void *v_var)
         Sclient.Receive((void *)&msg_size, sizeof(msg_size));
         msg.resize(msg_size);
         Sclient.Receive((void *)&msg[0], msg_size);
+
+
         
         cout << "\t[SERVER]  received" << endl;
         ara::com::SOMEIP_MESSAGE::Message someip_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
-      
+
         
         if (someip_msg.check_Methode_ID() == true)
         {

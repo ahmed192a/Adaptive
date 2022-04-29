@@ -410,9 +410,7 @@ namespace ara
 
                 std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> operator()(uint64_t size)
                 {
-                    // cout << "size before: " << size << endl;
                     std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result = std::async([&, size](){
-                        // cout << "size after: " << size << endl;
                     return service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput>(methodid, size);
                     
                     });

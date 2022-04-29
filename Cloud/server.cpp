@@ -3,14 +3,24 @@
 #include <arpa/inet.h> //inet_addr
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #define PORT 8888
-#define PACKAGE_FILE "package.dat"
+#define PACKAGE_FILE "package.zip"
 #define METADATA_FILE "metadata.dat"
 #define BUFFER_SIZE 100000
 
 
 using namespace std;
+std::vector<char> ReadAllBytes(char const *filename)
+{
+    ifstream ifs(filename, ios::binary | ios::ate);
+    ifstream::pos_type pos = ifs.tellg();
+    std::vector<char> result(pos);
+    ifs.seekg(0, ios::beg);
+    ifs.read(&result[0], pos);
+    return result;
+}
 int main(int argc, char const *argv[])
 {
 	int server_fd, new_socket;
@@ -54,17 +64,22 @@ int main(int argc, char const *argv[])
                 cout<<"Client sent: "<<temp<<endl; 
                 int i=0;
                 if(temp=="Requesting Metadata"){
-                    ifstream metadataFile;
-                    metadataFile.open(METADATA_FILE,ios::in);
+                    // ifstream metadataFile;
+                    // metadataFile.open(METADATA_FILE,ios::in);
                                       
-                    char metadata[BUFFER_SIZE];
-                    while(!metadataFile.eof()){
+                    // char metadata[BUFFER_SIZE];
+                    // while(!metadataFile.eof()){
                         
-                        metadataFile.read((char*) &metadata[i],1);
-                        i++;
-                    }
-                    metadataFile.close();
-					if( send(new_socket ,  metadata , i-1, 0) < 0) 
+                    //     metadataFile.read((char*) &metadata[i],1);
+                    //     i++;
+                    // }
+                    // metadataFile.close();
+
+                    std::vector<char> metadata = ReadAllBytes(METADATA_FILE);
+
+                    int metaDataSize = metadata.size() ;
+                    send(new_socket ,  &metaDataSize , sizeof(metaDataSize) , 0);
+					if( send(new_socket ,  metadata.data() , metaDataSize, 0) < 0) 
                     {
                         cout<<"Send Error";
                     }
@@ -73,17 +88,22 @@ int main(int argc, char const *argv[])
                 }
                 else if (temp=="Requesting Package")
                 {
-                    ifstream packageFile;
-                    packageFile.open(PACKAGE_FILE,ios::in);
+                    // ifstream packageFile;
+                    // packageFile.open(PACKAGE_FILE,ios::in);
                                       
-                    char packageData[BUFFER_SIZE];
-                    while(!packageFile.eof()){
+                    // char packageData[BUFFER_SIZE];
+                    // while(!packageFile.eof()){
                         
-                        packageFile.read((char*) &packageData[i],1);
-                        i++;
-                    }
-                    packageFile.close();
-					if( send(new_socket ,  packageData , i-1 , 0) < 0) 
+                    //     packageFile.read((char*) &packageData[i],1);
+                    //     i++;
+                    // }
+                    // packageFile.close();
+                    std::vector<char> packageData = ReadAllBytes(PACKAGE_FILE);
+
+                    int packageDataSize = packageData.size() ;
+                    send(new_socket ,  &packageDataSize , sizeof(packageDataSize) , 0);
+
+					if( send(new_socket ,  packageData.data() , packageDataSize , 0) < 0) 
                     {
                         cout<<"Send Error";
                     }
