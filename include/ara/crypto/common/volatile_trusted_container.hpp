@@ -1,13 +1,10 @@
 #ifndef VOLATILE_TRUSTED_CONTAINER_HPP_
 #define VOLATILE_TRUSTED_CONTAINER_HPP_
-//#include "ara/crypto/common/io_interface.hpp"
+#include "ara/crypto/common/io_interface.hpp"
 namespace ara
 {
 	namespace crypto
 	{
-		namespace cryp
-		{
-			class IOInterface{};
 			class VolatileTrustedContainer
 			{
 				public:
@@ -21,7 +18,6 @@ namespace ara
 
 
 			};
-		}
 	}
 }
 
