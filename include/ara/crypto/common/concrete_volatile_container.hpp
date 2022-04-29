@@ -7,9 +7,6 @@ namespace ara
 {
     namespace crypto
 	{
-	    class VolatileTrustedContainer{};
-	    class IOInterface{};
-	    class ConcreteIOInterface{};
         class ConcreteVolatileTrustedContainer : public VolatileTrustedContainer
 		{
             
@@ -18,7 +15,7 @@ namespace ara
             std::vector<uint8_t> buffer;
             ConcreteVolatileTrustedContainer(std::size_t capacity,IOInterface& instance);
 
-             IOInterface& GetIOInterface () const noexcept=0;
+             IOInterface& GetIOInterface () const noexcept;
 
 			 ~ConcreteVolatileTrustedContainer () noexcept=default;
 
