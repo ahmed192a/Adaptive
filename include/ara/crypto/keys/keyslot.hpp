@@ -24,6 +24,14 @@ namespace ara
             SlotState state = SlotState::closed;
 
             virtual IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) const noexcept = 0;
+            
+            virtual ara::core::Result<void> Clear () noexcept=0;
+            
+            virtual ara::core::Result<KeySlotContentProps> GetContentProps () const noexcept=0;
+            
+            virtual ara::core::Result<cryp::CryptoProvider::Uptr> MyProvider () const noexcept=0;
+            
+            ~KeySlot () noexcept=default;
 
         };
 
