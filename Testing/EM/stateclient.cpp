@@ -1,3 +1,13 @@
+/**
+ * @file stateclient.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-04-29
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "ara/exec/exec_error_domain.hpp"
 #include "ara/exec/function_group.hpp"
 #include "ara/exec/function_group_state.hpp"
@@ -16,6 +26,10 @@ namespace ara
 {
     namespace exec
     {
+        /**
+         * @brief Construct a new TEST object
+         * 
+         */
         TEST(StateClientTest, setState)
         {
             mkfifo(FIFO_NAME, 0666);

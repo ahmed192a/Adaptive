@@ -1,3 +1,13 @@
+/**
+ * @file functiongroup_test.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-04-29
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "ara/exec/function_group.hpp"
 #include "ara/exec/exec_error_domain.hpp"
 #include <gtest/gtest.h>
@@ -9,6 +19,10 @@ namespace ara
 {
     namespace exec
     {
+        /**
+         * @brief Construct a new TEST object
+         * 
+         */
         TEST(FunctionGroupTest, Preconstruct)
         {
             fg_num = 0;
@@ -31,6 +45,10 @@ namespace ara
             }
         }
 
+        /**
+         * @brief Construct a new TEST object
+         * 
+         */
         TEST(FunctionGroupTest, Equality)
         {
             fg_num = 0;
@@ -42,7 +60,10 @@ namespace ara
 
             EXPECT_TRUE(1 == 1);
         }
-
+        /**
+         * @brief Construct a new TEST object
+         * 
+         */
         TEST(FunctionGroupTest, Inequality)
         {
             fg_num = 0;

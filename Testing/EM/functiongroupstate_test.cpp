@@ -1,3 +1,13 @@
+/**
+ * @file functiongroupstate_test.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-04-29
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "ara/exec/function_group.hpp"
 #include "ara/exec/function_group_state.hpp"
 #include "ara/exec/exec_error_domain.hpp"
@@ -9,10 +19,14 @@ namespace ara
 {
     namespace exec
     {
+        /**
+         * @brief Construct a new TEST object
+         * 
+         */
         TEST(FunctionGroupStateTest, Preconstruct)
         {
             fg_num = 0;
-            const std::string cShortnamePath{"../App/manifest_samples/machine_manifest.json"};
+            const std::string cShortnamePath{"../App/manifest_samples/machine_manifest.json"}; 
             variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(cShortnamePath);
             bool t;
             switch (_functionGroup.index())
@@ -45,6 +59,10 @@ namespace ara
             //EXPECT_TRUE(false);
         }
 
+        /**
+         * @brief Construct a new TEST object
+         * 
+         */
         TEST(FunctionGroupStateTest, Equality)
         {
             fg_num = 0;
@@ -60,6 +78,11 @@ namespace ara
             
             EXPECT_TRUE(functionGroupState == otherfunctionGroupState);
         }
+
+        /**
+         * @brief Construct a new TEST object
+         * 
+         */
         TEST(FunctionGroupStateTest, Inequality)
         {
             fg_num = 0;
