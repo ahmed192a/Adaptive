@@ -7,6 +7,9 @@ namespace ara
 {
     namespace crypto
 	{
+	    class VolatileTrustedContainer{};
+	    class IOInterface{};
+	    class ConcreteIOInterface{};
         class ConcreteVolatileTrustedContainer : public VolatileTrustedContainer
 		{
             
