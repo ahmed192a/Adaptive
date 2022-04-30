@@ -86,7 +86,7 @@ namespace ara
 
                         handle.m_server_com.port_number = ipv4_endpoint->Port();
                         handle.m_server_com.service_id = FSH.service_id;
-                        handle.m_server_com.process_id = FSH.instance_id;
+                        handle.m_server_com.instance_id = FSH.instance_id;
                         vhandler.push_back(handle);
                     }
                     return vhandler;

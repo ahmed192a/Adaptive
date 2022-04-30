@@ -37,7 +37,7 @@ int main()
     int i = 0;
 
     csv.clear(CSV_FILE);
-    // use the child process for sercice discovery (Listen to all servers and get services information)
+    // use the child instance for sercice discovery (Listen to all servers and get services information)
     int th1 = pthread_create(&threads[0], NULL, pthread0, (void *)&i);
     if (th1)
     {
@@ -93,7 +93,7 @@ void *pthread1(void *)
         csv.FindRow(CSV_FILE, serviceid, data);
         // for (auto i : data)
         // {
-            cout << "process id : " << data[0].process_id << endl;
+            cout << "instance id : " << data[0].instance_id << endl;
             cout << "service id : " << data[0].service_id << endl;
             cout << "port number : " << data[0].port_number << endl;
             // create dynamic Ipv4EndpointOption object from static function
@@ -122,7 +122,7 @@ void *pthread1(void *)
 void *pthread0(void *)
 {
     // listen to all servers
-    // save process id, service id, and port number into the csv file
+    // save instance id, service id, and port number into the csv file
     CServer s1(SOCK_DGRAM);
     s1.OpenSocket(portNumber);
     s1.BindServer();
@@ -168,7 +168,7 @@ void *pthread0(void *)
                 // uint32_t _service_id = entry->ServiceId();
                 // uint32_t _instance_id = entry->InstanceId();
                 // place info into recvieve object
-                receive.process_id = entry->InstanceId();
+                receive.instance_id = entry->InstanceId();
                 receive.service_id = entry->ServiceId();
                 receive.port_number = ipv4_option->Port();
                 // save the information into the csv file
@@ -180,7 +180,7 @@ void *pthread0(void *)
                 else
                 {
                     cout << "TTL is 0" << endl;
-                    csv.delete_record(CSV_FILE, receive.service_id, receive.process_id);
+                    csv.delete_record(CSV_FILE, receive.service_id, receive.instance_id);
                 }
             }
             break;

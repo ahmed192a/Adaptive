@@ -72,8 +72,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_get;
                         e_get.event_id = m_field_id;
                         e_get.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_get.operation = 4;
-                        // e_get.data_size= data.size();
                         m_service->Field_get(e_get, data);
                         value = dser.deserialize<T>(data, 0);
                         return value;
@@ -96,8 +94,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_set;
                         e_set.event_id = m_field_id;
                         e_set.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_set.operation = 3;
-                        e_set.data_size = data.size();
                         m_service->Field_set(e_set, data);
                         return value;
                     }
@@ -158,8 +154,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_get;
                         e_get.event_id = m_field_id;
                         e_get.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_get.operation = 4;
-                        // e_get.data_size= data.size();
                         m_service->Field_get(e_get, data);
                         value = dser.deserialize<T>(data, 0);
                         return value;
@@ -215,8 +209,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_set;
                         e_set.event_id = m_field_id;
                         e_set.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_set.operation = 3;
-                        e_set.data_size = data.size();
                         m_service->Field_set(e_set, data);
                         return value;
                     }
@@ -308,8 +300,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_get;
                         e_get.event_id = m_field_id;
                         e_get.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_get.operation = 4;
-                        // e_get.data_size= data.size();
                         m_service->Field_get(e_get, data);
                         value = dser.deserialize<T>(data, 0);
                         return value;
@@ -328,8 +318,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_set;
                         e_set.event_id = m_field_id;
                         e_set.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_set.operation = 3;
-                        e_set.data_size = data.size();
                         m_service->Field_set(e_set, data);
                         return value;
                     }
@@ -384,8 +372,7 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_get;
                         e_get.event_id = m_field_id;
                         e_get.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_get.operation = 4;
-                        // e_get.data_size= data.size();
+
                         m_service->Field_get(e_get, data);
                         value = dser.deserialize<T>(data, 0);
                         return value;
@@ -441,8 +428,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info e_set;
                         e_set.event_id = m_field_id;
                         e_set.service_id = m_service->m_proxy_handle.m_server_com.service_id;
-                        e_set.operation = 3;
-                        e_set.data_size = data.size();
                         m_service->Field_set(e_set, data);
                         return value;
                     }

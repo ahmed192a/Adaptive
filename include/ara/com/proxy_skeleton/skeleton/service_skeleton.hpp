@@ -143,8 +143,6 @@ namespace ara
                         ara::com::proxy_skeleton::event_info msg_;
                         msg_.service_id = m_service_id.GetInstanceId();
                         msg_.event_id = event_id;
-                        msg_.operation = 0;
-                        msg_.data_size = sermsg.size();
                         /* send the event info object then send the serialized data */
                         std::cout << "send event to client " << client_add.sin_port << std::endl;
                         // Create Mesaage {, event_id | 0x8000}, NOTIFICATION
