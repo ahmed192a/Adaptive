@@ -4,13 +4,12 @@ _Adaptive Autosar Platform_ enviroment over Linux defined by [AUTOSAR](https://w
 * For more information about the project refer to [wiki](https://github.com/ahmed192a/Adaptive/wiki)
 * For Project Documentation refer to [Github pages](https://ahmed192a.github.io/Adaptive)
 
-
-## General steps
 -----
+## General steps
 
 - to use the ".sh" files you need first to run this command in terminal 
 ```bash
-chmod +x \*.sh
+chmod +x *.sh
 ```
 - you have to cinfigure the project before any thing
 - build and run the project
@@ -53,9 +52,8 @@ cd quick_test
 ./test.sh
 ```
 
-
-## steps for SD test
 --------
+## steps for SD test
 
 - Run this command just one time
 ```bash
