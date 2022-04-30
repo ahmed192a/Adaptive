@@ -79,7 +79,7 @@ void *pthread0(void *v_var)
 
     /// VARIABLES
     char buffer[256];
-    ara::com::proxy_skeleton::C_Info x;
+    // ara::com::proxy_skeleton::C_Info x;
     // std::vector<uint8_t> msg;
     int msg_size;
     ara::com::Deserializer dser;

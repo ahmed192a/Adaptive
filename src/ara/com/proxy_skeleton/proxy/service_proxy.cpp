@@ -19,16 +19,9 @@
 #include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
 #include "ara/com/SOMEIP/entry/entry.hpp"
 #include <iostream>
-using C_Info = ara::com::proxy_skeleton::C_Info;
 
 
-// struct C_Info
-// {
-//     int process_id;
-//     char method_name[30];
-//     int param1;
-//     int param2;
-// };
+
 
 namespace ara
 {

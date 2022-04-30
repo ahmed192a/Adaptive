@@ -16,7 +16,6 @@
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
-using C_Info = ara::com::proxy_skeleton::C_Info;
 
 #define portNumber 5365
 #define service_descovery_port_number 1690

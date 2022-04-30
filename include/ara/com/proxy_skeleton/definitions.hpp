@@ -32,13 +32,7 @@ namespace ara
             static const InstanceId INSTANCE_ID_UNKNOWN = 0xFFFF;   //!< Definition of Unkown (NULL) instance ID type.
 
 
-            struct C_Info
-            {
-                int process_id;
-                char method_name[30];
-                int param1;
-                int param2;
-            };
+
             struct SD_data
             {
                 uint32_t service_id;
