@@ -22,7 +22,7 @@
 class CClient
 {
 private:
-	int sockfd,portno,type;
+	int sockfd,portno,type; 
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
 public:

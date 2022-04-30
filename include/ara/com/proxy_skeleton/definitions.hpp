@@ -23,24 +23,14 @@ namespace ara
         namespace proxy_skeleton
         {
 
-            // Definition of service version type
-            using ServiceVersion = std::uint32_t;
+            using ServiceVersion = std::uint32_t;       //!< Definition of service version type
 
-            // Definition of proxy_skeleton instance ID type that should be binding agnostic.
-            using InstanceId = std::uint16_t;
+            using InstanceId = std::uint16_t;       //!< Definition of proxy_skeleton instance ID type.
 
-            // Definition of proxy_skeleton service ID type that should be binding agnostic.
-            using ServiceId = std::uint16_t;
+            using ServiceId = std::uint16_t;        //!< Definition of proxy_skeleton service ID type. 
 
-            // "Null" instance ID
-            static const InstanceId INSTANCE_ID_UNKNOWN = 0xFFFF;
+            static const InstanceId INSTANCE_ID_UNKNOWN = 0xFFFF;   //!< Definition of Unkown (NULL) instance ID type.
 
-            struct Message
-            {
-                int process_id;
-                char method_name[30];
-                std::vector<uint8_t> payload;
-            };
 
             struct C_Info
             {

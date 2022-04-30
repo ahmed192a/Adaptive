@@ -23,21 +23,74 @@ private:
 public:
 	int sockfd,newsockfd,portno,type;
 
-
+	/**
+	 * @brief Construct a new CServer object
+	 * 
+	 * @param type 
+	 */
 	CServer(int type);
+	/**
+	 * @brief Destroy the CServer object
+	 * 
+	 */
 	~CServer();
+	/**
+	 * @brief Open the server socket
+	 * 
+	 * @param portno 
+	 * @return error_kind 
+	 */
 	error_kind OpenSocket(int portno);
+	/**
+	 * @brief Bind the socket to the port number
+	 * 
+	 * @return error_kind 
+	 */
 	error_kind BindServer();
+	/**
+	 * @brief Listen for the client connection
+	 * 
+	 * @param no 
+	 * @return error_kind 
+	 */
 	error_kind ListenServer(int no);
+	/**
+	 * @brief Accept the Client connection
+	 * 
+	 * @return Socket 
+	 */
 	Socket AcceptServer();
+	/**
+	 * @brief Enable Interrupt Signal on the socket
+	 * 
+	 * @param SIGIOHandler 
+	 * @return error_kind 
+	 */
 	error_kind EnableInterrupt(void (*SIGIOHandler)(int) );
-	// error_kind SendServer( void* buffer, size_t n);
+	/**
+	 * @brief Send data to the client using the (UDP) socket
+	 * 
+	 * @param buffer 
+	 * @param n 
+	 * @param address 
+	 * @return error_kind 
+	 */
 	error_kind UDPSendTo( void * buffer,size_t n, sockaddr * address);
-	// error_kind ReceiveServer(void* buffer, size_t n);
+	/**
+	 * @brief Recieve data from the (UDP) socket 
+	 * 
+	 * @param buffer 
+	 * @param n 
+	 * @param address 
+	 * @param size 
+	 * @return error_kind 
+	 */
 	error_kind UDPRecFrom(void * buffer,size_t n, sockaddr * address, socklen_t * size);
-	void CloseSocket();
-	// void ClientClose();
-	
+	/**
+	 * @brief  Close the socket
+	 * 
+	 */
+	void CloseSocket();	
 };
 
 

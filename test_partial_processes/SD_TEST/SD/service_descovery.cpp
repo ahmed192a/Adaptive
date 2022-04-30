@@ -117,9 +117,6 @@ void *pthread1(void *)
 
     s1.CloseSocket();
 
-    // waitpid(process_id, NULL, 0);
-
-    // while(wait(NULL) > 0){}
 }
 
 void *pthread0(void *)

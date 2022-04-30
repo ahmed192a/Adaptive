@@ -20,6 +20,7 @@ namespace ara
 {
     namespace com
     {
+
         template <std::size_t I, typename Head, typename... Tail>
         struct ArgumentTypeImpl
         {
@@ -45,10 +46,9 @@ namespace ara
 
                 typename std::decay<ArgumentType<I, Args...>>::type k;
                 v.push_back(sizeof(k));
-                // std::cout << "sizes\n";
-                // std::cout << v.back() << std::endl;
             }
         };
+
         template <typename... Args>
         struct MessageIndexerImpl<0, Args...>
         {
@@ -60,21 +60,38 @@ namespace ara
                 // std::cout << v.back() << std::endl;
             }
         };
+
+        /**
+         * @brief marshal class for deserializing vector of data bytes to the required parameters from Args
+         * 
+         * @tparam Args 
+         */
         template <typename... Args>
-        class Marshal
+        class Marshal                   
         {
         private:
-            Deserializer mdes;
-            std::vector<uint8_t> mv;
-            std::vector<uint32_t> sizes;
+            Deserializer mdes;              //!< Deserializer object
+            std::vector<uint8_t> mv;        //!< Vector of data bytes
+            std::vector<uint32_t> sizes;    //!< Vector of sizes of each data type
 
         public:
+            /**
+             * @brief Construct a new Marshal object
+             * 
+             * @param v 
+             */
             Marshal(std::vector<uint8_t> v) : mv{v}
             {
                 sizes.push_back(0);
                 MessageIndexerImpl<sizeof...(Args) - 1, Args...> mindex;
                 mindex(sizes);
             }
+            /**
+             * @brief unmarshal the data bytes into the required parameters
+             * 
+             * @tparam I                                            Index of the parameter
+             * @return std::decay<ArgumentType<I, Args...>>::type   The value of the parameter
+             */
             template <std::size_t I>
             typename std::decay<ArgumentType<I, Args...>>::type unmarshal()
             {

@@ -21,11 +21,30 @@ namespace ara
 {
     namespace com
     {
+        /**
+         * @brief Deserializer class for deserializing data
+         */
         class Deserializer
         {
         public:
+            /**
+             * @brief Construct a new Deserializer object
+             * 
+             */
             Deserializer() {}
+            /**
+             * @brief Destroy the Deserializer object
+             * 
+             */
             ~Deserializer() {}
+            /**
+             * @brief Deserialize the vector of bytes into the required data type
+             * 
+             * @tparam T 
+             * @param data 
+             * @param ind 
+             * @return T 
+             */
             template <typename T>
             T deserialize(std::vector<uint8_t> data, int ind)
             {
