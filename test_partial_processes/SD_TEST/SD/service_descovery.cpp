@@ -41,14 +41,14 @@ int main()
     int th1 = pthread_create(&threads[0], NULL, pthread0, (void *)&i);
     if (th1)
     {
-        cout << "ERRor" << th1 << endl;
+        cout << "ERROR" << th1 << endl;
         exit(-1);
     }
     i = 1;
     int th2 = pthread_create(&threads[1], NULL, pthread1, (void *)&i);
     if (th2)
     {
-        cout << "ERRor" << th2 << endl;
+        cout << "ERROR" << th2 << endl;
         exit(-1);
     }
 
@@ -180,7 +180,7 @@ void *pthread0(void *)
                 else
                 {
                     cout << "TTL is 0" << endl;
-                    csv.delete_record(CSV_FILE, receive.service_id);
+                    csv.delete_record(CSV_FILE, receive.service_id, receive.process_id);
                 }
             }
             break;

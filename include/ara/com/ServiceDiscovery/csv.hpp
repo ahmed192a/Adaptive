@@ -24,11 +24,17 @@ using namespace std;
 
 class CSV{
     public:
-    void write (const char* file_name,  SD_data data)
+    /**
+     * @brief Function to write the service_info which was received from the server in a CSV File
+     * 
+     * @param file_name
+     * @param service_info
+    */
+    void write (const char* file_name,  SD_data service_info)
     {
         // first check if the data already exists
         // if exists -> do not write
-        if (check(file_name, data.service_id, data.process_id))
+        if (check(file_name, service_info.service_id, service_info.process_id))
         {
             return;
         }
@@ -40,8 +46,8 @@ class CSV{
         // if opened, write the data into the file
         if (csv_file.is_open())
         {
-            csv_file << data.service_id << ", " 
-                        << data.process_id << ", " << data.port_number << "\n";
+            csv_file << service_info.service_id << ", " 
+                        << service_info.process_id << ", " << service_info.port_number << "\n";
         }    
         else
             cout << "Error. Creating empty file." << endl;
@@ -49,7 +55,15 @@ class CSV{
         // close the file
         csv_file.close();
     }
-    // Check before writing in file -> No repeated data
+
+    /**
+     * @brief Function to check if the received service_info already exists in the CSV file
+     * 
+     * @param file_name
+     * @param service_id
+     * @param process_id 
+     * @return bool
+    */
     bool check(const char* file_name, int service_id, int process_id)
     {
         // open file for reading
@@ -73,7 +87,15 @@ class CSV{
 
         return false;
     }
-    void FindRow (const char* file_name, int row_id, vector<SD_data> &result)
+
+    /**
+     * @brief Function to find the service_info using service_id
+     * 
+     * @param file_name
+     * @param service_id
+     * @param result 
+    */
+    void FindRow (const char* file_name, int service_id, vector<SD_data> &result)
     {
         // open file for reading
         fstream csv_file;
@@ -89,7 +111,7 @@ class CSV{
             getline(csv_file, second_item, ',');
             getline(csv_file, third_item, '\n');
             int service = stoi(first_item);
-            if (service == row_id)
+            if (service == service_id)
             {
                 data.service_id = service;
                 data.process_id = stoi(second_item);
@@ -100,37 +122,35 @@ class CSV{
 
         if (result.empty())
         {
-            // if not found, fill the struct with zeros
+            // if not found, fill the struct with negative ones
             data.service_id = -1;
             data.port_number = -1;
             data.process_id = -1;
             result.push_back(data);
         }
-        // if not found, fill the struct with zeros
-        data.service_id = -1;
-        data.port_number = -1;
-        data.process_id = -1;
 
         csv_file.close();
     }
-    // Server sendes stop offer service
-    void delete_record (const char* file_name, int delete_record)
+
+    /**
+     * @brief Function to delete a row from the CSV file
+     * 
+     * @param file_name
+     * @param service_id
+     * @param process_id 
+    */
+    void delete_record (const char* file_name, int service_id, int process_id)
     {  
-        // Open File pointers
-        fstream fin, fout;
-    
-        // Open the existing file
-        fin.open(file_name, ios::in);
-    
-        // Create a new file to store the non-deleted data
-        fout.open("temp.csv", ios::out);
-    
-        int roll1, marks, count = 0, i;
-        char sub;
-        int index, new_marks;
+        fstream fin, fout;               /* Open File pointers */
+        fin.open(file_name, ios::in);    /* Open the CSV file for reading */
+        fout.open("temp.csv", ios::out); /* Create a new file to store the non-deleted data */
+
+        int roll1, /* carry service_id of each row exists in the CSV file*/
+        roll2,     /* carry process_id of each row exists in the CSV file*/
+        i;         /* iterator */
         string line, word;
         vector<string> row;
-    
+
         // Check if this record exists
         // If exists, leave it and
         // add all other data to the new file
@@ -138,19 +158,20 @@ class CSV{
             row.clear();
             getline(fin, line);
             stringstream s(line);
-    
+
             while (getline(s, word, ',')) {
                 row.push_back(word);
             }
-    
+
             int row_size = row.size();
             roll1 = stoi(row[0]);
-    
+            roll2 = stoi(row[1]);
+
             // writing all records,
             // except the record to be deleted,
-            // into the new file 'reportcardnew.csv'
+            // into the new file 'temp.csv'
             // using fout pointer
-            if (roll1 != delete_record) {
+            if (roll1 != service_id || roll2 != process_id) {
                 if (!fin.eof()) {
                     for (i = 0; i < row_size - 1; i++) {
                         fout << row[i] << ", ";
@@ -159,27 +180,25 @@ class CSV{
                 }
             }
             else {
-                count = 1;
+                // do nothing
             }
             if (fin.eof())
                 break;
         }
-        // if (count == 1)
-        //     cout << "Record deleted\n";
-        // else
-        //     cout << "Record not found\n";
-    
-        // Close the pointers
+
+        /* Close the pointers */
         fin.close();
         fout.close();
-    
-        // removing the existing file
-        remove(file_name);
-    
-        // renaming the new file with the existing file name
-        rename("temp.csv", file_name);
+
+        remove(file_name);             /* removing the existing file */
+        rename("temp.csv", file_name); /* renaming the new file with the existing file name */
     }
 
+    /**
+     * @brief Function to clear the CSV file
+     * 
+     * @param file_name
+    */
     void clear (const char* file_name)
     {
         ofstream ofs;
