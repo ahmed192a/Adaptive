@@ -32,9 +32,10 @@ namespace ara
                 using FieldGetHandler = std::function<T()>;
 
                 /**
-                 * @brief has getter ,setter , notifier
+                 * @brief class field -->  has getter ,setter , notifier
                  *
                  * @tparam T
+                 * 
                  */
                 template <typename T>
                 class Field : public Event<T>
@@ -55,6 +56,12 @@ namespace ara
                                                       field_id)
                     {
                     }
+                    /**
+                     * @brief Handle set method 
+                     * 
+                     * @param sd_msg 
+                     * @param binding 
+                     */
                     void HandleSet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
                         std::vector<uint8_t> _data = sd_msg.GetPayload();
@@ -78,6 +85,12 @@ namespace ara
                         binding.CloseSocket();
                         this->notify();
                     }
+                    /**
+                     * @brief Handle Get method
+                     * 
+                     * @param sd_msg 
+                     * @param binding 
+                     */
                     void HandleGet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
                         std::vector<uint8_t> _data;
@@ -101,13 +114,28 @@ namespace ara
                         binding.Send(_data.data(), msg_size);
                         binding.CloseSocket();
                     }
+                    /**
+                     * @brief Destroy the Field object
+                     * 
+                     */
                     virtual ~Field() {}
                 };
-
+                 /**
+                  * @brief class FieldNoSetter has get method
+                  * 
+                  * @tparam T 
+                  */
                 template <typename T>
                 class FieldNoSetter : public Event<T>
                 {
                 public:
+                /**
+                 * @brief Construct a new Field No Setter object
+                 * 
+                 * @param service 
+                 * @param name 
+                 * @param field_id 
+                 */
                     FieldNoSetter( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -115,9 +143,17 @@ namespace ara
                                                       field_id)
                     {
                     }
-
+                    /**
+                     * @brief Destroy the Field No Setter object
+                     * 
+                     */
                     virtual ~FieldNoSetter() {}
-
+                    /**
+                     * @brief Handle Get method
+                     * 
+                     * @param sd_msg 
+                     * @param binding 
+                     */
                     void HandleGet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
                         std::vector<uint8_t> _data;
@@ -142,11 +178,22 @@ namespace ara
                         binding.CloseSocket();
                     }
                 };
-
+                /**
+                 * @brief class FieldNoGetter to set method
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoGetter : public Event<T>
                 {
                 public:
+                /**
+                 * @brief Construct a new Field No Getter object
+                 * 
+                 * @param service 
+                 * @param name 
+                 * @param field_id 
+                 */
                     FieldNoGetter( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -156,9 +203,17 @@ namespace ara
                         this->m_name = name;
                         this->m_service = service;
                     }
-
+                    /**
+                     * @brief Destroy the Field No Getter object
+                     * 
+                     */
                     virtual ~FieldNoGetter() {}
-
+                    /**
+                     * @brief Handle set method 
+                     * 
+                     * @param sd_msg 
+                     * @param binding 
+                     */
                     void HandleSet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
                         std::vector<uint8_t> _data = sd_msg.GetPayload();
@@ -183,11 +238,22 @@ namespace ara
                         this->notify();
                     }
                 };
-
+                /**
+                 * @brief class Field No Getter And Setter --> update event
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoGetterAndSetter : public Event<T>
                 {
                 public:
+                /**
+                 * @brief Construct a new Field No Getter And Setter object
+                 * 
+                 * @param service 
+                 * @param name 
+                 * @param field_id 
+                 */
                     FieldNoGetterAndSetter( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -197,19 +263,37 @@ namespace ara
                         this->m_name = name;
                         this->m_service = service;
                     }
-
+                    /**
+                     * @brief Destroy the Field No Getter And Setter object
+                     * 
+                     */
                     virtual ~FieldNoGetterAndSetter() {}
-
+                    /**
+                     * @brief update event
+                     * 
+                     * @param data 
+                     */
                     void Update(const T &data)
                     {
                         this->m_service->SendEvent(this->m_name, data, true);
                     }
                 };
-
+                /**
+                 * @brief class Field No Notifier --> update event
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoNotifier : public Event<T>
                 {
                 public:
+                /**
+                 * @brief Construct a new Field No Notifier object
+                 * 
+                 * @param service 
+                 * @param name 
+                 * @param field_id 
+                 */
                     FieldNoNotifier( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -219,19 +303,38 @@ namespace ara
                         this->m_name = name;
                         this->m_service = service;
                     }
-
+                    /**
+                     * @brief Destroy the Field No Notifier object
+                     * 
+                     */
                     virtual ~FieldNoNotifier() {}
+                    /**
+                     * @brief update event
+                     * 
+                     * @param value 
+                     */
                     void update(T value) override
                     {
                         this->event_data = value;
                         std::cout << this->m_name << " is Udpated " << std::endl;
                     }
                 };
-
+                 /**
+                  * @brief class Field No Notifier And Setter --> to handle get then update
+                  * 
+                  * @tparam T 
+                  */
                 template <typename T>
                 class FieldNoNotifierAndSetter : public Event<T>
                 {
                 public:
+                /**
+                 * @brief Construct a new Field No Notifier And Setter object
+                 * 
+                 * @param service 
+                 * @param name 
+                 * @param field_id 
+                 */
                     FieldNoNotifierAndSetter( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -241,9 +344,17 @@ namespace ara
                         this->m_name = name;
                         this->m_service = service;
                     }
-
+                    /**
+                     * @brief Destroy the Field No Notifier And Setter object
+                     * 
+                     */
                     virtual ~FieldNoNotifierAndSetter() {}
-                 
+                    /**
+                     * @brief handle get field value
+                     * 
+                     * @param sd_msg 
+                     * @param binding 
+                     */
                     void HandleGet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
                         std::vector<uint8_t> _data;
@@ -267,17 +378,33 @@ namespace ara
                         binding.Send(_data.data(), msg_size);
                         binding.CloseSocket();
                     }
+                    /**
+                     * @brief update event
+                     * 
+                     * @param value 
+                     */
                     void update(T value) override
                     {
                         this->event_data = value;
                         std::cout << this->m_name << " is Udpated " << std::endl;
                     }
                 };
-
+                /**
+                 * @brief class Field No Notifier And Getter
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoNotifierAndGetter : public Event<T>
                 {
                 public:
+                /**
+                 * @brief Construct a new Field No Notifier And Getter object
+                 * 
+                 * @param service 
+                 * @param name 
+                 * @param field_id 
+                 */
                     FieldNoNotifierAndGetter( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -287,13 +414,27 @@ namespace ara
                         this->m_name = name;
                         this->m_service = service;
                     }
+                    /**
+                     * @brief update event
+                     * 
+                     * @param value 
+                     */
                     void update(T value) override
                     {
                         this->event_data = value;
                         std::cout << this->m_name << " is Udpated " << std::endl;
                     }
-
+                    /**
+                     * @brief Destroy the Field No Notifier And Getter object
+                     * 
+                     */
                     virtual ~FieldNoNotifierAndGetter() {}
+                    /**
+                     * @brief HandleSet method
+                     * 
+                     * @param sd_msg 
+                     * @param binding 
+                     */
                     void HandleSet(ara::com::SOMEIP_MESSAGE::Message sd_msg, Socket &binding)
                     {
                         std::vector<uint8_t> _data = sd_msg.GetPayload();
@@ -318,53 +459,85 @@ namespace ara
                         this->notify();
                     }
                 };
-
-                /* Interface for creating field opject ddepending on the input (getter/notifier/setter)*/
+           
+                /**
+                 * @brief Interface for creating field opject ddepending on the input (getter/notifier/setter)
+                 * 
+                 * @tparam T 
+                 * @tparam hasGetter 
+                 * @tparam hasNotifier 
+                 * @tparam hasSetter 
+                 */
                 template <typename T, bool hasGetter, bool hasNotifier, bool hasSetter>
                 struct FieldType
                 {
                     using type = typename FieldType<T, hasNotifier, hasGetter, hasSetter>::type;
                 };
-
-                /*if all true create object of Field class*/
+                /**
+                 * @brief if all true create object of Field class
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, true, true>
                 {
                     using type = Field<T>;
                 };
-                /*if No Setter create object of FieldNoSetter class*/
+                /**
+                 * @brief if No Setter create object of FieldNoSetter class
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, true, false>
                 {
                     using type = FieldNoSetter<T>;
                 };
-
-                /*if No Getter create object of FieldNoGetter class*/
+                /**
+                 * @brief if No Getter create object of FieldNoGetter class
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, false, true, true>
                 {
                     using type = FieldNoGetter<T>;
                 };
-
-                /*if No Getter & Setter create object of FieldNoGetterAndSetter class*/
+                /**
+                 * @brief if No Getter & Setter create object of FieldNoGetterAndSetter class
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, false, true, false>
                 {
                     using type = FieldNoGetterAndSetter<T>;
                 };
-                /*if No Notifier create object of FieldNoNotifier class*/
+                /**
+                 * @brief if No Notifier create object of FieldNoNotifier class
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, false, true>
                 {
                     using type = FieldNoNotifier<T>;
                 };
-                /*if No Notifier & setter create object of FieldNoNotifierAndSetter class*/
+                /**
+                 * @brief if No Notifier & setter create object of FieldNoNotifierAndSetter class
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, true, false, false>
                 {
                     using type = FieldNoNotifierAndSetter<T>;
                 };
-                /*if No Notifier & Getter create object of FieldNoNotifierAndGetter class*/
+                /**
+                 * @brief if No Notifier & Getter create object of FieldNoNotifierAndGetter class
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 struct FieldType<T, false, false, true>
                 {

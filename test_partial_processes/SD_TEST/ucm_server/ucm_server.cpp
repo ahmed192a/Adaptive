@@ -14,6 +14,7 @@
 #include "ara/com/deserializer.hpp"
 #include "ara/SD_s/skeleton.hpp"
 #include "ara/com/SOMEIP/Message.hpp"
+#include "ara/ucm/pkgmgr/packet.hpp"
 
 #include <sys/mman.h>
 #include <sys/ipc.h>
@@ -42,6 +43,9 @@ bool stop = true;
 void Handle_IO();
 void *pthread0(void *v_var);
 void *pthread1(void *v_var);
+void *pthread2(void *v_var);
+
+//static uint16 current_state; /*!< variable to store the state of the bootloader updating sequence */
 
 int main()
 {
@@ -213,3 +217,32 @@ void Handle_IO()
     // }
     // printf("\n[SERVER]  ->> Handling client %s %d  with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), cudp.port, evr.data_size);
 }
+
+// void *pthread2(void *v_var)
+// {
+//     //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
+//     while (1) /* stay in this loop until the update is finished or canceled */
+//     {
+//         switch (current_state)
+//         {
+//         case RECEIVE_REQUEST_FREAME_INFO:
+//             //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
+//             current_state = SEND_FRAME_INFO;	
+//             break;
+//         case READY_TO_SEND_UPDATE:
+           
+//            break;
+//         case SEND_FRAME_INFO:
+//            //UART_sendBlock(Frame, FRAME_SIZE);
+//            break;
+//         case SEND_NEW_PACKET:
+//            //UART_sendBlock((uint8 *)&current_state, CMD_SIZE);	
+
+           
+//            break;
+//         default:
+// 			current_state = SEND_REQUEST_FREAME_INFO; 			/* Initialize the current state */
+// 			break;
+//         }
+//     }
+// }

@@ -77,6 +77,13 @@ namespace ara
                     //std::mutex mu;
 
                 public:
+                /**
+                 * @brief Construct a new Event object
+                 * 
+                 * @param service 
+                 * @param name 
+                 * @param event_id 
+                 */
                     Event(
                         ServiceSkeleton *service,
                         std::string name,
@@ -88,22 +95,37 @@ namespace ara
                         subname_file = m_name + m_service->m_service_id.toString()+ std::to_string(event_id); 
                         subscribers_data.clear(subname_file.data());  
                     }
+                    /**
+                     * @brief Destroy the Event object
+                     * 
+                     */
                     ~Event() {}
-
+                    /**
+                     * @brief Set the subscriber object
+                     * 
+                     * @param client_id 
+                     */
                     void set_subscriber(ara::com::proxy_skeleton::Client_udp_Info client_id)
                     {
                         //mu.lock();
                         subscribers_data.write(subname_file.data(),client_id );
                         //mu.unlock();
                     }
-
+                    /**
+                     * @brief Delete subscriber
+                     * 
+                     * @param client_id 
+                     */
                     void Del_subscriber(ara::com::proxy_skeleton::Client_udp_Info client_id)
                     {
                         //mu.lock();
                         subscribers_data.delete_record(subname_file.data(),client_id );
                         //mu.unlock();
                     }
-
+                    /**
+                     * @brief print_subscribers 
+                     *  
+                     */
                     void print_subscribers()
                     {
                         if(subscribers_data.getrows(subname_file.data()).empty())
@@ -120,7 +142,11 @@ namespace ara
                                       << ": " << (*itr).port << "\n";
                         }
                     }
-
+                    /**
+                     * @brief update event and notify
+                     * 
+                     * @param value 
+                     */
                     virtual void update(T value)
                     {
                         event_data = value;
@@ -129,7 +155,12 @@ namespace ara
                         notify();
                         //mu.unlock();
                     }
-
+                    /**
+                     * @brief subhandlecall to get entry and option of some ip
+                     * 
+                     * @param sd_msg 
+                     * @param client 
+                     */
                     void subhandlecall(ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg, ara::com::proxy_skeleton::Client_udp_Info client)
                     {
 
@@ -190,7 +221,11 @@ namespace ara
                     //     binding.CloseSocket();
                     //     if(op) notify();
                     // }
-
+                    /**
+                     * @brief get_subscribers
+                     * 
+                     * @return std::vector<ara::com::proxy_skeleton::Client_udp_Info> 
+                     */
                     std::vector<ara::com::proxy_skeleton::Client_udp_Info> getsub()
                     {
                         return subscribers_data.getrows(subname_file.data());

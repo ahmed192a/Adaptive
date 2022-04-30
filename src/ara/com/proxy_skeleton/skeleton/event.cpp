@@ -22,6 +22,11 @@ namespace ara
             {
                 namespace EVENT
                 {
+                    /**
+                     * @brief Set the handle object
+                     * 
+                     * @param handler 
+                     */
                     void set_handle(void (*handler)(int, siginfo_t *, void *))
                     {
                         struct sigaction signal_action;

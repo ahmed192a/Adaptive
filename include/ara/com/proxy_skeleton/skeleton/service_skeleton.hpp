@@ -35,7 +35,10 @@ namespace ara
         {
             namespace skeleton
             {
-
+                /**
+                 * @brief class ServiceSkeleton
+                 * 
+                 */
                 class ServiceSkeleton
                 {
                 public:
@@ -49,7 +52,14 @@ namespace ara
                     SK_Handle m_skeleton_handle;
                     ara::com::InstanceIdentifier &m_service_id;
                     ara::com::InstanceIdentifier &m_instance_id;
-
+                    /**
+                     * @brief Construct a new Service Skeleton object
+                     * 
+                     * @param service_id 
+                     * @param instance 
+                     * @param skeleton_handle 
+                     * @param mode 
+                     */
                     ServiceSkeleton(
                         InstanceIdentifier &service_id,
                         InstanceIdentifier &instance,
@@ -67,9 +77,15 @@ namespace ara
                         this->cliaddr.sin_addr.s_addr = INADDR_ANY;
                         this->cliaddr.sin_port = htons(m_skeleton_handle.sd_portnum);
                     }
-
+                    /**
+                     * @brief Destroy the Service Skeleton object
+                     * 
+                     */
                     virtual ~ServiceSkeleton() {}
-
+                    /**
+                     * @brief Offer Service 
+                     * 
+                     */
                     void OfferService()
                     {
                         this->m_skeleton_udp.OpenSocket();
@@ -86,7 +102,10 @@ namespace ara
                         this->m_skeleton_udp.UDPSendTo((void *)_payload.data(), _payload.size(), (struct sockaddr *)&this->cliaddr);
                         this->m_skeleton_udp.CloseSocket();
                     }
-
+                    /**
+                     * @brief StopOfferService
+                     * 
+                     */
                     void StopOfferService()
                     {
                         const uint32_t minorV = 0;
@@ -144,17 +163,40 @@ namespace ara
                     }
 
                 protected:
-                    /*1 R ARGS*/
+                    /**
+                     * @brief 1- HandleCall  R ARGS
+                     * 
+                     * @tparam Class 
+                     * @tparam R 
+                     * @tparam Args 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class, typename R, typename... Args>
                     void HandleCall(Class &c,
                                     std::future<R> (Class::*method)(Args...),
                                     SOMEIP_MESSAGE::Message msg,
                                     Socket &binding)
                     {
-
+                        /**
+                         * @brief Construct a new s Handle Call object
+                         * 
+                         */
                         sHandleCall(c, method, msg, binding, std::index_sequence_for<Args...>());
                     }
-                    /*2 future<void> ARGS*/
+                    /**/
+                    /**
+                     * @brief 2- HandleCall future<void> ARGS
+                     * 
+                     * @tparam Class 
+                     * @tparam Args 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class, typename... Args>
                     void HandleCall(Class &c,
                                     std::future<void> (Class::*method)(Args...),
@@ -163,7 +205,16 @@ namespace ara
                     {
                         sHandleCall(c, method, msg, binding, std::index_sequence_for<Args...>());
                     }
-                    /*3 R */
+                    /**
+                     * @brief 3- HandleCall R
+                     * 
+                     * @tparam Class 
+                     * @tparam R 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class, typename R>
                     void HandleCall(Class &c,
                                     std::future<R> (Class::*method)(),
@@ -193,7 +244,15 @@ namespace ara
 
                         binding.CloseSocket();
                     }
-                    /*4 future <void>*/
+                    /**
+                     * @brief 4- HandleCall future <void>
+                     * 
+                     * @tparam Class 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class>
                     void HandleCall(Class &c,
                                     std::future<void> (Class::*method)(),
@@ -214,16 +273,37 @@ namespace ara
                         binding.Send(_payload.data(), msg_size);
                         binding.CloseSocket();
                     }
-                    /*5 void ARGS*/
+                    /**
+                     * @brief 5- HandleCall void ARGS
+                     * 
+                     * @tparam Class 
+                     * @tparam Args 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class, typename... Args>
                     void HandleCall(Class &c,
                                     void (Class::*method)(Args...),
                                     SOMEIP_MESSAGE::Message msg,
                                     Socket &binding)
                     {
+                        /**
+                         * @brief Construct a new s Handle Call object
+                         * 
+                         */
                         sHandleCall(c, method, msg, binding, std::index_sequence_for<Args...>());
                     }
-                    /*6 void */
+                    /**
+                     * @brief 6- HandleCall void
+                     * 
+                     * @tparam Class 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class>
                     void HandleCall(Class &c,
                                     void (Class::*method)(),
@@ -233,7 +313,12 @@ namespace ara
                         (c.*method)();
                         binding.CloseSocket();
                     }
-
+                    /**
+                     * @brief No Handler --> handle error
+                     * 
+                     * @param method_id 
+                     * @param binding 
+                     */
                     void NoHandler(uint16_t method_id, Socket &binding)
                     {
                         SOMEIP_MESSAGE::Message R_msg(
@@ -250,8 +335,19 @@ namespace ara
                         binding.Send(_Payload.data(), size);
                         binding.CloseSocket();
                     }
-
                 private:
+                /**
+                 * @brief sHandleCall
+                 * 
+                 * @tparam Class 
+                 * @tparam R 
+                 * @tparam Args 
+                 * @tparam index 
+                 * @param c 
+                 * @param method 
+                 * @param msg 
+                 * @param binding 
+                 */
                     template <typename Class, typename R, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
                                      std::future<R> (Class::*method)(Args...),
@@ -283,6 +379,17 @@ namespace ara
                         binding.Send(_payload.data(), msg_size);
                         binding.CloseSocket();
                     }
+                    /**
+                     * @brief sHandleCall handle return type future void
+                     * 
+                     * @tparam Class 
+                     * @tparam Args 
+                     * @tparam index 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
                                      std::future<void> (Class::*method)(Args...),
@@ -307,7 +414,17 @@ namespace ara
                         binding.Send(_payload.data(), msg_size);
                         binding.CloseSocket();
                     }
-
+                    /**
+                     * @brief sHandleCall handle return type void
+                     * 
+                     * @tparam Class 
+                     * @tparam Args 
+                     * @tparam index 
+                     * @param c 
+                     * @param method 
+                     * @param msg 
+                     * @param binding 
+                     */
                     template <typename Class, typename... Args, std::size_t... index>
                     void sHandleCall(Class &c,
                                      void (Class::*method)(Args...),
@@ -318,7 +435,6 @@ namespace ara
                         Marshal<Args...> unmarshaller(msg.GetPayload());
                         (c.*method)(unmarshaller.template unmarshal<index>()...);
                     }
-
                     // Private variables
                     struct sockaddr_in cliaddr;
                     ara::com::MethodCallProcessingMode m_mode;
