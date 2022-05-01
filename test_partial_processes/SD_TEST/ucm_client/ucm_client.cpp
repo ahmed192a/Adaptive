@@ -124,19 +124,16 @@ void *pthread0(void *v_var)
 
     int block_counter = 0;
     std::cout << Temp_data.size() << std::endl;
-    for (int i=0; i<Temp_data.size(); i++)
+    for (int i=0; i < Temp_data.size(); i += transfer_start_output.BlockSize)
     {
         for(int j=0; j<transfer_start_output.BlockSize; j++)
         {
-            if(i*transfer_start_output.BlockSize+ j >= Temp_data.size()){
-                cout << "small_data.size(): " << small_data.size()  << endl;
+            if(i + j >= Temp_data.size()){
                 small_data.resize(transfer_start_output.BlockSize);
-                cout << "small_data.size(): " << small_data.size()  << endl;
-
                 break;
             }
             else
-                small_data.push_back(Temp_data[i*transfer_start_output.BlockSize + j]);
+                small_data.push_back(Temp_data[i + j]);
         }
 
         // don't change 64 (packagemanagementskeleton.cpp)
@@ -144,10 +141,10 @@ void *pthread0(void *v_var)
         server_proxy_ptr->TransferData(transfer_start_output.id, small_data, block_counter);   /* Saves TransferDataOutput */
 
         ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result3;
-        result3 =result2.get();
+        result3 =result2.get();   // get the value of future
+
         block_counter++;
         small_data.clear();
-        if(block_counter*transfer_start_output.BlockSize > Temp_data.size()) break;
     }
     server_proxy_ptr->TransferExit(transfer_start_output.id);
 

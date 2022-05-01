@@ -18,6 +18,7 @@
 #include "ara/ucm/pkgmgr/ucm_types.hpp"
 #include "ucm_return_types.hpp"
 #include "ucm_error.hpp"
+#include "ara/ucm/pkgmgr/packet.hpp"
 
 #include <future>
 
@@ -31,6 +32,8 @@
 #include <boost/uuid/random_generator.hpp>
 #include <boost/variant2/variant.hpp>
 #include <bits/stdc++.h>
+
+
 using namespace boost::uuids;
 
 namespace ara

@@ -31,22 +31,22 @@
  * @brief Send to request the expected frame information
  * 
  */
-#define SEND_REQUEST_FREAME_INFO                        0x2222
+#define RECEIVE_REQUEST_FREAME_INFO                        0x2222
 /**
  * @brief Receive the expected frame information
  * 
  */
-#define RECEIVE_FRAME_INFO                      0x3333
+#define SEND_FRAME_INFO                      0x3333
 /**
  * @brief ready to receive update
  * 
  */
-#define READY_TO_RECEIVE_UPDATE                 0x4444
+#define READY_TO_SEND_UPDATE                 0x4444
 /**
  * @brief receive packet 
  * 
  */
-#define RECEIVE_PACKET   						0x5555
+#define SEND_PACKET   						0x5555
 /**
  * @brief request new packet
  * 
@@ -76,6 +76,6 @@
  * @brief Activate
  * 
  */
-#define Activate							    0xBBBB
+#define Activate_s							    0xBBBB
 
 #endif
