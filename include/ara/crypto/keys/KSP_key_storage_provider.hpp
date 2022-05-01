@@ -22,10 +22,10 @@ namespace ara
 				//@breif: Rollback all changes executed during the transaction in Key Storage.
 				// The rollback command permanently cancels all changes made during the transaction in Key Storage.
 				// A rolled back transaction is completely invisible for all applications.
-				void RollbackTransaction(TransactionId id) noexcept ;
+				void RollbackTransaction(TransactionId id) noexcept;
 
-
-
+				//@breif: Get a vector of IOInterface from a Transaction id.
+				std::vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept;
 			};
 		}
 	}

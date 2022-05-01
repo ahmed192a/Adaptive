@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 #include "elementary_types.hpp"
-#include "updates_observer.hpp"
 #include "../../core/instance_specifier.hpp"
 #include "keyslot.hpp"
 
@@ -20,6 +19,12 @@ namespace ara
 				
 				//@breif: vector to keep track of opened TransactionScopes which are ready to be commited with changes
 				std::vector < OpenedTransactionScopeWithIdPair> openedTransactionsWithIds;
+
+				//@breif: vector to keep a copy of original data of opened Transactions
+				std::vector <OpenedTransactionScopeWithIdPair> spareOpenedTransactions;
+
+				//@breif: vector to save IOInterfaces of key slots in a transaction
+				std::vector<IOInterface::Uptr> TransactionIOInterfaces;
 
 				/*std::vector < TransactionScope> openedTransactions;
 				std::vector < TransactionId> openedTransactionIds;*/
@@ -47,6 +52,9 @@ namespace ara
 				// The rollback command permanently cancels all changes made during the transaction in Key Storage.
 				// A rolled back transaction is completely invisible for all applications.
 				virtual void RollbackTransaction(TransactionId id) noexcept = 0;
+
+				//@breif: Get a vector of IOInterface from a Transaction id.
+				virtual std::vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept = 0;
 
 				//@breif: Copy-assign another KeyStorageProvider to this instance.
 				KeyStorageProvider& operator= (const KeyStorageProvider& other) = default;

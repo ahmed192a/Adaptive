@@ -22,11 +22,12 @@ namespace ara
 			/********* Not in SWS so may be remeoved later if better solution is found **********/
 			/************************************************************************************/
 			
-			/*enum class TransactionScopeState : std::uint8_t
+			enum class TransactionScopeState : std::uint8_t
 			{
 				opened,
-				commited
-			};*/
+				commited,
+				rolledback
+			};
 
 			//@breif: a pair to keep track of opened TransactionScopes which are ready to be commited with changes 
 			//        combined with their TransactionId s
@@ -34,11 +35,8 @@ namespace ara
 			{
 				TransactionScope OpenedTransaction;
 				TransactionId OpenedTransactionId;
-
+				TransactionScopeState OpenedTransactionState;
 			};
-
-
-
 		}
 	}
 }

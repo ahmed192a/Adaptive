@@ -76,3 +76,73 @@ KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept
 {
 	
 }
+
+
+//@breif: Rollback all changes executed during the transaction in Key Storage.
+// The rollback command permanently cancels all changes made during the transaction in Key Storage.
+// A rolled back transaction is completely invisible for all applications.
+void RollbackTransaction(TransactionId id) noexcept
+{
+	//counters for the loop
+	uint8_t OpenedTransactionscounter, SlotCounter;
+	//a flag to detect when the code exits without finding the provided id
+	uint8_t flag = 0;
+	
+	//loop on every opened transaction to find the one to rollback
+	for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->spareOpenedTransactions.size(); OpenedTransactionscounter++)
+	{
+		if (this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionId == id)
+		{
+			TransactionScope requiredTransaction = this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransaction;
+			flag = 1;
+			/*if provided id is invalid, i.e. correspondent transaction already was finished (committed or rolled back),
+			 *an error is signaled*/
+			if (this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState == TransactionScopeState::commited || this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState == TransactionScopeState::rolledback)
+			{
+				//raising SecurityErrorDomain::kInvalid Argument
+			}
+			else
+			{
+				// loop on every key slot in the Transactionscope to remove the changes & rollback
+				for (SlotCounter = 0; SlotCounter < requiredTransaction.OpenedTransaction.size(); SlotCounter++)
+				{
+					//Open each key slot spare & save it to roll back any changes that occurred)
+					IOInterface::Uptr IOInterfacePtr = requiredTransaction[SlotCounter].Open(1, 1);
+					requiredTransaction[SlotCounter].SaveCopy(IOInterfacePtr);
+				}
+				this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState = TransactionScopeState::rolledback;
+			}
+		}
+	}
+	/*if provided id is invalid, i.e. this ID is unknown (not found), an error is signaled*/
+	if (flag == 0)
+	{	
+		//raising SecurityErrorDomain::kInvalid Argument
+	}
+}
+
+
+//@breif: Get a vector of IOInterface from a Transaction id.
+vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept
+{
+	//counters for the loops
+	uint8_t OpenedTransactionscounter, SlotCounter;
+
+	//loop on every opened transaction to find the one to retrieve its key slots' IOInterfaces
+	for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->openedTransactionsWithIds.size(); OpenedTransactionscounter++)
+	{
+		if (this->openedTransactionsWithIds[OpenedTransactionscounter].OpenedTransactionId == id)
+		{
+			TransactionScope requiredTransaction = this->openedTransactionsWithIds[OpenedTransactionscounter].OpenedTransaction;
+			//loop on every key slot in the required Transactionscope to remove the changes & rollback
+			for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
+			{
+				//push the IOInterfaces to the vector
+				this->TransactionIOInterfaces.push_back(requiredTransaction[SlotCounter].IOInterfacePtr);
+
+			}
+			
+		}	
+	}
+	return this->TransactionIOInterfaces;
+}
