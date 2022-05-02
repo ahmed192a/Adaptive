@@ -43,7 +43,7 @@ namespace ara {
                 /// @brief destructor
                 ~HMAC() noexcept = default;
                 
-                bool IsInitialized();
+                bool IsInitialized() const noexcept;
 
 				/*Return CryptoPrimitivId instance containing instance identification */
 				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
