@@ -13,6 +13,7 @@
 //#include "ara/crypto/cryp/hash_function_ctx.hpp"
 //#include "ara/crypto/cryp/symmetric_block_cipher_ctx.hpp"
 //
+#include "ara/crypto/cryp/key_derivation_function_ctx.hpp"
 
 
 			///////////////////////////////////////////
@@ -40,10 +41,10 @@
             public:
             	using Uptr = std::unique_ptr<SymmetricKeyWrapperCtx>;
             };
-            class KeyDerivationFunctionCtx : public CryptoContext {
+            /*class KeyDerivationFunctionCtx : public CryptoContext {
             public:
             	using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>;
-            };
+            };*/
 
 
 			///////////////////////////////////////////
