@@ -176,6 +176,9 @@ void *pthread0(void *v_var) {
                 
                 /** end of sending the package to the ucm **/
 
+                /* process sw package */
+                server_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
+
 
                 bool acknowlege = true; // this acknowle
 

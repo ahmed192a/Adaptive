@@ -8,6 +8,7 @@
  */
 
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
+#include "ara/ucm/pkgmgr/uart_linux.hpp"
 #include <cmath>
 
 static uint16_t current_state; /*!< variable to store the state of the bootloader updating sequence */
@@ -104,6 +105,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
     std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> f = std::async([&, id]()
                                                                                             {
         ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput result;
+        uart_linux u_linux;
 
               //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
     while (1) /* stay in this loop until the update is finished or canceled */
@@ -113,7 +115,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         switch (current_state)
         {
         case RECEIVE_REQUEST_FREAME_INFO:
-            //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
+            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
             current_state = SEND_FRAME_INFO;	
             break;
         case SEND_FRAME_INFO:
@@ -128,8 +130,8 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
             Frame[1] = *(f+1);
             Frame[2] = *ex;
             Frame[3] = *(ex+1);
-           //UART_sendBlock(Frame, FRAME_SIZE);
-           //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
+            u_linux.UART_sendBlock(Frame, FRAME_SIZE);
+            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
            break;	
         }
         case READY_TO_SEND_UPDATE:
@@ -153,37 +155,35 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                 small_data.clear();
             if(packet_num > 0)
             {
-                //UART_sendBlock(small_data, TransferInfoData.BlockSize);
+                u_linux.UART_sendBlock(small_data.data(), TransferInfoData.BlockSize);
                 packet_num -=1;
                 current_state = SEND_NEW_PACKET;
             }
             else
             {
-                //UART_sendBlock(small_data, extra_bytes);
+                u_linux.UART_sendBlock(small_data.data(), extra_bytes);
                 current_state = END_OF_UPDATE;
             }
         }
         case SEND_NEW_PACKET:
-            //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
+            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
             current_state = SEND_PACKET;	
             break;
         
         case END_OF_UPDATE:
              // send activiate
-             //UART_sendBlock((uint8 *)&current_state, CMD_SIZE);
+             u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
              break;
         case CHECK_CANCEL_UPDATE:
         break;
         case CANCEL_UPDATE_REQUEST:
            break;
         case Activate_s:
+           u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
            break;
         default:
 			current_state = RECEIVE_REQUEST_FREAME_INFO; 			/* Initialize the current state */
 			break;
-        
-
-
         }
     }
         
@@ -262,7 +262,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
                                                                                         {
         ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
         std::string str(std::begin(id), std::end(id));
-         str = "ucm_server/" + str + ".zip";
+         str = "ucm_server/" + str + ".txt";
         SaveBlock(str.data() , this->buffer); 
         return result; });
 
