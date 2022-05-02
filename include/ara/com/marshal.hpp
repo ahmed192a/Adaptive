@@ -20,13 +20,24 @@ namespace ara
 {
     namespace com
     {
-
+        /**
+         * @brief 
+         * 
+         * @tparam I 
+         * @tparam Head 
+         * @tparam Tail 
+         */
         template <std::size_t I, typename Head, typename... Tail>
         struct ArgumentTypeImpl
         {
             using type = typename ArgumentTypeImpl<I - 1, Tail...>::type;
         };
-
+        /**
+         * @brief 
+         * 
+         * @tparam Head 
+         * @tparam Tail 
+         */
         template <typename Head, typename... Tail>
         struct ArgumentTypeImpl<0, Head, Tail...>
         {

@@ -19,12 +19,21 @@
 namespace saam
 {
     // class proxy;
+     /**
+      * @brief class add_output
+      * 
+      */
     class add_output
     {
         private:
         ara::com::proxy_skeleton::proxy::ServiceProxy *px;
         int methodid =5;
         public:
+        /**
+         * @brief Construct a new add output object
+         * 
+         * @param x 
+         */
         add_output(ara::com::proxy_skeleton::proxy::ServiceProxy* x)
         {
             this->px = x;
@@ -37,6 +46,13 @@ namespace saam
         //     result.add = px->SendRequest(0,x,y);
         //     return result;
         // }
+        /**
+         * @brief operator function
+         * 
+         * @param p1 
+         * @param p2 
+         * @return int 
+         */
         int operator()(int p1, int p2)
         {
             int res = px->SendRequest<int>(methodid,p1,p2);
