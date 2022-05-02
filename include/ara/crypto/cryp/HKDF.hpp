@@ -12,11 +12,15 @@
 
 
 
+
 namespace ara {
     namespace crypto {
         namespace cryp {
 
             class HKDF : public KeyDerivationFunctionCtx{
+
+                CryptoProvider * myProvider;
+                bool status=0;
 
 
                 ReadOnlyMemRegion * targetKeyId;//12
@@ -45,6 +49,21 @@ namespace ara {
                 bool isContextConfigured=0;
 
                 public:
+
+                /// @brief constructor
+                HKDF(CryptoProvider * provider);
+
+                /** Inherited from CryptoContext class**/
+                /// @brief destructor
+                ~HKDF() noexcept = default;
+                
+                bool IsInitialized() const noexcept;
+
+				      /*Return CryptoPrimitivId instance containing instance identification */
+				      CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
+
+				      /* Get a reference to Crypto Provider of this context*/
+				      CryptoProvider& MyProvider() const noexcept;
 
 
                /*1
@@ -190,7 +209,7 @@ namespace ara {
                /*virtual */void Reset () noexcept=0;
                 
                
-               /*ExtensionService::Uptr*/void GetExtensionService () const noexcept=0;
+               /*ExtensionService::Uptr*///void GetExtensionService () const noexcept=0;
 
                 /*8
                 -Get the size of the salt
@@ -259,7 +278,7 @@ namespace ara {
                * 
                *  @return AllowedUsageFlags
                */
-                /*virtual */AllowedUsageFlags GetTargetAllowedUsage () const noexcept=0;
+                /*virtual *///AllowedUsageFlags GetTargetAllowedUsage () const noexcept=0;
 
                 /*11
                 Get the bit-length of target (diversified) keys. Returned value is configured by the context

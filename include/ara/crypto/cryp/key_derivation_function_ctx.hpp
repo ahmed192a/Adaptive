@@ -7,6 +7,7 @@
 #include "ara/crypto/cryp/message_authn_code_ctx.hpp"
 #include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
 #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
+#include "ara/crypto/cryp/crypto_context.hpp"
 
 
 
@@ -234,7 +235,7 @@ namespace ara {
                * 
                *  @return AllowedUsageFlags
                */
-                virtual AllowedUsageFlags GetTargetAllowedUsage () const noexcept=0;
+                //virtual AllowedUsageFlags GetTargetAllowedUsage () const noexcept=0;
 
                 /*11
                 Get the bit-length of target (diversified) keys. Returned value is configured by the context
@@ -250,7 +251,7 @@ namespace ara {
                * 
                *  @return size of the derived key.
                * */
-                //virtual std::size_t GetTargetKeyBitLength () const noexcept=0;
+                virtual std::size_t GetTargetKeyBitLength () const noexcept=0;
 
                 /*12
                 -During the initialization phase of
