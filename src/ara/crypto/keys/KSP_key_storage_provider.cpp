@@ -110,6 +110,7 @@ void RollbackTransaction(TransactionId id) noexcept
 					IOInterface::Uptr IOInterfacePtr = requiredTransaction[SlotCounter].Open(1, 1);
 					requiredTransaction[SlotCounter].SaveCopy(IOInterfacePtr);
 				}
+				//change the state of the transaction to rolledback so that it won't be rolled back again
 				this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState = TransactionScopeState::rolledback;
 			}
 		}
