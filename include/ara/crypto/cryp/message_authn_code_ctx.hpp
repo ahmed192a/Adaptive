@@ -50,14 +50,14 @@ namespace ara {
 
                 virtual void Reset() noexcept = 0;
                 virtual void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;
-                virtual bool Check(const Signature &expected) const noexcept = 0;
+                //virtual bool Check(const Signature &expected) const noexcept = 0;
 
 
                 virtual void Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept = 0;
-                virtual void Start(const SecretSeed &iv) noexcept = 0;
+                //virtual void Start(const SecretSeed &iv) noexcept = 0;
 
-                virtual void Update(const RestrictedUseObject &in) noexcept = 0;
-                virtual void Update(ReadOnlyMemRegion in) noexcept = 0;
+                //virtual void Update(const RestrictedUseObject &in) noexcept = 0;
+                //virtual void Update(ReadOnlyMemRegion in) noexcept = 0;
                 virtual void Update(std::uint8_t in) noexcept = 0;
 
                 virtual Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept = 0;
