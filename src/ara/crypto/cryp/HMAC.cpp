@@ -15,7 +15,7 @@ HMAC::HMAC(CryptoProvider * provider) {
 
 
 /** Inherited from CryptoContext class**/
-bool HMAC::IsInitialized() {
+bool HMAC::IsInitialized() const noexcept{
     if(status == MessageAuthnCodeCtx_Status::notInitialized)
         return false;
     else
