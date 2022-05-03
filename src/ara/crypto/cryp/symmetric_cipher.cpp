@@ -99,7 +99,7 @@ void SymmetricCipher::SetKey (const SymmetricKey &key, CryptoTransform transform
     if ((transform == CryptoTransform::kEncrypt && kAllowDataEncryption != NULL) || (transform == CryptoTransform::kDecrypt && kAllowDataDecryption != NULL))
 	{
 		this->Key_is_Set = 1;
-        this->Alg_key = key;
+        this->Alg_key = *key;
 		this->Alg_transformation = transform;
         this->status = SymmetricBlockCipher_Status::initialized;
 	}
