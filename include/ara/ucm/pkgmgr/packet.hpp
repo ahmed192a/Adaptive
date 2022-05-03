@@ -77,5 +77,10 @@
  * 
  */
 #define Activate_s							    0xBBBB
+/**
+ * @brief trigger_seq
+ * 
+ */
+#define trigger_seq                             0xCCCC
 
 #endif

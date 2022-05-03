@@ -114,6 +114,15 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         uint16_t extra_bytes;
         switch (current_state)
         {
+        case trigger_seq:
+        {
+            std::vector<uint8_t> start ;
+            start.push_back('start');
+            int st = 4;
+            u_linux.UART_sendBlock(start.data(),st);
+            current_state = RECEIVE_REQUEST_FREAME_INFO;
+            break;
+        }
         case RECEIVE_REQUEST_FREAME_INFO:
             u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
             current_state = SEND_FRAME_INFO;	
@@ -135,7 +144,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
            break;	
         }
         case READY_TO_SEND_UPDATE:
-           //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
+           u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
            current_state = SEND_PACKET;	
            break;
         case SEND_PACKET:
@@ -172,6 +181,8 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         
         case END_OF_UPDATE:
              // send activiate
+             u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
+             current_state = Activate_s;
              u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
              break;
         case CHECK_CANCEL_UPDATE:
@@ -182,7 +193,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
            break;
         default:
-			current_state = RECEIVE_REQUEST_FREAME_INFO; 			/* Initialize the current state */
+			current_state = trigger_seq; 			/* Initialize the current state */
 			break;
         }
     }
