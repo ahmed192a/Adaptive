@@ -1,6 +1,11 @@
 #ifndef ARA_CRYPTO_KEY_WRAPPER_H
 #define ARA_CRYPTO_KEY_WRAPPER_H
 
+/*
+	Cryptopp Header files for downloading the library use the following commands "ubuntu terminal":
+	sudo apt-get update 
+	 sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
+*/
 #include <crypto++/aes.h>
 #include <crypto++/modes.h>
 #include <crypto++/cryptlib.h>
@@ -8,6 +13,7 @@
 #include <crypto++/files.h>
 #include <crypto++/hex.h>
 
+#include <vector>
 #include <string>
 #include "include/ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
 #include "include/ara/crypto/cryp/PRNG.hpp"
