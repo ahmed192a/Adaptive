@@ -4,8 +4,10 @@ using namespace ara::crypto::cryp;
 
 
 /*
- * Private function for KEK Generation
+ * Private functions for Keywrsapping Algorithm
  */
+
+/*
 std::string Keywrapper::decToHexa(int n)
 {
     char hexaDeciNum[100];
@@ -31,6 +33,19 @@ std::string Keywrapper::decToHexa(int n)
     }
     return Returned_str;
 }
+*/
+//Function that is used to convert a string into vector of bytes 
+vector<byte>Keywrapper::hexToASCII(string hex)
+{
+    // initialize the ASCII code string as empty.
+    std::vector<byte> ascii;
+    cout << hex << endl;
+    for (size_t i = 0; i < hex.length(); i++)
+    {
+        ascii.push_back(hex[i]);
+    }
+    return ascii;
+}
 
 
 Keywrapper::Keywrapper()
@@ -53,6 +68,8 @@ Keywrapper::Keywrapper()
 
 std::size_t Keywrapper::CalculateWrappedKeySize(std::size_t keylength)
 {
+    /*This equation used for Calculating the size of the wrapped key in bytes from original key length in bits.*/
+    wrapped_key_size = (keylength/8) + (Block_size - ((keylength/8) % Block_size));
     return wrapped_key_size;
 }
 
@@ -67,6 +84,7 @@ void SymmetricKeyWrapperCtx::SetKey(const SymmetricKey& key, CryptoTransform tra
     this->key = key;
 }
 */
+
 std::size_t Keywrapper::GetTargetKeyGranularity()
 {
     return KEK_Length / 8;
