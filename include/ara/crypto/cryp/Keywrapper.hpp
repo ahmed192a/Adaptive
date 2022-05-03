@@ -1,9 +1,20 @@
 #ifndef ARA_CRYPTO_KEY_WRAPPER_H
 #define ARA_CRYPTO_KEY_WRAPPER_H
 
+#include <crypto++/aes.h>
+#include <crypto++/modes.h>
+#include <crypto++/cryptlib.h>
+#include <crypto++/rijndael.h>
+#include <crypto++/files.h>
+#include <crypto++/hex.h>
+
 #include <string>
 #include "include/ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
 #include "include/ara/crypto/cryp/PRNG.hpp"
+
+
+using namespace std;
+using namespace CryptoPP;
 
 namespace ara {
 	namespace crypto {
@@ -11,20 +22,23 @@ namespace ara {
 			class Keywrapper : public SymmetricKeyWrapperCtx
 			{
 			private :
-				byte x;
-				uint32_t key_length;
-				uint32_t wrapped_key_size;
-				uint32_t Max_KEKLength = 256; //Max key length supported by the AES (in bits) 
-				uint32_t KEK_Length = 128;
-				SymmetricKey Key;
-				std::string decToHexa(int n);
+			size_t key_length;
+			size_t wrapped_key_size;
+			size_t Max_KEY_Length = 128;//Max input key length(AKA plaintext) supported by the AES (in bits)
+			size_t KEK_Length = 128; // in bits
+			size_t Block_size = 16;
+			SymmetricKey Key;
+			vector<byte> hexToASCII(string hex);
+			//std::string decToHexa(int n);
 			public :
-				Keywrapper();
-				std::size_t CalculateWrappedKeySize(std::size_t keyLength);
-				std::size_t GetMaxTargetKeyLength();
-				std::size_t GetTargetKeyGranularity();
-				ara::core::Result<void> Reset();
-				//void SetKey(const SymmetricKey& key, CryptoTransform transform);
+			Keywrapper();
+			std::size_t CalculateWrappedKeySize(std::size_t keyLength);
+			std::size_t GetMaxTargetKeyLength();
+			std::size_t GetTargetKeyGranularity();
+			ara::core::Result<void> Reset();
+			//void SetKey(const SymmetricKey& key, CryptoTransform transform);
+			vector<byte>  WrapKeyMaterial (const RestrictedUseObject &key);
+			RestrictedUseObject::Uptrc UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage);
 			};
 		}
 	}
