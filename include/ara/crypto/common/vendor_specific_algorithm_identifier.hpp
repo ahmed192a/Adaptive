@@ -10,7 +10,8 @@
 //then AlgId of HMACSHA_256 is 1 and when used in algorithmNames variable will be 0
 const std::string algorithmNames[] =
 {
-	"HMACSHA_256"
+	"HMACSHA_256",
+	"AES_128"
 };
 
 
