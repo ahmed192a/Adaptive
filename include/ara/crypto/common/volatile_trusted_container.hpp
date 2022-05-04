@@ -1,13 +1,12 @@
-#ifndef VOLATILE_TRUSTED_CONTAINER_HPP_
-#define VOLATILE_TRUSTED_CONTAINER_HPP_
-//#include "ara/crypto/common/io_interface.hpp"
+//#ifndef VOLATILE_TRUSTED_CONTAINER_HPP_
+//#define VOLATILE_TRUSTED_CONTAINER_HPP_
+#pragma once
+#include "io_interface.hpp"
 namespace ara
 {
 	namespace crypto
 	{
-		namespace cryp
-		{
-			class IOInterface{};
+			class ConcreteIOInterface;
 			class VolatileTrustedContainer
 			{
 				public:
@@ -15,14 +14,13 @@ namespace ara
 
 				using Uptr = std::unique_ptr<VolatileTrustedContainer>;
 
-				virtual IOInterface& GetIOInterface () const noexcept=0;
+				virtual ConcreteIOInterface& GetIOInterface () const noexcept;
 
 				virtual ~VolatileTrustedContainer () noexcept=default;
 
 
 			};
-		}
 	}
 }
 
-#endif /* VOLATILE_TRUSTED_CONTAINER_HPP_ */
+//#endif /* VOLATILE_TRUSTED_CONTAINER_HPP_ */
