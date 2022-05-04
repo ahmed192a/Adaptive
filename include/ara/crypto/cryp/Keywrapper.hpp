@@ -25,10 +25,16 @@ using namespace CryptoPP;
 namespace ara {
 	namespace crypto {
 		namespace cryp {
+			enum class AES_Wrapper_Status : std::uint8_t 
+			{
+				notInitialized = 0,
+                		initialized = 1
+			};
+			
 			class Keywrapper : public SymmetricKeyWrapperCtx
 			{
 			private :
-			size_t key_length;
+			size_t key_length = 128;
 			size_t wrapped_key_size;
 			size_t Max_KEY_Length = 128;//Max input key length(AKA plaintext) supported by the AES (in bits)
 			size_t KEK_Length = 128; // in bits
@@ -42,7 +48,7 @@ namespace ara {
 			std::size_t GetMaxTargetKeyLength();
 			std::size_t GetTargetKeyGranularity();
 			ara::core::Result<void> Reset();
-			//void SetKey(const SymmetricKey& key, CryptoTransform transform);
+			void SetKey(const SymmetricKey& key, CryptoTransform transform);
 			vector<byte>  WrapKeyMaterial (const RestrictedUseObject &key);
 			RestrictedUseObject::Uptrc UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage);
 			};
