@@ -1,12 +1,14 @@
-#ifndef IO_INTERFACE_HPP_
-#define IO_INTERFACE_HPP_
-
+//#ifndef IO_INTERFACE_HPP_
+//#define IO_INTERFACE_HPP_
+#pragma once
 #include <iostream>
 #include <memory>
-#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
-#include "ara/crypto/keys/key_slot_content_props.hpp"
-#include "ara/crypto/cryp/cryobj/crypto_object.hpp"
-#include "ara/crypto/common/crypto_object_uid.hpp"
+//#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
+#include "crypto_object_uid.hpp"
+#include "base_id_types.hpp"
+//#include "../keys/key_slot_content_props.hpp"
+//#include "../cryp/cryobj/crypto_object.hpp"
+
 
 namespace ara
 {
@@ -16,7 +18,6 @@ namespace ara
 			class IOInterface
 			{
 				public:
-
 
 				using Uptr = std::unique_ptr<IOInterface>;
 
@@ -44,9 +45,8 @@ namespace ara
 
 
 			};
-
 	}
 }
 
 
-#endif /* IO_INTERFACE_HPP_ */
+//#endif /* IO_INTERFACE_HPP_ */
