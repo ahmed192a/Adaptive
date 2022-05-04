@@ -1,14 +1,14 @@
-#ifndef CRYPTO_OBJ_H_
-#define CRYPTO_OBJ_H_
+#pragma once
 #include <memory>
 #include <iostream>
-#include "ara/crypto/cryp/cryobj/crypto_object.hpp"
+#include "crypto_object.hpp"
 namespace ara
 {
     namespace crypto
     {
         namespace cryp
         {
+            
             /**
              * SWS_CRYPT_20500
             * @file crypto_obj.hpp
@@ -17,14 +17,8 @@ namespace ara
             class cryptoobj : CryptoObject 
             {
                 public:
-                /**
-                 * SWS_CRYPT_20504
-                 * @file crypto_obj.hpp
-                 * @brief Unique identifier of this CryptoObject
-                 * 
-                 */
                
-                cryptoobj::COIdentifier CO_ID;
+             
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
@@ -49,7 +43,6 @@ namespace ara
             **/ 
               
             
-            
             template <class ConcreteObject> static ara::core::Result<typename ConcreteObject::Uptrc> Downcast(CryptoObject::Uptrc &&object) noexcept;
                 
             /**
@@ -58,7 +51,7 @@ namespace ara
              * @brief Return the CryptoPrimitivId of this CryptoObject. 
             **/
             
-             CryptoPrId::Uptr GetCryptoPrimitiveId () const noexcept;
+             CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept;
             
             /**
              * SWS_CRYPT_20514
@@ -104,7 +97,7 @@ namespace ara
              * @brief Save itself to provided IOInterface A CryptoObject with property "session" cannot be saved in a KeySlot.
             **/
             
-            ara::core::Result<void> Save (IOInterface &container) const noexcept;
+            ara::core::Result<void> Save (ara::crypto::IOInterface& container) const noexcept;
             
             /**
              * SWS_CRYPT_30208
@@ -127,6 +120,3 @@ namespace ara
         }
     }
 }
-
-
-#endif
