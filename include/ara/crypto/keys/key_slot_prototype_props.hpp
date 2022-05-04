@@ -64,7 +64,7 @@ namespace ara
 		    CryptoObjectType mObjectType;
 		    
 
-		};
+		}KeySlotProps;
 		
 		using Uptr = std::unique_ptr<KeySlotPrototypeProps>;
 		
