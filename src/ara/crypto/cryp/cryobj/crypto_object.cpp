@@ -6,11 +6,11 @@ namespace ara
     {
         namespace cryp
         {
-
+            class ConcreteCryptoProvider;
+            class CryptoContext;
             /**template <class ConcreteObject> static ara::core::Result<typename ConcreteObject::Uptrc> cryptoobj:: Downcast(CryptoObject::Uptrc &&object) noexcept
             {
                 ara::core::Result<typename ConcreteObject::Uptrc> & op =  && object ;
-
                 return op;
             }**/
             CryptoPrId::Uptr cryptoobj:: GetCryptoPrimitiveId () const noexcept
@@ -23,7 +23,7 @@ namespace ara
             }
             std::size_t CryptoObject:: GetPayloadSize () const noexcept
             {
-                CryptoProvider *CRY_PR;
+                ConcreteCryptoProvider *CRY_PR;
                 CryptoContext *CRY_CO;
                 CryptoPrimitiveId *CRY_ID;
                 CryptoPrimitiveId::AlgId PR_ID = CRY_ID->GetPrimitiveId();
