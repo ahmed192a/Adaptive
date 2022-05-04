@@ -1,6 +1,4 @@
-#ifndef ARA_CRYPTO_CRYP_SIGN_H_
-#define ARA_CRYPTO_CRYP_SIGN_H_
-
+#pragma once
 #include <iostream>
 #include <memory>
 #include <ara/crypto/cryp/cryobj/crypto_object.hpp>
@@ -59,4 +57,3 @@ namespace ara
         }
     }
 }
-#endif
