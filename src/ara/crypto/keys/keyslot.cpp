@@ -5,6 +5,11 @@ namespace ara
 {
     namespace crypto
     {
+        
+        bool keys::IsEmpty() noexcept 
+        {
+        }
+        
         /*Save the content of a provided source IOInterface to this key - slot*/
         void keys::SaveCopy(const IOInterface& container) noexcept
         { 
