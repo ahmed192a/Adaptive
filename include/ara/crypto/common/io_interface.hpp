@@ -40,8 +40,11 @@ namespace ara
 				virtual bool IsObjectSession () const noexcept=0;
 
 				virtual bool IsVolatile () const noexcept=0;
+				
+				std::uint32_t KeySlotType;
 
 				virtual ~IOInterface () noexcept=default;
+				
 
 
 			};
