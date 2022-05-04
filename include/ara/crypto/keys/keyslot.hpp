@@ -50,7 +50,7 @@ namespace ara
         public:
             IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) const noexcept;
 
-            void SaveCopy(const IOInterface& container) noexcept;
+            void SaveCopy(const IOInterface &container) noexcept;
         };
     }
 }
