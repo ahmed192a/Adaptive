@@ -1,18 +1,15 @@
-#ifndef CRYPTO_OBJECT_H_
-#define CRYPTO_OBJECT_H_
+#pragma once
 #include <memory>
 #include <iostream>
-#include "ara/crypto/common/io_interface.hpp"
-#include "ara/core/result.hpp"
-#include "ara/crypto/cryp/cryobj/crypto_pr_id.hpp"
-#include "ara/crypto/common/base_id_types.hpp"
-#include "ara/crypto/cryp/crypto_context.hpp"
-#include "ara/crypto/cryp/crypto_provider.hpp"
+#include "../../../core/result.hpp"
+#include "crypto_pr_id.hpp"
+#include "../../common/crypto_object_uid.hpp"
 
 namespace ara
 {
     namespace crypto
     {
+        class IOInterface;
         namespace cryp
         {
             /**
@@ -29,6 +26,8 @@ namespace ara
                  */
                 std::size_t H_Req_Size ;
                 CryptoPrimitiveId::AlgId H_SingID;
+
+               
                 /**
                  * @brief required attributes to restricted class
                  * 
@@ -47,7 +46,7 @@ namespace ara
                     CryptoObjectUid mCouid;
                 };
                 
-                CryptoObject::COIdentifier CO_ID;
+                COIdentifier CO_ID;
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
@@ -88,7 +87,7 @@ namespace ara
              * @brief Return the CryptoPrimitivId of this CryptoObject. 
             **/
             
-            virtual CryptoPrId::Uptr GetCryptoPrimitiveId () const noexcept=0;
+            virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
             
             /**
              * SWS_CRYPT_20514
@@ -134,7 +133,7 @@ namespace ara
              * @brief Save itself to provided IOInterface A CryptoObject with property "session" cannot be saved in a KeySlot.
             **/
             
-            virtual ara::core::Result<void> Save (IOInterface &container) const noexcept=0;
+            virtual ara::core::Result<void> Save (ara::crypto::IOInterface& container) const noexcept=0;
             
             /**
              * SWS_CRYPT_30208
@@ -157,6 +156,3 @@ namespace ara
         }
     }
 }
-
-
-#endif
