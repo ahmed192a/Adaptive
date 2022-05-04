@@ -1,8 +1,8 @@
-#include "../../../../include/ara/crypto/common/concrete_io_interface.hpp"
+#include "../../../include/ara/crypto/common/concrete_io_interface.hpp"
 
 using namespace ara::crypto;
 
-                ConcreteIOInterface::ConcreteIOInterface(bool Volatilevar=true ,bool sessionvar=true,AllowedUsageFlags AllowedUsagevar=0xFFFF,CryptoObjectType objectTypevar/*kSymmetricKey*/,CryptoObjectUid objectIdvar,std::size_t capacityvar=5,std::size_t payloadSizevar=0,CryptoAlgId algidvar=1,CryptoObjectType objectTypeRestictionvar)
+                ConcreteIOInterface::ConcreteIOInterface(bool Volatilevar ,bool sessionvar,AllowedUsageFlags AllowedUsagevar,CryptoObjectType objectTypevar/*kSymmetricKey*/,CryptoObjectUid objectIdvar,std::size_t capacityvar,std::size_t payloadSizevar,CryptoAlgId algidvar,CryptoObjectType objectTypeRestictionvar)
         {
             Volatile=Volatilevar;
             session=sessionvar;
@@ -14,9 +14,13 @@ using namespace ara::crypto;
             algid=algidvar;
             objectTypeRestiction=objectTypeRestictionvar;
         }
-        VolatileTrustedContainer::Uptr ConcreteIOInterface::CreateVolatileContainer(std::size_t capacity=0)
+         ConcreteIOInterface::ConcreteIOInterface()
+         {
+
+         }
+        VolatileTrustedContainer::Uptr ConcreteIOInterface::CreateVolatileContainer(std::size_t capacity)
         {
-            return std::make_unique<VolatileTrustedContainer>(capacity, this);
+            return std::make_unique<ConcreteVolatileTrustedContainer>(capacity, this);
 
         }
              AllowedUsageFlags ConcreteIOInterface::GetAllowedUsage () const noexcept
@@ -64,7 +68,10 @@ using namespace ara::crypto;
                      return this->Volatile;
                  }
 
-				 //ConcreteIOInterface::~ConcreteIOInterface () noexcept
+				 ConcreteIOInterface::~ConcreteIOInterface () noexcept
+                 {
+                     
+                 }
 
 
 
