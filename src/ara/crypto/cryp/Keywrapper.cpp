@@ -92,7 +92,7 @@ std::size_t Keywrapper::GetTargetKeyGranularity()
     return KEK_Length / 8;
 }
 
-void AES_Wrapper::Reset()
+void Keywrapper::Reset()
 {
 }
 */
@@ -150,7 +150,7 @@ vector<byte> Keywrapper::WrapKeyMaterial(const RestrictedUseObject &key)
     }
 }
 
-RestrictedUseObject::Uptrc AES_Wrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage)
+RestrictedUseObject::Uptrc Keywrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage)
 {
     int x = CalculateWrappedKeySize(key_length);
     cout << x << "\t" << wrappedKey.size() << endl;
