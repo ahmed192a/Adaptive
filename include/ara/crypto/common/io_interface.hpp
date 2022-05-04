@@ -42,6 +42,10 @@ namespace ara
 				virtual bool IsVolatile () const noexcept=0;
 				
 				KeySlotType Slot_Type;
+				std::int32_t MaxUpdateAllowed_t=0; //Change it when using//
+				bool ExportAllowed_t=1; //Change it when using//
+				bool AllowContentTypeChange_t=1;//Change it when using//
+				bool AllocateSpareSlot_t=1;//Change it when using//
 
 				virtual ~IOInterface () noexcept=default;
 				
