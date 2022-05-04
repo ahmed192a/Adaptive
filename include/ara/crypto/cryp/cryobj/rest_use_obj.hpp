@@ -1,11 +1,11 @@
-#ifndef ARA_CRYPTO_CRYP_RESTUSEOBJ_H_
-#define ARA_CRYPTO_CRYP_RESTUSEOBJ_H_
-
+//#ifndef ARA_CRYPTO_CRYP_RESTUSEOBJ_H_
+//#define ARA_CRYPTO_CRYP_RESTUSEOBJ_H_
+#pragma once
 #include <iostream>
 #include <memory>
 //#include <ara/crypto/cryp/cryobj/crypto_object.hpp>
 #include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
-#include "ara/crypto/keys/key_slot_content_props.hpp"
+//#include "ara/crypto/keys/key_slot_content_props.hpp"
 namespace ara
 {
     namespace crypto
@@ -46,4 +46,4 @@ namespace ara
         }
     }
 }
-#endif
+//#endif
