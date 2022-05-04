@@ -4,13 +4,13 @@
  * @brief  ara::crypto::crpy::HashService class implementation
  * @version R20-11
  *****************************************************************/
-
-#ifndef ARA_CRYPTO_HASH_SERVICE_H
-#define ARA_CRYPTO_HASH_SERVICE_H
+#pragma once
+//#ifndef ARA_CRYPTO_HASH_SERVICE_H
+//#define ARA_CRYPTO_HASH_SERVICE_H
 
 #include "ara/crypto/cryp/hash_function_ctx.hpp"
 #include "ara/crypto/common/base_id_types.hpp"
-
+#include <vector>
 
 namespace ara {
     namespace crypto{
@@ -61,7 +61,7 @@ namespace ara {
 
                 /// @brief Update the digest calculation context by a new part of the message. This method is dedicated for cases then the RestrictedUseObject is a part of the "message".
                 /// @param[in] in part of input message processed 
-                void Update (ReadOnlyMemRegion in) noexcept;
+                //void Update (ReadOnlyMemRegion in) noexcept;
 
 
                 /****************************** CRYPTOCONTEXT METHODS ***************************/
@@ -95,4 +95,4 @@ namespace ara {
 
 
 
-#endif // ARA_CRYPTO_HASH_SERVICE_H
+//#endif // ARA_CRYPTO_HASH_SERVICE_H
