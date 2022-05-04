@@ -34,7 +34,12 @@ namespace ara
             
             virtual cryp::CryptoProvider::Uptr MyProvider () const noexcept=0;
             
-            virtual void SaveCopy(const IOInterface& container) noexcept = 0;
+            virtual void SaveCopy(const IOInterface &container) noexcept = 0;
+            
+            virtual KeySlotPrototypeProps  GetPrototypedProps() const noexcept = 0;
+            
+            virtual bool IsEmpty() const noexcept = 0;
+            
 
             ~KeySlot () noexcept=default;
 
