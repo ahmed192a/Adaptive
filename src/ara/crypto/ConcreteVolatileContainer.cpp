@@ -5,13 +5,13 @@
 
 using namespace ara::crypto;
 
-    ConcreteVolatileTrustedContainer::ConcreteVolatileTrustedContainer(std::size_t capacity,IOInterface& instance)
+    ConcreteVolatileTrustedContainer::ConcreteVolatileTrustedContainer(std::size_t capacity,ConcreteIOInterface* instance)
     {
         ConcreteVolatileTrustedContainer::myinterface=instance;
        buffer.resize(capacity+5);        
     }
 
-    IOInterface& ConcreteVolatileTrustedContainer::GetIOInterface () const noexcept
+    ConcreteIOInterface& ConcreteVolatileTrustedContainer::GetIOInterface () const noexcept
     {
-        return ConcreteVolatileTrustedContainer::myinterface;
+        return *ConcreteVolatileTrustedContainer::myinterface;
     }
