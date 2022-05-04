@@ -9,10 +9,11 @@ namespace ara
     {
         namespace cryp
         {
-//class RestrictedUseObject;
-class SymmetricKey : public RestUseObj {
-public:
-using Uptrc = std::unique_ptr<const SymmetricKey>;
+            //class RestrictedUseObject;
+            class SymmetricKey : public RestUseObj {
+                
+                public:
+                using Uptrc = std::unique_ptr<const SymmetricKey>;
 
                 //SWS_CRYPT_23002
                 /**
@@ -20,10 +21,10 @@ using Uptrc = std::unique_ptr<const SymmetricKey>;
                  * 
                  */
                 using Uptr = std::unique_ptr<SymmetricKey>;
-static const CryptoObjectType kObjectType = CryptoObjectType::kSymmetricKey;
-uint32_t Seed;
-std::vector<uint8_t> keyVal;
-using Usage = AllowedUsageFlags;
+                static const CryptoObjectType kObjectType = CryptoObjectType::kSymmetricKey;
+                uint32_t Seed;
+                std::vector<uint8_t> keyVal;
+                using Usage = AllowedUsageFlags;
                 Usage allowed;
                 bool Volatile;
                 bool session;
@@ -36,7 +37,7 @@ using Usage = AllowedUsageFlags;
 
                 } 
                 ~SymmetricKey() noexcept;
-};
+            };
         }
     }
 }

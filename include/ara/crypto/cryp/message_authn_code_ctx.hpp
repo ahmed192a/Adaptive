@@ -15,18 +15,12 @@
 //#include "cryobj/restricted_use_object.hpp"
 #include "cryobj/signature.hpp"
 #include "random_generator_ctx.hpp"
+#include "ara/crypto/cryp/cryobj/symmetric_key.hpp"
 // #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 
 namespace ara {
     namespace crypto {
         namespace cryp {
-
-            ///////////////////////////////////////////////////////
-            // dummy definitions that will be removed later
-            ///////////////////////////////////////////////////////
-            
-            
-            ///////////////////////////////////////////////////////////
 
             enum class MessageAuthnCodeCtx_Status : std::uint8_t {
                 notInitialized = 0,

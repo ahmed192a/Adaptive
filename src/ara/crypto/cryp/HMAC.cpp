@@ -48,17 +48,18 @@ void HMAC::Reset() noexcept {
 
 
 
-// void HMAC::SetKey(const   &key, CryptoTransform transform = CryptoTransform::kMacGenerate) {
+void HMAC::SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept {
         
-//     if(transform == CryptoTransform::kMacGenerate){
-//         // operations to check whether the key is valid or not
-//         this->key = key;
-//         status = MessageAuthnCodeCtx_Status::initialized;
-//     }
-//     else {
-//         // do nothing
-//     }
-// }
+    status = MessageAuthnCodeCtx_Status::initialized;
+    input_key.resize(0); // re initializing the key
+
+    if( key.keyVal.size() > B)
+      hash_sha256(key.keyVal, input_key);
+    else
+      input_key = key.keyVal;
+
+    input_key.resize(B);
+}
 
 
 
