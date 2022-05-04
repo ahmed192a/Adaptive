@@ -1,6 +1,6 @@
-#ifndef ARA_CRYPTO_CRYP_SECSEED_H_
-#define ARA_CRYPTO_CRYP_SECSEED_H_
-
+//#ifndef ARA_CRYPTO_CRYP_SECSEED_H_
+//#define ARA_CRYPTO_CRYP_SECSEED_H_
+#pragma once
 #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 
 namespace ara
@@ -12,21 +12,36 @@ namespace ara
             class SecSeed : public SecretSeed
             {
                 public :
-                 
-                 //SWS_CRYPT_23001
+                using Usage = AllowedUsageFlags;
+                Usage allowed;
+                bool Volatile;
+                bool session;
+                bool exportable;
+                 uint32_t Seed;
+                std::vector<uint8_t> Seed_val;
+                SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar)
+                {
+                    allowed=allowedVal;
+                    session=sessionVar;
+                    exportable=exportableVar;
+
+                } 
+                //SWS_CRYPT_23001
                 /**
                  * @brief Unique smart pointer of a constant interface instance.
                  * 
                  */
-                using Uptrc = std::unique_ptr<const SecretSeed>;
+                ~SecSeed() noexcept;
+                using Uptrc = std::unique_ptr<const SecSeed>;
 
                 //SWS_CRYPT_23002
                 /**
                  * @brief Unique smart pointer of a volatile interface instance.
                  * 
                  */
-                using Uptr = std::unique_ptr<SecretSeed>;
-
+                using Uptr = std::unique_ptr<SecSeed>;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+                
                 //SWS_CRYPT_23003
                 /**
                  * @brief Static mapping of this interface to specific value of CryptoObjectType enumeration.
@@ -45,7 +60,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<SecretSeed::Uptr> 
                  */
-                 ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const;
+                 ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const noexcept;
 
                 //SWS_CRYPT_23012
                 /**
@@ -57,7 +72,7 @@ namespace ara
                  * @param steps 
                  * @return ara::core::Result<void> 
                  */
-                ara::core::Result<void> JumpFrom (const SecretSeed &from,std::int64_t steps);
+                ara::core::Result<void> JumpFrom (const SecretSeed &from,std::int64_t steps) noexcept;
 
                 //SWS_CRYPT_23014
                 /**
@@ -69,7 +84,7 @@ namespace ara
                  * @param steps 
                  * @return SecretSeed& 
                  */
-                SecretSeed& Jump (std::int64_t steps);
+                SecretSeed& Jump (std::int64_t steps) noexcept;
 
 
                 //SWS_CRYPT_23013
@@ -78,7 +93,7 @@ namespace ara
                  * 
                  * @return SecretSeed& 
                  */
-                SecretSeed& Next ();
+                SecretSeed& Next () noexcept;
 
                 //SWS_CRYPT_23015
                 /**
@@ -89,7 +104,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                SecretSeed& operator^= (const SecretSeed &source);
+                SecretSeed& operator^= (const SecretSeed &source) noexcept;
                 
                 //SWS_CRYPT_23016
                 /**
@@ -100,9 +115,9 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                SecretSeed& operator^= (ReadOnlyMemRegion source);
+                SecretSeed& operator^= (ReadOnlyMemRegion source) noexcept;
             };
         }
     }
 }
-#endif
+//#endif
