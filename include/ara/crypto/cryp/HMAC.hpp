@@ -1,8 +1,8 @@
-#ifndef ARA_CRYPTO_HMAC_H
-#define ARA_CRYPTO_HMAC_H
-
+//#ifndef ARA_CRYPTO_HMAC_H
+//#define ARA_CRYPTO_HMAC_H
+#pragma once
 #include "message_authn_code_ctx.hpp"
-#include "ara/crypto/cryp/sha256.hpp" // temporariy till hash implementation is finished
+#include "sha256.hpp" // temporariy till hash implementation is finished
 
 
 namespace ara {
@@ -25,7 +25,7 @@ namespace ara {
                 std::vector<byte> digest; // The resulting digest
                 std::vector<byte> inputBuffer; // the input buttered
 
-                SymmetricKey key;
+                //SymmetricKey& key;
 
                 CryptoProvider * myProvider;
 
@@ -43,7 +43,7 @@ namespace ara {
                 /// @brief destructor
                 ~HMAC() noexcept = default;
                 
-                bool IsInitialized() const noexcept;
+                bool IsInitialized();
 
 				/*Return CryptoPrimitivId instance containing instance identification */
 				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
@@ -82,4 +82,4 @@ namespace ara {
     } // namespace crypto
 } // namespace ara
 
-#endif // ARA_CRYPTO_HMAC_H
+//#endif // ARA_CRYPTO_HMAC_H

@@ -1,19 +1,20 @@
+#pragma once
 #include <iostream>
 
-#ifndef ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
-#define ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+//#ifndef ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+//#define ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
 
 #include <memory>
 #include <vector>
-#include <boost/variant.hpp>
+//#include <boost/variant.hpp>
 
-#include "ara/crypto/common/mem_region.hpp"
-#include "ara/crypto/common/base_id_types.hpp"
-#include "ara/crypto/cryp/crypto_context.hpp"
-#include "ara/crypto/cryp/HMAC_digest_service.hpp"
-#include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
-#include "ara/crypto/cryp/cryobj/signature.hpp"
-#include "ara/crypto/cryp/random_generator_ctx.hpp"
+#include "../common/mem_region.hpp"
+#include "../common/base_id_types.hpp"
+#include "crypto_context.hpp"
+#include "HMAC_digest_service.hpp"
+//#include "cryobj/restricted_use_object.hpp"
+#include "cryobj/signature.hpp"
+#include "random_generator_ctx.hpp"
 // #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 
 namespace ara {
@@ -23,8 +24,8 @@ namespace ara {
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
             ///////////////////////////////////////////////////////
-            class SymmetricKey {};
-            class ReadOnlyMemRegion{};
+            
+            
             ///////////////////////////////////////////////////////////
 
             enum class MessageAuthnCodeCtx_Status : std::uint8_t {
@@ -50,14 +51,14 @@ namespace ara {
 
                 virtual void Reset() noexcept = 0;
                 virtual void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;
-                //virtual bool Check(const Signature &expected) const noexcept = 0;
+                virtual bool Check(const Signature &expected) const noexcept = 0;
 
 
                 virtual void Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept = 0;
-                //virtual void Start(const SecretSeed &iv) noexcept = 0;
+                virtual void Start(const SecretSeed &iv) noexcept = 0;
 
-                //virtual void Update(const RestrictedUseObject &in) noexcept = 0;
-                //virtual void Update(ReadOnlyMemRegion in) noexcept = 0;
+                virtual void Update(const RestrictedUseObject &in) noexcept = 0;
+                virtual void Update(ReadOnlyMemRegion in) noexcept = 0;
                 virtual void Update(std::uint8_t in) noexcept = 0;
 
                 virtual Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept = 0;
@@ -77,4 +78,4 @@ namespace ara {
     } // namespace crypto
 } // namespace ara
 
-#endif // ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H
+//#endif // ARA_CRYPTO_MESSAGE_AUTHN_CODE_CTX_H

@@ -5,17 +5,20 @@
 using namespace ara::crypto::cryp;
 
 
-HMAC::HMAC(CryptoProvider * provider) {
+HMAC::HMAC(CryptoProvider * provider)//‘ara::crypto::cryp::SymmetricKey& ara::crypto::cryp::HMAC::key’ should be initialized
+ {
     // intializing the key
     input_key.resize(B);
     std::fill(input_key.begin(), input_key.end(), 0);
 
     this->myProvider = provider;
+    //key member need to be initialized
+    //key.allowedusage=0;
 }
 
 
 /** Inherited from CryptoContext class**/
-bool HMAC::IsInitialized() const noexcept{
+bool HMAC::IsInitialized() {
     if(status == MessageAuthnCodeCtx_Status::notInitialized)
         return false;
     else
@@ -36,7 +39,7 @@ CryptoProvider& HMAC::MyProvider() const noexcept {
 
 
 /** Inherited from MessageAuthnCode class**/
-void HMAC::Reset() {
+void HMAC::Reset() noexcept {
     status = MessageAuthnCodeCtx_Status::notInitialized;
     signature_ptr = nullptr;
     digest.clear(); // shrink the vector size back as we started
@@ -59,14 +62,14 @@ void HMAC::Reset() {
 
 
 
-void HMAC::Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) {
+void HMAC::Start(ReadOnlyMemRegion iv) noexcept {
     
     Reset(); // resetting the context;
     status = MessageAuthnCodeCtx_Status::started; // change to the new state
 }
 
 
-void HMAC::Update(std::uint8_t in) {
+void HMAC::Update(std::uint8_t in) noexcept {
     inputBuffer.push_back(in);
     status = MessageAuthnCodeCtx_Status::updated;
 }
@@ -79,12 +82,12 @@ void HMAC::Update(std::uint8_t in) {
 
 
 
-std::vector<ara::crypto::byte> HMAC::GetDigest(std::size_t offset = 0) const noexcept {
+std::vector<ara::crypto::byte> HMAC::GetDigest(std::size_t offset ) const noexcept {
     return {digest.begin() + offset, digest.end()};
 }
 
 
-Signature::Uptrc HMAC::Finish(bool makeSignatureObject = false) {
+Signature::Uptrc HMAC::Finish(bool makeSignatureObject) noexcept {
 
   status = MessageAuthnCodeCtx_Status::finished; // changing the status
 
@@ -92,10 +95,8 @@ Signature::Uptrc HMAC::Finish(bool makeSignatureObject = false) {
   hmac_digestion(inputBuffer, digest);
 
 
-  if(makeSignatureObject)
-      return nullptr;
-  else
-      return std::make_unique<Signature>();
+        return nullptr;
+    //  return std::make_unique<Sign>();
 
 }
 
