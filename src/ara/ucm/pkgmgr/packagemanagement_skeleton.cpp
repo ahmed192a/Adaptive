@@ -105,97 +105,126 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
     std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> f = std::async([&, id]()
                                                                                             {
         ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput result;
+        bool found = false;
         uart_linux u_linux;
+        current_state = trigger_seq;
+        uint16_t packet_num;
+        uint16_t extra_bytes;
+        int block_counter = 0;
+        packet_num = (uint32_t)(TransferInfoData.size /0x400) ;
+        extra_bytes = (TransferInfoData.size % 0x400);
+
+        std::cout<<"buffer size " << buffer.size()<< std::endl;
+        std::cout<<"buffer size " << TransferInfoData.size<< std::endl;
+        std::cout<<"extra_bytes "<<packet_num<<std::endl;
+        std::cout<<"extra_bytes "<< extra_bytes<<std::endl;
+        
 
               //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
     while (1) /* stay in this loop until the update is finished or canceled */
     {
-        uint16_t packet_num;
-        uint16_t extra_bytes;
+        if(found == true)
+        {
+            std::cout<<"found"<<std::endl;
+            std::cout<<"current_state ";
+            printf("%x\n", current_state);
+            found = false;
+        }
         switch (current_state)
         {
-        case trigger_seq:
-        {
-            std::vector<uint8_t> start ;
-            start.push_back('start');
-            int st = 4;
-            u_linux.UART_sendBlock(start.data(),st);
-            current_state = RECEIVE_REQUEST_FREAME_INFO;
-            break;
-        }
-        case RECEIVE_REQUEST_FREAME_INFO:
-            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-            current_state = SEND_FRAME_INFO;	
-            break;
-        case SEND_FRAME_INFO:
-        {
-            int FRAME_SIZE = 4;
-            int Frame [4];
-            packet_num = TransferInfoData.localBlockCounter + 1;
-            extra_bytes = (TransferInfoData.size % TransferInfoData.BlockSize);
-            uint8_t * ex = (uint8_t *)&(extra_bytes);
-            uint8_t * f = (uint8_t *)&(packet_num);
-            Frame[0] = *f;
-            Frame[1] = *(f+1);
-            Frame[2] = *ex;
-            Frame[3] = *(ex+1);
-            u_linux.UART_sendBlock(Frame, FRAME_SIZE);
-            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-           break;	
-        }
-        case READY_TO_SEND_UPDATE:
-           u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-           current_state = SEND_PACKET;	
-           break;
-        case SEND_PACKET:
-        {
-            int block_counter = 0;
-            std::vector<uint8_t> small_data;
-                for(int j=0; j<TransferInfoData.BlockSize; j++)
+            case trigger_seq:
+            {
+                std::vector<uint8_t> start ;
+                start.push_back('s');
+                int st = start.size();
+                u_linux.UART_sendBlock(start.data(),st);
+                // std::cout<<"trigger seq\n";
+                // current_state = 1;
+                // sleep(3);
+                // std::cout<<"Finish delay 3s\n";
+                u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
+                std::cout<<"receive seq\n";
+                printf("COMAAND : %x\n", current_state);
+                if(current_state == 1) current_state = trigger_seq;
+                break;
+            }
+            case 2:
+            {
+                u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
+                printf("COMAAND : %x\n", current_state);
+                if(current_state == 0x7777) found = true;
+                break;
+            }
+            case RECEIVE_REQUEST_FREAME_INFO:
+            {
+                int FRAME_SIZE = 4;
+                int Frame [4];
+
+                uint8_t * ex = (uint8_t *)&(extra_bytes);
+                uint8_t * f = (uint8_t *)&(packet_num);
+                cout<<"1 "<<(uint16_t) *f<< " "<<(uint16_t) *(f+1)<<endl;
+                Frame[0] = *f;
+                Frame[1] = *(f+1);
+                Frame[2] = *ex;
+                Frame[3] = *(ex+1);
+                
+                u_linux.UART_sendBlock(Frame, FRAME_SIZE);
+                std::cout<<"SEND_FRAME_INFO  \n";
+                current_state = 2;
+                // u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
+            break;	
+            }
+            case SEND_NEW_PACKET:
+            {
+                
+                std::vector<uint8_t> small_data;
+                for(int j=0; j<0x400; j++)
                 {
-                    if(block_counter*TransferInfoData.BlockSize + j >= buffer.size()){
-                        // small_data.resize(TransferInfoData.BlockSize);
-                       break;
-                    }
-                    else
-                        small_data.push_back(buffer[block_counter*TransferInfoData.BlockSize + j]);
+                    // if(block_counter*TransferInfoData.BlockSize + j >= buffer.size()){
+                    //     // small_data.resize(TransferInfoData.BlockSize);
+                    //    break;
+                    // }
+                    // else
+                    if((block_counter*0x400)+ j < buffer.size()){
+                        small_data.push_back(buffer[block_counter*0x400 + j]);
+                    }else
+                        break;
                 }
-                block_counter++;
-                small_data.clear();
-            if(packet_num > 0)
-            {
-                u_linux.UART_sendBlock(small_data.data(), TransferInfoData.BlockSize);
+                if(small_data.size() == 0x400)
+                {
+                    u_linux.UART_sendBlock(small_data.data(), small_data.size());
+                }else{
+                    u_linux.UART_sendBlock(small_data.data(), small_data.size());
+                }
+
+                
+                std::cout<<"SEND Packet : "<< block_counter <<std::endl;
                 packet_num -=1;
-                current_state = SEND_NEW_PACKET;
+                block_counter++;
+
+                small_data.clear();
+                current_state = 2;
+                std::cout<<"SEND Packet CMD : "<< current_state<<std::endl;
+                break;
             }
-            else
+            case END_OF_UPDATE:
             {
-                u_linux.UART_sendBlock(small_data.data(), extra_bytes);
-                current_state = END_OF_UPDATE;
+                current_state = Activate_s;
+                u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
+                break;
+            }
+            case Activate_s:
+            {
+            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
+            break;
+            }
+            default:
+            {
+                current_state = trigger_seq; 			/* Initialize the current state */
+                break;
             }
         }
-        case SEND_NEW_PACKET:
-            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-            current_state = SEND_PACKET;	
-            break;
-        
-        case END_OF_UPDATE:
-             // send activiate
-             u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-             current_state = Activate_s;
-             u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
-             break;
-        case CHECK_CANCEL_UPDATE:
-        break;
-        case CANCEL_UPDATE_REQUEST:
-           break;
-        case Activate_s:
-           u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-           break;
-        default:
-			current_state = trigger_seq; 			/* Initialize the current state */
-			break;
-        }
+        if(current_state == UPDATE_SUCCESS) break;
     }
         
 
@@ -272,8 +301,13 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> f = std::async([&, id]()
                                                                                         {
         ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
-        std::string str(std::begin(id), std::end(id));
-         str = "ucm_server/" + str + ".txt";
+        std::string str;
+        //convert std::array<uint8_t, 16> to string
+        for(int i =0 ; i<16;i++){
+            str += " ";
+            snprintf(&str[i], 4, "%d", id[i]);
+        }   
+         str = "ucm_server/" + str + ".out";
         SaveBlock(str.data() , this->buffer); 
         return result; });
 

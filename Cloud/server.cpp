@@ -6,7 +6,7 @@
 #include <vector>
 
 #define PORT 8888
-#define PACKAGE_FILE "package.zip"
+#define PACKAGE_FILE "flash_tiva.out"
 #define METADATA_FILE "metadata.dat"
 #define BUFFER_SIZE 100000
 

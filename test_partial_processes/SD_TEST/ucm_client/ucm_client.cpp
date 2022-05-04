@@ -116,7 +116,7 @@ void *pthread0(void *v_var)
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */
 
     std::cout << "\t\t\t[CLIENT] Result of TransferStart : ";
-    std::vector<char> Temp_data = ReadAllBytes("../../../myfile.zip");
+    std::vector<char> Temp_data = ReadAllBytes("../../../a.out");
     std::vector<uint8_t> small_data;
 
     result = server_proxy_ptr->TransferStart(Temp_data.size());
