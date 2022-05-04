@@ -19,6 +19,8 @@ namespace ara
             class RestrictedUseObject : public CryptoObject 
             {
                 public:
+                
+                vector <byte> Key;
                 //
                 /**
                  * @brief Alias to the container type for bit-flags of allowed usages of the object
