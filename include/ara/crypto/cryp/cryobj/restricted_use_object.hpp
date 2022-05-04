@@ -1,9 +1,10 @@
-#ifndef ARA_CRYPTO_CRYP_RESTRICTEDUSEOBJECT_H_
-#define ARA_CRYPTO_CRYP_RESTRICTEDUSEOBJECT_H_
-
+//#ifndef ARA_CRYPTO_CRYP_RESTRICTEDUSEOBJECT_H_
+////#define ARA_CRYPTO_CRYP_RESTRICTEDUSEOBJECT_H_
 #include <iostream>
 #include <memory>
-#include <ara/crypto/cryp/cryobj/crypto_object.hpp>
+#include "crypto_obj.hpp"
+#pragma once
+
 
 namespace ara
 {
@@ -16,11 +17,9 @@ namespace ara
              * @brief A common interface for all objects supporting the usage restriction.
              * @file restricted_use_object
              */
-            class RestrictedUseObject : public CryptoObject 
+            class RestrictedUseObject : public cryptoobj
             {
                 public:
-                
-                vector <byte> Key;
                 //
                 /**
                  * @brief Alias to the container type for bit-flags of allowed usages of the object
@@ -45,4 +44,4 @@ namespace ara
         }
     }
 }
-#endif
+//#endif
