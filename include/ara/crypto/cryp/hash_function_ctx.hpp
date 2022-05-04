@@ -4,17 +4,16 @@
  * @brief  ara::crypto::cryp::HashFunctionCtx class interface
  * @version R20-11
  *****************************************************************/
-
-#ifndef ARA_CRYPTO_HASH_FUNCTION_CTX_H
-#define ARA_CRYPTO_HASH_FUNCTION_CTX_H
-#include "ara/crypto/cryp/crypto_context.hpp"
-#include "ara/crypto/common/base_id_types.hpp"
+#pragma once
+//#ifndef ARA_CRYPTO_HASH_FUNCTION_CTX_H
+//#define ARA_CRYPTO_HASH_FUNCTION_CTX_H
+#include "crypto_context.hpp"
+#include "../common/base_id_types.hpp"
 
 
 namespace ara {
     namespace crypto{
         namespace cryp{
-
             class HashFunctionCtx : public CryptoContext {
                 public:
 
@@ -47,7 +46,7 @@ namespace ara {
 
                     /// @brief Update the digest calculation context by a new part of the message. This method is dedicated for cases then the RestrictedUseObject is a part of the "message".
                     /// @param[in] in part of input message processed 
-                    virtual void Update (ReadOnlyMemRegion in) noexcept=0;
+                   // virtual void Update (ReadOnlyMemRegion in) noexcept=0;
 
 
             };
@@ -59,4 +58,4 @@ namespace ara {
 
 
 
-#endif // ARA_CRYPTO_HASH_FUNCTION_CTX_H
+//#endif // ARA_CRYPTO_HASH_FUNCTION_CTX_H
