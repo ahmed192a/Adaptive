@@ -1,15 +1,18 @@
-#ifndef ARA_CRYPTO_CONCRETE_IO_INTERFACE_HPP_
-#define ARA_CRYPTO_CONCRETE_IO_INTERFACE_HPP_
-#include "io_interface.hpp"
-#include "../cryp/concrete_crypto_provider.hpp"
+//#ifndef ARA_CRYPTO_CONCRETE_IO_INTERFACE_HPP_
+//#define ARA_CRYPTO_CONCRETE_IO_INTERFACE_HPP_
+#pragma once
+
+#include "concrete_volatile_container.hpp"
+//#include "../cryp/concrete_crypto_provider.hpp"
 
 namespace ara
 {
     namespace crypto
 	{
+        class cryp::ConcreteCryptoProvider;
         class ConcreteIOInterface : public IOInterface
 		{
-            friend class ara::crypto::cryp::ConcreteCryptoProvider
+            friend class cryp::ConcreteCryptoProvider;
         bool Volatile;
         bool session;
         AllowedUsageFlags AllowedUsage;
@@ -17,45 +20,41 @@ namespace ara
         CryptoObjectUid objectId;
         std::size_t capacity;
         std::size_t payloadSize;
+        ara::crypto::CryptoAlgId algid;
+        ara::crypto::CryptoObjectType objectTypeRestiction;
+        std::vector<uint8_t> payload;
 
-        ConcreteIOInterface(bool Volatilevar ,bool sessionvar,AllowedUsageFlags AllowedUsagevar,CryptoObjectType objectTypevar,CryptoObjectUid objectIdvar,std::size_t capacityvar,std::size_t payloadSizevar)
-        {
-            Volatile=Volatilevar;
-            session=sessionvar;
-            AllowedUsage=AllowedUsagevar;
-            objectType=objectTypevar;
-            objectId=objectIdvar;
-            capacity=capacityvar;
-            payloadSize=payloadSizevar;
-        }
-        VolatileTrustedContainer::Uptr CreateVolatileContainer(std::size_t capacity=0);
+        ara::crypto::VolatileTrustedContainer::Uptr CreateVolatileContainer(std::size_t capacity);
       
 		public:
-             AllowedUsageFlags GetAllowedUsage () const noexcept=0;
+        using Uptr = std::unique_ptr<ConcreteIOInterface>;       
+        ConcreteIOInterface(bool, bool, ara::crypto::AllowedUsageFlags, ara::crypto::CryptoObjectType, ara::crypto::CryptoObjectUid, std::size_t, std::size_t, ara::crypto::CryptoAlgId, ara::crypto::CryptoObjectType);
+        ConcreteIOInterface();
+             AllowedUsageFlags GetAllowedUsage () const noexcept;
 
-				 std::size_t GetCapacity () const noexcept=0;
+				 std::size_t GetCapacity () const noexcept;
 
-				 CryptoObjectType GetCryptoObjectType () const noexcept=0;
+				 CryptoObjectType GetCryptoObjectType () const noexcept;
 
-				 CryptoObjectUid GetObjectId () const noexcept=0;
+				 CryptoObjectUid GetObjectId () const noexcept;
 
-				 std::size_t GetPayloadSize () const noexcept=0;
+				 std::size_t GetPayloadSize () const noexcept;
 
-				 CryptoAlgId GetPrimitiveId () const noexcept=0;
+				 CryptoAlgId GetPrimitiveId () const noexcept;
 
-				 CryptoObjectType GetTypeRestriction () const noexcept=0;
+				 CryptoObjectType GetTypeRestriction () const noexcept;
 
-				 bool IsObjectSession () const noexcept=0;
+				 bool IsObjectSession () const noexcept;
 
-				 bool IsVolatile () const noexcept=0;
+				 bool IsVolatile () const noexcept;
 
-				 ~ConcreteIOInterface () noexcept=default;
+				 ~ConcreteIOInterface () noexcept;
 
 
-        }
+        };
     }
 }
 
 
 
-#endif
+//#endif
