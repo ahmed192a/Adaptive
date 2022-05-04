@@ -1,10 +1,10 @@
-#ifndef ARA_CRYPTO_CRYP_SECRETKEY_H_
-#define ARA_CRYPTO_CRYP_SECRETKEY_H_
-
-#include <ara/crypto/cryp/cryobj/restricted_use_object.hpp>
-#include <ara/core/result.hpp>
-#include <ara/crypto/common/mem_region.hpp>
-#include "ara/crypto/cryp/cryobj/crypto_obj.hpp"
+//#ifndef ARA_CRYPTO_CRYP_SECRETKEY_H_
+//#define ARA_CRYPTO_CRYP_SECRETKEY_H_
+#pragma once
+#include "rest_use_obj.hpp"
+#include "../../../core/result.hpp"
+#include "../../common/mem_region.hpp"
+//#include "crypto_obj.hpp"
 
 namespace ara
 {
@@ -12,11 +12,13 @@ namespace ara
     {
         namespace cryp
         {
-            class SecretSeed : public RestrictedUseObject
+            class SecretSeed : public RestUseObj
             {
                 public:
                 std::int64_t seed_len;
-                std::int64_t seed_val;
+                //std::int64_t seed_val;
+               
+
                 //SWS_CRYPT_23001
                 /**
                  * @brief Unique smart pointer of a constant interface instance.
@@ -49,7 +51,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<SecretSeed::Uptr> 
                  */
-                virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const noexcept=0;
+                virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion xorDelta) const noexcept=0;
 
                 //SWS_CRYPT_23012
                 /**
@@ -112,4 +114,4 @@ namespace ara
     }
 }
 
-#endif
+//#endif
