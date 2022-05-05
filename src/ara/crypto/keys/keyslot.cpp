@@ -18,9 +18,11 @@ namespace ara
                 return false;
         }
             
-                 /*Save the content of a provided source IOInterface to this key - slot*/
+        /*Save the content of a provided source IOInterface to this key - slot*/
         void keys::SaveCopy(const IOInterface& container) noexcept
         { 
+            if(!(IOInterface_State_Empty))//if the source IOInterface isn't empty//
+                {
             //Key Slot Content Properties Struct variables //
            KSCP.mAlgId = container.GetPrimitiveId();
            KSCP.mObjectType = container.GetCryptoObjectType();
@@ -41,12 +43,13 @@ namespace ara
            this->state = SlotState::committed;
            Empty_State=false;
       
-
+               }
         
         }
         //Open this key slot and return an IOInterface to its content//
         IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false)
         {
+
            //instance of IOInterface//
             IOInterface::Uptr IOContent = std::make_unique<IOInterface>;
             //Key Slot Content Properties Struct variables //
@@ -68,7 +71,7 @@ namespace ara
             //change state of key slot to opened //
             this->state = SlotState::opened;
             return IOContent;
-        
+
         
         }
             
