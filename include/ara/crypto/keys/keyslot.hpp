@@ -1,57 +1,109 @@
 #ifndef ARA_CRYPTO_KEYS_KEYSLOT_H_
 #define ARA_CRYPTO_KEYS_KEYSLOT_H_
 
-#include "../common/concrete_io_interface.hpp"
+#include "ara/core/result.hpp"
+#include "ara/crypto/keys/key_slot_content_props.hpp"
+#include "ara/crypto/keys/key_slot_prototype_props.hpp"
+#include "ara/crypto/cryp/crypto_provider.hpp"
+#include "ara/crypto/cryp/cryobj/crypto_object.hpp"
+
 namespace ara
 {
     namespace crypto
     {
-
-        enum class SlotState : std::uint8_t
+        namespace keys
         {
-            closed,
-            opened,
-            commited
-        };
+            enum class SlotState : std::uint8_t
+            {
+                closed,
+                opened,
+                commited
+            };
 
-        class KeySlot 
-        {
-            
+            class KeySlot 
+            {
+                public:
+                 using Uptr = std::unique_ptr<KeySlot>;
 
-        public:
-            using Uptr = std::unique_ptr<KeySlot>;
+                /********** variables needed by KeyStorageProvider using the keySlot *********/
+                SlotState state = SlotState::closed;
+                IOInterface::Uptr IOInterfacePtr;
+                /****************************************************************************/
+                KeySlotContentProps KSCP ;
+                KeySlotPrototypeProps KSPP;
+                ara::crypto::cryp::CryptoProvider* myCryptoProvider;
+                std::unique_ptr<cryp::CryptoProvider> x;
+                /**
+                 * @brief Destroy the Key Slot object
+                 * 
+                 */
+                virtual ~KeySlot () noexcept=default;
+                /**
+                 * @brief 
+                 * 
+                 * @param subscribeForUpdates 
+                 * @param writeable 
+                 * @return IOInterface::Uptr 
+                 */
+                virtual IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) const noexcept = 0;
+                /**
+                 * @brief 
+                 * 
+                 * @return true 
+                 * @return false 
+                 */
+                virtual bool IsEmpty() const noexcept = 0;
+                /**
+                 * @brief 
+                 * 
+                 * @param container 
+                 */
+                virtual void SaveCopy(const IOInterface &container) noexcept = 0;
+                /**
+                 * @brief Get the Content Props object
+                 * 
+                 * @return ara::core::Result<KeySlotContentProps> 
+                 */
+                virtual ara::core::Result<KeySlotContentProps> GetContentProps ()const noexcept=0;
+                /**
+                 * @brief Retrieve an instance of the CryptoProvider that owns this KeySlot. Any key slot always has an
+                 * associated default Crypto Provider that can serve this key slot. In the simplest case all key slots
+                 * can be served by a single Crypto Provider installed on the Adaptive Platform.
+                 * 
+                 * @return ara::core::Result<cryp::CryptoProvider::Uptr> 
+                 */
+                virtual ara::core::Result<cryp::CryptoProvider::Uptr> MyProvider ()const noexcept=0;
+                /**
+                 * @brief Get the Prototyped Props object
+                 * 
+                 * @return ara::core::Result<KeySlotPrototypeProps> 
+                 */
+                virtual ara::core::Result<KeySlotPrototypeProps> GetPrototypedProps ()const noexcept=0;
+                /**
+                 * @brief 
+                 * 
+                 * @return ara::core::Result<void> 
+                 */
+                virtual ara::core::Result<void> Clear () noexcept=0;
+                /**
+                 * @brief Copy-assign another KeySlot to this instanc
+                 * 
+                 * @param other 
+                 * @return KeySlot& 
+                 */
+                KeySlot& operator= (const KeySlot &other)=default;
+                /**
+                 * @brief Move-assign another KeySlot to this instance
+                 * 
+                 * @param other 
+                 * @return KeySlot& 
+                 */
+                KeySlot& operator= (KeySlot &&other)=default;
 
-            /********** variables needed by KeyStorageProvider using the keySlot *********/
-            SlotState state = SlotState::closed;
-            IOInterface::Uptr IOInterfacePtr;
-            /****************************************************************************/
 
-            virtual IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) const noexcept = 0;
-            
-            virtual void Clear () noexcept=0;
-            
-            virtual KeySlotContentProps GetContentProps () const noexcept=0;
-            
-            virtual cryp::CryptoProvider::Uptr MyProvider () const noexcept=0;
-            
-            virtual void SaveCopy(const IOInterface &container) noexcept = 0;
-            
-            virtual KeySlotPrototypeProps  GetPrototypedProps() const noexcept = 0;
-            
-            virtual bool IsEmpty() const noexcept = 0;
-            
+            };
+        }
 
-            ~KeySlot () noexcept=default;
-
-        };
-
-        class InheritedKeySlot:public KeySlot
-        {
-        public:
-            IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) const noexcept;
-
-            void SaveCopy(const IOInterface &container) noexcept;
-        };
     }
 }
 #endif
