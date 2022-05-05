@@ -11,6 +11,7 @@ namespace ara {
 
             ///////////////////////////////////////////////////////
             // dummy definitions that will be removed later
+            /*
             class SecretSeed {
             public:
                 uint32_t Seed;
@@ -22,7 +23,7 @@ namespace ara {
             };
 
             class ReadOnlyMemRegion {};
-
+            */
             //////////////////////////////////////////////////////////////
 
             class PRNG : public RandomGeneratorCtx {
@@ -30,12 +31,45 @@ namespace ara {
                 std::default_random_engine RNG;
                 //SecretSeed Seed;
             public:
+                /*
+                 * PRNG Constructor
+                 */
                 PRNG();
-                bool AddEntropy(ReadOnlyMemRegion entropy);
-                std::vector<byte> Generate(std::uint32_t count);
-                //bool Seed (ReadOnlyMemRegion seed) noexcept=0;
-                bool Seed(const SecretSeed& seed);
-                bool SetKey(const SymmetricKey& key);
+                
+                /***********************************************************************/
+                /*****          inherited CyrptoContext virtual functions          *****/
+                /***********************************************************************/
+
+				///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
+                ///@return: true if initialized and false if not 
+				bool IsInitialized();
+
+				///@brief: inherited from CryptoContext,references the CryptoPrimitivId instance containing instance identification 
+                ///@param[in]: none
+                ///@return: pointer references the CryptoPrimitivId instance of the context
+				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
+
+                ///@brief: inherited from CryptoContext, references the CryptoProvider instance containing instance identification 
+                ///@param[in]: none
+                ///@return: pointer references the cryptoProvider instance of the context
+                CryptoProvider& MyProvider() const noexcept;
+                
+                 /*************************************************************************/
+                 /*****         RandomGeneratorCtx inherited virtual functions        *****/
+                 /*************************************************************************/
+                
+                /*Update the internal state of the RNG by mixing it with the provided additional entropy. This
+                 *method is optional for implementation. An implementation of this method may "accumulate"
+                 *provided entropy for future use*/
+                bool AddEntropy(ReadOnlyMemRegion entropy) noexcept;
+                
+                /*Return an allocated buffer with a generated random sequence of the requested size*/
+                std::vector<byte> Generate(std::uint32_t count) noexcept;
+                //bool Seed (ReadOnlyMemRegion seed) noexcept;
+                /*Set the internal state of the RNG using the provided seed*/
+                bool Seed(const SecretSeed& seed) noexcept;
+                
+                bool SetKey(const SymmetricKey& key) noexcept;
             };
         } // namespace cryp
     } // namespace crypto 
