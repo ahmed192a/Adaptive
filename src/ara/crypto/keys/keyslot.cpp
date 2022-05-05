@@ -7,6 +7,63 @@ namespace ara
     {
         namespace keys
         {
+            
+                 /*Save the content of a provided source IOInterface to this key - slot*/
+        void keys::SaveCopy(const IOInterface& container) noexcept
+        { 
+            //Key Slot Content Properties Struct variables //
+           KSCP.mAlgId = container.GetPrimitiveId();
+           KSCP.mObjectType = container.GetCryptoObjectType();
+           KSCP.mObjectUid = container.GetObjectId();
+           KSCP.mContentAllowedUsage = container.GetAllowedUsage();
+           KSCP.mObjectSize = container.GetCapacity();//shall return capacity of the underlying resource in bytes//
+           //Key Slot Prototypes Struct variables//
+           KSPP.mSlotCapacity= container.GetCapacity();//shall return capacity of the underlying resource in bytes//
+           KSPP.mSlotType = container.Slot_Type;
+           KSPP.mAlgId = container.GetPrimitiveId();
+           KSPP.mAllocateSpareSlot = container.AllocateSpareSlot_t;
+           KSPP.mAllowContentTypeChange = container.AllowContentTypeChange_t;
+           KSPP.mMaxUpdateAllowed = container.MaxUpdateAllowed_t;
+           KSPP.mExportAllowed=container.ExportAllowed_t;
+           KSPP.mContentAllowedUsage=container.GetAllowedUsage();
+           KSPP.mObjectType = container.GetTypeRestriction();
+           //change state of key slot to committed //
+           this->state = SlotState::committed;
+      
+
+        
+        }
+        //Open this key slot and return an IOInterface to its content//
+        IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false)
+        {
+           //instance of IOInterface//
+            IOInterface::Uptr IOContent = std::make_unique<IOInterface>;
+            //Key Slot Content Properties Struct variables //
+            IOContent.GetPrimitiveId() = KSCP.mAlgId;
+            IOContent.GetCryptoObjectType() = KSCP.mObjectType;
+            IOContent.GetObjectId() = KSCP.mObjectUid;
+            IOContent.GetAllowedUsage() = KSCP.mContentAllowedUsage;
+            IOContent.GetCapacity() = KSCP.mObjectSize;
+            //Key Slot Prototypes Struct variables//
+            IOContent.GetCapacity() = KSPP.mSlotCapacity;
+            IOContent.Slot_Type = KSPP.mSlotType;
+            IOContent.GetPrimitiveId() = KSPP.mAlgId;
+            IOContent.AllocateSpareSlot_t = KSPP.mAllocateSpareSlot;
+            IOContent.AllowContentTypeChange_t = KSPP.mAllowContentTypeChange;
+            IOContent.MaxUpdateAllowed_t = KSPP.mMaxUpdateAllowed;
+            IOContent.ExportAllowed_t = KSPP.mExportAllowed;
+            IOContent.GetAllowedUsage() = KSPP.mContentAllowedUsage;
+            IOContent.GetTypeRestriction() = KSPP.mObjectType;
+            //change state of key slot to opened //
+            this->state = SlotState::opened;
+            return IOContent;
+        
+        
+        }
+            
+            
+            
+            
            
             ara::core::Result<KeySlotPrototypeProps> InhKeySlot :: GetPrototypedProps ()const noexcept
             {
