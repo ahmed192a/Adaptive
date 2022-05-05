@@ -22,35 +22,35 @@ namespace ara
         	AlgId ConvertToAlgId (std::string primitiveName) const noexcept;
         	std::string ConvertToAlgName (AlgId algId) const noexcept;
 
-        	AuthCipherCtx::Uptr CreateAuthCipherCtx (AlgId algId) noexcept;
+        	Authentication::Uptr CreateAuthCipherCtx (AlgId algId) noexcept;
 
-            Signature::Uptrc CreateHashDigest (AlgId hashAlgId, ReadOnlyMemRegion value) noexcept;
+            	Signature::Uptrc CreateHashDigest (AlgId hashAlgId, ReadOnlyMemRegion value) noexcept;
 
         	HashFunctionCtx::Uptr CreateHashFunctionCtx (AlgId algId) noexcept;
 
-        	//KeyDerivationFunctionCtx::Uptr CreateKeyDerivationFunctionCtx (AlgId algId) noexcept;
+        	HKDF::Uptr CreateKeyDerivationFunctionCtx (AlgId algId) noexcept;
 
-        	MessageAuthnCodeCtx::Uptr CreateMessageAuthCodeCtx (AlgId algId) noexcept;
+        	HMAC::Uptr CreateMessageAuthCodeCtx (AlgId algId) noexcept;
 
-        	RandomGeneratorCtx::Uptr CreateRandomGeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true) noexcept;
+        	//RandomGeneratorCtx::Uptr CreateRandomGeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true) noexcept;
 
         	Signature::Uptrc CreateSignature (AlgId signAlgId, ReadOnlyMemRegion value, const RestrictedUseObject &key,AlgId hashAlgId=kAlgIdNone) noexcept;
 
-        	SymmetricBlockCipherCtx::Uptr CreateSymmetricBlockCipherCtx (AlgId algId) noexcept;
+        	SymmetricCipher::Uptr CreateSymmetricBlockCipherCtx (AlgId algId) noexcept;
 
         	Keywrapper::Uptr CreateSymmetricKeyWrapperCtx (AlgId algId) noexcept;
-			void ImportPublicObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, CryptoObjectType expectedObject=CryptoObjectType::kUndefined) noexcept;
-			void ImportSecuredObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, SymmetricKeyWrapperCtx &transportContext, bool isExportable=false, CryptoObjectType expectedObject=CryptoObjectType::kUndefined) noexcept;
-			PRNG::Uptr CreateRandomGeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true) noexcept;
+		void ImportPublicObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, CryptoObjectType expectedObject=CryptoObjectType::kUndefined) noexcept;
+		void ImportSecuredObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, Keywrapper &transportContext, bool isExportable=false, CryptoObjectType expectedObject=CryptoObjectType::kUndefined) noexcept;
+		PRNG::Uptr CreateRandomGeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true) noexcept;
         	~ConcreteCryptoProvider () noexcept=default;
 
-			SecSeed::Uptrc GenerateSeed (AlgId algId, SecretSeed::Usage allowedUsage, bool isSession, bool isExportable) noexcept;
+			SecSeed::Uptrc GenerateSeed (AlgId algId, SecSeed::Usage allowedUsage, bool isSession, bool isExportable) noexcept;
 			SymmetricKey::Uptrc GenerateSymmetricKey(AlgId algId, AllowedUsageFlags allowedUsage, bool isSession,bool isExportable) noexcept;
-			SymmetricKey::Uptrc LoadSymmetricKey (const IOInterface &container) noexcept;
+			SymmetricKey::Uptrc LoadSymmetricKey (const ConcreteIOInterface &container) noexcept;
 
 		 	std::vector<uint8_t>  ExportPublicObject (const ConcreteIOInterface &container) noexcept;
 
-			std::vector<uint8_t>  ExportSecuredObject (const ConcreteIOInterface &container, SymmetricKeyWrapperCtx &transportContext) noexcept;
+			std::vector<uint8_t>  ExportSecuredObject (const ConcreteIOInterface &container, Keywrapper &transportContext) noexcept;
 		};
 	  }
 	}
