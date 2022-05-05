@@ -7,6 +7,16 @@ namespace ara
     {
         namespace keys
         {
+        //Check the slot for emptiness//
+        bool keys::IsEmpty() noexcept 
+        {
+            if (Empty_State)
+            {
+                return true;//true if the slot is empty or false otherwise//
+            }
+            else
+                return false;
+        }
             
                  /*Save the content of a provided source IOInterface to this key - slot*/
         void keys::SaveCopy(const IOInterface& container) noexcept
