@@ -13,6 +13,12 @@ namespace ara {
     namespace crypto {
         namespace cryp {
             
+            enum class SymmetricKeyWrapperCtx_Status : std::uint8_t 
+            {
+                notInitialized ,   
+                initialized      //if seed() or setkey has been called
+            };
+            
             class SymmetricKeyWrapperCtx : public CryptoContext
             { 
             public:
