@@ -1,11 +1,11 @@
-#ifndef ARA_CRYPTO_CRYP_CRYPTOPR_H_
-#define ARA_CRYPTO_CRYP_CRYPTOPR_H_
+    //#ifndef ARA_CRYPTO_CRYP_CRYPTOPR_H_
+//#define ARA_CRYPTO_CRYP_CRYPTOPR_H_
+#pragma once
 #include <memory>
 #include <iostream>
-#include <ara/core/StringView.hpp>
-#include <ara/crypto/common/base_id_types.hpp>
-#include "ara/crypto/cryp/cryobj/crypto_primitive_id.hpp"
-#include "ara/crypto/cryp/concrete_crypto_provider.hpp"
+#include "../../common/base_id_types.hpp"
+#include "crypto_primitive_id.hpp"
+#include "../concrete_crypto_provider.hpp"
 
 
 namespace ara
@@ -97,4 +97,4 @@ namespace ara
         }
     }
 }
-#endif
+//#endif
