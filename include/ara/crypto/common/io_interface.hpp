@@ -46,6 +46,7 @@ namespace ara
 				bool ExportAllowed_t=1; //Change it when using//
 				bool AllowContentTypeChange_t=1;//Change it when using//
 				bool AllocateSpareSlot_t=1;//Change it when using//
+				bool IOInterface_State_Empty=0;//Flag for the content of the IOInterface if empty set to 1 else set to 0//
 
 				virtual ~IOInterface () noexcept=default;
 				
