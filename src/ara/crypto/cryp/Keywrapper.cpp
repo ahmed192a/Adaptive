@@ -99,7 +99,7 @@ void Keywrapper::Reset()
 
 vector<byte> Keywrapper::WrapKeyMaterial(const RestrictedUseObject &key)
 {
-    if(Status == AES_Wrapper_Status::initialized && (key.Key).size()== 16)
+    if(Status == SymmetricKeyWrapperCtx_Status::initialized && (key.Key).size()== 16)
     {
         vector <byte> WrappedKey;
         std::string plain = ""; 
@@ -154,7 +154,7 @@ RestrictedUseObject::Uptrc Keywrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, 
 {
     int x = CalculateWrappedKeySize(key_length);
     cout << x << "\t" << wrappedKey.size() << endl;
-    if(algId == AES_Alg && allowedUsage == kAllowDataDecryption && Status == AES_Wrapper_Status::initialized && wrappedKey.size() == x)
+    if(algId == AES_Alg && allowedUsage == kAllowDataDecryption && Status == SymmetricKeyWrapperCtx_Status::initialized && wrappedKey.size() == x)
     {
         string recovered, cipher_txt = "";
         RestrictedUseObject::Uptrc R = std::make_unique<RestrictedUseObject>();
