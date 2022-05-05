@@ -161,6 +161,12 @@ CryptoTransform Authentication::GetTransformation() const noexcept
 		return Transform_set;
 	}
 }
+
+std::vector <byte> Authentication:: GetDigest(std::size_t offset = 0) const noexcept
+{
+	return this->macPtr->GetDigest(offset);
+}
+
 ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
 //call, i.e.all associated data must have been already provided. The function will check 
 //the authentication tag and only return the processed data if the tag is valid

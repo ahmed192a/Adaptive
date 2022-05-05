@@ -63,13 +63,13 @@ namespace ara {
                 /// @return: CryptoTransform => represents the types of the cryptographic transformations 
                 CryptoTransform GetTransformation() const noexcept;
 
-                /*template <typename Alloc = <implementation - defined>>
-                ara::core::Result<ByteVector<Alloc> > GetDigest(std::size_t offset = 0) const noexcept;*/
+                //template <typename Alloc = <implementation - defined>>
+                std::vector <byte> GetDigest(std::size_t offset = 0) const noexcept;
 
                 ///@brief: Get maximal supported size of associated public data
                 ///@param[in]: none
                 ///@return: std::uint64_t => the maximal supported size of associated public data in bytes
-                std::uint64_t GetMaxAssociatedDataSize() const noexcept;
+                //std::uint64_t GetMaxAssociatedDataSize() const noexcept;
 
                 ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
                 //call, i.e.all associated data must have been already provided. The function will check 
