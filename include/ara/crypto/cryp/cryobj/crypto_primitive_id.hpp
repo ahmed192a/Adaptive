@@ -1,9 +1,10 @@
-#ifndef ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
-#define ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
+//#ifndef ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
+//#define ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
+#pragma once
 #include <memory>
 #include <iostream>
-#include <ara/core/StringView.hpp>
-#include <ara/crypto/common/base_id_types.hpp>
+#include "../../../core/StringView.hpp"
+#include "../../common/base_id_types.hpp"
 
 namespace ara
 {
@@ -104,4 +105,4 @@ namespace ara
         }
     }
 }
-#endif
+//#endif
