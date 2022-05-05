@@ -8,7 +8,7 @@ byte KEK[AES::DEFAULT_KEYLENGTH];
 byte iv[AES::BLOCKSIZE];
 
 uint32_t AES_Alg = 1;
-AES_Wrapper_Status Status;
+SymmetricKeyWrapperCtx_Status Status;
 
 /*
  * Private functions for Keywrsapping Algorithm
