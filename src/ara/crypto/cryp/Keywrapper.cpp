@@ -50,10 +50,6 @@ CryptoProvider&  SymmetricKeyWrapperCtx:: MyProvider() const noexcept
  * implementation of SymmetricKeyWrapperCtx inherited virtual functions
  */
 
-/* Constructor of PRNG */
-PRNG::PRNG()
-
-
 /*
  * Private functions for Keywrapping Algorithm
  */
@@ -75,19 +71,14 @@ vector<byte>Keywrapper::hexToASCII(string hex)
 
 Keywrapper::Keywrapper()
 {
-    RandomGeneratorCtx::Uptr R = std::make_unique<PRNG>();
-    //ara::crypto::cryp::PRNG R;
-    SecretSeed S1;
-    S1.Seed = 15;
-    // Also we can write R->Seed(S1)
-    (*R).Seed(S1);
-    std::vector <byte> x = (*R).Generate((KEK_Length / 4));
-    std::string KEK = "";
-    for (int i = 0; i < (KEK_Length / 4); i++)
+    SecretSeed S_iv;
+    S_iv.Seed = 19;
+    RandomGeneratorCtx R2;
+    R2.Seed(S_iv);
+    vector<byte> y = R2.Generate((Block_size));
+    for(int i = 0 ; i < Block_size; i++)
     {
-        int b = x[i];
-        std::string y = decToHexa(b);
-        KEK += y;
+        iv[i] = y.at(i);
     }
 }
 
