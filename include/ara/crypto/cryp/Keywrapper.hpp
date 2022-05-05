@@ -39,6 +39,27 @@ namespace ara {
 			//std::string decToHexa(int n);
 			public :
 			Keywrapper();
+			/***********************************************************************/
+			/*****          inherited CyrptoContext virtual functions          *****/
+			/***********************************************************************/
+
+			///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
+			///@return: true if initialized and false if not 
+			bool IsInitialized();
+
+			///@brief: inherited from CryptoContext,references the CryptoPrimitivId instance containing instance identification 
+			///@param[in]: none
+			///@return: pointer references the CryptoPrimitivId instance of the context
+			CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
+
+			///@brief: inherited from CryptoContext, references the CryptoProvider instance containing instance identification 
+			///@param[in]: none
+			///@return: pointer references the cryptoProvider instance of the context
+			CryptoProvider& MyProvider() const noexcept;
+
+			/*************************************************************************/
+			/*****         RandomGeneratorCtx inherited virtual functions        *****/
+			/*************************************************************************/
 			std::size_t CalculateWrappedKeySize(std::size_t keyLength);
 			std::size_t GetMaxTargetKeyLength();
 			std::size_t GetTargetKeyGranularity();
