@@ -5,9 +5,9 @@
  * @version R20-11
  *****************************************************************/
 
-
-#ifndef ARA_CRYPTO_AUTH_CIPHER_CTX_H
-#define ARA_CRYPTO_AUTH_CIPHER_CTX_H
+#pragma once
+//#ifndef ARA_CRYPTO_AUTH_CIPHER_CTX_H
+//#define ARA_CRYPTO_AUTH_CIPHER_CTX_H
 
 #include "crypto_context.hpp"
 #include"message_authn_code_ctx.hpp"
@@ -25,6 +25,7 @@ namespace ara {
                 updated,         //if UpdateConfidentialData has been called
                 processedData    //if ProcessConfedentialData has been called
             };
+            
             class AuthCipherCtx : public CryptoContext
             {
             protected:
@@ -61,13 +62,13 @@ namespace ara {
                 //the authentication tag and only return the processed data if the tag is valid
                 ///@param[in]: in => the input buffer containing the full message
                 //             expectedTag => pointer to read only mem region
-                virtual std:: vector<byte>  ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
+                virtual std::vector<byte>  ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag) noexcept = 0;
 
                 ///@breif:The input buffer will be overwritten by the processed message After this method is called 
                 //no additional associated data may be updated
                 //@param[in]:inOut=> the input buffer containing the full message
                 //          expectedTag => pointer to read only mem region
-                virtual void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept = 0;
+                virtual void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag) noexcept = 0;
 
                 /// @brief: resets the context
                 virtual void Reset() noexcept = 0;
@@ -104,4 +105,4 @@ namespace ara {
 }
 
 
-#endif
+//#endif

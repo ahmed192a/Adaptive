@@ -1,6 +1,6 @@
-#ifndef  ARA_CRYPTO_AUTHENTICATION_H
-#define  ARA_CRYPTO_AUTHENTICATION_H
-
+//#ifndef  ARA_CRYPTO_AUTHENTICATION_H
+//#define  ARA_CRYPTO_AUTHENTICATION_H
+#pragma once
 #include "auth_cipher_ctx.hpp"
 #include "HMAC.hpp"
 #include "symmetric_cipher.hpp"
@@ -76,13 +76,13 @@ namespace ara {
                 //the authentication tag and only return the processed data if the tag is valid
                 ///@param[in]: in => the input buffer containing the full message
                 //             expectedTag => pointer to read only mem region
-                std::vector<byte>  ProcessConfidentialData (ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
+                std::vector<byte>  ProcessConfidentialData (ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag) noexcept;
 
                 ///@breif:The input buffer will be overwritten by the processed message After this method is called 
                 //no additional associated data may be updated
                 //@param[in]:inOut=> the input buffer containing the full message
                 //          expectedTag => pointer to read only mem region
-                void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
+                void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag) noexcept;
 
                 /// @brief: resets the context
                 void Reset() noexcept;
@@ -127,4 +127,4 @@ namespace ara {
 
 
 
-#endif // ! ARA_CRYPTO_AUTHENTICATION_H
+//#endif // ! ARA_CRYPTO_AUTHENTICATION_H

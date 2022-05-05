@@ -42,8 +42,7 @@ bool Authentication :: IsInitialized()
 ///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
 CryptoPrimitiveId::Uptr Authentication:: GetCryptoPrimitiveId() const noexcept
 {
-	AlgId myAlgorithmId = myCryptoProvider->ConvertToAlgId("Auth_Encrption/HMAC_AES");
-	CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("Auth_Encrption");
+	CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("Auth_Encrption/HMAC_AES");
 	return myPrimitiveId;
 }
 
@@ -138,7 +137,7 @@ void Authentication:: UpdateAssociatedData(std::uint8_t in) noexcept
 }
 
 //Set (deploy) the same key to the authenticated cipher symmetric algorithm context as well as the Mac context
-void Authentication::SetKey(const SymmetricKey & key, CryptoTransform transform = CryptoTransform::kEncrypt) noexcept
+void Authentication::SetKey(const SymmetricKey & key, CryptoTransform transform) noexcept
 {
 	if (((transform == CryptoTransform::kEncrypt) && (kAllowDataEncryption != NULL)) || ((transform == CryptoTransform::kDecrypt) && (kAllowDataDecryption != NULL)))
 	{
@@ -165,19 +164,19 @@ CryptoTransform Authentication::GetTransformation() const noexcept
 ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
 //call, i.e.all associated data must have been already provided. The function will check 
 //the authentication tag and only return the processed data if the tag is valid
-std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept
+std::vector<byte> Authentication::ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag = nullptr) noexcept
 {
 	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
-	if ((this->status == AuthCipherCtx_Status::started)|| (this->status == AuthCipherCtx_Status::updated))
+	if ((this->status == AuthCipherCtx_Status::started) || (this->status == AuthCipherCtx_Status::updated))
 	{
-		/* If the transformation direction is kEncrypt, ProcessConfidentialData shall encrypt the provided plaintext data 
+		/* If the transformation direction is kEncrypt, ProcessConfidentialData shall encrypt the provided plaintext data
 		and return the ciphertext */
 		if (GetTransformation() == CryptoTransform::kEncrypt)
 		{
 			// vector of bytes to store the data after encryption 
 			std::vector<byte> encryptedData;
 			// encrypt the confidential data 
-			encryptedData= this->blockCipherPtr->Process_Blocks(in);
+			encryptedData = this->blockCipherPtr->Process_Blocks(in);
 			// Mac calculation should be updated by the confedential data
 			this->macPtr->Update(in);
 			//This function is the final call,all associated data must have been already provided, so finish the Mac context
@@ -188,21 +187,21 @@ std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in,
 			return encryptedData;
 		}
 		/* If the transformation direction is kDecrypt,ProcessConfidentialData shall also decrypt the provided plaintext data
-		and return the plaintext, only if the calculated MAC matches the provided expectedTag.*/ 
+		and return the plaintext, only if the calculated MAC matches the provided expectedTag.*/
 		else if (GetTransformation() == CryptoTransform::kDecrypt)
 		{
-			uint8_t counter=0;
+			uint8_t counter = 0;
 			bool matching = true;
 			std::vector<byte> DecreptedData;     // vector of bytes to store the data after decryption 
 			std::vector<byte> calculatedDataMac; // vector of bytes to store the calculated MAC of the received data
-			
+
 			DecreptedData = this->blockCipherPtr->Process_Blocks(in);
 			//Mac calculation should be updated by the confedential data
 			this->macPtr->Update(DecreptedData);
 			//This function is the final call,all associated data must have been already provided, so finish the Mac context
 			macPtr->Finish();
 			/* If the calculated MAC does not match the provided expectedTag, kAuthTagNotValid error shall be returned*/
-			calculatedDataMac= this->macPtr->GetDigest();
+			calculatedDataMac = this->macPtr->GetDigest();
 			for (counter = 0; counter < calculatedDataMac.size(); counter++)
 			{
 				if (calculatedDataMac[counter] != expectedTag[counter])
@@ -219,7 +218,7 @@ std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in,
 			else
 			{
 				this->status == AuthCipherCtx_Status::processedData;
-				return ;
+				return;
 			}
 		}
 	}
@@ -227,7 +226,7 @@ std::vector<byte> Authentication:: ProcessConfidentialData(ReadOnlyMemRegion in,
 
 ///@breif:The input buffer will be overwritten by the processed message After this method is called 
 				//no additional associated data may be updated
-void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
+void Authentication::ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
 {
 	// ProcessConfidentialData raises kProcessingNotStarted error if data processing is not initiated by calling Start() method
 	if ((this->status == AuthCipherCtx_Status::started) || (this->status == AuthCipherCtx_Status::updated))
@@ -247,7 +246,7 @@ void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnly
 			//Update the state of the auth_cipher context
 			this->status = AuthCipherCtx_Status::processedData;
 			// overwrite the message buffer with the encrypted data
-			inOut=encryptedData;
+			inOut = encryptedData;
 		}
 		/* If the transformation direction is kDecrypt,ProcessConfidentialData shall also decrypt the provided plaintext data
 		and return the plaintext, only if the calculated MAC matches the provided expectedTag.*/
@@ -277,7 +276,7 @@ void Authentication:: ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnly
 			{
 				this->status == AuthCipherCtx_Status::processedData;
 				// overwrite the message buffer with the decrypted data
-				inOut= DecreptedData;
+				inOut = DecreptedData;
 			}
 			else
 			{
