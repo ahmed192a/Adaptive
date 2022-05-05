@@ -9,10 +9,15 @@ namespace ara
 {
     namespace crypto
 	{
-        class cryp::ConcreteCryptoProvider;
+        //class cryp::ConcreteCryptoProvider;
         class ConcreteIOInterface : public IOInterface
 		{
-            friend class cryp::ConcreteCryptoProvider;
+            //friend class cryp::ConcreteCryptoProvider;
+        
+
+        
+      
+		public:
         bool Volatile;
         bool session;
         AllowedUsageFlags AllowedUsage;
@@ -23,10 +28,7 @@ namespace ara
         ara::crypto::CryptoAlgId algid;
         ara::crypto::CryptoObjectType objectTypeRestiction;
         std::vector<uint8_t> payload;
-
         ara::crypto::VolatileTrustedContainer::Uptr CreateVolatileContainer(std::size_t capacity);
-      
-		public:
         using Uptr = std::unique_ptr<ConcreteIOInterface>;       
         ConcreteIOInterface(bool, bool, ara::crypto::AllowedUsageFlags, ara::crypto::CryptoObjectType, ara::crypto::CryptoObjectUid, std::size_t, std::size_t, ara::crypto::CryptoAlgId, ara::crypto::CryptoObjectType);
         ConcreteIOInterface();
