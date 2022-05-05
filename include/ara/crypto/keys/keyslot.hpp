@@ -27,12 +27,12 @@ namespace ara
 
                 /********** variables needed by KeyStorageProvider using the keySlot *********/
                 SlotState state = SlotState::closed;
-                IOInterface::Uptr IOInterfacePtr;
+                //IOInterface::Uptr IOInterfacePtr;
                 /****************************************************************************/
                 KeySlotContentProps KSCP ;
                 KeySlotPrototypeProps KSPP;
                 ara::crypto::cryp::CryptoProvider* myCryptoProvider;
-                std::unique_ptr<cryp::CryptoProvider> x;
+                std::unique_ptr<cryp::CryptoProvider> Myprov;
                 /**
                  * @brief Destroy the Key Slot object
                  * 
