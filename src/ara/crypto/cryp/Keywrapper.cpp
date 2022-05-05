@@ -7,11 +7,55 @@ using namespace ara::crypto::cryp;
 byte KEK[AES::DEFAULT_KEYLENGTH];
 byte iv[AES::BLOCKSIZE];
 
+//for testing
 uint32_t AES_Alg = 1;
 SymmetricKeyWrapperCtx_Status Status;
 
 /*
- * Private functions for Keywrsapping Algorithm
+ * implementation of inherited CyrptoContext virtual functions 
+ */
+
+///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
+bool SymmetricKeyWrapperCtx :: IsInitialized()
+{
+	//@ return false if the context is not initialized
+	if (Status == SymmetricKeyWrapperCtx_Status::initialized)
+	{
+		return true;
+	}
+	//@ return true if the context is initialized 
+	else 
+	{
+		return false;
+	}
+}
+
+///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
+CryptoPrimitiveId::Uptr SymmetricKeyWrapperCtx:: GetCryptoPrimitiveId() const noexcept
+{
+	//AlgId myAlgorithmId = myCryptoProvider->ConvertToAlgId("CBC/AES_128");
+	//CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("Auth_Encrption");
+	//return myPrimitiveId;
+}
+
+///@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
+CryptoProvider&  SymmetricKeyWrapperCtx:: MyProvider() const noexcept
+{
+	//@return pointer references the Crypto Provider instance of the context
+	//return this-> (*myCryptoProvider) ;
+	return *myCryptoProvider;
+}
+
+/*
+ * implementation of SymmetricKeyWrapperCtx inherited virtual functions
+ */
+
+/* Constructor of PRNG */
+PRNG::PRNG()
+
+
+/*
+ * Private functions for Keywrapping Algorithm
  */
 
 
@@ -99,7 +143,7 @@ void Keywrapper::Reset()
 
 vector<byte> Keywrapper::WrapKeyMaterial(const RestrictedUseObject &key)
 {
-    if(Status == SymmetricKeyWrapperCtx_Status::initialized && (key.Key).size()== 16)
+    if(Status == SymmetricKeyWrapperCtx_Status::initialized && (key.Key).size()== 16 && key.Usage == kAllowExport)
     {
         vector <byte> WrappedKey;
         std::string plain = ""; 
@@ -146,15 +190,23 @@ vector<byte> Keywrapper::WrapKeyMaterial(const RestrictedUseObject &key)
          * WrapKeyMaterial shall return a CryptoErrorDomain::kInvalidInputSize error, if the length of the provided ara::crypto::RestrictedUseObject 
          * is unsupported by the algorithm specified during context creation. >> Therefore we check on the size of the key
          * WrapKeyMaterial shall return a CryptoErrorDomain::kUninitializedContext error, if SymmetricKeyWrapperCtx::SetKey was never called. >> Therefore we check on the status
+         * WrapKeyMaterial shall return a CryptoErrorDomain::kUsageViolation error, if the kAllowExport flag is not set in the ara::crypto::AllowedUsageFlags of 
+         * the provided ara::crypto::RestrictedUseObject, or if the kAllowKeyExporting flag of the ara::crypto::AllowedUsageFlags 
+         * is not set for the SymmetricKey specified in the SetKey call -> Therefoore we check on key.Usage 
          */
     }
 }
 
+/*
+ * The interface ara::crypto::cryp::SymmetricKeyWrapperCtx::UnwrapKey shall execute the key-unwrap operation on the provided ara::crypto::ReadOnlyMemRegion (vector of bytes)
+ * and return a unique smart pointer to the instantiated ara::crypto::RestrictedUseObject. UnwrapKey shall also apply the provided ara::crypto::AllowedUsageFlags 
+ * and ara::crypto::CryptoAlgId to the created RestrictedUseObject (RS_CRYPTO_02208)
+ */
 RestrictedUseObject::Uptrc Keywrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage)
 {
     int x = CalculateWrappedKeySize(key_length);
     cout << x << "\t" << wrappedKey.size() << endl;
-    if(algId == AES_Alg && allowedUsage == kAllowDataDecryption && Status == SymmetricKeyWrapperCtx_Status::initialized && wrappedKey.size() == x)
+    if(algId == AES_Alg && allowedUsage == kAllowKeyImporting && Status == SymmetricKeyWrapperCtx_Status::initialized && wrappedKey.size() == x)
     {
         string recovered, cipher_txt = "";
         RestrictedUseObject::Uptrc R = std::make_unique<RestrictedUseObject>();
@@ -182,6 +234,7 @@ RestrictedUseObject::Uptrc Keywrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, 
             exit(1);
         }
         R->Key = hexToASCII(recovered);
+        R -> Usage = kAllowImport;
         return R;
     }
     else
