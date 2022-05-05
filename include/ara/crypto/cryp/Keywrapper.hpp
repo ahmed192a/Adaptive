@@ -25,11 +25,6 @@ using namespace CryptoPP;
 namespace ara {
 	namespace crypto {
 		namespace cryp {
-			enum class AES_Wrapper_Status : std::uint8_t 
-			{
-				notInitialized = 0,
-                		initialized = 1
-			};
 			
 			class Keywrapper : public SymmetricKeyWrapperCtx
 			{
