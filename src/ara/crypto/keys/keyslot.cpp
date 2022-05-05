@@ -39,6 +39,7 @@ namespace ara
            KSPP.mObjectType = container.GetTypeRestriction();
            //change state of key slot to committed //
            this->state = SlotState::committed;
+           Empty_State=false;
       
 
         
