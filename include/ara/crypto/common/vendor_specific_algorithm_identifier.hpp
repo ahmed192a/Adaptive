@@ -11,7 +11,8 @@
 const std::string algorithmNames[] =
 {
 	"HMACSHA_256",
-	"AES_128"
+	"AES_128",
+	"CBC/AES_128"
 };
 
 
