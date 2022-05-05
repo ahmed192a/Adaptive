@@ -10,14 +10,14 @@
 namespace ara {
     namespace crypto {
         namespace cryp {
-            enum class RandomGeneratorCtx : std::uint8_t 
+            enum class RandomGeneratorCtx_Status : std::uint8_t 
             {
                 notInitialized ,   
                 initialized ,
                 Seeded        //if seed() or setkey has been called
             };
             
-            class RandomGeneratorCtx_Status : public CryptoContext
+            class RandomGeneratorCtx : public CryptoContext
             {
             public:
                 /*Shared smart pointer of the interface*/
