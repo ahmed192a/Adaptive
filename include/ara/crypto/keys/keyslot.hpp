@@ -18,7 +18,7 @@ namespace ara
                 closed,
                 opened,
                 commited,
-                empty
+               
             };
 
             class KeySlot 
@@ -32,6 +32,7 @@ namespace ara
                 /****************************************************************************/
                 KeySlotContentProps KSCP ;
                 KeySlotPrototypeProps KSPP;
+                bool Empty_State =0;//If the key slot is empty put 1 else put 0//
                 ara::crypto::cryp::CryptoProvider* myCryptoProvider;
                 std::unique_ptr<cryp::CryptoProvider> Myprov;
                 /**
