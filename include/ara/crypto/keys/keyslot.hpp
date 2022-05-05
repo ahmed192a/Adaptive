@@ -17,7 +17,8 @@ namespace ara
             {
                 closed,
                 opened,
-                commited
+                commited,
+                empty
             };
 
             class KeySlot 
