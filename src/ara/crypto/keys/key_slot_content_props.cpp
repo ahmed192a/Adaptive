@@ -16,7 +16,7 @@ namespace ara
 			 * @return true 
 			 * @return false 
 			 */
-			bool operator== (const KeySlotContentProps &lhs, const KeySlotContentProps &rhs) noexcept
+	bool operator== (const KeySlotContentProps &lhs, const KeySlotContentProps &rhs) noexcept
             {
                 if
                 (
@@ -45,7 +45,7 @@ namespace ara
 			 * @return true 
 			 * @return false 
 			 */
-			bool operator!= (const KeySlotContentProps &lhs, const KeySlotContentProps &rhs) noexcept
+	bool operator!= (const KeySlotContentProps &lhs, const KeySlotContentProps &rhs) noexcept
             {
                 if
                 (
