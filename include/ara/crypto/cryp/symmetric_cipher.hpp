@@ -2,6 +2,13 @@
 #define ARA_CRYPTO_SYMMETRIC_CIPHER_H
 
 #include "symmetric_block_cipher_ctx.hpp"
+#include "cryptlib.h"
+#include "rijndael.h"
+#include "modes.h"
+#include "files.h"
+#include "hex.h"
+#include <iostream>
+#include <string>
 
 namespace ara {
     namespace crypto {
@@ -50,9 +57,6 @@ namespace ara {
                 /*************************************************************************/
                 /***** symmetric_block_cipher_ctx inherited virtual functions *****/
                 /*************************************************************************/
-                
-                /*Get CryptoService instance*/
-                //CryptoService::Uptr GetCryptoService () const noexcept;
                 
                 /*Get the kind of transformation configured for this context: kEncrypt or kDecrypt*/
                 CryptoTransform GetTransformation () const noexcept;

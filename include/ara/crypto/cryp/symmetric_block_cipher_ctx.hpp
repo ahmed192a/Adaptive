@@ -8,7 +8,7 @@
 //#include "../../core/result.hpp"
 
 namespace ara {
-    namespace crypto {
+namespace crypto {
         namespace cryp {
 
             ///@brief: enumeration representing the state of the Symmetric Block Cipher context
@@ -17,7 +17,7 @@ namespace ara {
                 initialized
             };
 
-            class SymmetricBlockCipherCtx : public CryptoContext
+            class SymmetricBlockCipherCtx: public CryptoContext
             { 
             protected:
                 ///@brief: the current status of the Symmetric Block Cipher context
@@ -31,26 +31,29 @@ namespace ara {
                 virtual CryptoTransform GetTransformation () const noexcept=0;
                 
                 /*Indicate that the currently configured transformation accepts only complete blocks of input data*/
-                ara::core::Result<bool> IsMaxInputOnly () const noexcept;
+                bool IsMaxInputOnly () const noexcept;
+                //ara::core::Result<bool> IsMaxInputOnly () const noexcept;
                 
                 /*Indicate that the currently configured transformation can produce only complete blocks of output data*/
-                ara::core::Result<bool> IsMaxOutputOnly () const noexcept;
+                bool IsMaxOutputOnly () const noexcept;
+                //ara::core::Result<bool> IsMaxOutputOnly () const noexcept;
                 
                 /*Process (encrypt / decrypt) an input block according to the cryptor configuration*/
-                virtual std::vector<byte> ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept=0;
+                virtual std::vector<uint8_t> ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept=0;
                 //virtual ara::core::Result<ara::core::Vector<ara::core::Byte>> ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept=0;
                 
                 /*Processe provided blocks without padding. The in and out buffers must have same size and
                  *this size must be divisible by the block size (see GetBlockSize()). Pointers to the input and
                  *output buffers must be aligned to the block-size boundary!*/
-                virtual std::vector<byte> Process_Blocks (ReadOnlyMemRegion in) const noexcept=0;
+                virtual std::vector<uint8_t> Process_Blocks (ReadOnlyMemRegion in) const noexcept=0;
                 //virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlocks (ReadOnlyMemRegion in) const noexcept=0;
                 
                 /*Clear the crypto context*/
                 virtual void Reset () noexcept=0;
                 
                 /*Set (deploy) a key to the symmetric algorithm context*/
-                virtual ara::core::Result<void> SetKey (const SymmetricKey &key, CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;
+                virtual void SetKey (const SymmetricKey &key, CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;
+                //virtual ara::core::Result<void> SetKey (const SymmetricKey &key, CryptoTransform transform=CryptoTransform::kEncrypt) noexcept=0;
             };
         }
     }

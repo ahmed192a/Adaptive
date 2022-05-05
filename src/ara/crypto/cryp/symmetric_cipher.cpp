@@ -2,6 +2,7 @@
 
 using namespace ara::crypto;
 using namespace ara::crypto::cryp;
+using namespace CryptoPP;
 
 ///@brief: a constructor to save the instance of the crypto provider of the SymmetricBlockCipher context
 SymmetricCipher::SymmetricCipher(CryptoProvider* Provider)
@@ -71,20 +72,73 @@ CryptoTransform SymmetricCipher::CryptoTransform GetTransformation () const noex
         //raise CryptoErrorDomain::kUninitializedContext error
     }
 }
-                
-/*Indicate that the currently configured transformation accepts only complete blocks of input data*/
-//ara::core::Result<bool> SymmetricCipher::IsMaxInputOnly () const noexcept
 
-/*Indicate that the currently configured transformation can produce only complete blocks of output data*/
-//ara::core::Result<bool> SymmetricCipher::IsMaxOutputOnly () const noexcept                
-/*Process (encrypt / decrypt) an input block according to the cryptor configuration*/
-//std::vector<byte> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept;
-//ara::core::Result<ara::core::Vector<ara::core::Byte>> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept=0;
+
+// /*Process (encrypt / decrypt) an input block according to the crypto configuration*/
+// std::vector<byte> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept
+// {
+// 	std::vector<uint8_t> *key_addr = &(this->Alg_key.keyVal);
+// 	SecByteBlock key(key_addr, AES::DEFAULT_KEYLENGTH);
+    
+// 	RandomGeneratorCtx::Uptr R = std::make_unique<PRNG>();
+// 	std::vector<byte> iv_vec = (*R).Generate(AES::BLOCKSIZE);
+// 	std::vector<byte> *iv_addr = &iv_vec;
+// 	SecByteBlock iv(iv_addr, AES::BLOCKSIZE);
+	
+// 	std::string in_data = in, out_data;
+// 	std::vector<byte> return_data;
+
+// 	/*raise and error if the boolean parameter {suppressPadding} was set to TRUE and 
+// 	 *the provided input buffer does not match the block-size*/
+// 	if (suppressPadding == true && in.size() != AES::BLOCKSIZE)
+// 	{
+// 		//raise CryptoErrorDomain::kInvalidInputSize
+// 	}
+// 	/*raise and error if the context was not initialized by calling SetKey()*/
+// 	else if(!(this->Key_is_Set))
+// 	{
+// 		//raise CryptoErrorDomain::kUninitialized Context
+// 	}
+// 	else
+// 	{
+// 		try
+// 		{
+// 			if (this->Alg_transformation == CryptoTransform::kEncrypt)
+// 			{
+// 				CBC_Mode<AES>::Encryption e;
+// 			}
+// 			else if(this->Alg_transformation == CryptoTransform::kDecrypt)
+// 			{
+// 				CBC_Mode<AES>::Decryption e;
+// 			}
+			
+// 			e.SetKeyWithIV(key, key.size(), iv);
+// 			StringSource s(in_data, true, 
+// 				new StreamTransformationFilter(e,
+// 					new StringSink(out_data)
+// 				) // StreamTransformationFilter
+// 			); // StringSource
+// 		}
+// 		catch(const Exception& e)
+// 		{
+// 			std::cerr << e.what() << std::endl;
+// 			exit(1);
+// 		}
+
+// 		//Convert the string result into vector of bytes
+// 		for(uint8_t i=0; i<out_data.length(); i++)
+// 		{
+// 			return_data.push_back(out_data[i]);
+// 		}
+// 		return return_data;
+// 	}
+// }
+
                 
 /*Processe provided blocks without padding. The in and out buffers must have same size and
 *this size must be divisible by the block size (see GetBlockSize()). Pointers to the input and
 *output buffers must be aligned to the block-size boundary!*/
-//std::vector<byte> SymmetricCipher::Process_Blocks (ReadOnlyMemRegion in) const noexcept;
+//std::vector<byte> SymmetricCipher::Process_Blocks (ReadOnlyMemRegion in) const noexcept
                 
 /*Clear the crypto context*/                
 void SymmetricCipher::Reset () noexcept
@@ -99,7 +153,7 @@ void SymmetricCipher::SetKey (const SymmetricKey &key, CryptoTransform transform
     if ((transform == CryptoTransform::kEncrypt && kAllowDataEncryption != NULL) || (transform == CryptoTransform::kDecrypt && kAllowDataDecryption != NULL))
 	{
 		this->Key_is_Set = 1;
-        this->Alg_key = *key;
+        this->Alg_key = key;
 		this->Alg_transformation = transform;
         this->status = SymmetricBlockCipher_Status::initialized;
 	}
