@@ -65,6 +65,31 @@ namespace ara
                 }
                 return *this;
             }
+               ara::core::Result<KeySlotContentProps> InhKeySlot :: GetContentProps () const noexcept
+                 {
+                   //Return the key slot content properties 
+                     return KSCP;
+                  }
+    
+                ara::core::Result<cryp::CryptoProvider::Uptr> InhKeySlot ::MyProvider ()const noexcept
+                  {
+                  // return a pointer to the related CryptoProvider.
+                 return Myprov;
+                   }
+    
+                 ara::core::Result<void> InhKeySlot :: Clear () noexcept
+                  {
+                     // Clear all the content of the key slot.
+                      KSCP.mAlgId = 0;
+                      KSCP.mContentAllowedUsage = 0;
+                      KSCP.mObjectSize = 0;
+                      KSCP.mObjectUid.mGeneratorUid.mQwordLs=0;
+                      KSCP.mObjectUid.mGeneratorUid.mQwordMs=0;
+                      KSCP.mObjectUid.mVersionStamp=0;
+                      KSCP.mObjectType =ara::crypto::CryptoObjectType::kUndefined;
+                      Myprov =nullptr;
+                   }
+ 
         }
     }
 }
