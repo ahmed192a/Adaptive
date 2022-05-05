@@ -12,7 +12,7 @@ namespace ara
                     cobj.CO_ID.mCOType = this->kObjectType;
                     SecretSeed::Uptr Sc;
                     ara::core::Result<SecretSeed::Uptr> OP (Sc);
-                    if( sizeof(xorDelta) < sizeof(this->seed_val))
+                    if( sizeof(xorDelta) < sizeof(this->Seed_val))
                     {
                         //this->seed_val ^= xorDelta;
                     }
@@ -27,34 +27,44 @@ namespace ara
                 }
 
                 
-                ara::core::Result<void> SecSeed::JumpFrom (const SecretSeed &from,std::int64_t steps)
+                ara::core::Result<void> SecSeed::JumpFrom (const SecSeed &from,std::int64_t steps)
                 {
-                    if(steps != 0)
-                    this->seed_val = from.seed_val + steps ;
+                    if(sizeof(from.Seed_val)>=sizeof(this->Seed_val))
+                    {
+                        if(steps != 0)
+                        this->Seed =  from.Seed_val[from.Seed +steps] ;
+                        else
+                        this->Seed = from.Seed ;
+                    }
                     else
-                    this->seed_val = from.seed_val ;
+                    {
+                        //do nothing
+                    }
                    
                 }
 
                 SecretSeed& SecSeed::Jump (std::int64_t steps)
                 {
-                    this->seed_val = this->seed_val + steps ;
+                    if(steps != 0)
+                     this->Seed =  this->Seed_val[this->Seed +steps] ;
+                    else
+                     this->Seed = this->Seed ;
                     return *this ;
                 }
 
 
                 SecretSeed& SecSeed::Next ()
                 {
-                    this->seed_val = this->seed_val + 8;
+                    this->Seed = this->Seed_val[this->Seed + 1];
                     return *this;
                 }
 
                 
-                SecretSeed& SecSeed::operator^= (const SecretSeed &source)
+                SecretSeed& SecSeed::operator^= (const SecSeed &source)
                 {
                     if(this != &source)
                     {
-                        this->seed_val ^= source.seed_val;
+                        this->Seed ^= source.Seed_val[this->Seed];
                     }
                     return *this;
                 }
