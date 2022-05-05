@@ -1,40 +1,70 @@
-#include "ara/crypto/keys/keyslot.hpp"
+#include "ara/crypto/keys/Inher_key_slote.hpp"
 
 #include <iostream>
 namespace ara
-{
+{ 
     namespace crypto
     {
-        
-        bool keys::IsEmpty() noexcept 
+        namespace keys
         {
-        }
-        
-        /*Save the content of a provided source IOInterface to this key - slot*/
-        void keys::SaveCopy(const IOInterface& container) noexcept
-        { 
-            //Key Slot Content Properties Struct variables //
-           KeyContent.mAlgId = container.GetPrimitiveId();
-           KeyContent.mObjectType = container.GetCryptoObjectType();
-           KeyContent.mObjectUid = container.GetObjectId();
-           KeyContent.mContentAllowedUsage = container.GetAllowedUsage();
-           KeyContent.mObjectSize = container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-           //Key Slot Prototypes Struct variables//
-           KeySlotProps.mSlotCapacity= container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-           KeySlotProps.mSlotType = container.Slot_Type;
-           KeySlotProps.mAlgId = container.GetPrimitiveId();
-           KeySlotProps.mAllocateSpareSlot = container.AllocateSpareSlot_t;
-           KeySlotProps.mAllowContentTypeChange = container.AllowContentTypeChange_t;
-           KeySlotProps.mMaxUpdateAllowed = container.MaxUpdateAllowed_t;
-           KeySlotProps.mExportAllowed=container.ExportAllowed_t;
-           KeySlotProps.mContentAllowedUsage=container.GetAllowedUsage();
-           KeySlotProps.mObjectType = container.GetTypeRestriction();
+           
+            ara::core::Result<KeySlotPrototypeProps> InhKeySlot :: GetPrototypedProps ()const noexcept
+            {
+                return KSPP;
+            }
+            
+            KeySlot& InhKeySlot ::operator= (const KeySlot &other)
+            {
+                if(this != &other)
+                {
+                    this->KSCP.mAlgId = other.KSCP.mAlgId;
+                    this->KSCP.mContentAllowedUsage = other.KSCP.mContentAllowedUsage;
+                    this->KSCP.mObjectSize = other.KSCP.mObjectSize;
+                    this->KSCP.mObjectUid.mGeneratorUid.mQwordLs=other.KSCP.mObjectUid.mGeneratorUid.mQwordLs;
+                    this->KSCP.mObjectUid.mGeneratorUid.mQwordMs=other.KSCP.mObjectUid.mGeneratorUid.mQwordMs;
+                    this->KSCP.mObjectUid.mVersionStamp=other.KSCP.mObjectUid.mVersionStamp;
+                    this->KSCP.mObjectType =other.KSCP.mObjectType;
+                    this->Myprov ;
 
+                    this->KSPP.mAlgId = other.KSPP.mAlgId ;
+                    this->KSPP.mAllocateSpareSlot = other.KSPP.mAllocateSpareSlot ;
+                    this->KSPP.mAllowContentTypeChange = other.KSPP.mAllowContentTypeChange ;
+                    this->KSPP.mContentAllowedUsage = other.KSPP.mContentAllowedUsage ;
+                    this->KSPP.mExportAllowed = other.KSPP.mExportAllowed ;
+                    this->KSPP.mMaxUpdateAllowed = other.KSPP.mMaxUpdateAllowed ;
+                    this->KSPP.mObjectType = other.KSPP.mObjectType ;
+                    this->KSPP.mSlotCapacity = other.KSPP.mSlotCapacity ;
+                    this->KSPP.mSlotType = other.KSPP.mSlotType;
+                    
+                }
+                return *this;
+            }
+            KeySlot& InhKeySlot ::operator= (KeySlot &&other)
+            {
+                if(this != &other)
+                {
+                    this->KSCP.mAlgId = other.KSCP.mAlgId;
+                    this->KSCP.mContentAllowedUsage = other.KSCP.mContentAllowedUsage;
+                    this->KSCP.mObjectSize = other.KSCP.mObjectSize;
+                    this->KSCP.mObjectUid.mGeneratorUid.mQwordLs=other.KSCP.mObjectUid.mGeneratorUid.mQwordLs;
+                    this->KSCP.mObjectUid.mGeneratorUid.mQwordMs=other.KSCP.mObjectUid.mGeneratorUid.mQwordMs;
+                    this->KSCP.mObjectUid.mVersionStamp=other.KSCP.mObjectUid.mVersionStamp;
+                    this->KSCP.mObjectType =other.KSCP.mObjectType;
+                    this->Myprov ;
 
-        //the slot will be updated only after correspondent call of CommitTransaction()//
-            KeyStorageProvider::CommitTransaction();
-
-        
+                    this->KSPP.mAlgId = other.KSPP.mAlgId ;
+                    this->KSPP.mAllocateSpareSlot = other.KSPP.mAllocateSpareSlot ;
+                    this->KSPP.mAllowContentTypeChange = other.KSPP.mAllowContentTypeChange ;
+                    this->KSPP.mContentAllowedUsage = other.KSPP.mContentAllowedUsage ;
+                    this->KSPP.mExportAllowed = other.KSPP.mExportAllowed ;
+                    this->KSPP.mMaxUpdateAllowed = other.KSPP.mMaxUpdateAllowed ;
+                    this->KSPP.mObjectType = other.KSPP.mObjectType ;
+                    this->KSPP.mSlotCapacity = other.KSPP.mSlotCapacity ;
+                    this->KSPP.mSlotType = other.KSPP.mSlotType;
+                    
+                }
+                return *this;
+            }
         }
     }
 }
