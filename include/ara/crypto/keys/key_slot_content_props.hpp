@@ -70,4 +70,4 @@ namespace ara
 
 
 
-#endif /* ARA_CRYPTO_KEYS_KEY_SLOT_CONTENT_PROPS_HPP */
+#endif /* ARA_CRYPTO_KEYS_KEY_SLOT_CONTENT_PROPS_HPP */ 
