@@ -8,7 +8,7 @@
 #include "../common/vendor_specific_algorithm_identifier.hpp"
 //#include "ara/crypto/cryp/message_authn_code_ctx.hpp"
 #include "Keywrapper.hpp"
-//#include "ara/crypto/cryp/key_derivation_function_ctx.hpp"
+#include "ara/crypto/cryp/HKDF.hpp"
 #include "authentication.hpp"
 #include "cryobj/signature.hpp"
 #include "PRNG.hpp"
@@ -39,21 +39,21 @@ namespace ara
 
 				virtual std::string ConvertToAlgName (AlgId algId) const noexcept=0;
 
-				virtual AuthCipherCtx::Uptr CreateAuthCipherCtx (AlgId algId) noexcept=0;
+				virtual Authentication::Uptr CreateAuthCipherCtx (AlgId algId) noexcept=0;
 
 				virtual Signature::Uptrc CreateHashDigest (AlgId hashAlgId, ReadOnlyMemRegion value) noexcept=0;
 
 				virtual HashFunctionCtx::Uptr CreateHashFunctionCtx (AlgId algId) noexcept=0;
 
-				//virtual KeyDerivationFunctionCtx::Uptr CreateKeyDerivationFunctionCtx (AlgId algId) noexcept=0;
+				virtual HKDF::Uptr CreateKeyDerivationFunctionCtx (AlgId algId) noexcept=0;
 
-				virtual MessageAuthnCodeCtx::Uptr CreateMessageAuthCodeCtx (AlgId algId) noexcept=0;
+				virtual HMAC::Uptr CreateMessageAuthCodeCtx (AlgId algId) noexcept=0;
 
 				virtual PRNG::Uptr CreateRandomGeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true) noexcept=0;
 
 				//virtual Signature::Uptrc CreateSignature (AlgId signAlgId, ReadOnlyMemRegion value, const RestrictedUseObject &key,AlgId hashAlgId=kAlgIdNone) noexcept=0;
 
-				virtual SymmetricBlockCipherCtx::Uptr CreateSymmetricBlockCipherCtx (AlgId algId) noexcept=0;
+				virtual SymmetricCipher::Uptr CreateSymmetricBlockCipherCtx (AlgId algId) noexcept=0;
 
 				virtual Keywrapper::Uptr CreateSymmetricKeyWrapperCtx (AlgId algId) noexcept=0;
 
