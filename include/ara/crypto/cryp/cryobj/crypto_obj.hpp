@@ -17,7 +17,28 @@ namespace ara
             class cryptoobj : CryptoObject 
             {
                 public:
+               /**
+                 * @brief required attributes to signature class
+                 * 
+                 */
+                std::size_t H_Req_Size ;
+                CryptoPrimitiveId::AlgId H_SingID;
+
                
+                /**
+                 * @brief required attributes to restricted class
+                 * 
+                 */
+                AllowedUsageFlags Allow_U;
+                
+                /**
+                 * SWS_CRYPT_20504
+                 * @file crypto_object.hpp
+                 * @brief Unique identifier of this CryptoObject
+                 * 
+                 */
+                 
+                 COIdentifier CO_ID;
              
                  /*
                 * SWS_CRYPT_20502
@@ -97,7 +118,7 @@ namespace ara
              * @brief Save itself to provided IOInterface A CryptoObject with property "session" cannot be saved in a KeySlot.
             **/
             
-            ara::core::Result<void> Save (ara::crypto::IOInterface& container) const noexcept;
+            void Save (ara::crypto::IOInterface& container) const noexcept;
             
             /**
              * SWS_CRYPT_30208
