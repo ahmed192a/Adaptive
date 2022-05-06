@@ -8,7 +8,7 @@ namespace ara
         {
             class ConcreteCryptoProvider;
             class CryptoContext;
-            /**template <class ConcreteObject> static ara::core::Result<typename ConcreteObject::Uptrc> cryptoobj:: Downcast(CryptoObject::Uptrc &&object) noexcept
+            /**template <class ConcreteObject> static typename ConcreteObject::Uptrc cryptoobj:: Downcast(CryptoObject::Uptrc &&object) noexcept
             {
                 ara::core::Result<typename ConcreteObject::Uptrc> & op =  && object ;
                 return op;
