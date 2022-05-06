@@ -17,7 +17,7 @@ namespace ara
              * obtained by a call of CryptoObject::HasDependence()!
              * 
              */
-            class Signature : public CryptoObject
+            class Signature : public cryptoobj 
             {
 
                 public:
