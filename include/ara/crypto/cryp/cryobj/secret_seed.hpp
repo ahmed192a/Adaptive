@@ -51,7 +51,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<SecretSeed::Uptr> 
                  */
-                virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion xorDelta) const noexcept=0;
+                virtual SecretSeed::Uptr Clone (ReadOnlyMemRegion xorDelta) const noexcept=0;
 
                 //SWS_CRYPT_23012
                 /**
@@ -63,7 +63,7 @@ namespace ara
                  * @param steps 
                  * @return ara::core::Result<void> 
                  */
-                virtual ara::core::Result<void> JumpFrom (const SecretSeed &from,std::int64_t steps) noexcept=0;
+                virtual void JumpFrom (const SecSeed &from,std::int64_t steps) noexcept=0;
 
                 //SWS_CRYPT_23014
                 /**
@@ -95,7 +95,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                virtual SecretSeed& operator^= (const SecretSeed &source) noexcept=0;
+                virtual SecretSeed& operator^= (const SecSeed &source) noexcept=0;
                 
                 //SWS_CRYPT_23016
                 /**
