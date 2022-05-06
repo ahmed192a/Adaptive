@@ -6,35 +6,45 @@ namespace ara
     {
         namespace cryp
         {
-                ara::core::Result<SecretSeed::Uptr> SecSeed::Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const
+
+                SecSeed::SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar)
+                {
+                    allowed=allowedVal;
+                    session=sessionVar;
+                    exportable=exportableVar;
+
+                } 
+                
+                SecretSeed::Uptr SecSeed::Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const
                 {
                     cryptoobj cobj ;
-                    cobj.CO_ID.mCOType = this->kObjectType;
-                    SecretSeed::Uptr Sc;
-                    ara::core::Result<SecretSeed::Uptr> OP (Sc);
+                    //cobj.CO_ID.mCOType = this->kObjectType;
+                    SecSeed::Uptr op=std::make_unique<SecSeed>(allowed,session,exportable);
+
                     if( sizeof(xorDelta) < sizeof(this->Seed_val))
                     {
-                        //this->seed_val ^= xorDelta;
+                        for(int i = 0; i<sizeof(xorDelta);i++)
+                         op->Seed_val[i] ^= xorDelta[i];
                     }
                     else
                     {
-                        //this->seed_val ^= (xorDelta & (sizeof(this->seed_val) & 0xFFFF));
-
+                        for(int i = 0; i<sizeof(this->Seed_val);i++)
+                         op->Seed_val[i] ^= xorDelta[i];
                     }
                     
-                    return OP;
+                    return op;
 
                 }
 
                 
-                ara::core::Result<void> SecSeed::JumpFrom (const SecSeed &from,std::int64_t steps)
+                void SecSeed::JumpFrom (const SecSeed &from,std::int64_t steps)
                 {
                     if(sizeof(from.Seed_val)>=sizeof(this->Seed_val))
                     {
                         if(steps != 0)
                         this->Seed =  from.Seed_val[from.Seed +steps] ;
                         else
-                        this->Seed = from.Seed ;
+                        this->Seed_val = from.Seed_val ;
                     }
                     else
                     {
@@ -55,7 +65,9 @@ namespace ara
 
                 SecretSeed& SecSeed::Next ()
                 {
-                    this->Seed = this->Seed_val[this->Seed + 1];
+                    ConcreteCryptoProvider *CCP;
+                    SecSeed ::Uptrc upt= CCP->GenerateSeed(algId,allowed,session,exportable);
+                    this->Seed_val = upt->Seed_val;
                     return *this;
                 }
 
@@ -64,14 +76,16 @@ namespace ara
                 {
                     if(this != &source)
                     {
-                        this->Seed ^= source.Seed_val[this->Seed];
+                        for(int i = 0; i<sizeof(source);i++)
+                        this->Seed_val[i] ^= source.Seed_val[i];
                     }
                     return *this;
                 }
                 
                 SecretSeed& SecSeed::operator^= (ReadOnlyMemRegion source)
                 {
-                    //this->seed_val ^= source;
+                    for(int i = 0; i<sizeof(source);i++)
+                    this->Seed_val[i] ^= source[i];
                     return *this;
                 }
         }
