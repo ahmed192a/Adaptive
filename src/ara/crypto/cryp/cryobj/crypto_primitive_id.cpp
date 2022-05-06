@@ -29,7 +29,7 @@ namespace ara
                 if(this != &other)
                 {
                    id = other.GetPrimitiveId();
-                   //name = other.GetPrimitiveName();
+                   name = other.GetPrimitiveName();
                 }
                 return *this;
             }
@@ -38,7 +38,7 @@ namespace ara
                  if(this != &other)
                 {
                    id = other.GetPrimitiveId();
-                  // name = other.GetPrimitiveName ();
+                   name = other.GetPrimitiveName ();
                 }
                 return *this;
             }
