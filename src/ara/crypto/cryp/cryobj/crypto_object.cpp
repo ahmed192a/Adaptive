@@ -45,7 +45,7 @@ namespace ara
                 else
                 return true;
             }
-            /*ara::core::Result<void> CryptoObject::Save (IOInterface &container) const noexcept
+            /*void CryptoObject::Save (IOInterface &container) const noexcept
             {
                container.GetAllowedUsage();
                
