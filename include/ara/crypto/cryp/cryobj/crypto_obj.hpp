@@ -22,8 +22,7 @@ namespace ara
                  * 
                  */
                 std::size_t H_Req_Size ;
-                CryptoPrimitiveId::AlgId H_SingID;
-
+                CryptoPrId::AlgId H_SingID;
                
                 /**
                  * @brief required attributes to restricted class
@@ -64,7 +63,7 @@ namespace ara
             **/ 
               
             
-            template <class ConcreteObject> static ara::core::Result<typename ConcreteObject::Uptrc> Downcast(CryptoObject::Uptrc &&object) noexcept;
+            template <class ConcreteObject> static typename ConcreteObject::Uptrc Downcast(CryptoObject::Uptrc &&object) noexcept;
                 
             /**
              * SWS_CRYPT_20505
@@ -72,7 +71,8 @@ namespace ara
              * @brief Return the CryptoPrimitivId of this CryptoObject. 
             **/
             
-             CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept;
+             CryptoPrId::Uptr GetCryptoPrimitiveId () const noexcept;
+
             
             /**
              * SWS_CRYPT_20514
