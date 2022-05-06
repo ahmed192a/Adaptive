@@ -66,7 +66,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<KeySlotContentProps> 
                  */
-                virtual ara::core::Result<KeySlotContentProps> GetContentProps ()const noexcept=0;
+                virtual KeySlotContentProps GetContentProps ()const noexcept=0;
                 /**
                  * @brief Retrieve an instance of the CryptoProvider that owns this KeySlot. Any key slot always has an
                  * associated default Crypto Provider that can serve this key slot. In the simplest case all key slots
@@ -74,19 +74,19 @@ namespace ara
                  * 
                  * @return ara::core::Result<cryp::CryptoProvider::Uptr> 
                  */
-                virtual ara::core::Result<cryp::CryptoProvider::Uptr> MyProvider ()const noexcept=0;
+                virtual cryp::CryptoProvider::Uptr MyProvider ()const noexcept=0;
                 /**
                  * @brief Get the Prototyped Props object
                  * 
                  * @return ara::core::Result<KeySlotPrototypeProps> 
                  */
-                virtual ara::core::Result<KeySlotPrototypeProps> GetPrototypedProps ()const noexcept=0;
+                virtual KeySlotPrototypeProps GetPrototypedProps ()const noexcept=0;
                 /**
                  * @brief 
                  * 
                  * @return ara::core::Result<void> 
                  */
-                virtual ara::core::Result<void> Clear () noexcept=0;
+                virtual void Clear () noexcept=0;
                 /**
                  * @brief Copy-assign another KeySlot to this instanc
                  * 
