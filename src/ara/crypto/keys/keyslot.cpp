@@ -79,7 +79,7 @@ namespace ara
             
             
            
-            ara::core::Result<KeySlotPrototypeProps> InhKeySlot :: GetPrototypedProps ()const noexcept
+            KeySlotPrototypeProps InhKeySlot :: GetPrototypedProps ()const noexcept
             {
                 return KSPP;
             }
@@ -136,19 +136,19 @@ namespace ara
                 }
                 return *this;
             }
-               ara::core::Result<KeySlotContentProps> InhKeySlot :: GetContentProps () const noexcept
+               KeySlotContentProps InhKeySlot :: GetContentProps () const noexcept
                  {
                    //Return the key slot content properties 
                      return KSCP;
                   }
     
-                ara::core::Result<cryp::CryptoProvider::Uptr> InhKeySlot ::MyProvider ()const noexcept
+                cryp::CryptoProvider::Uptr InhKeySlot ::MyProvider ()const noexcept
                   {
                   // return a pointer to the related CryptoProvider.
                  return Myprov;
                    }
     
-                 ara::core::Result<void> InhKeySlot :: Clear () noexcept
+                 void InhKeySlot :: Clear () noexcept
                   {
                      // Clear all the content of the key slot.
                       KSCP.mAlgId = 0;
