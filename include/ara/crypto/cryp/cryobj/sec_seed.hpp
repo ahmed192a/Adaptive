@@ -2,7 +2,7 @@
 //#define ARA_CRYPTO_CRYP_SECSEED_H_
 #pragma once
 #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
-
+#include "../../common/base_id_types.hpp"
 namespace ara
 {
     namespace crypto
@@ -12,20 +12,23 @@ namespace ara
             class SecSeed : public SecretSeed
             {
                 public :
+                using AlgId = CryptoAlgId; 
+                AlgId algId;
                 using Usage = AllowedUsageFlags;
                 Usage allowed;
                 bool Volatile;
                 bool session;
                 bool exportable;
-                 uint32_t Seed;
+                uint32_t Seed;
                 std::vector<uint8_t> Seed_val;
-                SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar)
-                {
-                    allowed=allowedVal;
-                    session=sessionVar;
-                    exportable=exportableVar;
-
-                } 
+                /**
+                 * @brief Construct a new Sec Seed object
+                 * 
+                 * @param allowedVal 
+                 * @param sessionVar 
+                 * @param exportableVar 
+                 */
+                SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar);
                 //SWS_CRYPT_23001
                 /**
                  * @brief Unique smart pointer of a constant interface instance.
@@ -60,7 +63,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<SecretSeed::Uptr> 
                  */
-                 ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const noexcept;
+                 SecretSeed::Uptr Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const noexcept;
 
                 //SWS_CRYPT_23012
                 /**
@@ -72,7 +75,7 @@ namespace ara
                  * @param steps 
                  * @return ara::core::Result<void> 
                  */
-                ara::core::Result<void> JumpFrom (const SecretSeed &from,std::int64_t steps) noexcept;
+                void JumpFrom (const SecSeed &from,std::int64_t steps) noexcept;
 
                 //SWS_CRYPT_23014
                 /**
@@ -104,7 +107,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                SecretSeed& operator^= (const SecretSeed &source) noexcept;
+                SecretSeed& operator^= (const SecSeed &source) noexcept;
                 
                 //SWS_CRYPT_23016
                 /**
