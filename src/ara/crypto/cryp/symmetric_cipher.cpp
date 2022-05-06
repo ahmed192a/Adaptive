@@ -74,65 +74,72 @@ CryptoTransform SymmetricCipher::CryptoTransform GetTransformation () const noex
 }
 
 
-// /*Process (encrypt / decrypt) an input block according to the crypto configuration*/
-// std::vector<byte> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept
-// {
-// 	std::vector<uint8_t> *key_addr = &(this->Alg_key.keyVal);
-// 	SecByteBlock key(key_addr, AES::DEFAULT_KEYLENGTH);
+/*Process (encrypt / decrypt) an input block according to the crypto configuration*/
+std::vector<byte> Symmetric_Cipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept
+{
+	std::vector<uint8_t> key = this->Alg_key.keyVal;
     
-// 	RandomGeneratorCtx::Uptr R = std::make_unique<PRNG>();
-// 	std::vector<byte> iv_vec = (*R).Generate(AES::BLOCKSIZE);
-// 	std::vector<byte> *iv_addr = &iv_vec;
-// 	SecByteBlock iv(iv_addr, AES::BLOCKSIZE);
+	RandomGeneratorCtx::Uptr R = std::make_unique<PRNG>();
+	std::vector<byte> iv = (*R).Generate(AES::BLOCKSIZE);
 	
-// 	std::string in_data = in, out_data;
-// 	std::vector<byte> return_data;
+	std::string in_data, out_data;
+	std::vector<byte> return_data;
 
-// 	/*raise and error if the boolean parameter {suppressPadding} was set to TRUE and 
-// 	 *the provided input buffer does not match the block-size*/
-// 	if (suppressPadding == true && in.size() != AES::BLOCKSIZE)
-// 	{
-// 		//raise CryptoErrorDomain::kInvalidInputSize
-// 	}
-// 	/*raise and error if the context was not initialized by calling SetKey()*/
-// 	else if(!(this->Key_is_Set))
-// 	{
-// 		//raise CryptoErrorDomain::kUninitialized Context
-// 	}
-// 	else
-// 	{
-// 		try
-// 		{
-// 			if (this->Alg_transformation == CryptoTransform::kEncrypt)
-// 			{
-// 				CBC_Mode<AES>::Encryption e;
-// 			}
-// 			else if(this->Alg_transformation == CryptoTransform::kDecrypt)
-// 			{
-// 				CBC_Mode<AES>::Decryption e;
-// 			}
-			
-// 			e.SetKeyWithIV(key, key.size(), iv);
-// 			StringSource s(in_data, true, 
-// 				new StreamTransformationFilter(e,
-// 					new StringSink(out_data)
-// 				) // StreamTransformationFilter
-// 			); // StringSource
-// 		}
-// 		catch(const Exception& e)
-// 		{
-// 			std::cerr << e.what() << std::endl;
-// 			exit(1);
-// 		}
+	for (uint8_t i=0; i<in.size(); i++)
+	{
+		in_data += in[i];
+	}
 
-// 		//Convert the string result into vector of bytes
-// 		for(uint8_t i=0; i<out_data.length(); i++)
-// 		{
-// 			return_data.push_back(out_data[i]);
-// 		}
-// 		return return_data;
-// 	}
-// }
+	/*raise and error if the boolean parameter {suppressPadding} was set to TRUE and 
+	 *the provided input buffer does not match the block-size*/
+	if (suppressPadding == true && in.size() != AES::BLOCKSIZE)
+	{
+		//raise CryptoErrorDomain::kInvalidInputSize
+	}
+	/*raise and error if the context was not initialized by calling SetKey()*/
+	else if(!(this->Key_is_Set))
+	{
+		//raise CryptoErrorDomain::kUninitialized Context
+	}
+	else
+	{
+		try
+		{
+			if (this->Alg_transformation == CryptoTransform::kEncrypt)
+			{
+				CBC_Mode<AES>::Encryption e;
+				e.SetKeyWithIV(key.data(), key.size(), iv.data());
+				StringSource s(in_data, true, 
+					new StreamTransformationFilter(e,
+						new StringSink(out_data)
+					) // StreamTransformationFilter
+				); // StringSource
+			}
+			else if(this->Alg_transformation == CryptoTransform::kDecrypt)
+			{
+				CBC_Mode<AES>::Decryption d;
+				d.SetKeyWithIV(key.data(), key.size(), iv.data());
+				StringSource s(in_data, true, 
+					new StreamTransformationFilter(e,
+						new StringSink(out_data)
+					) // StreamTransformationFilter
+				); // StringSource
+			}
+		}
+		catch(const Exception& e)
+		{
+			std::cerr << e.what() << std::endl;
+			exit(1);
+		}
+
+		//Convert the string result into vector of bytes
+		for(uint8_t i=0; i<out_data.length(); i++)
+		{
+			return_data.push_back(out_data[i]);
+		}
+		return return_data;
+	}
+}
 
                 
 /*Processe provided blocks without padding. The in and out buffers must have same size and
