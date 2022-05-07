@@ -1,89 +1,113 @@
 #include "ara/crypto/keys/Inher_key_slote.hpp"
 
 #include <iostream>
+#include <filesystem>
+#include <fstream>
 namespace ara
 { 
     namespace crypto
     {
         namespace keys
         {
-        //Check the slot for emptiness//
-        bool keys::IsEmpty() noexcept 
-        {
-            if (Empty_State)
+             InhKeySlot::InhKeySlot (std::string file_name)
             {
-                return true;//true if the slot is empty or false otherwise//
+                std::string name = file_name;
+                std::string path= "ara/crypto/keys/KeySlot/" + name + ".txt";//must write a complete file path 
+                std::ofstream file(path); //open in constructor
+                this->path = "ara/crypto/keys/KeySlot/" + name + ".txt";//must write a complete file path 
             }
-            else
-                return false;
-        }
-            
-        /*Save the content of a provided source IOInterface to this key - slot*/
-        void keys::SaveCopy(const IOInterface& container) noexcept
-        { 
-            if(!(IOInterface_State_Empty))//if the source IOInterface isn't empty//
+            //Check the slot for emptiness//
+            bool InhKeySlot::IsEmpty() noexcept 
+            {
+                if (Empty_State)
                 {
-            //Key Slot Content Properties Struct variables //
-           KSCP.mAlgId = container.GetPrimitiveId();
-           KSCP.mObjectType = container.GetCryptoObjectType();
-           KSCP.mObjectUid = container.GetObjectId();
-           KSCP.mContentAllowedUsage = container.GetAllowedUsage();
-           KSCP.mObjectSize = container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-           //Key Slot Prototypes Struct variables//
-           KSPP.mSlotCapacity= container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-           KSPP.mSlotType = container.Slot_Type;
-           KSPP.mAlgId = container.GetPrimitiveId();
-           KSPP.mAllocateSpareSlot = container.AllocateSpareSlot_t;
-           KSPP.mAllowContentTypeChange = container.AllowContentTypeChange_t;
-           KSPP.mMaxUpdateAllowed = container.MaxUpdateAllowed_t;
-           KSPP.mExportAllowed=container.ExportAllowed_t;
-           KSPP.mContentAllowedUsage=container.GetAllowedUsage();
-           KSPP.mObjectType = container.GetTypeRestriction();
-           //change state of key slot to committed //
-           this->state = SlotState::committed;
-           Empty_State=false;
-      
-               }
-        
-        }
-        //Open this key slot and return an IOInterface to its content//
-        IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false)
-        {
+                    return true;//true if the slot is empty or false otherwise//
+                }
+                else
+                    return false;
+            }
+                
+            /*Save the content of a provided source IOInterface to this key - slot*/
+            void InhKeySlot::SaveCopy(const IOInterface& container) noexcept
+            { 
+                if(!(IOInterface_State_Empty))//if the source IOInterface isn't empty//
+                {
+                //Key Slot Content Properties Struct variables //
+                    KSCP.mAlgId = container.GetPrimitiveId();
+                    KSCP.mObjectType = container.GetCryptoObjectType();
+                    KSCP.mObjectUid = container.GetObjectId();
+                    KSCP.mContentAllowedUsage = container.GetAllowedUsage();
+                    KSCP.mObjectSize = container.GetCapacity();//shall return capacity of the underlying resource in bytes//
+                    //Key Slot Prototypes Struct variables//
+                    KSPP.mSlotCapacity= container.GetCapacity();//shall return capacity of the underlying resource in bytes//
+                    KSPP.mSlotType = container.Slot_Type;
+                    KSPP.mAlgId = container.GetPrimitiveId();
+                    KSPP.mAllocateSpareSlot = container.AllocateSpareSlot_t;
+                    KSPP.mAllowContentTypeChange = container.AllowContentTypeChange_t;
+                    KSPP.mMaxUpdateAllowed = container.MaxUpdateAllowed_t;
+                    KSPP.mExportAllowed=container.ExportAllowed_t;
+                    KSPP.mContentAllowedUsage=container.GetAllowedUsage();
+                    KSPP.mObjectType = container.GetTypeRestriction();
+                    //change state of key slot to committed //
+                    this->state = SlotState::committed;
+                    Empty_State=false;
+                
+                }
+            
+            }
+            //Open this key slot and return an IOInterface to its content//
+            IOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates = false, bool writeable = false)
+            {
 
-           //instance of IOInterface//
-            IOInterface::Uptr IOContent = std::make_unique<IOInterface>;
-            //Key Slot Content Properties Struct variables //
-            IOContent.GetPrimitiveId() = KSCP.mAlgId;
-            IOContent.GetCryptoObjectType() = KSCP.mObjectType;
-            IOContent.GetObjectId() = KSCP.mObjectUid;
-            IOContent.GetAllowedUsage() = KSCP.mContentAllowedUsage;
-            IOContent.GetCapacity() = KSCP.mObjectSize;
-            //Key Slot Prototypes Struct variables//
-            IOContent.GetCapacity() = KSPP.mSlotCapacity;
-            IOContent.Slot_Type = KSPP.mSlotType;
-            IOContent.GetPrimitiveId() = KSPP.mAlgId;
-            IOContent.AllocateSpareSlot_t = KSPP.mAllocateSpareSlot;
-            IOContent.AllowContentTypeChange_t = KSPP.mAllowContentTypeChange;
-            IOContent.MaxUpdateAllowed_t = KSPP.mMaxUpdateAllowed;
-            IOContent.ExportAllowed_t = KSPP.mExportAllowed;
-            IOContent.GetAllowedUsage() = KSPP.mContentAllowedUsage;
-            IOContent.GetTypeRestriction() = KSPP.mObjectType;
-            //change state of key slot to opened //
-            this->state = SlotState::opened;
-            return IOContent;
+            //instance of IOInterface//
+                IOInterface::Uptr IOContent = std::make_unique<IOInterface>;
+                //Key Slot Content Properties Struct variables //
+                IOContent.GetPrimitiveId() = KSCP.mAlgId;
+                IOContent.GetCryptoObjectType() = KSCP.mObjectType;
+                IOContent.GetObjectId() = KSCP.mObjectUid;
+                IOContent.GetAllowedUsage() = KSCP.mContentAllowedUsage;
+                IOContent.GetCapacity() = KSCP.mObjectSize;
+                //Key Slot Prototypes Struct variables//
+                IOContent.GetCapacity() = KSPP.mSlotCapacity;
+                IOContent.Slot_Type = KSPP.mSlotType;
+                IOContent.GetPrimitiveId() = KSPP.mAlgId;
+                IOContent.AllocateSpareSlot_t = KSPP.mAllocateSpareSlot;
+                IOContent.AllowContentTypeChange_t = KSPP.mAllowContentTypeChange;
+                IOContent.MaxUpdateAllowed_t = KSPP.mMaxUpdateAllowed;
+                IOContent.ExportAllowed_t = KSPP.mExportAllowed;
+                IOContent.GetAllowedUsage() = KSPP.mContentAllowedUsage;
+                IOContent.GetTypeRestriction() = KSPP.mObjectType;
+                //change state of key slot to opened //
+                this->state = SlotState::opened;
+                return IOContent;
 
-        
-        }
             
-            
-            
-            
-           
+            }
+            KeySlotContentProps InhKeySlot :: GetContentProps () const noexcept
+            {
+                //KSPP->mExportAllowed=false;
+                 return KSCP;
+            }
+            cryp::CryptoProvider::Uptr InhKeySlot ::MyProvider ()const noexcept
+            {
+                 return  std::unique_ptr<ara::crypto::cryp::CryptoProvider>();
+            }
             KeySlotPrototypeProps InhKeySlot :: GetPrototypedProps ()const noexcept
             {
                 return KSPP;
             }
-            
+            void InhKeySlot :: Clear () noexcept
+            {
+                KSCP.mAlgId = 0;
+                KSCP.mContentAllowedUsage = 0;
+                KSCP.mObjectSize = 0;
+                KSCP.mObjectUid.mGeneratorUid.mQwordLs=0;
+                KSCP.mObjectUid.mGeneratorUid.mQwordMs=0;
+                KSCP.mObjectUid.mVersionStamp=0;
+                KSCP.mObjectType =ara::crypto::CryptoObjectType::kUndefined;
+                Myprov =nullptr;
+
+            }
             KeySlot& InhKeySlot ::operator= (const KeySlot &other)
             {
                 if(this != &other)
@@ -136,31 +160,6 @@ namespace ara
                 }
                 return *this;
             }
-               KeySlotContentProps InhKeySlot :: GetContentProps () const noexcept
-                 {
-                   //Return the key slot content properties 
-                     return KSCP;
-                  }
-    
-                cryp::CryptoProvider::Uptr InhKeySlot ::MyProvider ()const noexcept
-                  {
-                  // return a pointer to the related CryptoProvider.
-                 return Myprov;
-                   }
-    
-                 void InhKeySlot :: Clear () noexcept
-                  {
-                     // Clear all the content of the key slot.
-                      KSCP.mAlgId = 0;
-                      KSCP.mContentAllowedUsage = 0;
-                      KSCP.mObjectSize = 0;
-                      KSCP.mObjectUid.mGeneratorUid.mQwordLs=0;
-                      KSCP.mObjectUid.mGeneratorUid.mQwordMs=0;
-                      KSCP.mObjectUid.mVersionStamp=0;
-                      KSCP.mObjectType =ara::crypto::CryptoObjectType::kUndefined;
-                      Myprov =nullptr;
-                   }
- 
         }
     }
 }
