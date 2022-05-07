@@ -127,6 +127,7 @@ void *pthread0(void *v_var)
             cout << "This is SET OR GET request" << endl;
             server_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
         }
+        cout<< "finish request \n";
 
     }
 

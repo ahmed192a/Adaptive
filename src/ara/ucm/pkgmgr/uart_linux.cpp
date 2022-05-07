@@ -1,9 +1,9 @@
 #include "ara/ucm/pkgmgr/uart_linux.hpp"
-
+#include <iostream>
 uart_linux::uart_linux(/* args */)
 {
     // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
-    this->serial_port = open("/dev/ttyACM0", O_RDWR);
+    this->serial_port = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_SYNC);
 
     // // Create new termios struct, we call it 'tty' for convention
     // struct termios tty;
@@ -51,9 +51,11 @@ uart_linux::uart_linux(/* args */)
 }
 uart_linux::~uart_linux()
 {
+    close(this->serial_port);
 }
 void uart_linux::UART_sendBlock(void *msg, int size)
 {
+    std::cout<<"\t uart size "<<size<<std::endl;
     write(this->serial_port, msg, size);
 }
 void uart_linux::UART_receiveBlock(void *read_buf, int size)

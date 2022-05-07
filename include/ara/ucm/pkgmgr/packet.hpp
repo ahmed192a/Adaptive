@@ -71,12 +71,12 @@
  * @brief update ended successfully
  * 
  */
-#define UPDATE_SUCCESS							0xAAAA
+#define UPDATE_SUCCESS							0x3535
 /**
  * @brief Activate
  * 
  */
-#define Activate_s							    0xBBBB
+#define Activate_s							    0x1212
 /**
  * @brief trigger_seq
  * 
