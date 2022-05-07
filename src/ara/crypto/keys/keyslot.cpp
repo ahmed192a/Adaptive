@@ -57,27 +57,27 @@ namespace ara
             
             }
             //Open this key slot and return an IOInterface to its content//
-            IOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates = false, bool writeable = false)
+            ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates = false, bool writeable = false)
             {
 
             //instance of IOInterface//
-                IOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
+                ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
                 //Key Slot Content Properties Struct variables //
-                IOContent.GetPrimitiveId() = KSCP.mAlgId;
-                IOContent.GetCryptoObjectType() = KSCP.mObjectType;
-                IOContent.GetObjectId() = KSCP.mObjectUid;
-                IOContent.GetAllowedUsage() = KSCP.mContentAllowedUsage;
-                IOContent.GetCapacity() = KSCP.mObjectSize;
+                IOContent->GetPrimitiveId() = KSCP.mAlgId;
+                IOContent->GetCryptoObjectType() = KSCP.mObjectType;
+                IOContent->GetObjectId() = KSCP.mObjectUid;
+                IOContent->GetAllowedUsage() = KSCP.mContentAllowedUsage;
+                IOContent->GetCapacity() = KSCP.mObjectSize;
                 //Key Slot Prototypes Struct variables//
-                IOContent.GetCapacity() = KSPP.mSlotCapacity;
-                IOContent.Slot_Type = KSPP.mSlotType;
-                IOContent.GetPrimitiveId() = KSPP.mAlgId;
-                IOContent.AllocateSpareSlot_t = KSPP.mAllocateSpareSlot;
-                IOContent.AllowContentTypeChange_t = KSPP.mAllowContentTypeChange;
-                IOContent.MaxUpdateAllowed_t = KSPP.mMaxUpdateAllowed;
-                IOContent.ExportAllowed_t = KSPP.mExportAllowed;
-                IOContent.GetAllowedUsage() = KSPP.mContentAllowedUsage;
-                IOContent.GetTypeRestriction() = KSPP.mObjectType;
+                IOContent->GetCapacity() = KSPP.mSlotCapacity;
+                IOContent->GetSlotType() = KSPP.mSlotType;
+                IOContent->GetPrimitiveId() = KSPP.mAlgId;
+                IOContent->IsAllocateSpareSlot() = KSPP.mAllocateSpareSlot;
+                IOContent->IsAllowContentTypeChange() = KSPP.mAllowContentTypeChange;
+                IOContent->GetMaxUpdateAllowed() = KSPP.mMaxUpdateAllowed;
+                IOContent->IsExportAllowed() = KSPP.mExportAllowed;
+                IOContent->GetAllowedUsage() = KSPP.mContentAllowedUsage;
+                IOContent->GetTypeRestriction() = KSPP.mObjectType;
                 //change state of key slot to opened //
                 this->state = SlotState::opened;
                 return IOContent;
