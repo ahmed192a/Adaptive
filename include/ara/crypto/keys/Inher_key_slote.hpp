@@ -40,7 +40,7 @@ namespace ara
                  * @return IOInterface::Uptr 
                  */
                 
-                IOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false);
+                ConcreteIOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false);
                 /**
                  * @brief Get the Content Props object
                  * 
