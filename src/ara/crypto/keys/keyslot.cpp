@@ -28,9 +28,9 @@ namespace ara
             }
                 
             /*Save the content of a provided source IOInterface to this key - slot*/
-            void InhKeySlot::SaveCopy(const IOInterface& container) noexcept
+            void InhKeySlot::SaveCopy(const ConcreteIOInterface& container) noexcept
             { 
-                if(!(IOInterface_State_Empty))//if the source IOInterface isn't empty//
+                if(!(container.IsIOInterface_State_Empty()))//if the source IOInterface isn't empty//
                 {
                 //Key Slot Content Properties Struct variables //
                     KSCP.mAlgId = container.GetPrimitiveId();
@@ -40,16 +40,17 @@ namespace ara
                     KSCP.mObjectSize = container.GetCapacity();//shall return capacity of the underlying resource in bytes//
                     //Key Slot Prototypes Struct variables//
                     KSPP.mSlotCapacity= container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-                    KSPP.mSlotType = container.Slot_Type;
+                    KSPP.mSlotType = container.GetSlotType();
                     KSPP.mAlgId = container.GetPrimitiveId();
-                    KSPP.mAllocateSpareSlot = container.AllocateSpareSlot_t;
-                    KSPP.mAllowContentTypeChange = container.AllowContentTypeChange_t;
-                    KSPP.mMaxUpdateAllowed = container.MaxUpdateAllowed_t;
-                    KSPP.mExportAllowed=container.ExportAllowed_t;
+                    //Elli etghyr//
+                    KSPP.mAllocateSpareSlot = container.IsAllocateSpareSlot();
+                    KSPP.mAllowContentTypeChange = container.IsAllowContentTypeChange();
+                    KSPP.mMaxUpdateAllowed = container.GetMaxUpdateAllowed();
+                    KSPP.mExportAllowed=container.IsExportAllowed();
                     KSPP.mContentAllowedUsage=container.GetAllowedUsage();
                     KSPP.mObjectType = container.GetTypeRestriction();
                     //change state of key slot to committed //
-                    this->state = SlotState::committed;
+                    this->state = SlotState::commited;
                     Empty_State=false;
                 
                 }
@@ -60,7 +61,7 @@ namespace ara
             {
 
             //instance of IOInterface//
-                IOInterface::Uptr IOContent = std::make_unique<IOInterface>;
+                IOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
                 //Key Slot Content Properties Struct variables //
                 IOContent.GetPrimitiveId() = KSCP.mAlgId;
                 IOContent.GetCryptoObjectType() = KSCP.mObjectType;
