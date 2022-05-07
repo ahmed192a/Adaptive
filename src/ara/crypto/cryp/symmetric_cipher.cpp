@@ -43,9 +43,8 @@ bool SymmetricCipher::IsInitialized()
 ///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
 CryptoPrimitiveId::Uptr SymmetricCipher::GetCryptoPrimitiveId() const noexcept
 {
-	AlgId myAlgorithmId = (this->myProvider)->ConvertToAlgId("AES_128");
-	//CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>(myAlgorithmId);
-	return myAlgorithmId;
+	CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("AES_128");
+	return myPrimitiveId;
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
@@ -75,16 +74,18 @@ CryptoTransform SymmetricCipher::CryptoTransform GetTransformation () const noex
 
 
 /*Process (encrypt / decrypt) an input block according to the crypto configuration*/
-std::vector<byte> Symmetric_Cipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept
+std::vector<byte> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept
 {
 	std::vector<uint8_t> key = this->Alg_key.keyVal;
     
+	//creating the initial vector using the random number generator
 	RandomGeneratorCtx::Uptr R = std::make_unique<PRNG>();
 	std::vector<byte> iv = (*R).Generate(AES::BLOCKSIZE);
 	
 	std::string in_data, out_data;
 	std::vector<byte> return_data;
 
+	//storing the input vector data in a string
 	for (uint8_t i=0; i<in.size(); i++)
 	{
 		in_data += in[i];
@@ -105,6 +106,7 @@ std::vector<byte> Symmetric_Cipher::ProcessBlock (ReadOnlyMemRegion in, bool sup
 	{
 		try
 		{
+			//Encryption Process
 			if (this->Alg_transformation == CryptoTransform::kEncrypt)
 			{
 				CBC_Mode<AES>::Encryption e;
@@ -115,6 +117,7 @@ std::vector<byte> Symmetric_Cipher::ProcessBlock (ReadOnlyMemRegion in, bool sup
 					) // StreamTransformationFilter
 				); // StringSource
 			}
+			//Decryption Process
 			else if(this->Alg_transformation == CryptoTransform::kDecrypt)
 			{
 				CBC_Mode<AES>::Decryption d;
@@ -132,7 +135,7 @@ std::vector<byte> Symmetric_Cipher::ProcessBlock (ReadOnlyMemRegion in, bool sup
 			exit(1);
 		}
 
-		//Convert the string result into vector of bytes
+		//converting the string result into vector of bytes
 		for(uint8_t i=0; i<out_data.length(); i++)
 		{
 			return_data.push_back(out_data[i]);
@@ -159,10 +162,14 @@ void SymmetricCipher::SetKey (const SymmetricKey &key, CryptoTransform transform
 {
     if ((transform == CryptoTransform::kEncrypt && kAllowDataEncryption != NULL) || (transform == CryptoTransform::kDecrypt && kAllowDataDecryption != NULL))
 	{
-		this->Key_is_Set = 1;
-        this->Alg_key = key;
-		this->Alg_transformation = transform;
-        this->status = SymmetricBlockCipher_Status::initialized;
+		//mark that SetKey has been called
+	    	this->Key_is_Set = 1;
+        //storing the key to be used in the encryption/decryption process
+	this->Alg_key = key;
+		//storing the transformation to be performed (encryption/decryption)
+	    	this->Alg_transformation = transform;
+        //setting the state of the context as initialized
+	this->status = SymmetricBlockCipher_Status::initialized;
 	}
     else
     {
