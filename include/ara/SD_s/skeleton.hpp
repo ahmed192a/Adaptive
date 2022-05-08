@@ -35,6 +35,7 @@ class skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
 private:
     struct sockaddr_in cliaddr;
     ara::com::InstanceIdentifier serviceid;
+    uint16_t s_id;
 
 public:
     event::event event1;

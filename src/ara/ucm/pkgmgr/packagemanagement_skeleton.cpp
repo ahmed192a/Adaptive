@@ -106,7 +106,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                                                                                             {
                                                                                                 
         ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput result;
-        bool found = false;
         uart_linux u_linux;
         current_state = trigger_seq;
         uint16_t packet_num;
@@ -126,13 +125,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
               //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
     while (1) /* stay in this loop until the update is finished or canceled */
     {
-        if(found == true)
-        {
-            std::cout<<"found"<<std::endl;
-            std::cout<<"current_state ";
-            printf("%x\n", current_state);
-            found = false;
-        }
         switch (current_state)
         {
 
@@ -143,10 +135,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                 start.push_back('s');
                 int st = start.size();
                 u_linux.UART_sendBlock(start.data(),st);
-                // std::cout<<"trigger seq\n";
-                // current_state = 1;
-                // sleep(3);
-                // std::cout<<"Finish delay 3s\n";
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
                 std::cout<<"receive seq\n";
                 printf("COMAAND : %x\n", current_state);
@@ -157,28 +145,20 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
             {
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
                 printf("COMAAND : %x\n", current_state);
-                if(current_state == 0x7777) found = true;
                 break;
             }
             case RECEIVE_REQUEST_FREAME_INFO:
             {
-                // std::cout<<"current_state ";
-                // printf("%x\n", current_state);
+
                 int FRAME_SIZE = 4;
                 uint8_t Frame [4];
 
-                // uint8_t * ex = (uint8_t *)&(extra_bytes);
-                // uint8_t * f = (uint8_t *)&(packet_num);
                 Frame[0] = uint8_t (packet_num&0x00FF);
                 Frame[1] = uint8_t ((packet_num&0xFF00)>>8);
                 Frame[2] = uint8_t (extra_bytes&0x00FF);
                 Frame[3] = uint8_t ((extra_bytes&0xFF00)>>8);
                 
                 u_linux.UART_sendBlock(Frame, FRAME_SIZE);
-                uint16_t exo=0;
-                // sleep(0.5);
-                // u_linux.UART_receiveBlock(&exo, 2);
-                // printf("%d \n", exo);
 
                 std::cout<<"SEND_FRAME_INFO  \n";
                 current_state = 2;
@@ -190,11 +170,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                 std::vector<uint8_t> small_data;
                 for(int j=0; j<0x400; j++)
                 {
-                    // if(block_counter*TransferInfoData.BlockSize + j >= buffer.size()){
-                    //     // small_data.resize(TransferInfoData.BlockSize);
-                    //    break;
-                    // }
-                    // else
                     if((block_counter*0x400)+ j < data_block.size()){
                         small_data.push_back(data_block[block_counter*0x400 + j]);
                     }else
@@ -225,14 +200,10 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                 break;
             }
             case Activate_s:
-            {
-                u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-                std::cout<<"Activate_s ";
-                printf("%x\n", current_state);     
+            {   
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
                 std::cout<<"Activate_s ";
                 printf("%x\n", current_state);
-                current_state = UPDATE_SUCCESS;
             break;
             }
 

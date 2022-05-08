@@ -92,7 +92,7 @@ namespace ara
                           m_name{name},
                           m_event_id{event_id}
                     {
-                        subname_file = m_name + m_service->m_service_id.toString()+ std::to_string(event_id); 
+                        subname_file = m_name + to_string(m_service->m_service_id)+ std::to_string(event_id); 
                         subscribers_data.clear(subname_file.data());  
                     }
                     /**

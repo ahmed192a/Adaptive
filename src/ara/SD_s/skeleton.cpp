@@ -23,7 +23,8 @@ skeleton::skeleton(
     ara::com::InstanceIdentifier instance,
     ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle)
     : serviceid(instance.GetInstanceId()),
-      ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle),
+        s_id{instance.GetInstanceId()},
+      ara::com::proxy_skeleton::skeleton::ServiceSkeleton(s_id, instance, skeleton_handle),
       event1(this, "event1", 0),
       event2(this, "event2", 1),
       field1(this, "field1", 2)

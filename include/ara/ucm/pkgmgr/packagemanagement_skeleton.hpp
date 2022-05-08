@@ -83,7 +83,8 @@ namespace ara
                     } TransferInfoData;
 
                     std::vector<uint8_t> buffer;
-                    ara::com::InstanceIdentifier serviceid;
+                    // ara::com::InstanceIdentifier serviceid;
+                    ara::com::proxy_skeleton::ServiceId UCM_Service_id ;
 
                 public:
                     /**
@@ -99,8 +100,8 @@ namespace ara
                     PackageManagementSkeleton(
                         // ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent
                         ara::com::InstanceIdentifier instance,
-                        ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle) : serviceid(45),
-                        ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle),
+                        ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle) : UCM_Service_id(45),
+                        ara::com::proxy_skeleton::skeleton::ServiceSkeleton(UCM_Service_id, instance, skeleton_handle),
                         CurrentStatus(this, "CurrentStatus", 0)
 
                     {
@@ -193,7 +194,7 @@ namespace ara
                             rval = transfer_data_output.get();
                             // create message and send it
                             ara::com::SOMEIP_MESSAGE::Message response_m(
-                                ara::com::SOMEIP_MESSAGE::Message_ID{(uint16_t)this->serviceid.GetInstanceId(), (uint16_t)(message.MessageId().method_id & 0x7fff)},
+                                ara::com::SOMEIP_MESSAGE::Message_ID{(uint16_t)this->UCM_Service_id, (uint16_t)(message.MessageId().method_id & 0x7fff)},
                                 ara::com::SOMEIP_MESSAGE::Request_ID{5, 6},
                                 2, // protocol version
                                 7, // Interface Version

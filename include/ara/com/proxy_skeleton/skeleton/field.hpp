@@ -66,7 +66,7 @@ namespace ara
                     {
                         std::vector<uint8_t> _data = sd_msg.GetPayload();
                         SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id, (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
                             SOMEIP_MESSAGE::Request_ID{5, 6},
                             2, // protocol version
                             7, // Interface Version
@@ -95,7 +95,7 @@ namespace ara
                     {
                         std::vector<uint8_t> _data;
                         SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id, (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
                             SOMEIP_MESSAGE::Request_ID{5, 6},
                             2, // protocol version
                             7, // Interface Version
@@ -158,7 +158,7 @@ namespace ara
                     {
                         std::vector<uint8_t> _data;
                         SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id, (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
                             SOMEIP_MESSAGE::Request_ID{5, 6},
                             2, // protocol version
                             7, // Interface Version
@@ -218,7 +218,7 @@ namespace ara
                     {
                         std::vector<uint8_t> _data = sd_msg.GetPayload();
                         SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id, (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
                             SOMEIP_MESSAGE::Request_ID{5, 6},
                             2, // protocol version
                             7, // Interface Version
@@ -359,7 +359,7 @@ namespace ara
                     {
                         std::vector<uint8_t> _data;
                         SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id, (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
                             SOMEIP_MESSAGE::Request_ID{5, 6},
                             2, // protocol version
                             7, // Interface Version
@@ -439,7 +439,7 @@ namespace ara
                     {
                         std::vector<uint8_t> _data = sd_msg.GetPayload();
                         SOMEIP_MESSAGE::Message R_msg(
-                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id.GetInstanceId(), (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_service->m_service_id, (uint16_t)(sd_msg.MessageId().method_id | 0x8000)},
                             SOMEIP_MESSAGE::Request_ID{5, 6},
                             2, // protocol version
                             7, // Interface Version
