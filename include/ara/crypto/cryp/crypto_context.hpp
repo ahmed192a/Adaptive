@@ -11,13 +11,13 @@
 namespace ara {
 	namespace crypto {
 		namespace cryp {
-			class CryptoProvider;
+			class ConcreteCryptoProvider;
 			class CryptoContext
 			{
 			public:
 				using AlgId = CryptoAlgId;
 				/* Destructor */
-				virtual ~CryptoContext() noexcept = default;
+				//virtual ~CryptoContext() noexcept = default;
 
 				/*Return CryptoPrimitivId instance containing instance identification */
 				virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept = 0;
@@ -32,7 +32,7 @@ namespace ara {
 				CryptoContext& operator= (CryptoContext&& other) = default;
 
 				/* Get a reference to Crypto Provider of this context*/
-				virtual CryptoProvider& MyProvider() const noexcept = 0;
+				virtual ConcreteCryptoProvider& MyProvider() const noexcept = 0;
 
 			};
 
