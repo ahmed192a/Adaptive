@@ -318,7 +318,7 @@ namespace ara
                      * @param method_id 
                      * @param binding 
                      */
-                    void NoHandler(uint16_t method_id, Socket &binding)
+                    void NoMethodHandler(uint16_t method_id, Socket &binding)
                     {
                         SOMEIP_MESSAGE::Message R_msg(
                             SOMEIP_MESSAGE::Request_ID{5, 6},

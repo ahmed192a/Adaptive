@@ -25,11 +25,11 @@ namespace ara
         {
             namespace skeleton
             {
-                template <typename T>
-                using FieldSetHandler = std::function<T(const T &data)>;
+                // template <typename T>
+                // using FieldSetHandler = std::function<T(const T &data)>;
 
-                template <typename T>
-                using FieldGetHandler = std::function<T()>;
+                // template <typename T>
+                // using FieldGetHandler = std::function<T()>;
 
                 /**
                  * @brief class field -->  has getter ,setter , notifier
@@ -120,6 +120,7 @@ namespace ara
                      */
                     virtual ~Field() {}
                 };
+                 
                  /**
                   * @brief class FieldNoSetter has get method
                   * 
@@ -178,6 +179,7 @@ namespace ara
                         binding.CloseSocket();
                     }
                 };
+                
                 /**
                  * @brief class FieldNoGetter to set method
                  * 
@@ -238,6 +240,7 @@ namespace ara
                         this->notify();
                     }
                 };
+                
                 /**
                  * @brief class Field No Getter And Setter --> update event
                  * 
@@ -278,6 +281,7 @@ namespace ara
                         this->m_service->SendEvent(this->m_name, data, true);
                     }
                 };
+                
                 /**
                  * @brief class Field No Notifier --> update event
                  * 
@@ -319,22 +323,23 @@ namespace ara
                         std::cout << this->m_name << " is Udpated " << std::endl;
                     }
                 };
-                 /**
-                  * @brief class Field No Notifier And Setter --> to handle get then update
-                  * 
-                  * @tparam T 
-                  */
+                 
+                /**
+                 * @brief class Field No Notifier And Setter --> to handle get then update
+                 * 
+                 * @tparam T 
+                 */
                 template <typename T>
                 class FieldNoNotifierAndSetter : public Event<T>
                 {
                 public:
-                /**
-                 * @brief Construct a new Field No Notifier And Setter object
-                 * 
-                 * @param service 
-                 * @param name 
-                 * @param field_id 
-                 */
+                    /**
+                     * @brief Construct a new Field No Notifier And Setter object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoNotifierAndSetter( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -398,13 +403,13 @@ namespace ara
                 class FieldNoNotifierAndGetter : public Event<T>
                 {
                 public:
-                /**
-                 * @brief Construct a new Field No Notifier And Getter object
-                 * 
-                 * @param service 
-                 * @param name 
-                 * @param field_id 
-                 */
+                    /**
+                     * @brief Construct a new Field No Notifier And Getter object
+                     * 
+                     * @param service 
+                     * @param name 
+                     * @param field_id 
+                     */
                     FieldNoNotifierAndGetter( ServiceSkeleton *service,
                         std::string name,
                         uint32_t field_id) : Event<T>(service,
@@ -468,10 +473,10 @@ namespace ara
                  * @tparam hasNotifier 
                  * @tparam hasSetter 
                  */
-                template <typename T, bool hasGetter, bool hasNotifier, bool hasSetter>
+                template <typename T, bool hasGetter,bool hasSetter, bool hasNotifier>
                 struct FieldType
                 {
-                    using type = typename FieldType<T, hasNotifier, hasGetter, hasSetter>::type;
+                    using type = typename FieldType<T,hasGetter, hasSetter,  hasNotifier>::type;
                 };
                 /**
                  * @brief if all true create object of Field class
@@ -483,13 +488,14 @@ namespace ara
                 {
                     using type = Field<T>;
                 };
+
                 /**
                  * @brief if No Setter create object of FieldNoSetter class
                  * 
                  * @tparam T 
                  */
                 template <typename T>
-                struct FieldType<T, true, true, false>
+                struct FieldType<T, true, false, true>
                 {
                     using type = FieldNoSetter<T>;
                 };
@@ -509,7 +515,7 @@ namespace ara
                  * @tparam T 
                  */
                 template <typename T>
-                struct FieldType<T, false, true, false>
+                struct FieldType<T, false, false, true>
                 {
                     using type = FieldNoGetterAndSetter<T>;
                 };
@@ -519,7 +525,7 @@ namespace ara
                  * @tparam T 
                  */
                 template <typename T>
-                struct FieldType<T, true, false, true>
+                struct FieldType<T, true, true, false>
                 {
                     using type = FieldNoNotifier<T>;
                 };
@@ -539,7 +545,7 @@ namespace ara
                  * @tparam T 
                  */
                 template <typename T>
-                struct FieldType<T, false, false, true>
+                struct FieldType<T, false, true, false>
                 {
                     using type = FieldNoNotifierAndGetter<T>;
                 };

@@ -24,18 +24,25 @@ uart_linux::uart_linux(/* args */)
         printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
         return ;
     }
+    printf("\n\n");
+    printf("cc %x, ci %x, co %x, cl %x\n",tty.c_cflag, tty.c_iflag,tty.c_oflag, tty.c_lflag  );
+    printf("c_line %x\n", tty.c_line);
 
-    tty.c_cflag &= ~PARENB;                 // Clear parity bit, disabling parity (most common)
-    tty.c_cflag &= ~CSTOPB;                 // Clear stop field, only one stop bit used in communication (most common)
-    tty.c_cflag &= ~CSIZE;                  // Clear all bits that set the data size
-    tty.c_cflag |= CS8;                     // 8 bits per byte (most common)
-    tty.c_cflag &= ~CRTSCTS;                // Disable RTS/CTS hardware flow control (most common)
+    tty.c_iflag = 0x1c00;
+    tty.c_oflag = 0x0000;
+    tty.c_lflag = 0x8a20; 
+
+    // tty.c_cflag &= ~PARENB;                 // Clear parity bit, disabling parity (most common)
+    // tty.c_cflag &= ~CSTOPB;                 // Clear stop field, only one stop bit used in communication (most common)
+    // tty.c_cflag &= ~CSIZE;                  // Clear all bits that set the data size
+    // tty.c_cflag |= CS8;                     // 8 bits per byte (most common)
+    // tty.c_cflag &= ~CRTSCTS;                // Disable RTS/CTS hardware flow control (most common)
  
-    tty.c_iflag |= (IXON | IXOFF | IXANY);  // Turn off s/w flow ctrl
+    // tty.c_iflag |= (IXON | IXOFF | IXANY);  // Turn off s/w flow ctrl
 
-    // Set in/out baud rate to be 9600
-    cfsetispeed(&tty, B9600);
-    cfsetospeed(&tty, B9600);
+    // // Set in/out baud rate to be 9600
+    // cfsetispeed(&tty, B9600);
+    // cfsetospeed(&tty, B9600);
 
     // Save tty settings, also checking for error
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
@@ -43,6 +50,8 @@ uart_linux::uart_linux(/* args */)
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
         return ;
     }
+
+
 }
 uart_linux::~uart_linux()
 {
