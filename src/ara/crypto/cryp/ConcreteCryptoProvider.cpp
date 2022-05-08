@@ -14,6 +14,7 @@ ara::crypto::VolatileTrustedContainer::Uptr ConcreteCryptoProvider::AllocVolatil
 	ConcreteIOInterface::Uptr ioptr= std::make_unique<ConcreteIOInterface>();
 	return ioptr->CreateVolatileContainer(capacity);
 }
+
 CryptoProvider::AlgId ConcreteCryptoProvider::ConvertToAlgId (std::string primitiveName) const noexcept
 {
 	//check the list of algorithm names supported
@@ -46,15 +47,19 @@ CryptoProvider::AlgId ConcreteCryptoProvider::ConvertToAlgId (std::string primit
 		 return std::make_unique<HMAC>(nullptr);
 	 //create the context according to the algId
 	 if(algorithmNames[algId-1]=="HMACSHA_256")
-		 return std::make_unique<HMAC>();
+		 return std::make_unique<HMAC>(this);
 	 return std::make_unique<HMAC>(nullptr);
  }
 
 PRNG::Uptr ConcreteCryptoProvider::CreateRandomGeneratorCtx (CryptoProvider::AlgId algId, bool initialize) noexcept
 {
-	return std::make_unique<PRNG>();
+	return std::make_unique<PRNG>(this);
 }
 
+HashService::Uptr ConcreteCryptoProvider::CreateHashFunctionCtx(CryptoProvider::AlgId) noexcept
+{
+	return std::make_unique<HashService>(this);
+}
  SecSeed::Uptrc ConcreteCryptoProvider::GenerateSeed (CryptoProvider::AlgId algId, SecSeed::Usage allowedUsage, bool isSession, bool isExportable) noexcept
  {
 	 SecSeed::Uptr pointer=std::make_unique<SecSeed>(allowedUsage,isSession,isExportable);
@@ -63,6 +68,11 @@ PRNG::Uptr ConcreteCryptoProvider::CreateRandomGeneratorCtx (CryptoProvider::Alg
 	 RNGPointer->Seed(*pointer);
 	 pointer->Seed_val=RNGPointer->Generate(16);
 	 return pointer;
+ }
+ ara::crypto::cryp::SymmetricCipher::Uptr ConcreteCryptoProvider::CreateSymmetricBlockCipherCtx (CryptoProvider::AlgId algId) noexcept
+ {
+	 SymmetricKey x;
+	 return std::make_unique<ara::crypto::cryp::SymmetricCipher>(this,x);
  }
  SymmetricKey::Uptrc ConcreteCryptoProvider::GenerateSymmetricKey(CryptoProvider::AlgId algId, ara::crypto::AllowedUsageFlags allowedUsage, bool isSession=true,bool isExportable=false) noexcept
  {
@@ -73,11 +83,11 @@ PRNG::Uptr ConcreteCryptoProvider::CreateRandomGeneratorCtx (CryptoProvider::Alg
 	 return pointer;
  }
 
-//Keywrapper::Uptr ConcreteCryptoProvider::CreateSymmetricKeyWrapperCtx (AlgId algId) noexcept
-//{
-//	SymmetricKey::Uptrc key = ConcreteCryptoProvider::GenerateSymmetricKey(1,0xffff);
-//	return std::make_unique<Keywrapper>(*key);
-//}
+Keywrapper::Uptr ConcreteCryptoProvider::CreateSymmetricKeyWrapperCtx (CryptoProvider::AlgId algId) noexcept
+{
+	SymmetricKey::Uptrc key = ConcreteCryptoProvider::GenerateSymmetricKey(1,0xffff);
+	return std::make_unique<Keywrapper>(*key);
+}
 
  std::vector<uint8_t>  ConcreteCryptoProvider::ExportPublicObject (const ara::crypto::ConcreteIOInterface &container) noexcept
  {
@@ -85,25 +95,78 @@ PRNG::Uptr ConcreteCryptoProvider::CreateRandomGeneratorCtx (CryptoProvider::Alg
 	 return container.payload;
 	 else{
 		 //do nothing
+		 return container.payload;
 	 }
  }
- /*std::vector<uint8_t>  ConcreteCryptoProvider::ExportSecuredObject (const ara::crypto::ConcreteIOInterface &container, SymmetricKeyWrapperCtx &transportContext) noexcept
+ std::vector<uint8_t>  ConcreteCryptoProvider::ExportSecuredObject (const ara::crypto::ConcreteIOInterface &container, Keywrapper &transportContext) noexcept
  {
 	 if(container.GetAllowedUsage()&0x0001==1)
-	 return transportContext.WrapKeyMaterial(container.payload);
+	 {
+	 SymmetricKey b;
+	 b.keyVal=container.payload;
+	 std::vector<uint8_t> a= transportContext.WrapKeyMaterial(b);
+	 }
 	 else{
 
 	 } 
- }*/
+ }
+
+ HKDF::Uptr ConcreteCryptoProvider::CreateKeyDerivationFunctionCtx(CryptoProvider::AlgId algid) noexcept
+ {
+	 return std::make_unique<HKDF>(this);
+ }
+
+ Authentication::Uptr ConcreteCryptoProvider::CreateAuthCipherCtx(CryptoProvider::AlgId algid) noexcept
+ {
+	 std::make_unique<Authentication>(this);
+ }
+
+ std::size_t ConcreteCryptoProvider::GetPayloadStorageSize(ara::crypto::CryptoObjectType cryptoObjecttype  ,CryptoProvider::AlgId algid)const noexcept
+ {
+	 //AES
+	 if (algid==1)
+	 return 16;
+	 //HMAC and SHA and AuthenticatedCipher
+	 else if(algid==2||algid==3)
+	 return 64;
+ }
+
+ 
+
 
  void ConcreteCryptoProvider::ImportPublicObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, CryptoObjectType expectedObject) noexcept
  {
 	 container.payload=serialized;
  }
-void ConcreteCryptoProvider::ImportSecuredObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, SymmetricKeyWrapperCtx &transportContext, bool isExportable, CryptoObjectType expectedObject) noexcept
+void ConcreteCryptoProvider::ImportSecuredObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, Keywrapper &transportContext, bool isExportable, CryptoObjectType expectedObject) noexcept
 {
 	container.payload=serialized;
 }
+
+
+Sign::Uptrc ConcreteCryptoProvider::CreateSignature (CryptoProvider::AlgId signAlgId, ara::crypto::ReadOnlyMemRegion value, const RestrictedUseObject &key,CryptoProvider::AlgId hashAlgId=kAlgIdNone) noexcept
+{
+	return std::make_unique<Sign>();
+}
+	cryptoobj::Uptrc ConcreteCryptoProvider::LoadObject(const ConcreteIOInterface& Container) noexcept
+	{
+		return std::make_unique<cryptoobj>();
+		
+	}
+
+	SymmetricKey::Uptrc ConcreteCryptoProvider::LoadSymmetricKey(const ConcreteIOInterface& Container) noexcept
+	{
+		SymmetricKey::Uptrc a= std::make_unique<SymmetricKey>();
+		a->keyVal(Container.payload.begin(),Container.payload.end());
+	}
+
+	SecSeed::Uptrc ConcreteCryptoProvider::LoadSecretSeed(const ConcreteIOInterface& Container) noexcept
+	{
+		SecSeed::Uptrc a= std::make_unique<SecSeed>();
+		a->Seed_val(Container.payload.begin(),Container.payload.end());
+	}
+
+
 
 
 
