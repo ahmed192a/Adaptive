@@ -12,8 +12,18 @@ namespace ara
             {
                 std::string path;
                 public:
+                /**
+                 * @brief Construct a new Inh Key Slot object
+                 * 
+                 * @param file_name 
+                 */
                 InhKeySlot (std::string file_name);
-                
+
+                /**
+                 * @brief Construct a new Inh Key Slot object
+                 * 
+                 */
+                InhKeySlot ();
                 /**
                  * @brief Destroy the Key Slot object
                  * 
@@ -31,7 +41,7 @@ namespace ara
                  * 
                  * @param container 
                  */
-                void SaveCopy(const IOInterface& container) noexcept;
+                void SaveCopy(const ConcreteIOInterface& container) noexcept;
                 /**
                  * @brief 
                  * 

@@ -6,6 +6,7 @@
 #include "ara/crypto/keys/key_slot_prototype_props.hpp"
 #include "ara/crypto/cryp/crypto_provider.hpp"
 #include "ara/crypto/cryp/cryobj/crypto_object.hpp"
+#include "ara/crypto/common/concrete_io_interface.hpp"
 
 namespace ara
 {
@@ -59,7 +60,7 @@ namespace ara
                  * 
                  * @param container 
                  */
-                virtual void SaveCopy(const IOInterface &container) noexcept = 0;
+                virtual void SaveCopy(const ConcreteIOInterface& container) noexcept = 0;
                 /**
                  * @brief Get the Content Props object
                  * 
