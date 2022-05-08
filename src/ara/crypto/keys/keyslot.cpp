@@ -63,21 +63,21 @@ namespace ara
             //instance of IOInterface//
                 ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
                 //Key Slot Content Properties Struct variables //
-                IOContent->GetPrimitiveId() = KSCP.mAlgId;
-                IOContent->GetCryptoObjectType() = KSCP.mObjectType;
-                IOContent->GetObjectId() = KSCP.mObjectUid;
-                IOContent->GetAllowedUsage() = KSCP.mContentAllowedUsage;
-                IOContent->GetCapacity() = KSCP.mObjectSize;
+                IOContent->algid = KSCP.mAlgId;
+                IOContent->objectType = KSCP.mObjectType;
+                IOContent->objectId = KSCP.mObjectUid;
+                IOContent->AllowedUsage = KSCP.mContentAllowedUsage;
+                IOContent->capacity = KSCP.mObjectSize;
                 //Key Slot Prototypes Struct variables//
-                IOContent->GetCapacity() = KSPP.mSlotCapacity;
-                IOContent->GetSlotType() = KSPP.mSlotType;
-                IOContent->GetPrimitiveId() = KSPP.mAlgId;
-                IOContent->IsAllocateSpareSlot() = KSPP.mAllocateSpareSlot;
-                IOContent->IsAllowContentTypeChange() = KSPP.mAllowContentTypeChange;
-                IOContent->GetMaxUpdateAllowed() = KSPP.mMaxUpdateAllowed;
-                IOContent->IsExportAllowed() = KSPP.mExportAllowed;
-                IOContent->GetAllowedUsage() = KSPP.mContentAllowedUsage;
-                IOContent->GetTypeRestriction() = KSPP.mObjectType;
+                IOContent->capacity = KSPP.mSlotCapacity;
+                IOContent->Slot_Type= KSPP.mSlotType;
+                IOContent->algid = KSPP.mAlgId;
+                IOContent->AllocateSpareSlot_t = KSPP.mAllocateSpareSlot;
+                IOContent->AllowContentTypeChange_t= KSPP.mAllowContentTypeChange;
+                IOContent->MaxUpdateAllowed_t = KSPP.mMaxUpdateAllowed;
+                IOContent->ExportAllowed_t = KSPP.mExportAllowed;
+                IOContent->AllowedUsage = KSPP.mContentAllowedUsage;
+                IOContent->objectTypeRestiction = KSPP.mObjectType;
                 //change state of key slot to opened //
                 this->state = SlotState::opened;
                 return IOContent;
