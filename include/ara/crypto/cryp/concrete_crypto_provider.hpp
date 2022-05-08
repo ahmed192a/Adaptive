@@ -16,6 +16,11 @@ namespace ara
         class ConcreteCryptoProvider : public CryptoProvider
 		{
 		public:
+		AlgId a;
+		ConcreteCryptoProvider()
+		{
+			 a=1;
+		}
         	VolatileTrustedContainer::Uptr AllocVolatileContainer (std::size_t capacity=0) noexcept;
         	//VolatileTrustedContainer::Uptr AllocVolatileContainer (std::pair< AlgId, CryptoObjectType > theObjectDef) noexcept;
 
@@ -24,9 +29,9 @@ namespace ara
 
         	Authentication::Uptr CreateAuthCipherCtx (AlgId algId) noexcept;
 
-            	Signature::Uptrc CreateHashDigest (AlgId hashAlgId, ReadOnlyMemRegion value) noexcept;
+            //	Signature::Uptrc CreateHashDigest (AlgId hashAlgId, ReadOnlyMemRegion value) noexcept;
 
-        	HashFunctionCtx::Uptr CreateHashFunctionCtx (AlgId algId) noexcept;
+        	HashService::Uptr CreateHashFunctionCtx (AlgId algId) noexcept;
 
         	HKDF::Uptr CreateKeyDerivationFunctionCtx (AlgId algId) noexcept;
 
@@ -34,7 +39,7 @@ namespace ara
 
         	//RandomGeneratorCtx::Uptr CreateRandomGeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true) noexcept;
 
-        	Signature::Uptrc CreateSignature (AlgId signAlgId, ReadOnlyMemRegion value, const RestrictedUseObject &key,AlgId hashAlgId=kAlgIdNone) noexcept;
+        	Sign::Uptrc CreateSignature (AlgId signAlgId, ReadOnlyMemRegion value, const RestrictedUseObject &key,AlgId hashAlgId=kAlgIdNone) noexcept;
 
         	SymmetricCipher::Uptr CreateSymmetricBlockCipherCtx (AlgId algId) noexcept;
 
@@ -42,16 +47,21 @@ namespace ara
 		void ImportPublicObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, CryptoObjectType expectedObject=CryptoObjectType::kUndefined) noexcept;
 		void ImportSecuredObject (ConcreteIOInterface &container, ReadOnlyMemRegion serialized, Keywrapper &transportContext, bool isExportable=false, CryptoObjectType expectedObject=CryptoObjectType::kUndefined) noexcept;
 		PRNG::Uptr CreateRandomGeneratorCtx (AlgId algId=kAlgIdDefault, bool initialize=true) noexcept;
-        	~ConcreteCryptoProvider () noexcept=default;
+        	
 
 			SecSeed::Uptrc GenerateSeed (AlgId algId, SecSeed::Usage allowedUsage, bool isSession, bool isExportable) noexcept;
 			SymmetricKey::Uptrc GenerateSymmetricKey(AlgId algId, AllowedUsageFlags allowedUsage, bool isSession,bool isExportable) noexcept;
 			SymmetricKey::Uptrc LoadSymmetricKey (const ConcreteIOInterface &container) noexcept;
+			cryptoobj::Uptrc LoadObject (const ConcreteIOInterface &container) noexcept;
 
 		 	std::vector<uint8_t>  ExportPublicObject (const ConcreteIOInterface &container) noexcept;
 
 			std::vector<uint8_t>  ExportSecuredObject (const ConcreteIOInterface &container, Keywrapper &transportContext) noexcept;
-		};
+
+			std::size_t GetPayloadStorageSize (CryptoObjectType cryptoObjectType, AlgId algId) const noexcept;
+
+			SecSeed::Uptrc LoadSecretSeed (const ConcreteIOInterface &container) noexcept;
+		};	
 	  }
 	}
 }
