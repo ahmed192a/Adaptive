@@ -6,6 +6,20 @@ namespace ara
     {
         namespace cryp
         {
+            /**
+             * @brief Defualt constructor
+             * 
+             * @return SymmetricKey 
+             */
+            SymmetricKey ::SymmetricKey(): allowed(0xffff),session(true),exportable(false) {}
+            /**
+             * @brief 
+             * 
+             * @param allowedVal 
+             * @param sessionVar 
+             * @param exportableVar 
+             * @return SymmetricKey:: 
+             */
             SymmetricKey:: SymmetricKey(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar)
             {
                 allowed=allowedVal;

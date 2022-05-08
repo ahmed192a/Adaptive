@@ -1,8 +1,8 @@
 //#ifndef ARA_CRYPTO_CRYP_SECSEED_H_
 //#define ARA_CRYPTO_CRYP_SECSEED_H_
 #pragma once
-#include "ara/crypto/cryp/cryobj/secret_seed.hpp"
-#include "../../common/base_id_types.hpp"
+#include "secret_seed.hpp"
+
 namespace ara
 {
     namespace crypto
@@ -12,8 +12,6 @@ namespace ara
             class SecSeed : public SecretSeed
             {
                 public :
-                using AlgId = CryptoAlgId; 
-                AlgId algId;
                 using Usage = AllowedUsageFlags;
                 Usage allowed;
                 bool Volatile;
@@ -24,17 +22,22 @@ namespace ara
                 /**
                  * @brief Construct a new Sec Seed object
                  * 
+                 */
+                SecSeed() = default;
+                /**
+                 * @brief Construct a new Sec Seed object
+                 * 
                  * @param allowedVal 
                  * @param sessionVar 
                  * @param exportableVar 
                  */
-                SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar);
+                SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar); 
                 //SWS_CRYPT_23001
                 /**
                  * @brief Unique smart pointer of a constant interface instance.
                  * 
                  */
-                ~SecSeed() noexcept;
+                //~SecSeed() noexcept;
                 using Uptrc = std::unique_ptr<const SecSeed>;
 
                 //SWS_CRYPT_23002
@@ -107,7 +110,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                SecretSeed& operator^= (const SecSeed &source) noexcept;
+               SecretSeed& operator^= (const SecSeed &source) noexcept;
                 
                 //SWS_CRYPT_23016
                 /**
@@ -118,7 +121,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                SecretSeed& operator^= (ReadOnlyMemRegion source) noexcept;
+               SecretSeed& operator^= (ReadOnlyMemRegion source) noexcept;
             };
         }
     }

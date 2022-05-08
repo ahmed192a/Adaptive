@@ -6,6 +6,7 @@ namespace ara
     {
         namespace cryp
         {
+                SecSeed::SecSeed(): allowed(0xffff),session(true),exportable(false) {}
 
                 SecSeed::SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar)
                 {
@@ -15,9 +16,9 @@ namespace ara
 
                 } 
                 
-                SecretSeed::Uptr SecSeed::Clone (ReadOnlyMemRegion xorDelta=ReadOnlyMemRegion()) const
+                SecretSeed::Uptr SecSeed::Clone (ReadOnlyMemRegion xorDelta) const noexcept
                 {
-                    cryptoobj cobj ;
+                    //cryptoobj cobj ;
                     //cobj.CO_ID.mCOType = this->kObjectType;
                     SecSeed::Uptr op=std::make_unique<SecSeed>(allowed,session,exportable);
 
@@ -37,7 +38,7 @@ namespace ara
                 }
 
                 
-                void SecSeed::JumpFrom (const SecSeed &from,std::int64_t steps)
+                void SecSeed::JumpFrom (const SecSeed &from,std::int64_t steps) noexcept
                 {
                     if(sizeof(from.Seed_val)>=sizeof(this->Seed_val))
                     {
@@ -53,7 +54,7 @@ namespace ara
                    
                 }
 
-                SecretSeed& SecSeed::Jump (std::int64_t steps)
+                SecretSeed& SecSeed::Jump (std::int64_t steps) noexcept
                 {
                     if(steps != 0)
                      this->Seed =  this->Seed_val[this->Seed +steps] ;
@@ -65,29 +66,28 @@ namespace ara
 
                 SecretSeed& SecSeed::Next ()
                 {
-                    ConcreteCryptoProvider *CCP;
-                    SecSeed ::Uptrc upt= CCP->GenerateSeed(algId,allowed,session,exportable);
-                    this->Seed_val = upt->Seed_val;
-                    return *this;
+                   for(int i = 0; i<sizeof(Seed_val);i++)
+                   this->Seed_val[i] = this->Seed_val[i] +1;
+                   return *this;
                 }
 
                 
                 SecretSeed& SecSeed::operator^= (const SecSeed &source)
                 {
-                    if(this != &source)
-                    {
-                        for(int i = 0; i<sizeof(source);i++)
-                        this->Seed_val[i] ^= source.Seed_val[i];
-                    }
-                    return *this;
-                }
+                   if(this != &source)
+                   {
+                       for(int i = 0; i<sizeof(source);i++)
+                       this->Seed_val[i] ^= source.Seed_val[i];
+                   }
+                   return *this;
+               }
                 
-                SecretSeed& SecSeed::operator^= (ReadOnlyMemRegion source)
-                {
-                    for(int i = 0; i<sizeof(source);i++)
-                    this->Seed_val[i] ^= source[i];
-                    return *this;
-                }
+               SecretSeed& SecSeed::operator^= (ReadOnlyMemRegion source)
+               {
+                   for(int i = 0; i<sizeof(source);i++)
+                   this->Seed_val[i] ^= source[i];
+                   return *this;
+               }
         }
     }
 }

@@ -7,40 +7,50 @@ namespace ara
     {
         namespace cryp
         {    
-            
+            int ConvertToAlgId (std::string primitiveName)
+            {
+                //check the list of algorithm names supported
+                for(int i=0;i<ALGORITHMSNUMBER;i++)
+                {
+                    if(primitiveName==algorithmNames[i])
+                        return i+1;
+                }
+                //if not found so return undefined
+                return kAlgIdUndefined;
+            }
+           
             CryptoPrId:: CryptoPrId(const std::string &Sv) : name(Sv)
             {
-                ConcreteCryptoProvider *CC_PRO;
-                CryptoProvider :: AlgId cp = CC_PRO->ConvertToAlgId (Sv);
+                int cp = ConvertToAlgId (Sv);
                 id = cp ;
             } 
 
             CryptoPrId:: AlgId CryptoPrId:: GetPrimitiveId () const
             {
-                return id;
+               return id;
             }
             const std::string CryptoPrId:: GetPrimitiveName () const
             {
-                return name ;
+               return name ;
             }
-            //return a referance to it self
-            CryptoPrimitiveId& CryptoPrId:: operator= (const CryptoPrimitiveId &other)//assignment operator or copy operator
+            // return a referance to it self
+            CryptoPrimitiveId& CryptoPrId:: operator= (const CryptoPrId &other)//assignment operator or copy operator
+            {
+               if(this != &other)
+                {
+                  id = other.id;
+                  name = other.name;
+                }
+                return *this;
+            }
+            CryptoPrimitiveId& CryptoPrId:: operator= (CryptoPrId &&other)
             {
                 if(this != &other)
                 {
-                   id = other.GetPrimitiveId();
-                   name = other.GetPrimitiveName();
+                  id = other.id;
+                  name = other.name;
                 }
-                return *this;
-            }
-            CryptoPrimitiveId& CryptoPrId:: operator= (CryptoPrimitiveId &&other)
-            {
-                 if(this != &other)
-                {
-                   id = other.GetPrimitiveId();
-                   name = other.GetPrimitiveName ();
-                }
-                return *this;
+               return *this;
             }
         }
     }

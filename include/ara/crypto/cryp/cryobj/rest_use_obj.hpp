@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 //#include <ara/crypto/cryp/cryobj/crypto_object.hpp>
-#include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
+#include "restricted_use_object.hpp"
 //#include "ara/crypto/keys/key_slot_content_props.hpp"
 namespace ara
 {
@@ -27,13 +27,19 @@ namespace ara
                  * @brief Alias to the container type for bit-flags of allowed usages of the object
                  * 
                  */
-                using Usage = AllowedUsageFlags;
+                //using Usage = AllowedUsageFlags;
                 //SWS_CRYPT_24802
                 /**
                  * @brief Unique smart pointer of the interface.
                  * 
                  */
                 using Uptrc = std::unique_ptr<RestrictedUseObject>;
+                Usage Allow_U;
+                /**
+                 * @brief Construct a new Rest Use Obj object
+                 * 
+                 */
+                RestUseObj();
                 //SWS_CRYPT_24811]
                 /**
                  * @brief Get the Allowed Usage object ,Get allowed usages of this object.

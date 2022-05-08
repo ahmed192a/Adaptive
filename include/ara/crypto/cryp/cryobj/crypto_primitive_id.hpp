@@ -1,6 +1,5 @@
-//#ifndef ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
-//#define ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
-#pragma once
+#ifndef ARA_CRYPTO_CRYP_CRYBOBJ_
+#define ARA_CRYPTO_CRYP_CRYBOBJ_
 #include <memory>
 #include <iostream>
 #include "../../../core/StringView.hpp"
@@ -78,7 +77,7 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (const CryptoPrimitiveId &other);
+                CryptoPrimitiveId& operator= (const CryptoPrId &other);
                 /**
                  * SWS_CRYPT_30213
                  * @brief 
@@ -86,7 +85,7 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (CryptoPrimitiveId &&other);
+                CryptoPrimitiveId& operator= (CryptoPrId &&other);
                 /**
                  * SWS_CRYPT_23311
                  *  @brief Get the Hash Alg Id object
@@ -105,4 +104,4 @@ namespace ara
         }
     }
 }
-//#endif
+#endif

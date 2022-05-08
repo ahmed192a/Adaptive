@@ -1,7 +1,7 @@
 //#ifndef ARA_CRYPTO_CRYP_SYMMETRIC_KEY_H
 ///#define ARA_CRYPTO_CRYP_SYMMETRIC_KEY_H
 #pragma once
-#include "ara/crypto/cryp/cryobj/rest_use_obj.hpp"
+#include "rest_use_obj.hpp"
 
 namespace ara
 {
@@ -10,16 +10,16 @@ namespace ara
         namespace cryp
         {
             //class RestrictedUseObject;
-            class SymmetricKey : public RestUseObj 
-            {
+            class SymmetricKey : public RestUseObj {
+                
                 public:
                 using Uptrc = std::unique_ptr<const SymmetricKey>;
 
                 //SWS_CRYPT_23002
                 /**
-                * @brief Unique smart pointer of a volatile interface instance.
-                * 
-                */
+                 * @brief Unique smart pointer of a volatile interface instance.
+                 * 
+                 */
                 using Uptr = std::unique_ptr<SymmetricKey>;
                 static const CryptoObjectType kObjectType = CryptoObjectType::kSymmetricKey;
                 uint32_t Seed;
@@ -29,8 +29,22 @@ namespace ara
                 bool Volatile;
                 bool session;
                 bool exportable;
+                /**
+                 * @brief Construct a new Symmetric Key object
+                 * 
+                 */
+                 SymmetricKey();
+                /**
+                 * @brief Construct a new Symmetric Key object
+                 * 
+                 * @param allowedVal 
+                 * @param sessionVar 
+                 * @param exportableVar 
+                 */
                 SymmetricKey(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar);
-                ~SymmetricKey() noexcept;
+               
+               
+               // ~SymmetricKey() noexcept;
             };
         }
     }

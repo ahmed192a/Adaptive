@@ -1,11 +1,10 @@
-    //#ifndef ARA_CRYPTO_CRYP_CRYPTOPR_H_
-//#define ARA_CRYPTO_CRYP_CRYPTOPR_H_
 #pragma once
 #include <memory>
 #include <iostream>
 #include "../../common/base_id_types.hpp"
 #include "crypto_primitive_id.hpp"
-#include "../concrete_crypto_provider.hpp"
+#include "ara/crypto/common/vendor_specific_algorithm_identifier.hpp"
+//#include "../concrete_crypto_provider.hpp"
 
 
 namespace ara
@@ -41,6 +40,12 @@ namespace ara
                 */
                 using Uptr = std::unique_ptr<CryptoPrId>;
                 /**
+                 * @brief Construct a new Convert To Alg Id object
+                 * 
+                 * @param primitiveName 
+                 */
+                int ConvertToAlgId (std::string primitiveName);
+                /**
                  * @brief Construct a new Crypto Pr Id object
                  * 
                  * @param Sv 
@@ -70,7 +75,7 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (const CryptoPrimitiveId &other);
+                CryptoPrimitiveId& operator= (const CryptoPrId &other);
                 /**
                  * SWS_CRYPT_30213
                  * @brief 
@@ -78,7 +83,7 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (CryptoPrimitiveId &&other);
+                CryptoPrimitiveId& operator= (CryptoPrId &&other);
                 /**
                  * SWS_CRYPT_23311
                  *  @brief Get the Hash Alg Id object
@@ -97,4 +102,3 @@ namespace ara
         }
     }
 }
-//#endif

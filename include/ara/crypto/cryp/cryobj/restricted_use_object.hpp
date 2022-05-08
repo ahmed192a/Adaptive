@@ -32,6 +32,11 @@ namespace ara
                  * 
                  */
                 using Uptrc = std::unique_ptr<RestrictedUseObject>;
+                /**
+                 * @brief Construct a new Restricted Use Object object
+                 * 
+                 */
+                RestrictedUseObject();
                 //SWS_CRYPT_24811]
                 /**
                  * @brief Get the Allowed Usage object ,Get allowed usages of this object.

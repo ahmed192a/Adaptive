@@ -11,13 +11,17 @@ namespace ara
     namespace crypto
     {
         namespace cryp
-        {
+        {   class SecSeed;
             class SecretSeed : public RestUseObj
             {
                 public:
                 std::int64_t seed_len;
-                //std::int64_t seed_val;
-               
+                //std::int64_t Seed_val;
+                /**
+                 * @brief Construct a new Secret Seed object
+                 * 
+                 */
+                SecretSeed();
 
                 //SWS_CRYPT_23001
                 /**
@@ -106,7 +110,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                virtual SecretSeed& operator^= (ReadOnlyMemRegion source) noexcept=0;
+               virtual SecretSeed& operator^= (ReadOnlyMemRegion source) noexcept=0;
 
             };
 

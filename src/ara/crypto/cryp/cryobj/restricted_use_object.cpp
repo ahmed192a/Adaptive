@@ -1,4 +1,4 @@
-#include <ara\crypto\cryp\cryobj\rest_use_obj.hpp>
+#include "ara/crypto/cryp/cryobj/rest_use_obj.hpp"
 
 #include <iostream>
 namespace ara
@@ -7,7 +7,9 @@ namespace ara
     {
         namespace cryp
         {
-            RestrictedUseObject::Usage RestUseObj::GetAllowedUsage () const 
+            RestUseObj::RestUseObj():Allow_U(){}
+            
+            RestrictedUseObject::Usage RestUseObj::GetAllowedUsage () const noexcept 
             {
                 return this->Allow_U;
             }
