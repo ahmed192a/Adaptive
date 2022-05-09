@@ -1,0 +1,101 @@
+name: Cloud Deployment
+
+on:
+  push:
+    paths:
+      - 'Cloud/**' # The cloud server app exists in this directory
+    branches:
+      - master
+
+env:
+  CLOUD_DIR: Cloud
+  DOCKER_IMG: "cloud-img"
+  TAR_FILE: "cloud.tar"
+
+
+jobs:
+  build:
+
+    name: Building
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Repository Code
+        uses: actions/checkout@v2
+
+      - name: Building the cloud application
+        run: g++ -o out server.cpp
+        working-directory: ${{ env.CLOUD_DIR }}
+
+
+  deploy:
+
+    name: Deploying on cloud server
+    runs-on: ubuntu-latest
+
+    needs: [ build ]
+    defaults:
+      run:
+        working-directory: ${{ env.CLOUD_DIR }}
+
+    steps:
+      
+      - name: Checkout the Repository Code
+        uses: actions/checkout@v2
+
+      # Converting the Dockerfile to a Docker image
+      - name: Compiling the Dockerfile
+        run: sudo docker build -t  ${{ env.DOCKER_IMG }}  ./
+
+      # Exporting as a .tar file to be sent to the cloud server
+      - name: Saving the image to a .tar file
+        run: sudo docker save ${{ env.DOCKER_IMG }} > ${{ env.TAR_FILE }}
+
+      - name: Send the tar file to Azure server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          # timeout: 600s"  # dummy
+          source: ${{ env.CLOUD_DIR }}/${{ env.TAR_FILE }}
+          target: .
+          strip_components: 1
+      
+      - name: Removing any old running containers
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          script: sudo docker rm -vf $(sudo docker ps -aq) || true # to skip error in case no containers
+
+      - name: Removing any old docker images
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          script: sudo docker rmi -f $(sudo docker images -aq) || true # to skip error in case no images
+
+
+      - name: Loading the Image from the .tar file
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          script: sudo docker load --input ${{ env.TAR_FILE }}
+
+      - name: Running the new image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          script: sudo docker run -idt -p 8888:8888 ${{ env.DOCKER_IMG }}
