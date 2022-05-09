@@ -2,10 +2,10 @@ name: Cloud Deployment
 
 on:
   push:
-    # paths:
-    #   - 'Cloud/**' # The cloud server app exists in this directory
+    paths:
+      - 'Cloud/**' # The cloud server app exists in this directory
     branches:
-      - cloud_deployment
+      - master
 
 env:
   CLOUD_DIR: Cloud
