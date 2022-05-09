@@ -43,32 +43,25 @@ jobs:
       - name: Checkout the Repository Code
         uses: actions/checkout@v2
 
-      # Converting the Dockerfile to a Docker image
-      - name: Compiling the Dockerfile
-        run: sudo docker build -t  ${{ env.DOCKER_IMG }}  ./
-
-      # Exporting as a .tar file to be sent to the cloud server
-      - name: Exporting Cloud Server Image
-        run: sudo docker save ${{ env.DOCKER_IMG }} > ${{ env.TAR_FILE }}
-
-      - name: Send the tar file to Azure server
+      - name: Send the requered files to the cloud server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.AZURE_HOST}}
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          source: ./${{ env.TAR_FILE }}
+          source: .
           target: .
-      
-      - name: Importing the Image .tar file
+
+      # Converting the Dockerfile to a Docker image
+      - name: Compiling the Dockerfile
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_HOST}}
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          script: sudo docker import ./${{ env.TAR_FILE }}
+          script: ssudo docker build -t  ${{ env.DOCKER_IMG }}  ./
 
       - name: Running the new image
         uses: appleboy/ssh-action@master
