@@ -1,16 +1,17 @@
 #ifndef ARA_SM_UPDATE_REQUEST_H
 #define ARA_SM_UPDATE_REQUEST_H
 
-//#include <cstdint>
 #include <string>
 #include <vector>
 #include "ara/sm/sm_error_domain.hpp"
-#include "ara/core/result.hpp"
+#include "ara/sm/update_request/update_request_return_types.hpp"
+#include "ara/sm/update_request/updaterequest_skeleton.hpp"
+#include "ara/sm/common_types.hpp"
+
 
 namespace ara {
     namespace sm {
 
-        using Result = ara::core::Result<void>;
         
         enum class UpdateStatus{
             unactive, // initial state or after calling StopUpdateSession()
@@ -20,34 +21,12 @@ namespace ara {
         };
 
     
-        class UpdateRequest
+        class UpdateRequest : public update_request::skeleton::update_request_Skeleton
         {
         public:
 
             static bool activeSession;
             UpdateStatus status = UpdateStatus::unactive;
-
-
-            /** Type definitions **/
-
-            // [SWS_SM_91019]
-            /*
-             * Name        : FunctionGroupNameType
-             * Kind        : STRING
-             * Description : full qualified FunctionGroup shortName.
-             */
-            using FunctionGroupNameType = std::string;
-
-
-            // [SWS_SM_91018]
-            /*
-             * Name        : FunctionGroupListType
-             * Kind        : VECTOR
-             * Subelements : FunctionGroupNameType
-             * Description : A list of FunctionGroups.
-             */
-            using FunctionGroupListType = std::vector<FunctionGroupNameType>;
-
 
             /** Provided Service Interfaces **/
 
@@ -58,7 +37,7 @@ namespace ara {
              * FireAndForget      : false
              * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              */
-            Result ResetMachine(void);
+            std::future<ara::sm::update_request::ResetMachineOutput> ResetMachine() override;
 
 
             /*
@@ -70,7 +49,7 @@ namespace ara {
              * Application Errors : kRejected  (Requested operation was rejected due to State Managements/machines proxy_skeleton state)
              */
 
-            Result StopUpdateSession(void);
+            std::future<ara::sm::update_request::StopUpdateSessionOutput> StopUpdateSession()  override;
 
 
             /*
@@ -83,7 +62,7 @@ namespace ara {
              *                    : kNotAllowedMultipleUpdateSessions (Request for new session was rejected as only single active (update) session is allowed)
              */
 
-            Result RequestUpdateSession(void);
+            std::future<ara::sm::update_request::StartUpdateSessionOutput> StartUpdateSession()  override;
 
 
             /*
@@ -102,7 +81,7 @@ namespace ara {
              */
 
 
-            errorDomains PrepareUpdate(UpdateRequest::FunctionGroupListType functionGroupList);
+            std::future<ara::sm::update_request::PrepareUpdateOutput> PrepareUpdate(FunctionGroupListType functionGroupList) override;
 
 
             /*
@@ -120,7 +99,7 @@ namespace ara {
              *                      - kVerifyFailed (Verification step of update failed.)
              */
 
-            Result VerifyUpdate(UpdateRequest::FunctionGroupListType functionGroupList);
+            std::future<ara::sm::update_request::VerifyUpdateOutput> VerifyUpdate(FunctionGroupListType functionGroupList) override;
 
 
             /*
@@ -136,7 +115,7 @@ namespace ara {
              *                      - kRollbackFailed (Rollback step of update failed.)
              */
 
-            Result PrepareRollback(UpdateRequest::FunctionGroupListType functionGroupList);
+            std::future<ara::sm::update_request::PrepareRollbackOutput> PrepareRollback(FunctionGroupListType functionGroupList) override;
 
         };
 

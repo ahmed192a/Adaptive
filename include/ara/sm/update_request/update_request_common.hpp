@@ -13,26 +13,11 @@
 #define COMMON_H_
 #include "ara/sm/update_request/update_request_return_types.hpp"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.hpp"
+#include "ara/sm/common_types.hpp"
 #include "future"
 using namespace std;
 
-// include the file  of the following types
-// [SWS_SM_91019]
-/*
- * Name        : FunctionGroupNameType
- * Kind        : STRING
- * Description : full qualified FunctionGroup shortName.
- */
-using FunctionGroupNameType = std::string;
 
-// [SWS_SM_91018]
-/*
- * Name        : FunctionGroupListType
- * Kind        : VECTOR
- * Subelements : FunctionGroupNameType
- * Description : A list of FunctionGroups.
- */
-using FunctionGroupListType = std::vector<FunctionGroupNameType>;
 namespace ara
 {
     namespace sm
@@ -108,23 +93,23 @@ namespace ara
                     return result;
                 }
             };
-            class RequestUpdateSession
+            class StartUpdateSession
             {
             private:
                 ara::com::proxy_skeleton::proxy::ServiceProxy *service_proxy_ptr;
                 const int methodid = 4;
 
             public:
-                RequestUpdateSession(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
+                StartUpdateSession(ara::com::proxy_skeleton::proxy::ServiceProxy *service) : service_proxy_ptr{service}
                 {
                 }
-                std::future<ara::sm::update_request::RequestUpdateSessionOutput> operator()()
+                std::future<ara::sm::update_request::StartUpdateSessionOutput> operator()()
                 {
-                    std::future<ara::sm::update_request::RequestUpdateSessionOutput> result = std::async([&]()
+                    std::future<ara::sm::update_request::StartUpdateSessionOutput> result = std::async([&]()
                     {
                         // add function code
                         // return app error krejected
-                       return service_proxy_ptr->SendRequest<ara::sm::update_request::RequestUpdateSessionOutput>(methodid); 
+                       return service_proxy_ptr->SendRequest<ara::sm::update_request::StartUpdateSessionOutput>(methodid); 
                     });
                     
                     // return app error krejected

@@ -19,6 +19,7 @@
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
 #include "ara/sm/update_request/update_request_return_types.hpp"
+#include "ara/sm/common_types.hpp"
 
 namespace ara
 {
@@ -47,12 +48,12 @@ namespace ara
                     }
 
                     // Methods
-                    std::future<ara::sm::update_request::ResetMachineOutput>  ResetMachine();
-                    std::future<void> StopUpdateSession();
-                    std::future<ara::sm::update_request::StartUpdateSessionOutput> StartUpdateSession();
-                    std::future<ara::sm::update_request::PrepareUpdateOutput> PrepareUpdate();
-                    std::future<ara::sm::update_request::VerifyUpdateOutput> VerifyUpdate();
-                    std::future<ara::sm::update_request::PrepareRollbackOutput> PrepareRollback();
+                    virtual std::future<ara::sm::update_request::ResetMachineOutput>  ResetMachine() = 0;
+                    virtual std::future<ara::sm::update_request::StopUpdateSessionOutput> StopUpdateSession() = 0;
+                    virtual std::future<ara::sm::update_request::StartUpdateSessionOutput> StartUpdateSession() = 0;
+                    virtual std::future<ara::sm::update_request::PrepareUpdateOutput> PrepareUpdate(FunctionGroupListType functionGroupList) = 0;
+                    virtual std::future<ara::sm::update_request::VerifyUpdateOutput> VerifyUpdate(FunctionGroupListType functionGroupList) = 0;
+                    virtual std::future<ara::sm::update_request::PrepareRollbackOutput> PrepareRollback(FunctionGroupListType functionGroupList) = 0;
 
                     
                     void method_dispatch(ara::com::SOMEIP_MESSAGE::Message&message, Socket& cserver)

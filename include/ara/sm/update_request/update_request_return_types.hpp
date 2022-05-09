@@ -23,7 +23,11 @@ namespace ara
                 bool status; 
                 errorDomains error ;
             };
-
+            struct StopUpdateSessionOutput
+            {
+                bool status; 
+                errorDomains error ;
+            };
             struct StartUpdateSessionOutput
             {
                 bool status; 
@@ -40,11 +44,6 @@ namespace ara
                 errorDomains error ;
             };
             struct PrepareRollbackOutput
-            {
-                bool status; 
-                errorDomains error ;
-            };
-            struct RequestUpdateSessionOutput
             {
                 bool status; 
                 errorDomains error ;

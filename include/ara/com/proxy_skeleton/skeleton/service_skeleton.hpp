@@ -220,7 +220,8 @@ namespace ara
                                     SOMEIP_MESSAGE::Message msg,
                                     Socket &binding)
                     {
-                        R result = (c.*method)();
+                        std::future<R> f = (c.*method)();
+                        R result = f.get();
                         // create serialize object
                         ara::com::Serializer s1;
                         // serialize the result
