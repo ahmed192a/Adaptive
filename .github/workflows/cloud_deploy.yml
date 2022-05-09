@@ -1,0 +1,42 @@
+name: Cloud Deployment
+
+on:
+  push:
+    paths:
+      - 'Cloud/**' # The cloud server app exists in this directory
+    branches:
+      - cloud_deployment
+
+
+jobs:
+  build:
+
+    name: Building
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Repository Code
+        uses: actions/checkout@v2
+
+      - name: Stepping into the cloud related folder
+        run: cd Cloud
+
+      - name: Building the cloud application
+        run: g++ -o out server.cpp
+
+  # test:
+
+  # deploy:
+
+  #   name: Deploying on cloud server
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Executing remote ssh commands using password
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.AZURE_HOST}}
+  #         username: ${{ secrets.AZURE_USER}}
+  #         password: ${{ secrets.AZURE_PASS}}
+  #         port: 22
+  #         script: cd ../..; ls;       # dummy command to validate logging into the server
