@@ -49,7 +49,7 @@ jobs:
 
       # Exporting as a .tar file to be sent to the cloud server
       - name: Exporting Cloud Server Image
-        run: sudo docker export –output=${{ env.TAR_FILE }} ${{ env.DOCKER_IMG }}
+        run: "sudo docker save ${{ env.DOCKER_IMG }} > ${{ env.TAR_FILE }}
       
       - name: Send the tar file to Azure server
         uses: appleboy/scp-action@master
@@ -78,5 +78,4 @@ jobs:
           password: ${{ secrets.AZURE_PASS}}
           port: 22
           script: sudo docker run ${{ env.DOCKER_IMG }}
-
 
