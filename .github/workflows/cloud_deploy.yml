@@ -18,15 +18,9 @@ jobs:
       - name: Checkout the Repository Code
         uses: actions/checkout@v2
 
-      - run: ls
-      
-      - name: Stepping into the cloud related folder
-        run: cd Cloud
-
-      - run: ls
-
       - name: Building the cloud application
         run: g++ -o out server.cpp
+        working-directory: Cloud
 
   # test:
 
