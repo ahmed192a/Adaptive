@@ -21,6 +21,8 @@ jobs:
       - name: Stepping into the cloud related folder
         run: cd Cloud
 
+      - run: ls
+      
       - name: Building the cloud application
         run: g++ -o out server.cpp
 
