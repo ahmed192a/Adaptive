@@ -51,7 +51,7 @@ jobs:
       - name: Exporting Cloud Server Image
         run: sudo docker save ${{ env.DOCKER_IMG }} > ${{ env.TAR_FILE }}
       
-      - run: ls
+      - run: touch trying.out
 
       - name: Send the tar file to Azure server
         uses: appleboy/scp-action@master
@@ -61,7 +61,7 @@ jobs:
           password: ${{ secrets.AZURE_PASS}}
           port: 22
           timeout: "600s"  # dummy
-          source: ${{ env.TAR_FILE }}
+          source: trying.out
           target: .
       
       - name: Importing the Image .tar file
