@@ -17,7 +17,7 @@ void handle_sigterm(int sig){
 
 int main()
 {
-    cout<<endl<<"[SM]"<<std::string(get_current_dir_name())<<endl;
+    cout<<endl << "[SM]" << string(get_current_dir_name()) << endl;
     struct sigaction sa;
 
     sa.sa_handler = &handle_sigterm;
@@ -27,8 +27,9 @@ int main()
     cout<<"\n\n\t\t[SM]you are in the second file\n";
     cout<<"\t\t[SM]SM for testing\n";
     cout<<"\t\t[SM]creating execution client \n";
+
     ExecutionClient client;
-        fflush(stdout);
+    fflush(stdout);
     client.ReportExecutionState(ExecutionState::kRunning);
 
     StateClient sm_client;
@@ -36,12 +37,16 @@ int main()
     token.fg_name = "FG_1";
     token.c_state = "on";
     FunctionGroupState FGS(std::move(token));
+
     std::cout<<"[SM] FGS created "<<endl;
+    
     std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = sm_client.SetState(FGS);
     boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+    
     std::cout<<"[SM] state changed\n";
     cout<<"\t\t[SM] result "<<var.index()<<endl; fflush(stdout);
     // get<1>(var).get();
+    
     while (1)
     {
         cout<<"\t\t[SM] running\n";
@@ -49,6 +54,8 @@ int main()
         if(sigval)
         break;
     }
+    
     cout<<"\t[SM]finish reporting running to EM\n\n";
+    
     return 0;
 }
