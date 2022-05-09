@@ -5,7 +5,8 @@
 #include <arpa/inet.h> //inet_addr
 #include <vector>
 
-#define OTA_IP_CLOUD "127.0.0.1"
+#define OTA_IP_CLOUD "104.211.5.19"
+// #define OTA_IP_CLOUD "127.0.0.1"
 #define OTA_PORT_CLOUD 8888
 #define OTA_PACKAGE_BUFFER_SIZE 10000
 #define OTA_METADATA_BUFFER_SIZE 1000
