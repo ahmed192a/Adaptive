@@ -34,34 +34,44 @@ jobs:
     runs-on: ubuntu-latest
 
     needs: [ build ]
-    # defaults:
-    #   run:
-    #     working-directory: ${{ env.CLOUD_DIR }}
+    defaults:
+      run:
+        working-directory: ${{ env.CLOUD_DIR }}
 
     steps:
       
       - name: Checkout the Repository Code
         uses: actions/checkout@v2
 
-      - name: Send the requered files to the cloud server
+      # Converting the Dockerfile to a Docker image
+      - name: Compiling the Dockerfile
+        run: sudo docker build -t  ${{ env.DOCKER_IMG }}  ./
+
+      # Exporting as a .tar file to be sent to the cloud server
+      - name: Exporting Cloud Server Image
+        run: sudo docker save ${{ env.DOCKER_IMG }} > ${{ env.TAR_FILE }}
+      
+      - run: ls
+
+      - name: Send the tar file to Azure server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.AZURE_HOST}}
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          source: "./${{ env.CLOUD_DIR }}/Dockerfile"
-          target: "~/home/${{ secrets.AZURE_USER}}"
-
-      # Converting the Dockerfile to a Docker image
-      - name: Compiling the Dockerfile
+          timeout: 600  # dummy
+          source: ${{ env.TAR_FILE }}
+          target: .
+      
+      - name: Importing the Image .tar file
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_HOST}}
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          script: ssudo docker build -t  ${{ env.DOCKER_IMG }}  ./
+          script: sudo docker load -i {{ env.TAR_FILE }}
 
       - name: Running the new image
         uses: appleboy/ssh-action@master
@@ -70,5 +80,5 @@ jobs:
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          script: sudo docker run ${{ env.DOCKER_IMG }}
+          script: sudo docker run -p 8888:8888 ${{ env.DOCKER_IMG }}
 
