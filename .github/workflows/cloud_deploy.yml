@@ -63,6 +63,25 @@ jobs:
           target: .
           strip_components: 1
       
+      - name: Removing any old running containers
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          script: sudo docker rm -vf $(sudo docker ps -aq)
+
+      - name: Removing any old docker images
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          script: sudo docker rmi -f $(sudo docker images -aq)
+
+
       - name: Loading the Image from the .tar file
         uses: appleboy/ssh-action@master
         with:
@@ -79,4 +98,4 @@ jobs:
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          script: sudo docker run -p 8888:8888 ${{ env.DOCKER_IMG }}
+          script: sudo docker run -idt -p 8888:8888 ${{ env.DOCKER_IMG }}
