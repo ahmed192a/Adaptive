@@ -5,7 +5,7 @@ on:
     # paths:
     #   - 'Cloud/**' # The cloud server app exists in this directory
     branches:
-      - cloud_deployment
+      - master
 
 env:
   CLOUD_DIR: Cloud
@@ -48,10 +48,8 @@ jobs:
         run: sudo docker build -t  ${{ env.DOCKER_IMG }}  ./
 
       # Exporting as a .tar file to be sent to the cloud server
-      - name: Exporting Cloud Server Image
+      - name: Saving the image to a .tar file
         run: sudo docker save ${{ env.DOCKER_IMG }} > ${{ env.TAR_FILE }}
-      
-      - run: ls
 
       - name: Send the tar file to Azure server
         uses: appleboy/scp-action@master
@@ -61,17 +59,18 @@ jobs:
           password: ${{ secrets.AZURE_PASS}}
           port: 22
           # timeout: 600s"  # dummy
-          source: ${{ env.TAR_FILE }}
+          source: ${{ env.CLOUD_DIR }}/${{ env.TAR_FILE }}
           target: .
+          strip_components: 1
       
-      - name: Importing the Image .tar file
+      - name: Loading the Image from the .tar file
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_HOST}}
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          script: sudo docker load -i {{ env.TAR_FILE }}
+          script: sudo docker load --input ${{ env.TAR_FILE }}
 
       - name: Running the new image
         uses: appleboy/ssh-action@master
@@ -81,4 +80,3 @@ jobs:
           password: ${{ secrets.AZURE_PASS}}
           port: 22
           script: sudo docker run -p 8888:8888 ${{ env.DOCKER_IMG }}
-
