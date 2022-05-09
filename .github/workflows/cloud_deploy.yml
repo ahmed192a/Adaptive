@@ -51,7 +51,7 @@ jobs:
           password: ${{ secrets.AZURE_PASS}}
           port: 22
           source: "./${{ env.CLOUD_DIR }}/Dockerfile"
-          target: "/home/"
+          target: "~/home/${{ secrets.AZURE_USER}}"
 
       # Converting the Dockerfile to a Docker image
       - name: Compiling the Dockerfile
