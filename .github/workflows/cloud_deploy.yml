@@ -9,6 +9,8 @@ on:
 
 env:
   CLOUD_DIR: Cloud
+  DOCKER_IMG: "cloud-img"
+  TAR_FILE: "cloud.tar"
 
 
 jobs:
@@ -25,19 +27,56 @@ jobs:
         run: g++ -o out server.cpp
         working-directory: ${{ env.CLOUD_DIR }}
 
-      -run: ls ${{ env.CLOUD_DIR }}
 
   deploy:
 
     name: Deploying on cloud server
     runs-on: ubuntu-latest
 
+    needs: [ build ]
+    defaults:
+      run:
+        working-directory: ${{ env.CLOUD_DIR }}
+
     steps:
-      - name: Executing remote ssh commands using password
+      
+      - name: Checkout the Repository Code
+        uses: actions/checkout@v2
+
+      # Converting the Dockerfile to a Docker image
+      - name: Compiling the Dockerfile
+        run: sudo docker build -t  ${{ env.DOCKER_IMG }}  ./
+
+      # Exporting as a .tar file to be sent to the cloud server
+      - name: Exporting Cloud Server Image
+        run: sudo docker export –output=${{ env.TAR_FILE }} ${{ env.DOCKER_IMG }}
+      
+      - name: Send the tar file to Azure server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          source: ${{ env.TAR_FILE }}
+          target: .
+      
+      - name: Importing the Image .tar file
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_HOST}}
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          script: cd ../..; ls;       # dummy command to validate logging into the server
+          script: sudo docker import ./${{ env.TAR_FILE }}
+
+      - name: Running the new image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_HOST}}
+          username: ${{ secrets.AZURE_USER}}
+          password: ${{ secrets.AZURE_PASS}}
+          port: 22
+          script: sudo docker run ${{ env.DOCKER_IMG }}
+
+
