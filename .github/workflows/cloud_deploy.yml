@@ -5,7 +5,7 @@ on:
     # paths:
     #   - 'Cloud/**' # The cloud server app exists in this directory
     branches:
-      - master
+      - cloud_deployment
 
 env:
   CLOUD_DIR: Cloud
