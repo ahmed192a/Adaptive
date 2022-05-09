@@ -2,8 +2,8 @@ name: Cloud Deployment
 
 on:
   push:
-    paths:
-      - 'Cloud/**' # The cloud server app exists in this directory
+    # paths:
+    #   - 'Cloud/**' # The cloud server app exists in this directory
     branches:
       - cloud_deployment
 
@@ -18,11 +18,13 @@ jobs:
       - name: Checkout the Repository Code
         uses: actions/checkout@v2
 
+      - run: ls
+      
       - name: Stepping into the cloud related folder
         run: cd Cloud
 
       - run: ls
-      
+
       - name: Building the cloud application
         run: g++ -o out server.cpp
 
