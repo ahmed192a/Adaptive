@@ -7,10 +7,10 @@ MAINTAINER OTA-Client
 ADD . /code
 WORKDIR /code
 
-# # updating the platform
-# RUN apt-get update && apt-get -y install sudo
-# # Installing the g++ complier
-# RUN echo "y" | sudo apt-get install g++
+# updating the platform
+RUN apt-get update && apt-get -y install sudo
+# Installing the g++ complier
+RUN echo "y" | sudo apt-get install g++
 # Compiling the program source code
 RUN g++ -o out server.cpp
 
