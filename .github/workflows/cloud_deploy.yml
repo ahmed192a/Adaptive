@@ -60,7 +60,7 @@ jobs:
           username: ${{ secrets.AZURE_USER}}
           password: ${{ secrets.AZURE_PASS}}
           port: 22
-          timeout: 600  # dummy
+          timeout: "600s"  # dummy
           source: ${{ env.TAR_FILE }}
           target: .
       
