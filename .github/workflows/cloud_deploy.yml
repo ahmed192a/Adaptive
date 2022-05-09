@@ -7,6 +7,9 @@ on:
     branches:
       - cloud_deployment
 
+env:
+  CLOUD_DIR: Cloud
+
 
 jobs:
   build:
@@ -20,9 +23,9 @@ jobs:
 
       - name: Building the cloud application
         run: g++ -o out server.cpp
-        working-directory: Cloud
+        working-directory: ${{ env.CLOUD_DIR }}
 
-  # test:
+      -run: ls ${{ env.CLOUD_DIR }}
 
   deploy:
 
