@@ -83,7 +83,7 @@ namespace ara
                         }
 
                     private:
-                        ara::com::InstanceIdentifier serviceid;
+                        ara::com::proxy_skeleton::ServiceId serviceid;
                     };
                 }
             }

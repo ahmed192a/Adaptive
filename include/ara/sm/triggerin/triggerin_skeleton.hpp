@@ -31,7 +31,7 @@ namespace ara
                 class Trigger_In_Skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
                 {
                 private:
-                    ara::com::InstanceIdentifier serviceid;
+                    ara::com::proxy_skeleton::ServiceId serviceid;
 
                 public:
                     Trigger_In_Skeleton(

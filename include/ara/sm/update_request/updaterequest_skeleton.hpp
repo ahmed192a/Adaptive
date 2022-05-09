@@ -34,7 +34,7 @@ namespace ara
                 {
                 private:
                     struct sockaddr_in cliaddr;
-                    ara::com::InstanceIdentifier serviceid;
+                    ara::com::proxy_skeleton::ServiceId serviceid;
 
                 public:
                     update_request_Skeleton(

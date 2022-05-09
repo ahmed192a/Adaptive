@@ -32,7 +32,7 @@ namespace ara
 
                 public:
                     diagnostic_reset(
-                        ara::com::InstanceIdentifier instance,
+                        ara::com::proxy_skeleton::ServiceId instance,
                         ara::com::proxy_skeleton::Skeleton::ServiceSkeleton::SP_Handle skeleton_handle)
                         : ara::com::proxy_skeleton::skeleton::ServiceSkeleton(serviceid, instance, skeleton_handle),
                           serviceid(14)
