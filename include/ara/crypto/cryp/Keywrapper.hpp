@@ -15,8 +15,8 @@
 
 #include <vector>
 #include <string>
-#include "include/ara/crypto/cryp/symmetric_key_wrapper_ctx.hpp"
-#include "include/ara/crypto/cryp/PRNG.hpp"
+#include "symmetric_key_wrapper_ctx.hpp"
+#include "PRNG.hpp"
 
 
 using namespace std;
@@ -35,7 +35,7 @@ namespace ara {
 			size_t KEK_Length = 128; // in bits
 			size_t Block_size = 16;
 			SymmetricKey Key;
-			vector<byte> hexToASCII(string hex);
+			vector<byte> hexToASCII(string hex) const;
 			//std::string decToHexa(int n);
 			public :
 			Keywrapper();
@@ -45,7 +45,7 @@ namespace ara {
 
 			///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
 			///@return: true if initialized and false if not 
-			bool IsInitialized();
+			bool IsInitialized() const noexcept;
 
 			///@brief: inherited from CryptoContext,references the CryptoPrimitivId instance containing instance identification 
 			///@param[in]: none
@@ -55,18 +55,18 @@ namespace ara {
 			///@brief: inherited from CryptoContext, references the CryptoProvider instance containing instance identification 
 			///@param[in]: none
 			///@return: pointer references the cryptoProvider instance of the context
-			CryptoProvider& MyProvider() const noexcept;
+			ConcreteCryptoProvider& MyProvider() const noexcept;
 
 			/*************************************************************************/
 			/*****         RandomGeneratorCtx inherited virtual functions        *****/
 			/*************************************************************************/
-			std::size_t CalculateWrappedKeySize(std::size_t keyLength);
-			std::size_t GetMaxTargetKeyLength();
-			std::size_t GetTargetKeyGranularity();
-			ara::core::Result<void> Reset();
-			void SetKey(const SymmetricKey& key, CryptoTransform transform);
-			vector<byte>  WrapKeyMaterial (const RestrictedUseObject &key);
-			RestrictedUseObject::Uptrc UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage);
+			std::size_t CalculateWrappedKeySize(std::size_t keyLength)const noexcept;
+			//std::size_t GetMaxTargetKeyLength() noexcept;
+			//std::size_t GetTargetKeyGranularity() noexcept;
+			void Reset() noexcept;
+			void SetKey(const SymmetricKey& key, CryptoTransform transform) noexcept;
+			vector<byte>  WrapKeyMaterial (const SymmetricKey &key) const noexcept;
+			SymmetricKey::Uptr UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage) const noexcept;
 			};
 		}
 	}
