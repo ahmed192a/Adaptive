@@ -1,4 +1,5 @@
 #include <iostream>
+#include<vector>
 #include "ara/crypto/cryp/cryobj/sign.hpp"
 
 namespace ara
@@ -7,14 +8,34 @@ namespace ara
     {
         namespace cryp
         {
-            CryptoPrimitiveId::AlgId Sign:: GetHashAlgId () const
+            Sign::Sign(std::vector<uint8_t> signature)
+            {
+                this->signatureVal=signature;
+                this->session =true;
+                this->exportable =true;
+            }
+            CryptoPrimitiveId::AlgId Sign:: GetHashAlgId () const noexcept
             {
                 return this->H_SingID ;
             }
-            std::size_t Sign:: GetRequiredHashSize () const 
+            std::size_t Sign:: GetRequiredHashSize () const noexcept
             {
                 return this->H_Req_Size;
             }
+
+           // bool Sign::IsExportable () const noexcept
+            //{
+              //  return this->Export;
+            //}
+                
+              //  bool Sign::IsSession () const noexcept
+               // {
+                 //   return this->Session;
+                //}
+                //CryptoObject::COIdentifier Sign::GetObjectId() const noexcept
+                //{
+                 //   return this->ID;
+                //}
         }
     }
 }
