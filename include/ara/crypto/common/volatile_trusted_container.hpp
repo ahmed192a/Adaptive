@@ -14,9 +14,9 @@ namespace ara
 
 				using Uptr = std::unique_ptr<VolatileTrustedContainer>;
 
-				virtual ConcreteIOInterface& GetIOInterface () const noexcept;
+				 ConcreteIOInterface& GetIOInterface () const;
 
-				virtual ~VolatileTrustedContainer () noexcept=default;
+				//virtual ~VolatileTrustedContainer () noexcept=default;
 
 
 			};
