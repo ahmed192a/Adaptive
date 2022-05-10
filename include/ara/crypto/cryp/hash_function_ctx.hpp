@@ -9,6 +9,7 @@
 //#define ARA_CRYPTO_HASH_FUNCTION_CTX_H
 #include "crypto_context.hpp"
 #include "../common/base_id_types.hpp"
+#include <vector>
 
 
 namespace ara {
@@ -28,7 +29,7 @@ namespace ara {
 
                     /// @brief Get DigestService instance.
                     /// @returns DigestService::Uptr
-                    virtual DigestService::Uptr GetDigestService() const noexcept=0;
+                    //virtual DigestService::Uptr GetDigestService() const noexcept=0;
 
 
                     /// @brief Get requested part of calculated digest.
