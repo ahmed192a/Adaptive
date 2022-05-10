@@ -38,7 +38,14 @@ namespace ara
                  */
                  
                  COIdentifier CO_ID;
-             
+
+                 //size of the value of key/seed/signature in bytes
+                std::size_t payloadSize;
+                bool session;
+                bool exportable;
+
+                 cryptoobj()=default;
+                 cryptoobj(std::size_t payloadSize , bool session,bool exportable);
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
@@ -118,7 +125,7 @@ namespace ara
              * @brief Save itself to provided IOInterface A CryptoObject with property "session" cannot be saved in a KeySlot.
             **/
             
-            void Save (ara::crypto::IOInterface& container) const noexcept;
+            //void Save (ara::crypto::ConcreteIOInterface& container) const noexcept;
             
             /**
              * SWS_CRYPT_30208
@@ -126,7 +133,7 @@ namespace ara
              * @brief Copy-assign another CryptoObject to this instance.
              * 
             **/
-            cryptoobj& operator= (const cryptoobj &other)=default;
+            cryptoobj& operator= (const cryptoobj &other);
             
             /**
              * SWS_CRYPT_30209
@@ -134,7 +141,7 @@ namespace ara
              * @brief Move-assign another CryptoObject to this instance.
              * 
             **/
-            cryptoobj& operator= (cryptoobj &&other)=default;
+            cryptoobj& operator= (cryptoobj &&other);
             
             
             };
