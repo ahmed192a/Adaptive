@@ -2,12 +2,12 @@
 #define ARA_CRYPTO_KDF_H
 
 
-#include "ara/crypto/common/mem_region.hpp"
-#include "ara/crypto/common/base_id_types.hpp"
-#include "ara/crypto/cryp/message_authn_code_ctx.hpp"
-#include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
-#include "ara/crypto/cryp/cryobj/secret_seed.hpp"
-#include "ara/crypto/cryp/crypto_context.hpp"
+#include "../common/mem_region.hpp"
+#include "../common/base_id_types.hpp"
+//#include "message_authn_code_ctx.hpp"
+//#include "cryobj/restricted_use_object.hpp"
+//#include "cryobj/secret_seed.hpp"
+#include "crypto_context.hpp"
 
 
 
@@ -21,6 +21,7 @@ namespace ara {
              
 
                 public:
+                //KeyDerivationFunctionCtx()=default;
                 using Uptr = std::unique_ptr<KeyDerivationFunctionCtx>; 
 
 
@@ -120,7 +121,7 @@ namespace ara {
                *  @param isExportable  defines if a derived key can be stored outside the system
                *  @return vector of bytes for the derived key
                */
-               virtual std::vector<ara::crypto::byte> DeriveKey (bool isSession=true, bool isExportable=false)  /*noexcept=0*/;
+               virtual std::vector<ara::crypto::byte> DeriveKey (bool isSession=true, bool isExportable=false)  noexcept=0;
 
 
                 /*5
