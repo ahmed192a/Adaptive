@@ -1,7 +1,7 @@
 #ifndef ARA_CRYPTO_PRNG_H
 #define ARA_CRYPTO_PRNG_H
 
-#include "ara/crypto/cryp/random_generator_ctx.hpp"
+#include "random_generator_ctx.hpp"
 #include <random>
 #include <vector>
 
@@ -25,24 +25,25 @@ namespace ara {
             class ReadOnlyMemRegion {};
             */
             //////////////////////////////////////////////////////////////
-
+            class ConcreteCryptoProvider;
             class PRNG : public RandomGeneratorCtx {
             private:
                 std::default_random_engine RNG;
                 //SecretSeed Seed;
+                ConcreteCryptoProvider* myprovider;
             public:
                 /*
                  * PRNG Constructor
                  */
+                PRNG(ConcreteCryptoProvider* a);
                 PRNG();
-                
                 /***********************************************************************/
                 /*****          inherited CyrptoContext virtual functions          *****/
                 /***********************************************************************/
 
 		///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
                 ///@return: true if initialized and false if not 
-		bool IsInitialized();
+		bool IsInitialized()const noexcept;
 
 		///@brief: inherited from CryptoContext,references the CryptoPrimitivId instance containing instance identification 
                 ///@param[in]: none
@@ -52,7 +53,7 @@ namespace ara {
                 ///@brief: inherited from CryptoContext, references the CryptoProvider instance containing instance identification 
                 ///@param[in]: none
                 ///@return: pointer references the cryptoProvider instance of the context
-                CryptoProvider& MyProvider() const noexcept;
+                ConcreteCryptoProvider& MyProvider() const noexcept;
                 
                 /*************************************************************************/
                 /*****         RandomGeneratorCtx inherited virtual functions        *****/
@@ -67,7 +68,7 @@ namespace ara {
                 std::vector<byte> Generate(std::uint32_t count) noexcept;
                 //bool Seed (ReadOnlyMemRegion seed) noexcept;
                 /*Set the internal state of the RNG using the provided seed*/
-                bool Seed(const SecretSeed& seed) noexcept;
+                bool Seed(const SecSeed& seed) noexcept;
                 
                 bool SetKey(const SymmetricKey& key) noexcept;
             };

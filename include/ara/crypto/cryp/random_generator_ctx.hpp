@@ -3,13 +3,15 @@
 
 #include "crypto_context.hpp"
 #include "../common/base_id_types.hpp"
-#include "ara/crypto/cryp/cryobj/secret_seed.hpp"
-#include "ara/crypto/common/mem_region.hpp"
-#include "ara/core/result.hpp"
+#include "cryobj/sec_seed.hpp"
+#include "../common/mem_region.hpp"
+#include "cryobj/symmetric_key.hpp"
+//#include "ara/core/result.hpp"
 
 namespace ara {
     namespace crypto {
         namespace cryp {
+            class SymmetricKey;
             enum class RandomGeneratorCtx_Status : std::uint8_t 
             {
                 notInitialized ,   
@@ -33,10 +35,10 @@ namespace ara {
                 //virtual ara::core::Result<ara::core::Vector<ara::core::Byte>> Generate (std::uint32_t count) noexcept=0;
                 
                 /*Set the internal state of the RNG using the provided seed*/
-                virtual bool Seed (ReadOnlyMemRegion seed) noexcept=0;
+               // virtual bool Seed (ReadOnlyMemRegion seed) noexcept=0;
                 
                 /*Set the internal state of the RNG using the provided seed*/
-                virtual bool Seed (const SecretSeed &seed) noexcept=0;
+                virtual bool Seed (const SecSeed &seed) noexcept=0;
                 
                 /**/
                 virtual bool SetKey (const SymmetricKey &key) noexcept=0;
