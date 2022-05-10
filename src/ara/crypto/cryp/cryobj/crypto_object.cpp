@@ -1,4 +1,5 @@
-#include "ara/crypto/cryp/cryobj/crypto_obj.hpp"
+#include"../../../../../include/ara/crypto/common/concrete_io_interface.hpp"
+#include "../../../../../include/ara/crypto/cryp/cryobj/crypto_obj.hpp"
 #include <iostream>
 namespace ara
 {
@@ -6,13 +7,18 @@ namespace ara
     {
         namespace cryp
         {
-            class ConcreteCryptoProvider;
-            class CryptoContext;
-            /**template <class ConcreteObject> static typename ConcreteObject::Uptrc cryptoobj:: Downcast(CryptoObject::Uptrc &&object) noexcept
+            cryptoobj::cryptoobj(std::size_t payloadSize , bool session,bool exportable)
+            {
+                payloadSize = payloadSize;
+                session = session;
+                exportable = exportable;
+            }
+           /** template <class ConcreteObject> typename ConcreteObject::Uptrc cryptoobj:: Downcast(CryptoObject::Uptrc &&object) noexcept
             {
                 ara::core::Result<typename ConcreteObject::Uptrc> & op =  && object ;
                 return op;
             }**/
+
             CryptoPrId::Uptr cryptoobj:: GetCryptoPrimitiveId () const noexcept
             {
                return std::unique_ptr<CryptoPrId>();
@@ -21,15 +27,12 @@ namespace ara
             {
                return this->CO_ID;
             }
-            std::size_t CryptoObject:: GetPayloadSize () const noexcept
+            std::size_t cryptoobj::GetPayloadSize () const noexcept
             {
-                ConcreteCryptoProvider *CRY_PR;
-                CryptoContext *CRY_CO;
-                CryptoPrimitiveId *CRY_ID;
-                CryptoPrimitiveId::AlgId PR_ID = CRY_ID->GetPrimitiveId();
-                return CRY_CO->MyProvider().GetPayloadStorageSize(CO_ID.mCOType,PR_ID).Value(); 
                 
-            }//// related to crypto provider
+                return this->payloadSize;
+                
+            }
             bool cryptoobj:: IsExportable () const noexcept
             {
                 if(this->CO_ID.mCOType == ara::crypto::CryptoObjectType::kUndefined 
@@ -45,11 +48,12 @@ namespace ara
                 else
                 return true;
             }
-            /*void CryptoObject::Save (IOInterface &container) const noexcept
-            {
-               container.GetAllowedUsage();
-               
-            }*/////To Do after io-interface be done.
+            //void cryptoobj::Save (ConcreteIOInterface &container) const noexcept
+            //{
+               //(*this).CO_ID= container.AllowedUsage;
+              // this->exportable=container.ExportAllowed_t;
+
+            //}////To Do after io-interface be done.
           
             cryptoobj& cryptoobj::operator= (const cryptoobj &other)
             {
