@@ -9,7 +9,7 @@ namespace ara
 {
     namespace crypto
     {
-        class IOInterface;
+        class ConcreteIOInterface;
         namespace cryp
         {
             /**
@@ -26,6 +26,7 @@ namespace ara
                     CryptoObjectType mCOType;
                     CryptoObjectUid mCouid;
                 };
+                 
                 
                 // COIdentifier CO_ID;
                  /*
@@ -112,7 +113,7 @@ namespace ara
              * @brief Save itself to provided IOInterface A CryptoObject with property "session" cannot be saved in a KeySlot.
             **/
             
-            virtual void Save (ara::crypto::IOInterface& container) const noexcept=0;
+            //virtual void Save (ara::crypto::ConcreteIOInterface& container) const noexcept=0;
             
             /**
              * SWS_CRYPT_30208
