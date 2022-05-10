@@ -5,7 +5,7 @@
 using namespace ara::crypto::cryp;
 
 
-HMAC::HMAC(CryptoProvider * provider)//‘ara::crypto::cryp::SymmetricKey& ara::crypto::cryp::HMAC::key’ should be initialized
+HMAC::HMAC(ConcreteCryptoProvider * provider)//‘ara::crypto::cryp::SymmetricKey& ara::crypto::cryp::HMAC::key’ should be initialized
  {
     // intializing the key
     input_key.resize(B);
@@ -18,7 +18,7 @@ HMAC::HMAC(CryptoProvider * provider)//‘ara::crypto::cryp::SymmetricKey& ara::
 
 
 /** Inherited from CryptoContext class**/
-bool HMAC::IsInitialized() {
+bool HMAC::IsInitialized()const noexcept {
     if(status == MessageAuthnCodeCtx_Status::notInitialized)
         return false;
     else
@@ -26,7 +26,7 @@ bool HMAC::IsInitialized() {
 }
 
 
-CryptoProvider& HMAC::MyProvider() const noexcept {
+ConcreteCryptoProvider& HMAC::MyProvider() const noexcept {
     return (*myProvider) ;
 }
 
@@ -47,19 +47,15 @@ void HMAC::Reset() noexcept {
 }
 
 
-
-void HMAC::SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept {
-        
-    status = MessageAuthnCodeCtx_Status::initialized;
-    input_key.resize(0); // re initializing the key
-
-    if( key.keyVal.size() > B)
-      hash_sha256(key.keyVal, input_key);
-    else
-      input_key = key.keyVal;
-
-    input_key.resize(B);
+CryptoPrimitiveId::Uptr HMAC::GetCryptoPrimitiveId() const noexcept
+{
+	//AlgId myAlgorithmId = myCryptoProvider->ConvertToAlgId("PRNG");
+	//CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("Auth_Encrption");
+	//return myPrimitiveId;
 }
+
+
+
 
 
 
@@ -70,8 +66,14 @@ void HMAC::Start(ReadOnlyMemRegion iv) noexcept {
 }
 
 
-void HMAC::Update(std::uint8_t in) noexcept {
+void HMAC::Update(std::uint8_t in) noexcept
+ {
+   if (status != MessageAuthnCodeCtx_Status::updated)
+   inputBuffer.clear();
+  for(const auto& j:inputBuffer)
+  std::cout<<j;
     inputBuffer.push_back(in);
+  std::cout<<" the final test"<<std::endl;
     status = MessageAuthnCodeCtx_Status::updated;
 }
 
@@ -88,7 +90,7 @@ std::vector<ara::crypto::byte> HMAC::GetDigest(std::size_t offset ) const noexce
 }
 
 
-Signature::Uptrc HMAC::Finish(bool makeSignatureObject) noexcept {
+Sign::Uptrc HMAC::Finish(bool makeSignatureObject) noexcept {
 
   status = MessageAuthnCodeCtx_Status::finished; // changing the status
 
@@ -96,23 +98,25 @@ Signature::Uptrc HMAC::Finish(bool makeSignatureObject) noexcept {
   hmac_digestion(inputBuffer, digest);
 
 
-        return nullptr;
-    //  return std::make_unique<Sign>();
+    return std::make_unique<ara::crypto::cryp::Sign>(digest);
 
 }
 
 
 
-void HMAC::hash_sha256(std::vector<byte> &input, std::vector<byte> &output) {
+void HMAC::hash_sha256(std::vector<byte> input, std::vector<byte> &output) {
 
+  ConcreteCryptoProvider& a=MyProvider();
+  ConcreteCryptoProvider* b=&a;
   // Creating a pointer to the hash function object that will be used for hashing
-  HashService::Uptr hash = std::make_unique<HashService>(myProvider);
+  HashService::Uptr hash = std::make_unique<HashService>(b);
   
   // initializing the context
   hash->Start(); 
   
   // Sending the traget value to be hashed (byte by byte)
   for(byte &b: input) { 
+    std::cout<<b<<" hash input"<<std::endl;
     hash->Update(b);
   }
 
@@ -157,3 +161,20 @@ void HMAC::hmac_digestion(std::vector<byte> &plainText, std::vector<byte> &outpu
 
   return ;
 }
+void HMAC::SetKey(const SymmetricKey &key, CryptoTransform transform) noexcept {
+        
+    status = MessageAuthnCodeCtx_Status::initialized;
+    input_key.resize(0); // re initializing the key
+
+    if( key.keyVal.size() > B)
+      hash_sha256((key.keyVal),input_key);
+    else
+      input_key = key.keyVal;
+
+    input_key.resize(B);
+    std::cout<<"insideHMAC"<<std::endl;
+    for(int i=0;i<B;i++)
+    std::cout<<static_cast<int>(input_key[i]);
+    
+}
+
