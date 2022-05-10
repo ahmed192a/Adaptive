@@ -1,13 +1,14 @@
 #include "ara/crypto/cryp/HKDF.hpp"
-#include "ara/crypto/cryp/concrete_crypto_provider.hpp"
+#include "ara/crypto/cryp/HMAC.hpp"
+//#include "ara/crypto/cryp/concrete_crypto_provider.hpp"
 
 
 using namespace ara::crypto;
 using namespace ara::crypto::cryp;
 
 
-
-            HKDF::HKDF(CryptoProvider * provider) {
+            //class ConcreteCryptoProvider;
+            HKDF::HKDF(ConcreteCryptoProvider* provider) {
                 this->myProvider = provider;
             }
 
@@ -21,14 +22,14 @@ using namespace ara::crypto::cryp;
             }
 
 
-            CryptoProvider& HKDF::MyProvider() const noexcept {
+            ConcreteCryptoProvider& HKDF::MyProvider() const noexcept {
                 return (*myProvider) ;
             }
 
-            // CryptoPrimitiveId::Uptr HMAC::GetCryptoPrimitiveId() const noexcept {
+             CryptoPrimitiveId::Uptr HKDF::GetCryptoPrimitiveId() const noexcept {
             //     return (this->myProvider->ConvertToAlgId("test"));
 
-            // }
+             }
 
                 /*1
                -Add Public Salt
@@ -40,7 +41,7 @@ using namespace ara::crypto::cryp;
                --shall return a kInvalidInputSize error, if the size of the provided salt is not supported
                 by the ara::crypto::CryptoAlgId used to instantiate this context.
                */
-                /*virtual */void HKDF::AddSalt (SymmetricKey public_salt) /*noexcept=0*/{
+                /*virtual */void HKDF::AddSalt (SymmetricKey public_salt) noexcept{
                     this->public_salt=public_salt;
                     saltAdded=0;
                     
@@ -55,7 +56,7 @@ using namespace ara::crypto::cryp;
                  is not supported by the ara::crypto::CryptoAlgId used to instantiate this
                  context.
                */
-                /*virtual */void HKDF::AddSecretSalt (SymmetricKey secret_salt) /*noexcept=0*/{
+                /*virtual */void HKDF::AddSecretSalt (SymmetricKey secret_salt) noexcept{
                     this->secret_salt=secret_salt; 
                     saltAdded=1;
                 }
@@ -74,7 +75,7 @@ using namespace ara::crypto::cryp;
                 the system. The stack vendor may enforce a minimum number of itertions needed to
                 derive a secure key
                */
-                std::uint32_t HKDF::ConfigIterations (std::uint32_t iterations=0) /*noexcept=0*/{
+                std::uint32_t HKDF::ConfigIterations (std::uint32_t iterations) noexcept{
                     this->iterations=iterations;
                     return this->iterations;
                 }
@@ -90,7 +91,7 @@ using namespace ara::crypto::cryp;
                */
                          
 
-               /*virtual */std::vector<ara::crypto::byte> HKDF::DeriveKey (bool isSession=true, bool isExportable=false)  /*noexcept=0*/{
+               /*virtual */std::vector<ara::crypto::byte> HKDF::DeriveKey (bool isSession, bool isExportable)  noexcept{
                     ConcreteCryptoProvider * c;
                     HMAC hmac(c);
                     hmac.Start();
@@ -142,7 +143,7 @@ using namespace ara::crypto::cryp;
                 The interface shall return kUninitializedContext, if the configured key derivation
                 algorithm requires more context configuration than provided.
                 */
-               /*virtual */std::vector<ara::crypto::byte> HKDF::DeriveSeed (bool isSession=true, bool isExportable=false)  /*noexcept=0*/{
+               /*virtual */std::vector<ara::crypto::byte> HKDF::DeriveSeed (bool isSession, bool isExportable)  noexcept{
                     
                     ConcreteCryptoProvider * c;
                     HMAC hmac(c);
@@ -161,7 +162,10 @@ using namespace ara::crypto::cryp;
                   /*6
                 -Clear the Crypto Context
                 */
-               /*virtual */void HKDF::Reset () /*noexcept=0*/{
+               /*virtual */void HKDF::Reset () noexcept
+               {
+
+               } /*noexcept{
                 this->targetKeyId=nullptr;//12
                 CryptoAlgId targetAlgIdTemp;//12
                 this->targetAlgId=targetAlgIdTemp;
@@ -186,7 +190,7 @@ using namespace ara::crypto::cryp;
                 Get the fixed size of the target key ID required by diversification algorithm. Returned value is
                 constant for each instance of the interface, i.e. independent from configuration by
                 */
-               /*virtual */std::size_t HKDF::GetKeyIdSize () const /*noexcept=0*/{
+               std::size_t HKDF::GetKeyIdSize () const noexcept{
                    if(saltAdded==0){
                     return 0;
                     
@@ -201,8 +205,8 @@ using namespace ara::crypto::cryp;
                Get the symmetric algorithm ID of target (slave) key. If the context was not configured yet by a
                call of the Init() method then kAlgIdUndefined should be.
                 */
-                 using CryptoAlgId = std::uint64_t;
-                CryptoAlgId HKDF::GetTargetAlgId () const /*noexcept=0*/{
+                 //using CryptoAlgId = std::uint64_t;
+                CryptoAlgId HKDF::GetTargetAlgId ()const noexcept{
                     if(isContextConfigured==0){
                         return kAlgIdUndefined;
                     }
@@ -219,7 +223,7 @@ using namespace ara::crypto::cryp;
                 KdfMaterialAnyUsage shall be returned.
                 */
                // using AllowedUsageFlags = std::uint32_t;
-               // AllowedUsageFlags HKDF::GetTargetAllowedUsage () const  /*noexcept=0*/{
+               // AllowedUsageFlags HKDF::GetTargetAllowedUsage () const  /*noexcept{
                //     if( (this->isContextConfigured==0)&&(this->sourceKM==nullptr) ){
                //         return kAllowKdfMaterialAnyUsage;
                //     }
@@ -232,7 +236,7 @@ using namespace ara::crypto::cryp;
                 Get the bit-length of target (diversified) keys. Returned value is configured by the context
                 factory method, i.e. independent from configuration by.
                 */
-                /*virtual*/ std::size_t HKDF::GetTargetKeyBitLength () const /*noexcept=0*/{
+                /*virtual*/ std::size_t HKDF::GetTargetKeyBitLength ()const noexcept{
                     return HKDF_output_len;
                 }
                 
@@ -249,8 +253,7 @@ using namespace ara::crypto::cryp;
                 */
                 /*virtual */void HKDF::Init (ReadOnlyMemRegion targetKeyId, ReadOnlyMemRegion ctxLabel,
                 AllowedUsageFlags allowedUsage=kAllowKdfMaterialAnyUsage,
-                CryptoAlgId targetAlgId=kAlgIdDefault)
-                /*noexcept*/{
+                CryptoAlgId targetAlgId=kAlgIdDefault) noexcept{
                     this->targetKeyId=&targetKeyId;
                     this->targetAlgId=targetAlgId;
                     this->allowedUsage=allowedUsage;
@@ -263,14 +266,12 @@ using namespace ara::crypto::cryp;
                 /*13
                 Set (deploy) key-material to the key derivation algorithm context.
                 */
-                /*virtual */void HKDF::SetSourceKeyMaterial (const std::uint8_t sourceKM) /*noexcept=0*/{
+                /*virtual */void HKDF::SetSourceKeyMaterial (const std::uint8_t sourceKM) noexcept{
                     this->sourceKM=sourceKM;
                 }
 
 
                
-
-
 
 
 
