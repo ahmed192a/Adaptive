@@ -63,9 +63,9 @@ namespace ara
       * defines all types of crypto objects (types of content that can be stored to a key slot)
       */
     //The key/seed can be used for data encryption initialization (applicable to symmetric and asymmetric algorithms).//
-     const AllowedUsageFlags kAllowDataEncryption = 0x0001;
+     //const AllowedUsageFlags kAllowDataEncryption = 0x0001;
      //The key/seed can be used for data decryption initialization (applicable to symmetric and asymmetric algorithms).//s
-     const AllowedUsageFlags kAllowDataDecryption = 0x0002;
+     //const AllowedUsageFlags kAllowDataDecryption = 0x0002;
       enum class CryptoObjectType : std::uint32_t 
       {
          kUndefined=0,
