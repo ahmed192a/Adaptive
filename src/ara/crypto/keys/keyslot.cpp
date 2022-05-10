@@ -41,48 +41,48 @@ namespace ara
                 //Key Slot Content Properties Struct variables //
                     KSCP.mAlgId = container.GetPrimitiveId();
                     //write it in the file //
-                    my_file <<"KSCP.mAlgId=" + (string)(container.GetPrimitiveId());
+                    my_file <<"KSCP.mAlgId=" + to_string(container.GetPrimitiveId());
                     //-----------------------------------------------//
                     KSCP.mObjectType = container.GetCryptoObjectType();
-                    my_file <<"\nKSCP.mObjectType="+ (string)(container.GetCryptoObjectType());
+                    my_file <<"\nKSCP.mObjectType="+ to_string(container.GetCryptoObjectType());
                     //----------------------------------------------//
                     KSCP.mObjectUid = container.GetObjectId();
-                    my_file <<"\nKSCP.mObjectUid=" + (string)(container.GetObjectId());
+                    my_file <<"\nKSCP.mObjectUid=" + to_string(container.GetObjectId());
                     //----------------------------------------------//
                     KSCP.mContentAllowedUsage = container.GetAllowedUsage();
-                    my_file <<"\nKSCP.mContentAllowedUsage=" + (string)(container.GetAllowedUsage());
+                    my_file <<"\nKSCP.mContentAllowedUsage=" + to_string(container.GetAllowedUsage());
                     //----------------------------------------------//
                     KSCP.mObjectSize = container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-                    my_file <<"\nKSCP.mObjectSize=" + (string)(container.GetCapacity());
+                    my_file <<"\nKSCP.mObjectSize=" + to_string(container.GetCapacity());
                     //----------------------------------------------//
                     //Key Slot Prototypes Struct variables//
                     KSPP.mSlotCapacity= container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-                    my_file <<"\nKSPP.mSlotCapacity=" + (string)(container.GetCapacity());
+                    my_file <<"\nKSPP.mSlotCapacity=" + to_string(container.GetCapacity());
                     //----------------------------------------------//
                     KSPP.mSlotType = container.GetSlotType();
-                    my_file <<"\nKSPP.mSlotType=" + (string)(container.GetSlotType());
+                    my_file <<"\nKSPP.mSlotType=" + to_string(container.GetSlotType());
                     //----------------------------------------------//
                     KSPP.mAlgId = container.GetPrimitiveId();
-                    my_file <<"\nKSPP.mAlgId=" + (string)(container.GetPrimitiveId());
+                    my_file <<"\nKSPP.mAlgId=" + to_string(container.GetPrimitiveId());
                     //----------------------------------------------//
-                  
+                    //Elli etghyr//
                     KSPP.mAllocateSpareSlot = container.IsAllocateSpareSlot();
-                    my_file <<"\nKSPP.mAllocateSpareSlot=" + (string)(container.IsAllocateSpareSlot());
+                    my_file <<"\nKSPP.mAllocateSpareSlot=" + to_string(container.IsAllocateSpareSlot());
                     //----------------------------------------------//
                     KSPP.mAllowContentTypeChange = container.IsAllowContentTypeChange();
-                    my_file <<"\nKSPP.mAllowContentTypeChange=" + (string)(container.IsAllowContentTypeChange());
+                    my_file <<"\nKSPP.mAllowContentTypeChange=" + to_string(container.IsAllowContentTypeChange());
                     //----------------------------------------------//
                     KSPP.mMaxUpdateAllowed = container.GetMaxUpdateAllowed();
-                    my_file <<"\nKSPP.mMaxUpdateAllowed=" + (string)(container.GetMaxUpdateAllowed());
+                    my_file <<"\nKSPP.mMaxUpdateAllowed=" + to_string(container.GetMaxUpdateAllowed());
                     //----------------------------------------------//
                     KSPP.mExportAllowed=container.IsExportAllowed();
-                    my_file <<"\nKSPP.mExportAllowed=" + (string)(container.IsExportAllowed());
+                    my_file <<"\nKSPP.mExportAllowed=" + to_string(container.IsExportAllowed());
                     //----------------------------------------------//
                     KSPP.mContentAllowedUsage=container.GetAllowedUsage();
-                    my_file <<"\nKSPP.mContentAllowedUsage" + (string)(container.GetAllowedUsage());
+                    my_file <<"\nKSPP.mContentAllowedUsage" + to_string(container.GetAllowedUsage());
                     //----------------------------------------------//
                     KSPP.mObjectType = container.GetTypeRestriction();
-                    my_file <<"\nKSPP.mObjectType" + (string)(container.GetTypeRestriction());
+                    my_file <<"\nKSPP.mObjectType" + to_string(container.GetTypeRestriction());
                     //----------------------------------------------//
                     //change state of key slot to committed //
                     this->state = SlotState::commited;
