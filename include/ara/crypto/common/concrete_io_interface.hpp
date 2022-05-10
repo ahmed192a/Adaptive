@@ -36,8 +36,8 @@ namespace ara
         std::vector<uint8_t> payload;
         ara::crypto::VolatileTrustedContainer::Uptr CreateVolatileContainer(std::size_t capacity);
         using Uptr = std::unique_ptr<ConcreteIOInterface>;       
-        ConcreteIOInterface(bool, bool, ara::crypto::AllowedUsageFlags, ara::crypto::CryptoObjectType, ara::crypto::CryptoObjectUid, std::size_t, std::size_t, ara::crypto::CryptoAlgId, ara::crypto::CryptoObjectType);
-        ConcreteIOInterface();
+        ConcreteIOInterface(std::uint32_t,std::int32_t,bool  , bool ,bool ,bool,bool,bool,AllowedUsageFlags,CryptoObjectType,CryptoObjectUid,std::size_t,std::size_t,CryptoAlgId,CryptoObjectType);
+       // ConcreteIOInterface();
              AllowedUsageFlags GetAllowedUsage () const noexcept;
 
 				 std::size_t GetCapacity () const noexcept;
