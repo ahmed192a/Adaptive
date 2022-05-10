@@ -1,3 +1,5 @@
+//#ifndef  ARA_CRYPTO_AUTHENTICATION_H
+//#define  ARA_CRYPTO_AUTHENTICATION_H
 #pragma once
 #include "auth_cipher_ctx.hpp"
 #include "HMAC.hpp"
@@ -6,59 +8,61 @@
 namespace ara {
     namespace crypto {
         namespace cryp {
+            
 
-
-            class Authentication : public AuthCipherCtx
-            {
+			class Authentication : public AuthCipherCtx
+			{
             private:
-
+                HMAC::Uptr macPtr;
+ara::crypto::cryp::SymmetricCipher::Uptr blockCipherPtr;
                 ///@brief: pointer references the used mac context to authenticate the data
-                HMAC* macPtr;
+                //HMAC* macPtr;
 
                 ///@brief: pointer refetences the used symmetric block cipher context to encrypt the data
-                SymmetricCipher* blockCipherPtr;
+                //SymmetricCipher* blockCipherPtr;
 
                 ///@breif: a flag to state whether ara::crypto::cryp::AuthCipherCtx::SetKey has been called before or not
-                int Key_is_Set;
+                int Key_is_Set=0;
 
                 //@breif: configured transformation direction of AuthCipherCtx
+                
+
+			public:
+                using Uptr=std::unique_ptr<Authentication>;
                 CryptoTransform Transform_set;
-
-            public:
-
                 /// @brief constructor
                 Authentication(ConcreteCryptoProvider* myProvider, CryptoTransform direction);
-
+                
                 /// @brief destructor
               //  ~Authentication() noexcept = default;
 
                            /***********************************************************************/
-                           /***** implementation of inherited CyrptoContext virtual functions *****/
+				           /***** implementation of inherited CyrptoContext virtual functions *****/
                            /***********************************************************************/
 
-                ///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
+				///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
                 ///@return: true if initialized and false if not 
-                bool IsInitialized();
+				bool IsInitialized() const noexcept;
 
-                ///@brief: inherited from CryptoContext,references the CryptoPrimitivId instance containing instance identification 
+				///@brief: inherited from CryptoContext,references the CryptoPrimitivId instance containing instance identification 
                 ///@param[in]: none
                 ///@return: pointer references the CryptoPrimitivId instance of the context
-                CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
+				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
 
                 ///@brief: inherited from CryptoContext, references the CryptoProvider instance containing instance identification 
                 ///@param[in]: none
                 ///@return: pointer references the cryptoProvider instance of the context
                 ConcreteCryptoProvider& MyProvider() const noexcept;
 
-                /*************************************************************************/
-                /***** implementation of auth_cipher_ctx inherited virtual functions *****/
-                /*************************************************************************/
+                          /*************************************************************************/
+                          /***** implementation of auth_cipher_ctx inherited virtual functions *****/
+                          /*************************************************************************/
 
-      //virtual BlockService::Uptr GetBlockService() const noexcept = 0;
+                //virtual BlockService::Uptr GetBlockService() const noexcept = 0;
 
-      /// @brief: Get the kind of transformation configured for this context whether kEncrypt or kDecrypt
-      /// @param[in]: none
-      /// @return: CryptoTransform => represents the types of the cryptographic transformations 
+                /// @brief: Get the kind of transformation configured for this context whether kEncrypt or kDecrypt
+                /// @param[in]: none
+                /// @return: CryptoTransform => represents the types of the cryptographic transformations 
                 CryptoTransform GetTransformation() const noexcept;
 
                 //template <typename Alloc = <implementation - defined>>
@@ -74,7 +78,7 @@ namespace ara {
                 //the authentication tag and only return the processed data if the tag is valid
                 ///@param[in]: in => the input buffer containing the full message
                 //             expectedTag => pointer to read only mem region
-                std::vector<byte>  ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag) noexcept;
+                std::vector<byte>  ProcessConfidentialData (ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag) noexcept;
 
                 ///@breif:The input buffer will be overwritten by the processed message After this method is called 
                 //no additional associated data may be updated
@@ -91,11 +95,11 @@ namespace ara {
 
                 ///@brief: Initialize the context for a new data processing or generation
                 ///@param[in]: iv => an optional Initialization Vector (IV) or "nonce" value
-                void Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept;
+                void Start() noexcept;
 
                 ///@brief: Initialize the context for a new data processing or generation
                 ///@param[in]: iv => an optional Initialization Vector (IV) or "nonce" value
-                void Start(const SecretSeed& iv) noexcept;
+                //void Start(const SecretSeed& iv) noexcept;
 
                 ///@brief: Update the digest calculation by the specified RestrictedUseObject.
                 ///@param[in]: in => the part of input message that should be processed
@@ -110,7 +114,7 @@ namespace ara {
                 void UpdateAssociatedData(std::uint8_t in) noexcept;
 
 
-            };
+			};
 
         }
     }
