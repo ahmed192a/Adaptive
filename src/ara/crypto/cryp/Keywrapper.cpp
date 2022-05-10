@@ -4,8 +4,8 @@ using namespace ara::crypto::cryp;
 
 
 //variables of cryptoPP will be used in both encryption and decryption
-byte KEK[AES::DEFAULT_KEYLENGTH];
-byte iv[AES::BLOCKSIZE];
+uint8_t KEK[AES::DEFAULT_KEYLENGTH];
+uint8_t iv[AES::BLOCKSIZE];
 
 //for testing
 uint32_t AES_Alg = 1;
@@ -16,7 +16,7 @@ SymmetricKeyWrapperCtx_Status Status;
  */
 
 ///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
-bool SymmetricKeyWrapperCtx :: IsInitialized()
+bool Keywrapper :: IsInitialized() const noexcept
 {
 	//@ return false if the context is not initialized
 	if (Status == SymmetricKeyWrapperCtx_Status::initialized)
@@ -31,7 +31,7 @@ bool SymmetricKeyWrapperCtx :: IsInitialized()
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
-CryptoPrimitiveId::Uptr SymmetricKeyWrapperCtx:: GetCryptoPrimitiveId() const noexcept
+CryptoPrimitiveId::Uptr Keywrapper:: GetCryptoPrimitiveId() const noexcept
 {
 	//AlgId myAlgorithmId = myCryptoProvider->ConvertToAlgId("CBC/AES_128");
 	//CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("Auth_Encrption");
@@ -39,16 +39,19 @@ CryptoPrimitiveId::Uptr SymmetricKeyWrapperCtx:: GetCryptoPrimitiveId() const no
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
-CryptoProvider&  SymmetricKeyWrapperCtx:: MyProvider() const noexcept
+ConcreteCryptoProvider&  Keywrapper:: MyProvider() const noexcept
 {
 	//@return pointer references the Crypto Provider instance of the context
 	//return this-> (*myCryptoProvider) ;
-	return *myCryptoProvider;
+    ConcreteCryptoProvider& a=this->MyProvider();
+	return a;
 }
 
 /*
  * implementation of SymmetricKeyWrapperCtx inherited virtual functions
  */
+
+
 
 /*
  * Private functions for Keywrapping Algorithm
@@ -56,7 +59,7 @@ CryptoProvider&  SymmetricKeyWrapperCtx:: MyProvider() const noexcept
 
 
 //Private function that is used in WrapKeyMaterial() and unwrapkey() functions 
-vector<byte>Keywrapper::hexToASCII(string hex)
+vector<uint8_t> Keywrapper::hexToASCII(string hex) const
 {
     // initialize the ASCII code string as empty.
     std::vector<byte> ascii;
@@ -71,9 +74,10 @@ vector<byte>Keywrapper::hexToASCII(string hex)
 
 Keywrapper::Keywrapper()
 {
-    SecretSeed S_iv;
+    RandomGeneratorCtx::Uptr R = std::make_unique<PRNG>();
+    SecSeed S_iv(0xffff,true,true);
     S_iv.Seed = 19;
-    RandomGeneratorCtx R2;
+    PRNG R2;
     R2.Seed(S_iv);
     vector<byte> y = R2.Generate((Block_size));
     for(int i = 0 ; i < Block_size; i++)
@@ -82,11 +86,11 @@ Keywrapper::Keywrapper()
     }
 }
 
-std::size_t Keywrapper::CalculateWrappedKeySize(std::size_t keylength)
+std::size_t Keywrapper::CalculateWrappedKeySize(std::size_t keylength)const noexcept
 {
     /*This equation used for Calculating the size of the wrapped key in bytes from original key length in bits.*/
-    wrapped_key_size = (keylength/8) + (Block_size - ((keylength/8) % Block_size));
-    return wrapped_key_size;
+    std::size_t a = (keylength/8) + (Block_size - ((keylength/8) % Block_size));
+    return a;
 }
 
 
@@ -95,24 +99,19 @@ std::size_t Keywrapper::CalculateWrappedKeySize(std::size_t keylength)
  * that can be protected by the algorithm specified during context creation.c(RS_CRYPTO_02208)
  */
 
-std::size_t Keywrapper::GetMaxTargetKeyLength()
-{
-    return Max_KEKLength;
-}
+//std::size_t Keywrapper::GetMaxTargetKeyLength() noexcept
+//{
+//    return this->Max_KEY_Length;
+//}
 
-void Keywrapper::SetKey(const SymmetricKey& key, CryptoTransform transform)
+void Keywrapper::SetKey(const SymmetricKey& key, CryptoTransform transform) noexcept
 {
     if(transform == CryptoTransform::kEncrypt || transform == CryptoTransform::kDecrypt)
     {
-        Status = AES_Wrapper_Status::initialized;
+        Status = SymmetricKeyWrapperCtx_Status::initialized;
         //cout << AES_Wrapper_Status::initialized;
         this->Key = key;
-        for(int i = 0 ; i < Block_size; i++)
-        {
-            KEK[i] = Key.key.at(i);
-            cout << KEK[i] << " " << Key.key.at(i) << "\t";
-        }
-        cout << endl;
+   
     }
     else
     {
@@ -126,27 +125,27 @@ std::size_t Keywrapper::GetTargetKeyGranularity()
 {
     return KEK_Length / 8;
 }
-
-void Keywrapper::Reset()
+*/
+void Keywrapper::Reset() noexcept
 {
 }
-*/
 
-vector<byte> Keywrapper::WrapKeyMaterial(const RestrictedUseObject &key)
+
+vector<uint8_t> Keywrapper::WrapKeyMaterial(const SymmetricKey &key) const noexcept
 {
-    if(Status == SymmetricKeyWrapperCtx_Status::initialized && (key.Key).size()== 16 && key.Usage == kAllowExport)
+    if(Status == SymmetricKeyWrapperCtx_Status::initialized && (key.keyVal).size()== 16 && key.allowed== ara::crypto::kAllowKeyExporting)
     {
         vector <byte> WrappedKey;
         std::string plain = ""; 
         string cipher, recovered;
-        uint32_t size = (key.Key).size();
+        uint32_t size = (key.keyVal).size();
 
         for(int i = 0; i < size; i++)
         {
-            plain += key.Key.at(i);
+            plain += key.keyVal.at(i);
         }
-        std::cout << plain.size() << endl;
-        std::cout << "plain text: " << plain << std::endl;
+ 
+ 
         try
         {
             CBC_Mode< AES >::Encryption e;
@@ -171,8 +170,8 @@ vector<byte> Keywrapper::WrapKeyMaterial(const RestrictedUseObject &key)
         std::cout << "cipher text: ";
         std::cout << cipher << endl;
         */
-        
-        WrappedKey = hexToASCII(cipher);
+        std::string x = cipher;
+        WrappedKey = hexToASCII(x);
         return WrappedKey;
     }
     else
@@ -193,14 +192,15 @@ vector<byte> Keywrapper::WrapKeyMaterial(const RestrictedUseObject &key)
  * and return a unique smart pointer to the instantiated ara::crypto::RestrictedUseObject. UnwrapKey shall also apply the provided ara::crypto::AllowedUsageFlags 
  * and ara::crypto::CryptoAlgId to the created RestrictedUseObject (RS_CRYPTO_02208)
  */
-RestrictedUseObject::Uptrc Keywrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage)
+SymmetricKey::Uptr Keywrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, AlgId algId, AllowedUsageFlags allowedUsage) const noexcept
 {
-    int x = CalculateWrappedKeySize(key_length);
-    cout << x << "\t" << wrappedKey.size() << endl;
+    size_t a=key_length;
+    int x = CalculateWrappedKeySize(a);
+ 
     if(algId == AES_Alg && allowedUsage == kAllowKeyImporting && Status == SymmetricKeyWrapperCtx_Status::initialized && wrappedKey.size() == x)
     {
         string recovered, cipher_txt = "";
-        RestrictedUseObject::Uptrc R = std::make_unique<RestrictedUseObject>();
+        SymmetricKey::Uptr R = std::make_unique<SymmetricKey>();
         uint32_t size = wrappedKey.size();
         for(int i = 0; i < size; i++)
         {
@@ -217,15 +217,15 @@ RestrictedUseObject::Uptrc Keywrapper::UnwrapKey (ReadOnlyMemRegion wrappedKey, 
                 ) // StreamTransformationFilter
             ); // StringSource
 
-            //std::cout << "recovered text: " << recovered << std::endl;
+            
         }
         catch(const Exception& e)
         {
             std::cerr << e.what() << std::endl;
             exit(1);
         }
-        R->Key = hexToASCII(recovered);
-        R -> Usage = kAllowImport;
+        R->keyVal = hexToASCII(recovered);
+        R ->allowed = ara::crypto::kAllowKeyImporting;
         return R;
     }
     else

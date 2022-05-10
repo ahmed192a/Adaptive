@@ -4,17 +4,17 @@ using namespace ara::crypto;
 using namespace ara::crypto::cryp;
 
 
-RandomGeneratorCtx_Status Status;
+RandomGeneratorCtx_Status status1;
 
 /*
  * implementation of inherited CyrptoContext virtual functions 
  */
 
 ///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
-bool RandomGeneratorCtx :: IsInitialized()
+bool PRNG::IsInitialized() const noexcept
 {
 	//@ return false if the context is not initialized
-	if (Status == RandomGeneratorCtx_Status::initialized || Status == RandomGeneratorCtx_Status::Seeded)
+	if (status1 == RandomGeneratorCtx_Status::initialized || status1 == RandomGeneratorCtx_Status::Seeded)
 	{
 		return true;
 	}
@@ -26,19 +26,23 @@ bool RandomGeneratorCtx :: IsInitialized()
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
-CryptoPrimitiveId::Uptr RandomGeneratorCtx:: GetCryptoPrimitiveId() const noexcept
+CryptoPrimitiveId::Uptr PRNG::GetCryptoPrimitiveId() const noexcept
 {
 	//AlgId myAlgorithmId = myCryptoProvider->ConvertToAlgId("PRNG");
 	//CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("Auth_Encrption");
 	//return myPrimitiveId;
 }
+PRNG::PRNG(ConcreteCryptoProvider* a)
+{
+    this->myprovider=a;
+}
 
 ///@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
-CryptoProvider&  RandomGeneratorCtx:: MyProvider() const noexcept
+ConcreteCryptoProvider&  PRNG::MyProvider() const noexcept
 {
 	//@return pointer references the Crypto Provider instance of the context
 	//return this-> (*myCryptoProvider) ;
-	return *myCryptoProvider;
+	return (*myprovider);
 }
 
 /*
@@ -48,11 +52,11 @@ CryptoProvider&  RandomGeneratorCtx:: MyProvider() const noexcept
 /* Constructor of PRNG */
 PRNG::PRNG()
 {
-    Status = RandomGeneratorCtx_Status::initialized;
+    status1 = RandomGeneratorCtx_Status::initialized;
 }
 
 
-bool PRNG::AddEntropy(ReadOnlyMemRegion entropy)
+bool PRNG::AddEntropy(ReadOnlyMemRegion entropy) noexcept
 {
     /*
         A deterministic random number generator (PRNG) has entropy zero.
@@ -61,7 +65,7 @@ bool PRNG::AddEntropy(ReadOnlyMemRegion entropy)
     return true;
 }
 
-std::vector<ara::crypto::byte> PRNG::Generate(std::uint32_t count)
+std::vector<ara::crypto::byte> PRNG::Generate(std::uint32_t count) noexcept
 {
     std::vector<byte> Returned_Buffer{};
     for (uint32_t i = 0; i < count; i++)
@@ -79,25 +83,25 @@ std::vector<ara::crypto::byte> PRNG::Generate(std::uint32_t count)
  * kAllowRngInit (RS_CRYPTO_02206)
  */
 
-bool PRNG::Seed(const SecretSeed& seed)
+bool PRNG::Seed(const SecSeed& seed) noexcept
 {
     if(seed.allowed == kAllowRngInit)
     {
         uint32_t n = seed.Seed;
         RNG.seed(n);
-        Status = RandomGeneratorCtx_Status::Seeded
+        status1 = RandomGeneratorCtx_Status::Seeded;
         return true;
     }
     return false;
 }
 
-bool PRNG::SetKey(const SymmetricKey& key)
+bool PRNG::SetKey(const SymmetricKey& key) noexcept
 {
-    if(seed.allowed == kAllowRngInit)
+    if(key.allowed == kAllowRngInit)
     {
-        uint32_t n = seed.Seed;
+        uint32_t n = key.Seed;
         RNG.seed(n);
-        Status = RandomGeneratorCtx_Status::Seeded;
+        status1 = RandomGeneratorCtx_Status::Seeded;
         return true;
     }
     return false;
