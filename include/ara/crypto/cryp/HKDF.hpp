@@ -2,13 +2,14 @@
 #define ARA_CRYPTO_HKDF_H
 
 
-#include "ara/crypto/common/mem_region.hpp"
-#include "ara/crypto/common/base_id_types.hpp"
-#include "ara/crypto/cryp/message_authn_code_ctx.hpp"
-#include "ara/crypto/cryp/cryobj/restricted_use_object.hpp"
-#include "ara/crypto/cryp/cryobj/secret_seed.hpp"
-#include "ara/crypto/cryp/HMAC.hpp"
-#include "ara/crypto/cryp/key_derivation_function_ctx.hpp"
+#include "../common/mem_region.hpp"
+#include "../common/base_id_types.hpp"
+//#include "message_authn_code_ctx.hpp"
+//#include "cryobj/restricted_use_object.hpp"
+//#include "cryobj/secret_seed.hpp"
+//#include "HMAC.hpp"
+#include "cryobj/symmetric_key.hpp"
+#include "key_derivation_function_ctx.hpp"
 
 
 
@@ -19,7 +20,7 @@ namespace ara {
 
             class HKDF : public KeyDerivationFunctionCtx{
 
-                CryptoProvider * myProvider;
+                ConcreteCryptoProvider * myProvider;
                 bool status=0;
 
 
@@ -51,11 +52,11 @@ namespace ara {
                 public:
 
                 /// @brief constructor
-                HKDF(CryptoProvider * provider);
+                HKDF(ConcreteCryptoProvider * provider);
 
                 /** Inherited from CryptoContext class**/
                 /// @brief destructor
-                ~HKDF() noexcept = default;
+                //~HKDF() noexcept = default;
                 
                 bool IsInitialized() const noexcept;
 
@@ -63,7 +64,7 @@ namespace ara {
 				      CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
 
 				      /* Get a reference to Crypto Provider of this context*/
-				      CryptoProvider& MyProvider() const noexcept;
+				      ConcreteCryptoProvider& MyProvider() const noexcept;
 
 
                /*1
@@ -86,7 +87,7 @@ namespace ara {
                * 
                *  @return
                */
-                /*virtual */void AddSalt (SymmetricKey public_salt) noexcept=0;
+                /*virtual */void AddSalt (SymmetricKey public_salt) noexcept;
 
                 /*2
                -Add Private Salt
@@ -108,7 +109,7 @@ namespace ara {
                * 
                *  @return
                */
-                /*virtual */void AddSecretSalt ( SymmetricKey secret_salt) noexcept=0;
+                /*virtual */void AddSecretSalt ( SymmetricKey secret_salt) noexcept;
                
 
                /*3
@@ -137,7 +138,7 @@ namespace ara {
                * 
                *  @return
                */
-                /*virtual */std::uint32_t ConfigIterations (std::uint32_t iterations=0) noexcept=0;
+                /*virtual */std::uint32_t ConfigIterations (std::uint32_t iterations=0) noexcept;
 
 
             
@@ -162,7 +163,7 @@ namespace ara {
                *  @param isExportable  defines if a derived key can be stored outside the system
                *  @return vector of bytes for the derived key
                */
-               /*virtual */std::vector<ara::crypto::byte> DeriveKey (bool isSession=true, bool isExportable=false)  noexcept=0;
+               /*virtual */std::vector<ara::crypto::byte> DeriveKey (bool isSession=true, bool isExportable=false)  noexcept;
 
 
                 /*5
@@ -193,7 +194,7 @@ namespace ara {
                *  @param isExportable  defines if a derived key can be stored outside the system
                *  @return vector of bytes for the derived key
                */
-               /*virtual */std::vector<ara::crypto::byte> DeriveSeed (bool isSession=true, bool isExportable=false)  noexcept=0;
+               /*virtual */std::vector<ara::crypto::byte> DeriveSeed (bool isSession=true, bool isExportable=false)  noexcept;
                 /*6
                 -Clear the Crypto Context
                 */
@@ -206,10 +207,10 @@ namespace ara {
                *  @return 
                */
                
-               /*virtual */void Reset () noexcept=0;
+               /*virtual */void Reset () noexcept;
                 
                
-               /*ExtensionService::Uptr*///void GetExtensionService () const noexcept=0;
+               /*ExtensionService::Uptr*///void GetExtensionService () const noexcept;
 
                 /*8
                 -Get the size of the salt
@@ -227,7 +228,7 @@ namespace ara {
                * 
                *  @return std::size_t size of the salt
                */
-               /*virtual */std::size_t GetKeyIdSize () const noexcept=0;
+               /*virtual */std::size_t GetKeyIdSize () const noexcept;
 
                /*9
                Get the symmetric algorithm ID of target (slave) key. If the context was not configured yet by a
@@ -242,7 +243,7 @@ namespace ara {
                * 
                *  @return CryptoAlgId
                */
-               /*virtual*/ CryptoAlgId GetTargetAlgId () const noexcept=0;
+               /*virtual*/ CryptoAlgId GetTargetAlgId () const noexcept;
 
 
 
@@ -278,7 +279,7 @@ namespace ara {
                * 
                *  @return AllowedUsageFlags
                */
-                /*virtual *///AllowedUsageFlags GetTargetAllowedUsage () const noexcept=0;
+                /*virtual *///AllowedUsageFlags GetTargetAllowedUsage () const noexcept;
 
                 /*11
                 Get the bit-length of target (diversified) keys. Returned value is configured by the context
@@ -293,7 +294,7 @@ namespace ara {
                *
                * 
                *  @return size of the derived key.
-                /*virtual*/ std::size_t GetTargetKeyBitLength () const noexcept=0;
+                /*virtual*/ std::size_t GetTargetKeyBitLength () const noexcept;
 
                 /*12
                 -During the initialization phase of
@@ -325,9 +326,9 @@ namespace ara {
                * @param CryptoAlgId  
                *  @return 
                 /*virtual */void Init (ReadOnlyMemRegion targetKeyId, ReadOnlyMemRegion ctxLabel,
-                AllowedUsageFlags allowedUsage=kAllowKdfMaterialAnyUsage,
-                CryptoAlgId targetAlgId=kAlgIdDefault)
-                noexcept=0;
+                AllowedUsageFlags allowedUsage,
+                CryptoAlgId targetAlgId)
+                noexcept;
                
                 /*13
                 Set (deploy) key-material to the key derivation algorithm context.
@@ -345,7 +346,7 @@ namespace ara {
                * 
                * @param sourceKM
                *  @return 
-                /*virtual */void SetSourceKeyMaterial (const std::uint8_t sourceKM) noexcept=0;
+                /*virtual */void SetSourceKeyMaterial (const std::uint8_t sourceKM) noexcept;
 
 
 
