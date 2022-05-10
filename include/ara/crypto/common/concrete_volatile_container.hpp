@@ -17,13 +17,13 @@ namespace ara
 		{
             
 		public:
-        static ConcreteIOInterface* myinterface;
+         ConcreteIOInterface* myinterface;
             std::vector<uint8_t> buffer;
             ConcreteVolatileTrustedContainer(std::size_t capacity,ConcreteIOInterface* instance);
 
-             ConcreteIOInterface& GetIOInterface () const noexcept;
+             ConcreteIOInterface& GetIOInterface () const;
 
-			 ~ConcreteVolatileTrustedContainer () noexcept=default;
+			 //~ConcreteVolatileTrustedContainer () noexcept=default;
 
 
         };
