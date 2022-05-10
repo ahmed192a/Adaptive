@@ -1,35 +1,40 @@
 #include "../../../../include/ara/crypto/cryp/authentication.hpp"
 
-using namespace ara::crypto;
+using namespace ara:: crypto;
 using namespace ara::crypto::cryp;
-
+SymmetricKey key;
 ///@brief: a constructor saves the instance of the crypto provider of the Authentication context
-Authentication::Authentication(ConcreteCryptoProvider* myProvider, CryptoTransform direction)
+Authentication::Authentication(ConcreteCryptoProvider* myProvider,CryptoTransform direction)
 {
+	//std::cout<<"sss";
 	//@ stores the crypto provider instance of the context in the member "myCryptoProvider" inherited from auth_cipher_ctx
-	this->myCryptoProvider = myProvider;
+	this-> myCryptoProvider = myProvider;
 
 	//@ stored the transformation direction of the context in the member "Transform_set"
 	this->Transform_set = direction;
 
 	//@ set the status of the context as notInitialized
 	this->status = AuthCipherCtx_Status::notInitialized;
+	
+	 macPtr=std::make_unique<HMAC>(myProvider);
+	 blockCipherPtr=std::make_unique<SymmetricCipher>(myProvider,key);
+	// std::cout<<"aaaa";
 }
 
-/***********************************************************************/
-/***** implementation of inherited CyrptoContext virtual functions *****/
-/***********************************************************************/
+                /***********************************************************************/
+				/***** implementation of inherited CyrptoContext virtual functions *****/
+				/***********************************************************************/
 
 ///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
-bool Authentication::IsInitialized()
+bool Authentication :: IsInitialized() const noexcept
 {
 	//@ return false if the context is not initialized
-	if (this->status == AuthCipherCtx_Status::notInitialized)
+	if (this-> status == AuthCipherCtx_Status::notInitialized)
 	{
 		return false;
 	}
 	//@ return true if the context is initialized 
-	else
+	else 
 	{
 		// It checks all required values, including: key value
 		if (Key_is_Set)
@@ -40,40 +45,43 @@ bool Authentication::IsInitialized()
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
-CryptoPrimitiveId::Uptr Authentication::GetCryptoPrimitiveId() const noexcept
+CryptoPrimitiveId::Uptr Authentication:: GetCryptoPrimitiveId() const noexcept
 {
-	CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>();
+	CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("AES");
 	return myPrimitiveId;
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
-ConcreteCryptoProvider& Authentication::MyProvider() const noexcept
+ConcreteCryptoProvider&  Authentication:: MyProvider() const noexcept
 {
 	//@return pointer references the Crypto Provider instance of the context
 	//return this-> (*myCryptoProvider) ;
 	return *myCryptoProvider;
 }
-/*************************************************************************/
-/***** implementation of auth_cipher_ctx inherited virtual functions *****/
-/*************************************************************************/
+                /*************************************************************************/
+                /***** implementation of auth_cipher_ctx inherited virtual functions *****/
+                /*************************************************************************/
 
 ///@brief: Initialize the mac context of this authentication instance for a new data processing 
-void Authentication::Start(ReadOnlyMemRegion iv) noexcept
-{
+void Authentication:: Start() noexcept
+{	//std::cout<<"good inside";
 	/*Initialize the context for a new data processing or generation (depending from the primitive iv)*/
-	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set)) {
-		this->status == AuthCipherCtx_Status::started;
-	}
+	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set))
+	 {
+		this->status = AuthCipherCtx_Status::started;
+		
+	 }
+	//std::cout<<"good inside22";
 }
 
 ///@brief: Initialize the mac context of this authentication instance  for a new data processing
-void Authentication::Start(const SecretSeed& iv) noexcept
-{
+//void Authentication::Start(const SecretSeed& iv) noexcept
+//{
 	/*Initialize the context for a new data processing or generation (depending from the primitive iv)*/
-	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set)) {
-		this->status == AuthCipherCtx_Status::started;
-	}
-}
+//	if ((this->status == AuthCipherCtx_Status::initialized) && (Key_is_Set)) {
+//		this->status == AuthCipherCtx_Status::started;
+//	}
+//}
 /////@brief: Update the mac digest calculation by the specified RestrictedUseObject.
 //
 //{
@@ -117,7 +125,7 @@ void Authentication::Start(const SecretSeed& iv) noexcept
 //
 ////}///@brief: Update the mac digest calculation by the specified Byte
 //
-void Authentication::UpdateAssociatedData(std::uint8_t in) noexcept
+void Authentication:: UpdateAssociatedData(std::uint8_t in) noexcept
 {
 	// UpdateAssociatedData raises kProcessingNotStarted error if digest calculation is not initiated by calling Start() method
 	if (this->status == AuthCipherCtx_Status::started)
@@ -137,18 +145,21 @@ void Authentication::UpdateAssociatedData(std::uint8_t in) noexcept
 }
 
 //Set (deploy) the same key to the authenticated cipher symmetric algorithm context as well as the Mac context
-void Authentication::SetKey(const SymmetricKey& key, CryptoTransform transform) noexcept
+void Authentication::SetKey(const SymmetricKey & key, CryptoTransform transform) noexcept
 {
+
 	if (((transform == CryptoTransform::kEncrypt) && (kAllowDataEncryption != NULL)) || ((transform == CryptoTransform::kDecrypt) && (kAllowDataDecryption != NULL)))
 	{
 		Key_is_Set = 1;
 		Transform_set = transform;
 		if (transform == CryptoTransform::kEncrypt) {
 			this->macPtr->SetKey(key, CryptoTransform::kMacGenerate);
+			this->blockCipherPtr->SetKey(key,CryptoTransform::kEncrypt);
 		}
 		else if (transform == CryptoTransform::kDecrypt)
 		{
 			this->macPtr->SetKey(key, CryptoTransform::kMacVerify);
+						this->blockCipherPtr->SetKey(key,CryptoTransform::kDecrypt);
 		}
 		//@ set the status of the context as initialized
 		this->status = AuthCipherCtx_Status::initialized;
@@ -162,7 +173,7 @@ CryptoTransform Authentication::GetTransformation() const noexcept
 	}
 }
 
-std::vector <byte> Authentication::GetDigest(std::size_t offset) const noexcept
+std::vector <byte> Authentication:: GetDigest(std::size_t offset) const noexcept
 {
 	return this->macPtr->GetDigest(offset);
 }
@@ -184,12 +195,16 @@ std::vector<byte> Authentication::ProcessConfidentialData(ReadOnlyMemRegion in, 
 			// encrypt the confidential data 
 			encryptedData = this->blockCipherPtr->ProcessBlock(in);
 			// Mac calculation should be updated by the confedential data
-			for (const auto& i : in)
+			for(const uint8_t& d:in)
 			{
-				this->macPtr->Update(i);
+				//std::cout<<d<<"  bb"<<std::endl;
+				//std::cout<<"zzz"<<std::hex<<static_cast<int>(d)<<std::endl;
+   			 this->macPtr->Update(d);
 			}
+
 			//This function is the final call,all associated data must have been already provided, so finish the Mac context
 			this->macPtr->Finish();
+			//expectedTag=this->macPtr->GetDigest();
 			//Update the stats of the auth_cipher context
 			this->status = AuthCipherCtx_Status::processedData;
 			// return the ciphertext
@@ -206,32 +221,46 @@ std::vector<byte> Authentication::ProcessConfidentialData(ReadOnlyMemRegion in, 
 
 			DecreptedData = this->blockCipherPtr->ProcessBlock(in);
 			//Mac calculation should be updated by the confedential data
-			for (const auto& j : DecreptedData)
-			{
-				this->macPtr->Update(j);
-			}
+			//std::cout<<"start"<<std::endl;
 
+			for(const auto j : DecreptedData)
+			{
+			//std::cout<<j<<"   aa"<<std::endl;
+			this->macPtr->Update(j);
+			}
+			
+			
 			//This function is the final call,all associated data must have been already provided, so finish the Mac context
 			macPtr->Finish();
 			/* If the calculated MAC does not match the provided expectedTag, kAuthTagNotValid error shall be returned*/
 			calculatedDataMac = this->macPtr->GetDigest();
+			/*for (counter = 0; counter < calculatedDataMac.size(); counter++)
+			{
+				std::cout<<std::hex<<"aa"<<static_cast<int> (calculatedDataMac[counter])<<"        "<<static_cast<int>(expectedTag[counter])<<std::endl;
+			}*/
+			
 			for (counter = 0; counter < calculatedDataMac.size(); counter++)
 			{
+				//std::cout<<"aa"<<counter<<std::endl;
 				if (calculatedDataMac[counter] != expectedTag[counter])
-				{
+				{	
+					//std::cout<<"FAIL"<<std::endl;
 					matching = false;
 					break;
 				}
 			}
 			if (matching == true)
 			{
-				this->status == AuthCipherCtx_Status::processedData;
+				this->status = AuthCipherCtx_Status::processedData;
+				//std::cout<<"azzazazazazaezaaaayy"<<std::endl;
 				return DecreptedData;
+				//std::cout<<"azzazazazazaezaaaayy"<<std::endl;
 			}
 			else
 			{
-				this->status == AuthCipherCtx_Status::processedData;
+				this->status = AuthCipherCtx_Status::processedData;
 				std::vector<byte> emptyVector;
+				//std::cout<<"azzazazazaza11"<<std::endl;
 				return emptyVector;
 			}
 		}
@@ -300,13 +329,13 @@ std::vector<byte> Authentication::ProcessConfidentialData(ReadOnlyMemRegion in, 
 //	}
 
 /// @brief: resets the context
-void Authentication::Reset() noexcept
+void Authentication:: Reset() noexcept
 {
-	/*Clear the crypto context*/
+  	/*Clear the crypto context*/
 	this->macPtr->Reset();
 	this->blockCipherPtr->Reset();
 	// set the status of the context as notInitialized
-	this->status = AuthCipherCtx_Status::notInitialized;
+	this->status= AuthCipherCtx_Status::notInitialized;
 	// clear the flag of setting the key
 	Key_is_Set = 0;
 }
