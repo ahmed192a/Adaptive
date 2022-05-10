@@ -86,7 +86,7 @@ HashService::Uptr ConcreteCryptoProvider::CreateHashFunctionCtx(CryptoProvider::
 Keywrapper::Uptr ConcreteCryptoProvider::CreateSymmetricKeyWrapperCtx (CryptoProvider::AlgId algId) noexcept
 {
 	SymmetricKey::Uptrc key = ConcreteCryptoProvider::GenerateSymmetricKey(1,0xffff);
-	return std::make_unique<Keywrapper>(*key);
+	return std::make_unique<Keywrapper>();
 }
 
  std::vector<uint8_t>  ConcreteCryptoProvider::ExportPublicObject (const ara::crypto::ConcreteIOInterface &container) noexcept
@@ -117,8 +117,8 @@ Keywrapper::Uptr ConcreteCryptoProvider::CreateSymmetricKeyWrapperCtx (CryptoPro
  }
 
  Authentication::Uptr ConcreteCryptoProvider::CreateAuthCipherCtx(CryptoProvider::AlgId algid) noexcept
- {
-	 std::make_unique<Authentication>(this);
+ {	
+	 return std::make_unique<Authentication>(this,ara::crypto::CryptoTransform::kEncrypt);
  }
 
  std::size_t ConcreteCryptoProvider::GetPayloadStorageSize(ara::crypto::CryptoObjectType cryptoObjecttype  ,CryptoProvider::AlgId algid)const noexcept
@@ -144,9 +144,10 @@ void ConcreteCryptoProvider::ImportSecuredObject (ConcreteIOInterface &container
 }
 
 
-Sign::Uptrc ConcreteCryptoProvider::CreateSignature (CryptoProvider::AlgId signAlgId, ara::crypto::ReadOnlyMemRegion value, const RestrictedUseObject &key,CryptoProvider::AlgId hashAlgId=kAlgIdNone) noexcept
+Sign::Uptrc ConcreteCryptoProvider::CreateSignature (CryptoProvider::AlgId signAlgId, ara::crypto::ReadOnlyMemRegion value, const RestrictedUseObject &key,CryptoProvider::AlgId hashAlgId) noexcept
 {
-	return std::make_unique<Sign>();
+	std::vector<uint8_t> a;
+	return std::make_unique<Sign>(a);
 }
 	cryptoobj::Uptrc ConcreteCryptoProvider::LoadObject(const ConcreteIOInterface& Container) noexcept
 	{
@@ -156,14 +157,14 @@ Sign::Uptrc ConcreteCryptoProvider::CreateSignature (CryptoProvider::AlgId signA
 
 	SymmetricKey::Uptrc ConcreteCryptoProvider::LoadSymmetricKey(const ConcreteIOInterface& Container) noexcept
 	{
-		SymmetricKey::Uptrc a= std::make_unique<SymmetricKey>();
-		a->keyVal(Container.payload.begin(),Container.payload.end());
+		SymmetricKey a;
+		a.keyVal=Container.payload;
 	}
 
 	SecSeed::Uptrc ConcreteCryptoProvider::LoadSecretSeed(const ConcreteIOInterface& Container) noexcept
 	{
-		SecSeed::Uptrc a= std::make_unique<SecSeed>();
-		a->Seed_val(Container.payload.begin(),Container.payload.end());
+		SecSeed a(0xffff,true,true);
+		a.Seed_val=Container.payload;
 	}
 
 
