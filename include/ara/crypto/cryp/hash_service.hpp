@@ -8,14 +8,14 @@
 //#ifndef ARA_CRYPTO_HASH_SERVICE_H
 //#define ARA_CRYPTO_HASH_SERVICE_H
 
-#include "ara/crypto/cryp/hash_function_ctx.hpp"
-#include "ara/crypto/common/base_id_types.hpp"
+#include "hash_function_ctx.hpp"
+#include "../common/base_id_types.hpp"
 #include <vector>
 
 namespace ara {
     namespace crypto{
         namespace cryp{
-
+            class ConcreteCryptoProvider;
             class HashService : public HashFunctionCtx
             {
             private:
@@ -23,7 +23,7 @@ namespace ara {
                 std::vector<byte> vectorToBeHashed;
                 std::string x;
                 bool flagInit = 0;
-                CryptoProvider * myProvider;
+                ConcreteCryptoProvider* myProvider;
 
 
             public:
@@ -31,7 +31,7 @@ namespace ara {
                 /// @brief Unique smart pointer of HashService.
                 using Uptr = std::unique_ptr<HashService>;
 
-                HashService(CryptoProvider * myProvider);
+                HashService(ConcreteCryptoProvider * myProvider);
 
 
                 /************************* HASHFUNCTIONCTX METHODS ***********************************/
@@ -43,7 +43,7 @@ namespace ara {
 
                 /// @brief Get DigestService instance.
                 /// @returns DigestService::Uptr
-                DigestService::Uptr GetDigestService() const noexcept;
+                //DigestService::Uptr GetDigestService() const noexcept;
 
 
                 /// @brief Get requested part of calculated digest.
@@ -65,18 +65,18 @@ namespace ara {
 
 
                 /****************************** CRYPTOCONTEXT METHODS ***************************/
-                bool IsInitialized();
+                bool IsInitialized()const noexcept;
 
 				/*Return CryptoPrimitivId instance containing instance identification */
 				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
 
 				/* Get a reference to Crypto Provider of this context*/
-				CryptoProvider& MyProvider() const noexcept;
+				ConcreteCryptoProvider& MyProvider() const noexcept;
 
 
 
                 
-                ~HashService();
+               // ~HashService();
             };
             
 
