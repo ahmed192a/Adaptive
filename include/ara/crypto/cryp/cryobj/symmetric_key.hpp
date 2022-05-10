@@ -2,7 +2,7 @@
 ///#define ARA_CRYPTO_CRYP_SYMMETRIC_KEY_H
 #pragma once
 #include "rest_use_obj.hpp"
-
+#include <vector>
 namespace ara
 {
     namespace crypto

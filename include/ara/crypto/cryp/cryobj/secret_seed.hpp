@@ -21,7 +21,7 @@ namespace ara
                  * @brief Construct a new Secret Seed object
                  * 
                  */
-                SecretSeed();
+                SecretSeed()=default;
 
                 //SWS_CRYPT_23001
                 /**

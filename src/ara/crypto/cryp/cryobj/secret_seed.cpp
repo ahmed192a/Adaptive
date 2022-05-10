@@ -6,7 +6,7 @@ namespace ara
     {
         namespace cryp
         {
-                SecSeed::SecSeed(): allowed(0xffff),session(true),exportable(false) {}
+               // SecSeed::SecSeed(): allowed(0xffff),session(true),exportable(false) {}
 
                 SecSeed::SecSeed(AllowedUsageFlags allowedVal,bool sessionVar,bool exportableVar)
                 {
@@ -64,7 +64,7 @@ namespace ara
                 }
 
 
-                SecretSeed& SecSeed::Next ()
+                SecretSeed& SecSeed::Next () noexcept
                 {
                    for(int i = 0; i<sizeof(Seed_val);i++)
                    this->Seed_val[i] = this->Seed_val[i] +1;
@@ -72,7 +72,7 @@ namespace ara
                 }
 
                 
-                SecretSeed& SecSeed::operator^= (const SecSeed &source)
+                SecretSeed& SecSeed::operator^= (const SecSeed &source) noexcept
                 {
                    if(this != &source)
                    {
@@ -82,7 +82,7 @@ namespace ara
                    return *this;
                }
                 
-               SecretSeed& SecSeed::operator^= (ReadOnlyMemRegion source)
+               SecretSeed& SecSeed::operator^= (ReadOnlyMemRegion source) noexcept
                {
                    for(int i = 0; i<sizeof(source);i++)
                    this->Seed_val[i] ^= source[i];

@@ -50,7 +50,7 @@ namespace ara
                  * 
                  * @param Sv 
                  */
-                CryptoPrId(const std::string &Sv);
+                CryptoPrId(const std::string Sv);
                 /**
                  * SWS_CRYPT_20652
                  * @brief Get the Primitive Id object
@@ -90,13 +90,13 @@ namespace ara
                  * Get an ID of hash algorithm used for this signature object production.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual AlgId GetHashAlgId () const noexcept;
+                //virtual AlgId GetHashAlgId () const noexcept;
                 /**
                  * @brief Get the Required Hash Alg Id object
                  * Get an ID of hash algorithm required by current signature algorithm.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual AlgId GetRequiredHashAlgId () const noexcept;
+                //virtual AlgId GetRequiredHashAlgId () const noexcept;
 
             };
         }

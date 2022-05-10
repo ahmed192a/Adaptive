@@ -7,7 +7,7 @@ namespace ara
     {
         namespace cryp
         {    
-            int ConvertToAlgId (std::string primitiveName)
+            int CryptoPrId::ConvertToAlgId (std::string primitiveName)
             {
                 //check the list of algorithm names supported
                 for(int i=0;i<ALGORITHMSNUMBER;i++)
@@ -19,17 +19,17 @@ namespace ara
                 return kAlgIdUndefined;
             }
            
-            CryptoPrId:: CryptoPrId(const std::string &Sv) : name(Sv)
+            CryptoPrId:: CryptoPrId(const std::string Sv) : name (Sv)
             {
-                int cp = ConvertToAlgId (Sv);
+                int cp = CryptoPrId::ConvertToAlgId (Sv);
                 id = cp ;
             } 
 
-            CryptoPrId:: AlgId CryptoPrId:: GetPrimitiveId () const
+            CryptoPrId:: AlgId CryptoPrId:: GetPrimitiveId () const noexcept
             {
                return id;
             }
-            const std::string CryptoPrId:: GetPrimitiveName () const
+            const std::string CryptoPrId:: GetPrimitiveName () const noexcept
             {
                return name ;
             }
@@ -56,4 +56,3 @@ namespace ara
     }
 }
         
-

@@ -15,6 +15,7 @@ namespace ara
             * SWS_CRYPT_20600
             *Common interface for identification of all Crypto Primitives and their keys & parameters
             */
+           class CryptoPrId;
             class CryptoPrimitiveId 
             {
                 public:
@@ -35,7 +36,7 @@ namespace ara
                  * @brief Construct a new Crypto Primitive Id object
                  * 
                  */
-                CryptoPrimitiveId();
+                CryptoPrimitiveId()=default;
                 /*
                 * SWS_CRYPT_20644
                 * Unique smart pointer of the constant interface.
@@ -92,13 +93,13 @@ namespace ara
                  * Get an ID of hash algorithm used for this signature object production.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual AlgId GetHashAlgId () const noexcept=0;
+                //virtual AlgId GetHashAlgId () const noexcept=0;
                 /**
                  * @brief Get the Required Hash Alg Id object
                  * Get an ID of hash algorithm required by current signature algorithm.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual AlgId GetRequiredHashAlgId () const noexcept=0;
+                //virtual AlgId GetRequiredHashAlgId () const noexcept=0;
 
             };
         }

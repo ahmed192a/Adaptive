@@ -15,15 +15,15 @@ namespace ara
                 using Usage = AllowedUsageFlags;
                 Usage allowed;
                 bool Volatile;
-                bool session;
-                bool exportable;
+                //bool session;
+                //bool exportable;
                 uint32_t Seed;
                 std::vector<uint8_t> Seed_val;
                 /**
                  * @brief Construct a new Sec Seed object
                  * 
                  */
-                SecSeed() = default;
+                //SecSeed() ;
                 /**
                  * @brief Construct a new Sec Seed object
                  * 

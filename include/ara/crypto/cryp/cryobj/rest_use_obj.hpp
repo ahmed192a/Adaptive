@@ -20,6 +20,7 @@ namespace ara
             class RestUseObj : public RestrictedUseObject 
             {
                 public:
+                //RestUseObj()=default;
                  
                 //ara::crypto::keys::KeySlotContentProps *Key_prop_allow;
                  //
@@ -39,7 +40,7 @@ namespace ara
                  * @brief Construct a new Rest Use Obj object
                  * 
                  */
-                RestUseObj();
+                RestUseObj()=default;
                 //SWS_CRYPT_24811]
                 /**
                  * @brief Get the Allowed Usage object ,Get allowed usages of this object.

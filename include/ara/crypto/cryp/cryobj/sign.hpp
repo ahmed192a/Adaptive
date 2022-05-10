@@ -21,11 +21,18 @@ namespace ara
             class Sign: public Signature
             {
                 public:
+                //bool Session;
+                //bool Export;
+                //COIdentifier ID;
+                std::vector<uint8_t> signatureVal;
+                Sign(std::vector<uint8_t>);
                 //SWS_CRYPT_23302
                 /**
                  * @brief Signature object initialized.
                  * 
                  */
+                
+                //SWS_CRYPT_23302
                 const CryptoObjectType kObjectType = CryptoObjectType::kSignature;
 
                 //SWS_CRYPT_23301
@@ -51,8 +58,11 @@ namespace ara
                  * @return std::size_t 
                  */
                 std::size_t GetRequiredHashSize () const noexcept;
-                
 
+                //bool IsExportable () const noexcept;
+                
+               // bool IsSession () const noexcept;
+                //CryptoObject::COIdentifier GetObjectId() const noexcept;
             };
         }
     }

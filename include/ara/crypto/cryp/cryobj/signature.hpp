@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <memory>
-#include "crypto_object.hpp"
+#include "rest_use_obj.hpp"
 
 namespace ara
 {
@@ -17,11 +17,13 @@ namespace ara
              * obtained by a call of CryptoObject::HasDependence()!
              * 
              */
-            class Signature : public cryptoobj 
+            class Signature : public RestUseObj
             {
 
                 public:
-                //SWS_CRYPT_23302
+
+                
+                
                 /**
                  * @brief Signature object initialized.
                  * 

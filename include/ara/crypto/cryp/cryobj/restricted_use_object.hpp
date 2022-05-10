@@ -36,7 +36,7 @@ namespace ara
                  * @brief Construct a new Restricted Use Object object
                  * 
                  */
-                RestrictedUseObject();
+                RestrictedUseObject()=default;
                 //SWS_CRYPT_24811]
                 /**
                  * @brief Get the Allowed Usage object ,Get allowed usages of this object.

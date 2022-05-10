@@ -7,7 +7,6 @@ namespace ara
     {
         namespace cryp
         {
-            RestUseObj::RestUseObj():Allow_U(){}
             
             RestrictedUseObject::Usage RestUseObj::GetAllowedUsage () const noexcept 
             {
