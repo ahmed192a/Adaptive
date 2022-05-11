@@ -2,7 +2,7 @@
 
 using namespace ara::crypto;
 
-                ConcreteIOInterface::ConcreteIOInterface(std::uint32_t Slot_Typevar,std::int32_t MaxUpdateAllowedvar,bool  IOInterface_State_Emptyvar, bool AllocateSpareSlotvar,bool AllowContentTypeChangevar,bool ExportAllowvar,bool Volatilevar ,bool sessionvar,AllowedUsageFlags AllowedUsagevar,CryptoObjectType objectTypevar/*kSymmetricKey*/,CryptoObjectUid objectIdvar,std::size_t capacityvar,std::size_t payloadSizevar,CryptoAlgId algidvar,CryptoObjectType objectTypeRestictionvar)
+                ConcreteIOInterface::ConcreteIOInterface(ara::crypto::KeySlotType Slot_Typevar,std::int32_t MaxUpdateAllowedvar,bool  IOInterface_State_Emptyvar, bool AllocateSpareSlotvar,bool AllowContentTypeChangevar,bool ExportAllowvar,bool Volatilevar ,bool sessionvar,AllowedUsageFlags AllowedUsagevar,CryptoObjectType objectTypevar/*kSymmetricKey*/,CryptoObjectUid objectIdvar,std::size_t capacityvar,std::size_t payloadSizevar,CryptoAlgId algidvar,CryptoObjectType objectTypeRestictionvar)
         {
             Volatile=Volatilevar;
             session=sessionvar;
@@ -20,10 +20,6 @@ using namespace ara::crypto;
             MaxUpdateAllowed_t = MaxUpdateAllowedvar;
             Slot_Type = Slot_Typevar;
         }
-         ConcreteIOInterface::ConcreteIOInterface()
-         {
-
-         }
         VolatileTrustedContainer::Uptr ConcreteIOInterface::CreateVolatileContainer(std::size_t capacity)
         {
             return std::make_unique<ConcreteVolatileTrustedContainer>(capacity, this);
