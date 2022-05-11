@@ -69,7 +69,7 @@ set(CRYPTOPP "cryptopp")
 FetchContent_Declare(
         ${CRYPTOPP}
         GIT_REPOSITORY  https://github.com/weidai11/cryptopp
-        GIT
+        GIT_TAG         ${CRYPTOPP_GIT_TAG}
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
 )
