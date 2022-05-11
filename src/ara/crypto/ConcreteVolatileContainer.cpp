@@ -11,7 +11,7 @@ using namespace ara::crypto;
        buffer.resize(capacity+5);        
     }
 
-    ConcreteIOInterface& ConcreteVolatileTrustedContainer::GetIOInterface () const noexcept
+    ConcreteIOInterface& ConcreteVolatileTrustedContainer::GetIOInterface () const
     {
         return *ConcreteVolatileTrustedContainer::myinterface;
     }
