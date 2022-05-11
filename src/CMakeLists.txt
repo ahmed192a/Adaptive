@@ -118,7 +118,8 @@ target_link_libraries(
   ara_lib 
   PUBLIC 
   nlohmann_json::nlohmann_json
-  crypto++
+  # -lcryptopp
+  # -lcrypto++
   # Boost::bind
   # Boost::asio
   Boost::uuid
