@@ -64,6 +64,8 @@ target_compile_features(
   PUBLIC 
   cxx_std_17
 )
+find_package(CryptoPP REQUIRED)
+target_link_libraries(ara_lib cryptopp-shared)
 
 source_group(
   TREE "${PROJECT_SOURCE_DIR}/include"
