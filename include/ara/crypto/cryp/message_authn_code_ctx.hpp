@@ -13,9 +13,9 @@
 #include "crypto_context.hpp"
 #include "HMAC_digest_service.hpp"
 //#include "cryobj/restricted_use_object.hpp"
-#include "cryobj/signature.hpp"
+#include "cryobj/sign.hpp"
 #include "random_generator_ctx.hpp"
-#include "ara/crypto/cryp/cryobj/symmetric_key.hpp"
+#include "cryobj/symmetric_key.hpp"
 // #include "ara/crypto/cryp/cryobj/secret_seed.hpp"
 
 namespace ara {
@@ -45,19 +45,19 @@ namespace ara {
 
                 virtual void Reset() noexcept = 0;
                 virtual void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept = 0;
-                virtual bool Check(const Signature &expected) const noexcept = 0;
+                //virtual bool Check(const Signature &expected) const noexcept = 0;
 
 
                 virtual void Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept = 0;
-                virtual void Start(const SecretSeed &iv) noexcept = 0;
+                //virtual void Start(const SecretSeed &iv) noexcept = 0;
 
-                virtual void Update(const RestrictedUseObject &in) noexcept = 0;
-                virtual void Update(ReadOnlyMemRegion in) noexcept = 0;
+                //virtual void Update(const RestrictedUseObject &in) noexcept = 0;
+                //virtual void Update(ReadOnlyMemRegion in) noexcept = 0;
                 virtual void Update(std::uint8_t in) noexcept = 0;
 
-                virtual Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept = 0;
+                virtual Sign::Uptrc Finish(bool makeSignatureObject = false) noexcept = 0;
 
-                virtual DigestService::Uptr GetDigestService() const noexcept = 0;
+               // virtual DigestService::Uptr GetDigestService() const noexcept = 0;
                 virtual std::vector<byte> GetDigest(std::size_t offset = 0) const noexcept = 0;
                 // template <typename Alloc = <implementation-defined>>
                 // ara::core::Result<ByteVector<Alloc> > GetDigest(std::size_t offset = 0) const noexcept;

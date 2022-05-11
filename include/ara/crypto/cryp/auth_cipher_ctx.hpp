@@ -1,6 +1,3 @@
-
-#ifndef ARA_CRYPTO_HMAC_H
-#define ARA_CRYPTO_HMAC_H
 /**
  * @file auth_cipher_ctx.hpp
  * @author
@@ -12,7 +9,6 @@
 //#ifndef ARA_CRYPTO_AUTH_CIPHER_CTX_H
 //#define ARA_CRYPTO_AUTH_CIPHER_CTX_H
 
-
 #include "crypto_context.hpp"
 #include"message_authn_code_ctx.hpp"
 #include "symmetric_block_cipher_ctx.hpp"
@@ -20,12 +16,10 @@
 namespace ara {
     namespace crypto {
         namespace cryp {
-<<<<<<< HEAD
 
-=======
                 class ConcreteCryptoProvider;
             /// @brief: enumeration represents the state of the Authentication Cipher context
->>>>>>> crypto
+
             enum class AuthCipherCtx_Status : std::uint8_t {
                 notInitialized ,   
                 initialized ,
@@ -36,13 +30,7 @@ namespace ara {
             
             class AuthCipherCtx : public CryptoContext
             {
-<<<<<<< HEAD
-                using Uptr = std::unique_ptr<AuthCipherCtx>;
-            protected:
-                // this pointer will point to the resulting mac context of the data
-                MessageAuthnCodeCtx::Uptr mac_ptr;
-            public:
-=======
+            
             protected:
 
                 /// @brief: the current status of the authentication context
@@ -111,9 +99,6 @@ namespace ara {
                 ///@brief: Update the digest calculation by the specified Byte
                 ///@param[in]: a byte value that is a part of input message
                 virtual void UpdateAssociatedData(std::uint8_t in) noexcept = 0;
-
->>>>>>> crypto
-
 
             };
         }

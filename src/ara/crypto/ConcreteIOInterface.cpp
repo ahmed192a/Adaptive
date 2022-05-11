@@ -2,7 +2,7 @@
 
 using namespace ara::crypto;
 
-                ConcreteIOInterface::ConcreteIOInterface(ara::crypto::KeySlotType Slot_Typevar,std::int32_t MaxUpdateAllowedvar,bool  IOInterface_State_Emptyvar, bool AllocateSpareSlotvar,bool AllowContentTypeChangevar,bool ExportAllowvar,bool Volatilevar ,bool sessionvar,AllowedUsageFlags AllowedUsagevar,CryptoObjectType objectTypevar/*kSymmetricKey*/,CryptoObjectUid objectIdvar,std::size_t capacityvar,std::size_t payloadSizevar,CryptoAlgId algidvar,CryptoObjectType objectTypeRestictionvar)
+                ConcreteIOInterface::ConcreteIOInterface(bool Volatilevar ,bool sessionvar,AllowedUsageFlags AllowedUsagevar,CryptoObjectType objectTypevar/*kSymmetricKey*/,CryptoObjectUid objectIdvar,std::size_t capacityvar,std::size_t payloadSizevar,CryptoAlgId algidvar,CryptoObjectType objectTypeRestictionvar)
         {
             Volatile=Volatilevar;
             session=sessionvar;
@@ -13,13 +13,11 @@ using namespace ara::crypto;
             payloadSize=payloadSizevar;
             algid=algidvar;
             objectTypeRestiction=objectTypeRestictionvar;
-	    ExportAllowed_t = ExportAllowvar;
-            AllowContentTypeChange_t = AllowContentTypeChangevar;
-            AllocateSpareSlot_t = AllocateSpareSlotvar;
-            IOInterface_State_Empty = IOInterface_State_Emptyvar;
-            MaxUpdateAllowed_t = MaxUpdateAllowedvar;
-            Slot_Type = Slot_Typevar;
         }
+         ConcreteIOInterface::ConcreteIOInterface()
+         {
+
+         }
         VolatileTrustedContainer::Uptr ConcreteIOInterface::CreateVolatileContainer(std::size_t capacity)
         {
             return std::make_unique<ConcreteVolatileTrustedContainer>(capacity, this);
@@ -69,43 +67,11 @@ using namespace ara::crypto;
                  {
                      return this->Volatile;
                  }
-   		 bool ConcreteIOInterface::IsExportAllowed() const noexcept 
-                 {
-                     return this->ExportAllowed_t;
-                 
-                 }
-                 bool ConcreteIOInterface::IsAllowContentTypeChange() const noexcept
-                 {
-                 
-                     return this->AllowContentTypeChange_t;
-                 }
-                 bool ConcreteIOInterface::IsAllocateSpareSlot() const noexcept
-                 {
-                     return this->AllocateSpareSlot_t;
-                 
-                 }
 
-                 bool  ConcreteIOInterface::IsIOInterface_State_Empty() const noexcept
-                 {
-                     return this->IOInterface_State_Empty;
-
-                 }
-                 std::int32_t ConcreteIOInterface::GetMaxUpdateAllowed() const noexcept
-                 {
-                 
-                     return this->MaxUpdateAllowed_t; 
-                 
-                 }
-                 KeySlotType ConcreteIOInterface::GetSlotType() const noexcept 
-                 {
-                     return this->Slot_Type;
-                 }
-
-
-				 ConcreteIOInterface::~ConcreteIOInterface () noexcept
-                 {
+				 //ConcreteIOInterface::~ConcreteIOInterface () noexcept
+                 //{
                      
-                 }
+                 //}
 
 
 

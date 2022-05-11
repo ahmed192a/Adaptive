@@ -8,7 +8,7 @@
 namespace ara {
     namespace crypto {
         namespace cryp {
-
+            class ConcreteCryptoProvider;
             class HMAC : public MessageAuthnCodeCtx {
                 
                 private:
@@ -27,29 +27,29 @@ namespace ara {
 
                 //SymmetricKey& key;
 
-                CryptoProvider * myProvider;
+                ConcreteCryptoProvider * myProvider;
 
                 // hashing function
-                void hash_sha256(std::vector<byte> &input, std::vector<byte> &output);
+                void hash_sha256(std::vector<byte> input, std::vector<byte> &output);
 
                 // hmac algorithm
                 void hmac_digestion(std::vector<byte> &plainText, std::vector<byte> &output);
 
                 public:
                 /// @brief constructor
-                HMAC(CryptoProvider * provider);
+                HMAC(ConcreteCryptoProvider * provider);
 
                 /** Inherited from CryptoContext class**/
                 /// @brief destructor
-                ~HMAC() noexcept = default;
+              //  ~HMAC() noexcept = default;
                 
-                bool IsInitialized();
+                bool IsInitialized()const noexcept;
 
 				/*Return CryptoPrimitivId instance containing instance identification */
 				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
 
 				/* Get a reference to Crypto Provider of this context*/
-				CryptoProvider& MyProvider() const noexcept;
+				ConcreteCryptoProvider& MyProvider() const noexcept;
 
 
             /** Inherited from MessageAuthnCode class**/
@@ -67,10 +67,10 @@ namespace ara {
                 // void Update(ReadOnlyMemRegion in) noexcept;
                 void Update(std::uint8_t in) noexcept;
 
-                DigestService::Uptr GetDigestService() const noexcept;
+                //DigestService::Uptr GetDigestService() const noexcept;
                 std::vector<ara::crypto::byte> GetDigest(std::size_t offset = 0) const noexcept;
     
-                Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept;
+                Sign::Uptrc Finish(bool makeSignatureObject = false) noexcept;
             };
 
 
@@ -83,3 +83,4 @@ namespace ara {
 } // namespace ara
 
 //#endif // ARA_CRYPTO_HMAC_H
+

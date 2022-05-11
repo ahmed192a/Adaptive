@@ -62,7 +62,7 @@ ConcreteCryptoProvider&  ara::crypto::cryp::SymmetricCipher::MyProvider() const 
 /************************************************************************************/
 
 /*Get the kind of transformation configured for this context: kEncrypt or kDecrypt*/
-CryptoTransform SymmetricCipher::CryptoTransform GetTransformation () const noexcept
+CryptoTransform ara::crypto::cryp::SymmetricCipher::GetTransformation () const noexcept
 {
     if (this->Key_is_Set) 
     {
