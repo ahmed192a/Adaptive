@@ -36,15 +36,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(boost)
 
 
-FetchContent_Declare(
-        cryptocpp
-        GIT_REPOSITORY https://github.com/boostorg/boost.git
-        GIT_TAG boost-1.78.0
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE)
-FetchContent_MakeAvailable(boost)
-
-
 ############################################################################################
 # Get the CryptoPP CMakeLists.txt File for CryptoPP Package GIT_TAG Must be the Same
 ############################################################################################
@@ -102,10 +93,6 @@ endif()
 
 
 
-
-
-
-
 file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/*.hpp")
 file(GLOB_RECURSE SOURCE_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/ara/*.cpp")
 
@@ -126,6 +113,7 @@ target_link_libraries(
   PUBLIC 
   nlohmann_json::nlohmann_json
   ${CRYPTOPP}
+  ${CRYPTOPP_CMAKE}
   # Boost::bind
   # Boost::asio
   Boost::uuid
