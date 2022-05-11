@@ -2,8 +2,10 @@
 #define ARA_CRYPTO_SYMMETRIC_BLOCK_CIPHER_CTX_H
 
 #include "crypto_context.hpp"
+#include <vector>
+#include "cryobj/symmetric_key.hpp"
+#include "../common/mem_region.hpp"
 //#include "../common/base_id_types.hpp"
-//#include "../common/mem_region.hpp"
 //#include "../common/vendor_specific_algorithm_identifier.hpp"
 //#include "../../core/result.hpp"
 
@@ -45,7 +47,7 @@ namespace crypto {
                 /*Processe provided blocks without padding. The in and out buffers must have same size and
                  *this size must be divisible by the block size (see GetBlockSize()). Pointers to the input and
                  *output buffers must be aligned to the block-size boundary!*/
-                virtual std::vector<uint8_t> Process_Blocks (ReadOnlyMemRegion in) const noexcept=0;
+                //virtual std::vector<uint8_t> Process_Blocks (ReadOnlyMemRegion in) const noexcept=0;
                 //virtual ara::core::Result<ara::core::Vector<ara::core::Byte> > ProcessBlocks (ReadOnlyMemRegion in) const noexcept=0;
                 
                 /*Clear the crypto context*/

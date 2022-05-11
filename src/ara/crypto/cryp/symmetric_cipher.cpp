@@ -1,12 +1,14 @@
 #include "ara/crypto/cryp/symmetric_cipher.hpp"
-
+#include "ara/crypto/cryp/PRNG.hpp"
+//#include <crypto++/aes.h>
 using namespace ara::crypto;
 using namespace ara::crypto::cryp;
-using namespace CryptoPP;
+//using namespace CryptoPP;
 
 ///@brief: a constructor to save the instance of the crypto provider of the SymmetricBlockCipher context
-SymmetricCipher::SymmetricCipher(CryptoProvider* Provider)
+ara::crypto::cryp::SymmetricCipher::SymmetricCipher(ConcreteCryptoProvider* Provider,SymmetricKey& x)
 {
+	
 	//@ storing the crypto provider instance of the context
 	this->myProvider = Provider;
 
@@ -22,7 +24,7 @@ SymmetricCipher::SymmetricCipher(CryptoProvider* Provider)
 /***********************************************************************/
 
 ///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
-bool SymmetricCipher::IsInitialized()
+bool ara::crypto::cryp::SymmetricCipher::IsInitialized() const noexcept
 {
     //@ return false if the context is not initialized
 	if (this->status == SymmetricBlockCipher_Status::notInitialized)
@@ -41,14 +43,14 @@ bool SymmetricCipher::IsInitialized()
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to CryptoPrimitivId instance of this CryptoContext
-CryptoPrimitiveId::Uptr SymmetricCipher::GetCryptoPrimitiveId() const noexcept
+CryptoPrimitiveId::Uptr ara::crypto::cryp::SymmetricCipher::GetCryptoPrimitiveId() const noexcept
 {
 	CryptoPrimitiveId::Uptr myPrimitiveId = std::make_unique<CryptoPrId>("AES_128");
 	return myPrimitiveId;
 }
 
 ///@brief: inherited function from CryptoContext, gets a reference to Crypto Provider instance of this CryptoContext
-CryptoProvider&  SymmetricCipher::MyProvider() const noexcept
+ConcreteCryptoProvider&  ara::crypto::cryp::SymmetricCipher::MyProvider() const noexcept
 {
 	//@return pointer references the Crypto Provider instance of the context
 	return *(this->myProvider);
@@ -74,30 +76,28 @@ CryptoTransform SymmetricCipher::CryptoTransform GetTransformation () const noex
 
 
 /*Process (encrypt / decrypt) an input block according to the crypto configuration*/
-std::vector<byte> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding=false) const noexcept
+std::vector<uint8_t> ara::crypto::cryp::SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool suppressPadding) const noexcept
 {
-	std::vector<uint8_t> key = this->Alg_key.keyVal;
+	std::vector<uint8_t> key = this->Alg_key->keyVal;
     
-	//creating the initial vector using the random number generator
-	RandomGeneratorCtx::Uptr R = std::make_unique<PRNG>();
-	std::vector<byte> iv = (*R).Generate(AES::BLOCKSIZE);
+	ara::crypto::cryp::PRNG::Uptr R = std::make_unique<PRNG>(myProvider);
+	std::vector<byte> iv = (*R).Generate(CryptoPP::AES::BLOCKSIZE);
 	
 	std::string in_data, out_data;
 	std::vector<byte> return_data;
 
-	//storing the input vector data in a string
 	for (uint8_t i=0; i<in.size(); i++)
 	{
 		in_data += in[i];
 	}
 
 	/*raise and error if the boolean parameter {suppressPadding} was set to TRUE and 
-	 *the provided input buffer does not match the block-size*/
-	if (suppressPadding == true && in.size() != AES::BLOCKSIZE)
+	 the provided input buffer does not match the block-size*/
+	if (suppressPadding == true && in.size() != CryptoPP::AES::BLOCKSIZE)
 	{
 		//raise CryptoErrorDomain::kInvalidInputSize
 	}
-	/*raise and error if the context was not initialized by calling SetKey()*/
+	//raise and error if the context was not initialized by calling SetKey()/
 	else if(!(this->Key_is_Set))
 	{
 		//raise CryptoErrorDomain::kUninitialized Context
@@ -106,40 +106,39 @@ std::vector<byte> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool supp
 	{
 		try
 		{
-			//Encryption Process
 			if (this->Alg_transformation == CryptoTransform::kEncrypt)
 			{
-				CBC_Mode<AES>::Encryption e;
+				CryptoPP::CBC_Mode<CryptoPP::AES>::Encryption e;
 				e.SetKeyWithIV(key.data(), key.size(), iv.data());
-				StringSource s(in_data, true, 
-					new StreamTransformationFilter(e,
-						new StringSink(out_data)
+				CryptoPP::StringSource s(in_data, true, 
+					new CryptoPP::StreamTransformationFilter(e,
+						new CryptoPP::StringSink(out_data)
 					) // StreamTransformationFilter
 				); // StringSource
 			}
-			//Decryption Process
 			else if(this->Alg_transformation == CryptoTransform::kDecrypt)
 			{
-				CBC_Mode<AES>::Decryption d;
+				CryptoPP::CBC_Mode<CryptoPP::AES>::Decryption d;
 				d.SetKeyWithIV(key.data(), key.size(), iv.data());
-				StringSource s(in_data, true, 
-					new StreamTransformationFilter(e,
-						new StringSink(out_data)
+				CryptoPP::StringSource s(in_data, true, 
+					new CryptoPP::StreamTransformationFilter(d,
+						new CryptoPP::StringSink(out_data)
 					) // StreamTransformationFilter
 				); // StringSource
 			}
 		}
-		catch(const Exception& e)
+		catch(const CryptoPP::Exception& e)
 		{
 			std::cerr << e.what() << std::endl;
 			exit(1);
 		}
 
-		//converting the string result into vector of bytes
+		//Convert the string result into vector of bytes
 		for(uint8_t i=0; i<out_data.length(); i++)
 		{
 			return_data.push_back(out_data[i]);
 		}
+		
 		return return_data;
 	}
 }
@@ -151,25 +150,21 @@ std::vector<byte> SymmetricCipher::ProcessBlock (ReadOnlyMemRegion in, bool supp
 //std::vector<byte> SymmetricCipher::Process_Blocks (ReadOnlyMemRegion in) const noexcept
                 
 /*Clear the crypto context*/                
-void SymmetricCipher::Reset () noexcept
+void ara::crypto::cryp::SymmetricCipher::Reset () noexcept
 {
     this->Key_is_Set = 0;
     this->status = SymmetricBlockCipher_Status::notInitialized;
 }
                 
 /*Set (deploy) a key to the symmetric algorithm context*/
-void SymmetricCipher::SetKey (const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kEncrypt) noexcept
+void ara::crypto::cryp::SymmetricCipher::SetKey (const SymmetricKey &key, CryptoTransform transform) noexcept
 {
     if ((transform == CryptoTransform::kEncrypt && kAllowDataEncryption != NULL) || (transform == CryptoTransform::kDecrypt && kAllowDataDecryption != NULL))
 	{
-		//mark that SetKey has been called
-	    	this->Key_is_Set = 1;
-        //storing the key to be used in the encryption/decryption process
-	this->Alg_key = key;
-		//storing the transformation to be performed (encryption/decryption)
-	    	this->Alg_transformation = transform;
-        //setting the state of the context as initialized
-	this->status = SymmetricBlockCipher_Status::initialized;
+		this->Key_is_Set = 1;
+		this->Alg_key->keyVal = key.keyVal;
+		this->Alg_transformation = transform;
+        this->status = SymmetricBlockCipher_Status::initialized;
 	}
     else
     {
