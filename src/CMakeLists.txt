@@ -36,6 +36,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(boost)
 
 
+
 ############################################################################################
 # Get the CryptoPP CMakeLists.txt File for CryptoPP Package GIT_TAG Must be the Same
 ############################################################################################
@@ -48,6 +49,8 @@ FetchContent_Declare(
         ${CRYPTOPP_CMAKE}
         GIT_REPOSITORY  https://github.com/noloader/cryptopp-cmake
         GIT_TAG         ${CRYPTOPP_GIT_TAG}
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
 )
 FetchContent_GetProperties(${CRYPTOPP_CMAKE})
 
@@ -66,7 +69,9 @@ set(CRYPTOPP "cryptopp")
 FetchContent_Declare(
         ${CRYPTOPP}
         GIT_REPOSITORY  https://github.com/weidai11/cryptopp
-        GIT_TAG         ${CRYPTOPP_GIT_TAG}
+        GIT
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
 )
 FetchContent_GetProperties(${CRYPTOPP})
 
@@ -88,7 +93,8 @@ if(${CRYPTOPP}_POPULATED)
         else ()
             set(CRYPTOPP "cryptopp-static")
     endif()
-    set(BUILD_SHARED ${BUILD_SHARED_CRYPTOPP_OLD} CACHE BOOL "Type of libraries to build" FORCE)
+    set(BUILD_SHARED ${BUILD_SHARED_CRYPTOPP_OLD} CACHE BOOL "Type of libraries to build" FO
+RCE)
 endif()
 
 
@@ -112,8 +118,7 @@ target_link_libraries(
   ara_lib 
   PUBLIC 
   nlohmann_json::nlohmann_json
-  ${CRYPTOPP}
-  ${CRYPTOPP_CMAKE}
+  crypto++
   # Boost::bind
   # Boost::asio
   Boost::uuid

@@ -6,12 +6,12 @@
 	sudo apt-get update 
 	 sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
 */
-#include <crypto++/aes.h>
-#include <crypto++/modes.h>
-#include <crypto++/cryptlib.h>
-#include <crypto++/rijndael.h>
-#include <crypto++/files.h>
-#include <crypto++/hex.h>
+#include <aes.h> // crypto++
+#include <modes.h> // crypto++
+#include <cryptlib.h> // crypto++
+#include <rijndael.h> // crypto++
+#include <files.h> // crypto++
+#include <hex.h> // crypto++
 
 #include <vector>
 #include <string>

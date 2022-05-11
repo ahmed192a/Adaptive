@@ -2,12 +2,12 @@
 #define ARA_CRYPTO_SYMMETRIC_CIPHER_H
 
 #include "symmetric_block_cipher_ctx.hpp"
-//#include <crypto++/cryptlib.h>
-#include <crypto++/aes.h>
-#include <crypto++/modes.h>
-#include <crypto++/rijndael.h>
-#include <crypto++/files.h>
-#include <crypto++/hex.h>
+//#include <cryptlib.h>
+#include <aes.h> //crypto++
+#include <modes.h> //crypto++
+#include <rijndael.h> //crypto++
+#include <files.h> //crypto++
+#include <hex.h> //crypto++
 #include <iostream>
 #include <string>
 
