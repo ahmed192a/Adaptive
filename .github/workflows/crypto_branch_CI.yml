@@ -1,0 +1,28 @@
+name: Crypto_Branch_CI
+
+on:
+  push:
+    branches: [ crypto ]
+  pull_request:
+    branches: [ crypto ]
+
+env:
+  BUILD_TYPE: Debug # The CMake build type used
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # actions/checkout @v2 is a pre-defined workflow to checkout the repo code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Configuring the CMake with the specified build type
+      - name: Configure
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      # Building the program with the configuration specified
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}

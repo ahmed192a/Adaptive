@@ -1,18 +1,28 @@
-#ifndef ARA_CRYPTO_CRYP_SECRETKEY_H_
-#define ARA_CRYPTO_CRYP_SECRETKEY_H_
-
-#include <ara/crypto/cryp/cryobj/restricted_use_object.hpp>
-#include <ara/core/result.hpp>
-#include <ara/crypto/common/mem_region.hpp>
+//#ifndef ARA_CRYPTO_CRYP_SECRETKEY_H_
+//#define ARA_CRYPTO_CRYP_SECRETKEY_H_
+#pragma once
+#include "rest_use_obj.hpp"
+#include "../../../core/result.hpp"
+#include "../../common/mem_region.hpp"
+//#include "crypto_obj.hpp"
 
 namespace ara
 {
     namespace crypto
     {
         namespace cryp
-        {
-            class SecretSeed : public RestrictedUseObject
+        {   class SecSeed;
+            class SecretSeed : public RestUseObj
             {
+                public:
+                std::int64_t seed_len;
+                //std::int64_t Seed_val;
+                /**
+                 * @brief Construct a new Secret Seed object
+                 * 
+                 */
+                SecretSeed()=default;
+
                 //SWS_CRYPT_23001
                 /**
                  * @brief Unique smart pointer of a constant interface instance.
@@ -45,7 +55,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<SecretSeed::Uptr> 
                  */
-                virtual ara::core::Result<SecretSeed::Uptr> Clone (ReadOnlyMemRegionxorDelta=ReadOnlyMemRegion()) const noexcept=0;
+                virtual SecretSeed::Uptr Clone (ReadOnlyMemRegion xorDelta) const noexcept=0;
 
                 //SWS_CRYPT_23012
                 /**
@@ -57,7 +67,7 @@ namespace ara
                  * @param steps 
                  * @return ara::core::Result<void> 
                  */
-                virtual ara::core::Result<void> JumpFrom (const SecretSeed &from,std::int64_t steps) noexcept=0;
+                virtual void JumpFrom (const SecSeed &from,std::int64_t steps) noexcept=0;
 
                 //SWS_CRYPT_23014
                 /**
@@ -89,7 +99,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                virtual SecretSeed& operator^= (const SecretSeed &source) noexcept=0;
+                virtual SecretSeed& operator^= (const SecSeed &source) noexcept=0;
                 
                 //SWS_CRYPT_23016
                 /**
@@ -100,7 +110,7 @@ namespace ara
                  * @param source 
                  * @return SecretSeed& 
                  */
-                virtual SecretSeed& operator^= (ReadOnlyMemRegion source) noexcept=0;
+               virtual SecretSeed& operator^= (ReadOnlyMemRegion source) noexcept=0;
 
             };
 
@@ -108,4 +118,4 @@ namespace ara
     }
 }
 
-#endif
+//#endif

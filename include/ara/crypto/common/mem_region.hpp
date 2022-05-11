@@ -1,5 +1,5 @@
-#ifndef ARA_CRYPTO_CRYPTOOBJECTUID_H
-#define ARA_CRYPTO_CRYPTOOBJECTUID_H
+#ifndef ARA_CRYPTO_MEM_REGION_H
+#define ARA_CRYPTO_MEM_REGION_H
 
 #include <iostream>
 #include <ara/core/span.hpp>

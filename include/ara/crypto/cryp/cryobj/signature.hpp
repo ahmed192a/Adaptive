@@ -1,9 +1,7 @@
-#ifndef ARA_CRYPTO_CRYP_SIGNATURE_H_
-#define ARA_CRYPTO_CRYP_SIGNATURE_H_
-
+#pragma once
 #include <iostream>
 #include <memory>
-#include <ara/crypto/cryp/cryobj/crypto_object.hpp>
+#include "rest_use_obj.hpp"
 
 namespace ara
 {
@@ -19,9 +17,13 @@ namespace ara
              * obtained by a call of CryptoObject::HasDependence()!
              * 
              */
-            class Signature : public CryptoObject
+            class Signature : public RestUseObj
             {
-                //SWS_CRYPT_23302
+
+                public:
+
+                
+                
                 /**
                  * @brief Signature object initialized.
                  * 
@@ -57,4 +59,3 @@ namespace ara
         }
     }
 }
-#endif

@@ -1,40 +1,45 @@
-#ifndef ARA_CRYPTO_HMAC_H
-#define ARA_CRYPTO_HMAC_H
-
+//#ifndef ARA_CRYPTO_HMAC_H
+//#define ARA_CRYPTO_HMAC_H
+#pragma once
 #include "message_authn_code_ctx.hpp"
+#include "sha256.hpp" // temporariy till hash implementation is finished
 
 
 namespace ara {
     namespace crypto {
         namespace cryp {
 
-            
-            //This partition is only used for testing
-
-            ///////////////////////////////////////////////////////
-            // dummy definitions that will be removed later
-            class HashFunctionCtx {
-                public:
-                using Uptr = std::unique_ptr<HashFunctionCtx>;
-            };
-
-            //////////////////////////////////////////////////////////////
-
             class HMAC : public MessageAuthnCodeCtx {
+                
+                private:
 
-                // pointer to the hash function context used to implement this algorithm
-                HashFunctionCtx::Uptr hashFunction;
-                SymmetricKey key;
+                int B = 64;  // bytes ==> length of each block
+
+                // constants to be XORed with the key to increase the hamming distance
+                std::uint8_t iPad = 0x36;
+                std::uint8_t oPad = 0x5C;
+
+                // Keys after XORing the constants
+                std::vector<byte> input_key;
+
+                std::vector<byte> digest; // The resulting digest
+                std::vector<byte> inputBuffer; // the input buttered
+
+                //SymmetricKey& key;
 
                 CryptoProvider * myProvider;
 
+                // hashing function
+                void hash_sha256(std::vector<byte> &input, std::vector<byte> &output);
+
+                // hmac algorithm
+                void hmac_digestion(std::vector<byte> &plainText, std::vector<byte> &output);
 
                 public:
-                /** Inherited from CryptoContext class**/
-                
                 /// @brief constructor
                 HMAC(CryptoProvider * provider);
 
+                /** Inherited from CryptoContext class**/
                 /// @brief destructor
                 ~HMAC() noexcept = default;
                 
@@ -49,6 +54,7 @@ namespace ara {
 
             /** Inherited from MessageAuthnCode class**/
 
+
                 void Reset() noexcept;
                 void SetKey(const SymmetricKey &key, CryptoTransform transform = CryptoTransform::kMacGenerate) noexcept;
 
@@ -61,12 +67,9 @@ namespace ara {
                 // void Update(ReadOnlyMemRegion in) noexcept;
                 void Update(std::uint8_t in) noexcept;
 
-
-                // DigestService::Uptr GetDigestService() const noexcept;
-                // std::vector<byte> GetDigest(std::size_t offset = 0) const noexcept;
-
-
-
+                DigestService::Uptr GetDigestService() const noexcept;
+                std::vector<ara::crypto::byte> GetDigest(std::size_t offset = 0) const noexcept;
+    
                 Signature::Uptrc Finish(bool makeSignatureObject = false) noexcept;
             };
 
@@ -79,4 +82,4 @@ namespace ara {
     } // namespace crypto
 } // namespace ara
 
-#endif // ARA_CRYPTO_HMAC_H
+//#endif // ARA_CRYPTO_HMAC_H

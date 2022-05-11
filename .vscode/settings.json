@@ -78,7 +78,13 @@
         "*.ipp": "cpp",
         "source_location": "cpp",
         "rope": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "numbers": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "stop_token": "cpp"
     },
     "cmake.configureOnOpen": true,
 

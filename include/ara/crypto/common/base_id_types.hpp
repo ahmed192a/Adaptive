@@ -28,10 +28,44 @@ namespace ara
      * a symmetric key or seed that potentially can be derived from the original one.
      */
     using AllowedUsageFlags = std::uint32_t;
+    
+    const AllowedUsageFlags kAllowDataEncryption = 0x0001;
+    const AllowedUsageFlags kAllowDataDecryption = 0x0002;
+    const AllowedUsageFlags kAllowDerivedDataDecryption = kAllowDataDecryption << 16;
+    const AllowedUsageFlags kAllowDerivedDataEncryption = kAllowDataEncryption << 16;
+    const AllowedUsageFlags kAllowExactModeOnly = 0x8000;
+    const AllowedUsageFlags kAllowKdfMaterial = 0x0080;
+    const AllowedUsageFlags kAllowKeyAgreement = 0x0010;
+    const AllowedUsageFlags kAllowKeyDiversify = 0x0020;
+    const AllowedUsageFlags kAllowKeyExporting = 0x0100;
+    const AllowedUsageFlags kAllowKeyImporting = 0x0200;
+    const AllowedUsageFlags kAllowPrototypedOnly = 0;
+    const AllowedUsageFlags kAllowRngInit = 0x0040;
+    const AllowedUsageFlags kAllowSignature = 0x0004;
+    const AllowedUsageFlags kAllowVerification = 0x0008;
+    const AllowedUsageFlags kAllowDerivedRngInit = kAllowRngInit << 16;
+    const AllowedUsageFlags kAllowDerivedExactModeOnly = kAllowExactModeOnly << 16;
+    const AllowedUsageFlags kAllowDerivedKdfMaterial = kAllowKdfMaterial<< 16;
+    const AllowedUsageFlags kAllowDerivedKeyDiversify = kAllowKeyDiversify<< 16;
+    const AllowedUsageFlags kAllowDerivedKeyExporting = kAllowKeyExporting<< 16;
+    const AllowedUsageFlags kAllowDerivedKeyImporting = kAllowKeyImporting<< 16;
+    const AllowedUsageFlags kAllowDerivedSignature = kAllowSignature <<16;
+    const AllowedUsageFlags kAllowDerivedVerification = kAllowVerification<< 16;
+    
+    const AllowedUsageFlags kAllowKdfMaterialAnyUsage = kAllowKdfMaterial |
+    kAllowDerivedDataEncryption | kAllowDerivedDataDecryption | kAllowDerivedSignature | kAllowDerivedVerification | 
+    kAllowDerivedKeyDiversify | kAllowDerivedRngInit | kAllowDerivedKdfMaterial | 
+    kAllowDerivedKeyExporting | kAllowDerivedKeyImporting;
+    
+    
      //SWS_CRYPT_10016
      /**
       * defines all types of crypto objects (types of content that can be stored to a key slot)
       */
+    //The key/seed can be used for data encryption initialization (applicable to symmetric and asymmetric algorithms).//
+     //const AllowedUsageFlags kAllowDataEncryption = 0x0001;
+     //The key/seed can be used for data decryption initialization (applicable to symmetric and asymmetric algorithms).//s
+     //const AllowedUsageFlags kAllowDataDecryption = 0x0002;
       enum class CryptoObjectType : std::uint32_t 
       {
          kUndefined=0,
