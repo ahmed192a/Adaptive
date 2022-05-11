@@ -19,6 +19,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # This will be removed soon from here when the library is downloaded using make
+      - name: Crypto++
+        run: sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
+      
       # Configuring the CMake with the specified build type
       - name: Configure
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
