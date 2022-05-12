@@ -1,41 +1,62 @@
-#ifndef  ARA_CRYPTO_AUTHENTICATION_H
-#define  ARA_CRYPTO_AUTHENTICATION_H
-
+//#ifndef  ARA_CRYPTO_AUTHENTICATION_H
+//#define  ARA_CRYPTO_AUTHENTICATION_H
+#pragma once
 #include "auth_cipher_ctx.hpp"
+#include "HMAC.hpp"
+#include "symmetric_cipher.hpp"
 
 namespace ara {
     namespace crypto {
         namespace cryp {
+            
 
 			class Authentication : public AuthCipherCtx
 			{
-                //@brief a pointer stores the instance of the crypto provider of the authentication context
-                CryptoProvider* myCryptoProvider;
+            private:
+                HMAC::Uptr macPtr;
+ara::crypto::cryp::SymmetricCipher::Uptr blockCipherPtr;
+                ///@brief: pointer references the used mac context to authenticate the data
+                //HMAC* macPtr;
+
+                ///@brief: pointer refetences the used symmetric block cipher context to encrypt the data
+                //SymmetricCipher* blockCipherPtr;
+
+                ///@breif: a flag to state whether ara::crypto::cryp::AuthCipherCtx::SetKey has been called before or not
+                int Key_is_Set=0;
+
+                //@breif: configured transformation direction of AuthCipherCtx
+                
 
 			public:
+                using Uptr=std::unique_ptr<Authentication>;
+                CryptoTransform Transform_set;
                 /// @brief constructor
-                Authentication(CryptoProvider* myProvider);
+                Authentication(ConcreteCryptoProvider* myProvider, CryptoTransform direction);
                 
                 /// @brief destructor
-                ~Authentication() noexcept = default;
+              //  ~Authentication() noexcept = default;
 
-				/***** implementation of inherited CyrptoContext virtual functions *****/
+                           /***********************************************************************/
+				           /***** implementation of inherited CyrptoContext virtual functions *****/
+                           /***********************************************************************/
 
 				///@brief: inherited function from CryptoContext, determines whether context is ready to use or not 
                 ///@return: true if initialized and false if not 
-				bool IsInitialized();
+				bool IsInitialized() const noexcept;
 
-				///@brief: function to reference the CryptoPrimitivId instance containing instance identification 
+				///@brief: inherited from CryptoContext,references the CryptoPrimitivId instance containing instance identification 
                 ///@param[in]: none
-                ///@return: pointer references the cryptoProvider instance of the context
+                ///@return: pointer references the CryptoPrimitivId instance of the context
 				CryptoPrimitiveId::Uptr GetCryptoPrimitiveId() const noexcept;
 
-                /***** implementation of auth_cipher_ctx inherited virtual functions *****/
+                ///@brief: inherited from CryptoContext, references the CryptoProvider instance containing instance identification 
+                ///@param[in]: none
+                ///@return: pointer references the cryptoProvider instance of the context
+                ConcreteCryptoProvider& MyProvider() const noexcept;
 
-                /// @brief: Compare the calculated digest against an expected signature object
-                /// @param[in]: expected => the signature object containing an expected digest value
-                /// @return: true if the compared values are identical, otherwise false
-                bool Check(const Signature& expected) const noexcept;
+                          /*************************************************************************/
+                          /***** implementation of auth_cipher_ctx inherited virtual functions *****/
+                          /*************************************************************************/
 
                 //virtual BlockService::Uptr GetBlockService() const noexcept = 0;
 
@@ -44,18 +65,26 @@ namespace ara {
                 /// @return: CryptoTransform => represents the types of the cryptographic transformations 
                 CryptoTransform GetTransformation() const noexcept;
 
-                /*template <typename Alloc = <implementation - defined>>
-                ara::core::Result<ByteVector<Alloc> > GetDigest(std::size_t offset = 0) const noexcept;*/
+                //template <typename Alloc = <implementation - defined>>
+                std::vector <byte> GetDigest(std::size_t offset = 0) const noexcept;
 
                 ///@brief: Get maximal supported size of associated public data
                 ///@param[in]: none
                 ///@return: std::uint64_t => the maximal supported size of associated public data in bytes
-                std::uint64_t GetMaxAssociatedDataSize() const noexcept;
+                //std::uint64_t GetMaxAssociatedDataSize() const noexcept;
 
-                /*ara::core::Result<ara::core::Vector<ara::core::Byte> > Process
-                    ConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expected Tag = nullptr) noexcept;*/
+                ///@brief:The input buffer will be overwritten by the processed message. This function is the final 
+                //call, i.e.all associated data must have been already provided. The function will check 
+                //the authentication tag and only return the processed data if the tag is valid
+                ///@param[in]: in => the input buffer containing the full message
+                //             expectedTag => pointer to read only mem region
+                std::vector<byte>  ProcessConfidentialData (ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag) noexcept;
 
-                    //void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept;
+                ///@breif:The input buffer will be overwritten by the processed message After this method is called 
+                //no additional associated data may be updated
+                //@param[in]:inOut=> the input buffer containing the full message
+                //          expectedTag => pointer to read only mem region
+                //void ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag) noexcept;
 
                 /// @brief: resets the context
                 void Reset() noexcept;
@@ -66,19 +95,19 @@ namespace ara {
 
                 ///@brief: Initialize the context for a new data processing or generation
                 ///@param[in]: iv => an optional Initialization Vector (IV) or "nonce" value
-                void Start(ReadOnlyMemRegion iv = ReadOnlyMemRegion()) noexcept;
+                void Start() noexcept;
 
                 ///@brief: Initialize the context for a new data processing or generation
                 ///@param[in]: iv => an optional Initialization Vector (IV) or "nonce" value
-                void Start(const SecretSeed& iv) noexcept;
+                //void Start(const SecretSeed& iv) noexcept;
 
                 ///@brief: Update the digest calculation by the specified RestrictedUseObject.
                 ///@param[in]: in => the part of input message that should be processed
-                void UpdateAssociatedData(const RestrictedUseObject& in) noexcept;
+                //void UpdateAssociatedData(const RestrictedUseObject& in) noexcept;
 
                 ///@brief: Update the digest calculation by a new chunk of associated data
                 ///@param[in]: in => the part of input message that should be processed
-                void UpdateAssociatedData(ReadOnlyMemRegion in) noexcept;
+               // void UpdateAssociatedData(ReadOnlyMemRegion in) noexcept;
 
                 ///@brief: Update the digest calculation by the specified Byte
                 ///@param[in]: a byte value that is a part of input message
@@ -100,4 +129,4 @@ namespace ara {
 
 
 
-#endif // ! ARA_CRYPTO_AUTHENTICATION_H
+//#endif // ! ARA_CRYPTO_AUTHENTICATION_H

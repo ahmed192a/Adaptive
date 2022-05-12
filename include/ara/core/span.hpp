@@ -29,6 +29,8 @@ namespace ara
         template<typename T, std::size_t Extent = dynamic_extent>
         class Span
         {
+        public:
+           
             // SWS_CORE_01911
             /**
              * \brief Alias for the type of elements in this Span.

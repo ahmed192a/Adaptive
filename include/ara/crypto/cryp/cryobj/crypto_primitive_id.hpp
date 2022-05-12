@@ -1,8 +1,9 @@
-#ifndef ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
-#define ARA_CRYPTO_CRYP_CRYPTOPRIMITIVEID_H_
+#ifndef ARA_CRYPTO_CRYP_CRYBOBJ_
+#define ARA_CRYPTO_CRYP_CRYBOBJ_
 #include <memory>
 #include <iostream>
-#include<ara/core/StringView.hpp>
+#include "../../../core/StringView.hpp"
+#include "../../common/base_id_types.hpp"
 
 namespace ara
 {
@@ -14,9 +15,11 @@ namespace ara
             * SWS_CRYPT_20600
             *Common interface for identification of all Crypto Primitives and their keys & parameters
             */
+           class CryptoPrId;
             class CryptoPrimitiveId 
             {
                 public:
+                
                 /** 
                  * SWS_CRYPT_10808
                  * @brief Destroy the Crypto Primitive Id object
@@ -29,6 +32,11 @@ namespace ara
                  * Type definition of vendor specific binary Crypto Primitive ID.
                  */
                 using AlgId = CryptoAlgId; 
+                /**
+                 * @brief Construct a new Crypto Primitive Id object
+                 * 
+                 */
+                CryptoPrimitiveId()=default;
                 /*
                 * SWS_CRYPT_20644
                 * Unique smart pointer of the constant interface.
@@ -46,7 +54,7 @@ namespace ara
                  * 
                  * @return CryptoPrimitiveId::Uptr 
                  */
-                virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;
+                //virtual CryptoPrimitiveId::Uptr GetCryptoPrimitiveId () const noexcept=0;*/
                 /**
                  * SWS_CRYPT_20652
                  * @brief Get the Primitive Id object
@@ -62,7 +70,7 @@ namespace ara
                  * StringView instance should not exceed the life-time of this CryptoPrimitiveId instance!
                  * @return const ara::core::StringView 
                  */
-                virtual const ara::core::StringView GetPrimitiveName () const noexcept=0;
+                virtual const std::string GetPrimitiveName () const noexcept=0;
                 /**
                  * SWS_CRYPT_30212
                  * @brief 
@@ -70,7 +78,7 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (const CryptoPrimitiveId &other);
+                CryptoPrimitiveId& operator= (const CryptoPrId &other);
                 /**
                  * SWS_CRYPT_30213
                  * @brief 
@@ -78,20 +86,20 @@ namespace ara
                  * @param other 
                  * @return CryptoPrimitiveId& 
                  */
-                CryptoPrimitiveId& operator= (CryptoPrimitiveId &&other);
+                CryptoPrimitiveId& operator= (CryptoPrId &&other);
                 /**
                  * SWS_CRYPT_23311
                  *  @brief Get the Hash Alg Id object
                  * Get an ID of hash algorithm used for this signature object production.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual AlgId GetHashAlgId () const noexcept=0;
+                //virtual AlgId GetHashAlgId () const noexcept=0;
                 /**
                  * @brief Get the Required Hash Alg Id object
                  * Get an ID of hash algorithm required by current signature algorithm.
                  * @return CryptoPrimitiveId::AlgId 
                  */
-                virtual AlgId GetRequiredHashAlgId () const noexcept=0;
+                //virtual AlgId GetRequiredHashAlgId () const noexcept=0;
 
             };
         }

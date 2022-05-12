@@ -16,7 +16,8 @@ namespace ara
         struct CryptoObjectUid
         {
 		   Uuid mGeneratorUid;
-        };
+	std::uint64_t mVersionStamp = 0u;
+	};
 
     }
 }
