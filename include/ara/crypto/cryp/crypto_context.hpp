@@ -1,3 +1,11 @@
+/*****************************************************************
+ * @file crypto_context.hpp
+ * @author
+ * @brief  ara::crypto::cryp::crypto_context class interface
+ * @version R20-11
+ *****************************************************************/
+
+
 //#ifndef ARA_CRYPTO_CRYPTO_CONTEXT_H
 //#define ARA_CRYPTO_CRYPTO_CONTEXT_H
 #pragma once

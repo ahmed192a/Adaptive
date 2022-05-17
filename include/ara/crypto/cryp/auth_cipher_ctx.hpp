@@ -1,4 +1,4 @@
-/**
+/****************************************************************
  * @file auth_cipher_ctx.hpp
  * @author
  * @brief  ara::crypto::cryp::AuthCiphetCtx class interface

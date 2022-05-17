@@ -1,3 +1,11 @@
+/*****************************************************************
+ * @file authentication.cpp
+ * @author
+ * @brief  ara::crypto::cryp::authentication class implementation
+ * @version R20-11
+ *****************************************************************/
+
+
 #include "../../../../include/ara/crypto/cryp/authentication.hpp"
 
 using namespace ara:: crypto;
