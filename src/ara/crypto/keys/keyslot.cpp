@@ -37,66 +37,67 @@
 //                 {
 //                     std::ofstream my_file;
 //                     string File_Name = path;
-//                     my_file.open(File_Name);
+//                     my_file.open(File_Name,std::ofstream::out | std::ofstream::trunc);
+//                     my_file.open(File_Name,std::ios_base::app);
 //                     //Key Slot Content Properties Struct variables //
 //                     KSCP.mAlgId = container.GetPrimitiveId();
 //                     //write it in the file //
 //                     my_file <<"KSCP.mAlgId=" + to_string(container.GetPrimitiveId())<<endl;
 //                     //-----------------------------------------------//
 //                     KSCP.mObjectType = container.GetCryptoObjectType();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSCP.mObjectType="+ to_string(container.GetCryptoObjectType())<<endl;
 //                     //----------------------------------------------//
 //                     KSCP.mObjectUid = container.GetObjectId();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSCP.mObjectUid=" + to_string(container.GetObjectId())<<endl;
 //                     //----------------------------------------------//
 //                     KSCP.mContentAllowedUsage = container.GetAllowedUsage();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSCP.mContentAllowedUsage=" + to_string(container.GetAllowedUsage())<<endl;
 //                     //----------------------------------------------//
 //                     KSCP.mObjectSize = container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSCP.mObjectSize=" + to_string(container.GetCapacity())<<endl;
 //                     //----------------------------------------------//
 //                     //Key Slot Prototypes Struct variables//
 //                     KSPP.mSlotCapacity= container.GetCapacity();//shall return capacity of the underlying resource in bytes//
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mSlotCapacity=" + to_string(container.GetCapacity())<<endl;
 //                     //----------------------------------------------//
 //                     KSPP.mSlotType = container.GetSlotType();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mSlotType=" + to_string(container.GetSlotType())<<endl;
 //                     //----------------------------------------------//
 //                     KSPP.mAlgId = container.GetPrimitiveId();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mAlgId=" + to_string(container.GetPrimitiveId())<<endl;
 //                     //----------------------------------------------//
 //                     //Elli etghyr//
 //                     KSPP.mAllocateSpareSlot = container.IsAllocateSpareSlot();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mAllocateSpareSlot=" + to_string(container.IsAllocateSpareSlot())<<endl;
 //                     //----------------------------------------------//
 //                     KSPP.mAllowContentTypeChange = container.IsAllowContentTypeChange();
-                       my_file.open(File_Name,std::ios_base::app);
+ //                      my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mAllowContentTypeChange=" + to_string(container.IsAllowContentTypeChange())<<endl;
 //                     //----------------------------------------------//
 //                     KSPP.mMaxUpdateAllowed = container.GetMaxUpdateAllowed();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mMaxUpdateAllowed=" + to_string(container.GetMaxUpdateAllowed())<<endl;
 //                     //----------------------------------------------//
 //                     KSPP.mExportAllowed=container.IsExportAllowed();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mExportAllowed=" + to_string(container.IsExportAllowed())<<endl;
 //                     //----------------------------------------------//
 //                     KSPP.mContentAllowedUsage=container.GetAllowedUsage();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mContentAllowedUsage=" + to_string(container.GetAllowedUsage())<<endl;
 //                     //----------------------------------------------//
 //                     KSPP.mObjectType = container.GetTypeRestriction();
-                       my_file.open(File_Name,std::ios_base::app);
+//                       my_file.open(File_Name,std::ios_base::app);
 //                     my_file <<"KSPP.mObjectType=" + to_string(container.GetTypeRestriction())<<endl;
-
+//
 //                     //----------------------------------------------//
 //                     //change state of key slot to committed //
 //                     this->state = SlotState::commited;
