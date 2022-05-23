@@ -80,7 +80,7 @@ namespace ara
  			   * @return true 
  			   * @return false 
  			   */
-          bool operator== (const KeySlotPrototypeProps &lhs, const KeySlotPrototypeProps &rhs) noexcept
+          friend bool operator== (const KeySlotPrototypeProps &lhs, const KeySlotPrototypeProps &rhs) noexcept;
             
             
        /**
@@ -91,7 +91,7 @@ namespace ara
  			 * @return true 
  			 * @return false 
  			 */
-         bool operator!= (const KeySlotPrototypeProps &lhs, const KeySlotPrototypeProps &rhs) noexcept
+         friend bool operator!= (const KeySlotPrototypeProps &lhs, const KeySlotPrototypeProps &rhs) noexcept;
 
 
 		}KeySlotProps;
