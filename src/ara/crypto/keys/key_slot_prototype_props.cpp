@@ -8,13 +8,13 @@
          namespace keys
          {
              /**
- 			 * @brief Comparison operator "equal" for KeySlotPrototypeProps operands.
- 			 * 
- 			 * @param lhs 
- 			 * @param rhs 
- 			 * @return true 
- 			 * @return false 
- 			 */
+ 		         	 * @brief Comparison operator "equal" for KeySlotPrototypeProps operands.
+ 	         		 * 
+ 	         		 * @param lhs 
+          			 * @param rhs 
+          			 * @return true 
+          			 * @return false 
+ 	         		 */
              bool operator== (const KeySlotPrototypeProps &lhs, const KeySlotPrototypeProps &rhs) noexcept
              {
                  if
