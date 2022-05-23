@@ -1,14 +1,16 @@
-// #include "ara/crypto/keys/Inher_key_slote.hpp"
+#include "ara/crypto/keys/Inher_key_slote.hpp"
+#include <iostream>
+#include <filesystem>
+#include <fstream>
 
-// #include <iostream>
-// #include <filesystem>
-// #include <fstream>
-// namespace ara
-// { 
-//     namespace crypto
-//     {
-//         namespace keys
-//         {
+namespace ara
+ { 
+     namespace crypto
+     {
+         namespace keys
+         {
+            
+            
 //              InhKeySlot::InhKeySlot (std::string file_name)
 //             {
 //                 std::string name = file_name;
@@ -16,7 +18,12 @@
 //                 std::ofstream file(path); //open in constructor
 //                 this->path = "ara/crypto/keys/KeySlot/" + name + ".txt";//must write a complete file path 
 //             }
-//             //Check the slot for emptiness//
+
+
+               /*
+               Check the slot for emptiness
+               */
+
 //             bool InhKeySlot::IsEmpty() noexcept 
 //             {
 //                 if (Empty_State)
@@ -27,11 +34,12 @@
 //                     return false;
 //             }
                 
-//  /*Save the content of a provided source IOInterface to this key - slot*/
+            /*
+            **Save the content of a provided source IOInterface to this key - slot
+            */
+            
 //             void InhKeySlot::SaveCopy(const ConcreteIOInterface& container) noexcept
 //             { 
-            
-      
 
 //                 if(!(container.IsIOInterface_State_Empty()))//if the source IOInterface isn't empty//
 //                 {
@@ -106,7 +114,12 @@
 //                 }
             
 //             }
-//             //Open this key slot and return an IOInterface to its content//
+
+
+             /**
+              * Open this key slot and return an IOInterface to its content
+              **/
+              
 //             ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates = false, bool writeable = false)
 //             {
 
@@ -132,21 +145,26 @@
 //                 this->state = SlotState::opened;
 //                 return IOContent;
 
-            
 //             }
-//             KeySlotContentProps InhKeySlot :: GetContentProps () const noexcept
-//             {
-//                 //KSPP->mExportAllowed=false;
-//                  return KSCP;
-//             }
-//             cryp::CryptoProvider::Uptr InhKeySlot ::MyProvider ()const noexcept
-//             {
-//                  return  std::unique_ptr<ara::crypto::cryp::CryptoProvider>();
-//             }
-//             KeySlotPrototypeProps InhKeySlot :: GetPrototypedProps ()const noexcept
-//             {
-//                 return KSPP;
-//             }
+
+
+             KeySlotContentProps InhKeySlot :: GetContentProps () const noexcept
+             {
+                  return KSCP;
+             }
+             
+             cryp::CryptoProvider::Uptr InhKeySlot ::MyProvider ()const noexcept
+             {
+                  return  std::unique_ptr<ara::crypto::cryp::CryptoProvider>();
+             }
+             
+             KeySlotPrototypeProps InhKeySlot :: GetPrototypedProps ()const noexcept
+             {
+                 return KSPP;
+             }
+             
+             
+             
 //             void InhKeySlot :: Clear () noexcept
 //             {
 //                 KSCP.mAlgId = 0;
@@ -159,6 +177,10 @@
 //                 Myprov =nullptr;
 
 //             }
+
+
+
+
 //             KeySlot& InhKeySlot ::operator= (const KeySlot &other)
 //             {
 //                 if(this != &other)
@@ -185,6 +207,8 @@
 //                 }
 //                 return *this;
 //             }
+
+
 //             KeySlot& InhKeySlot ::operator= (KeySlot &&other)
 //             {
 //                 if(this != &other)
@@ -211,6 +235,7 @@
 //                 }
 //                 return *this;
 //             }
-//         }
-//     }
-// }
+           
+         }
+     }
+ }
