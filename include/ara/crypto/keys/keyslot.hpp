@@ -3,9 +3,10 @@
 
 #include "ara/crypto/keys/key_slot_content_props.hpp"
 #include "ara/crypto/keys/key_slot_prototype_props.hpp"
-#include "ara/crypto/cryp/crypto_provider.hpp"
-#include "ara/crypto/cryp/cryobj/crypto_object.hpp"
+#include "ara/crypto/cryp/concrete_crypto_provider.hpp"
+#include "ara/crypto/cryp/cryobj/crypto_obj.hpp"
 #include "ara/crypto/common/concrete_io_interface.hpp"
+#include <string>
 
 namespace ara
 {
@@ -19,7 +20,10 @@ namespace ara
                 opened,
                 commited
             };
-
+            const std::string CryptoObjectType_tostring[] =
+            {"kUndefined","kSymmetricKey","kPrivateKey","kPublicKey","kSignature","kSecretSeed"};
+            const std::string KeySlotType_tostring[] =
+            {"kMachine","kApplication"};
             class KeySlot 
             {
                 public:
@@ -32,9 +36,10 @@ namespace ara
                  KeySlotContentProps KSCP ;
                  KeySlotPrototypeProps KSPP;
                  bool Empty_State =0;//If the key slot is empty put 1 else put 0//
-                 ara::crypto::cryp::CryptoProvider* myCryptoProvider;
-                 std::unique_ptr<cryp::CryptoProvider> Myprov;
-                /**
+                 ara::crypto::cryp::ConcreteCryptoProvider* myCryptoProvider;
+                 std::unique_ptr<cryp::ConcreteCryptoProvider> Myprov;
+                 /**************************************************************************/
+                 /**
                  * @brief Destroy the Key Slot object
                  * 
                  */
