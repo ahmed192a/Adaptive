@@ -35,9 +35,9 @@
             //        already committed, or rolled back
  			struct TransactionScopeWithIdAndState
  			{
- 				TransactionScope Transaction;
- 				TransactionId TransactionId;
- 				TransactionScopeState TransactionState;
+ 				TransactionScope transaction;
+ 				TransactionId transactionId;
+ 				TransactionScopeState transactionState;
  			};
  		}
  	}

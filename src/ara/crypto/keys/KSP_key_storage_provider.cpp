@@ -66,10 +66,10 @@
  	 for (Transactionscounter = 0; Transactionscounter < this->transactionIdState.size();Transactionscounter++)
  	 {
         // find the selected TransactionScope correspondant to the provided transactionId
- 		if (transactionIdState[Transactionscounter].TransactionId == id)
+ 		if (transactionIdState[Transactionscounter].transactionId == id)
  		{
             //check that the TransactionScope correspondant to the provided transactionId is ready to be commited
-            if (transactionIdState[Transactionscounter].TransactionState != TransactionScopeState::opened)
+            if (transactionIdState[Transactionscounter].transactionState != TransactionScopeState::opened)
             {
                 error = 1;
             }
@@ -79,7 +79,7 @@
         if (error == 0)
         {
             // exract the selected TransactionScope correspondant to the provided transactionId
-            TransactionScope TransactionsToBeCommited = this->transactionIdState[Transactionscounter].Transaction;
+            TransactionScope TransactionsToBeCommited = this->transactionIdState[Transactionscounter].transaction;
 
             // save the changes to the correspondant key slot
             for (TransactionScopecounter = 0; TransactionScopecounter < TransactionsToBeCommited.size(); TransactionScopecounter++)
@@ -88,7 +88,7 @@
             }
 
             // change the state of the committed transaction from opened to committed
-            transactionIdState[Transactionscounter].TransactionState = TransactionScopeState::commited;
+            transactionIdState[Transactionscounter].transactionState = TransactionScopeState::commited;
         }
         else
         {
