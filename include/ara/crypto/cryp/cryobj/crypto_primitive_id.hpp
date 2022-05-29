@@ -1,6 +1,6 @@
 #ifndef ARA_CRYPTO_CRYP_CRYBOBJ_
 #define ARA_CRYPTO_CRYP_CRYBOBJ_
-//#include <memory>
+#include <memory>
 #include <iostream>
 //#include "../../../core/StringView.hpp"
 #include "../../common/base_id_types.hpp"
