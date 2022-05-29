@@ -56,7 +56,7 @@
  void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
  {
      //define an error flag
-     bool error = false;
+     uint8_t error = 0;
 
  	 //define a counter to use it in the foor loop
  	 uint8_t Transactionscounter = 0;
@@ -71,12 +71,12 @@
             //check that the TransactionScope correspondant to the provided transactionId is ready to be commited
             if (transactionIdState[Transactionscounter].TransactionState != TransactionScopeState::opened)
             {
-                error = true;
+                error = 1;
             }
  			// required id found so break from searching loop
             break;
  		}
-        if (error == false)
+        if (error == 0)
         {
             // exract the selected TransactionScope correspondant to the provided transactionId
             TransactionScope TransactionsToBeCommited = this->transactionIdState[Transactionscounter].Transaction;
@@ -89,6 +89,10 @@
 
             // change the state of the committed transaction from opened to committed
             transactionIdState[Transactionscounter].TransactionState = TransactionScopeState::commited;
+        }
+        else
+        {
+            /* Misra */
         }
  	 }
  }
