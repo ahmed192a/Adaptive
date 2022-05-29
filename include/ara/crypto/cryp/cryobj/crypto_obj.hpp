@@ -1,5 +1,5 @@
 #pragma once
-#include <memory>
+//#include <memory>
 #include <iostream>
 #include "crypto_object.hpp"
 namespace ara
