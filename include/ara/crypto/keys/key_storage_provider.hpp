@@ -1,11 +1,11 @@
  #ifndef ARA_CRYPTO_KEYS_KEY_STORAGE_PROVIDER_HPP
  #define ARA_CRYPTO_KEYS_KEY_STORAGE_PROVIDER_HPP
 
- #include <memory>
+ //#include <memory>
  #include <vector>
  #include "elementary_types.hpp"
  //#include "../../core/instance_specifier.hpp"
- #include "keyslot.hpp"
+ #include "Inher_key_slote.hpp"
 
  namespace ara
  {
