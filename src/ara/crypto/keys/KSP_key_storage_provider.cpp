@@ -3,32 +3,32 @@
  using namespace ara::crypto;
  using namespace ara::crypto::keys;
 
- //@breif: Begin new transaction for key slots update
+ /*@breif: Begin new transaction for key slots update
  TransactionId KSPKeyStorageProvider::BeginTransaction(const TransactionScope& targetSlots) noexcept
  {
- 	//define a flag which states wheter an error raised or not
+ 	define a flag which states wheter an error raised or not
     bool error = false;
-    //define a counter to use it in the for loop
+    define a counter to use it in the for loop
  	uint8_t counter = 0;
 
- 	// loop on every key slot in the Transactionscope to be sure that it has not already been opened before
+ 	 loop on every key slot in the Transactionscope to be sure that it has not already been opened before
  	for (counter = 0; counter < targetSlots.size(); counter++)
  	{
  		if (targetSlots[counter].state != SlotState::opened)
  		{
- 			// a vector stores all IOInterfaces of this transactionScope
+ 			 a vector stores all IOInterfaces of this transactionScope
             std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
-            // Open each key slot for updates
-            // ****************** Comment till implement open ************************
-            // ***********************************************************************
-            //thisScopeInterfaces.push_back(targetSlots[counter].Open(1,1));
-            // add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
+             Open each key slot for updates
+             ****************** Comment till implement open ************************
+             ***********************************************************************
+            thisScopeInterfaces.push_back(targetSlots[counter].Open(1,1));
+             add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
             this-> TransactionIOInterfaces.push_back (thisScopeInterfaces);
  		}
 		
  		else
  		{
- 			// raise CryptoErrorDomain::kBusyResource error
+ 			 raise CryptoErrorDomain::kBusyResource error
             error = true;
  			break;
  		}
@@ -36,62 +36,62 @@
 
     if (error == false)
     {
-        // Assign the Id of this transaction 
+         Assign the Id of this transaction 
         TransactionId TransId = this->nextId;
 
-        //increment nextId for the next assignment
+        increment nextId for the next assignment
         (this->nextId)++;
 
-        // Push this opened transaction to the vector of opened transactions
+         Push this opened transaction to the vector of opened transactions
         this->transactionIdState.push_back({ targetSlots,TransId,TransactionScopeState::opened });
 
         return TransId;
     }
     else
-        // an error 
+         an error 
         return 0;
+ }*/
+
+ //@breif: Commit changes of the transaction to Key Storage
+ void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
+ {
+     //define an error flag
+     bool error = false;
+
+ 	 //define a counter to use it in the foor loop
+ 	 uint8_t Transactionscounter = 0;
+ 	 uint8_t TransactionScopecounter = 0;
+
+ 	 // loop on every key slot in the TransactionScope to be sure that it has been opened 
+ 	 for (Transactionscounter = 0; Transactionscounter < this->transactionIdState.size();Transactionscounter++)
+ 	 {
+        // find the selected TransactionScope correspondant to the provided transactionId
+ 		if (transactionIdState[Transactionscounter].TransactionId == id)
+ 		{
+            //check that the TransactionScope correspondant to the provided transactionId is ready to be commited
+            if (transactionIdState[Transactionscounter].TransactionState != TransactionScopeState::opened)
+            {
+                error = true;
+            }
+ 			// required id found so break from searching loop
+            break;
+ 		}
+        if (error == false)
+        {
+            // exract the selected TransactionScope correspondant to the provided transactionId
+            TransactionScope TransactionsToBeCommited = this->transactionIdState[Transactionscounter].Transaction;
+
+            // save the changes to the correspondant key slot
+            for (TransactionScopecounter = 0; TransactionScopecounter < TransactionsToBeCommited.size(); TransactionScopecounter++)
+            {
+                TransactionsToBeCommited[TransactionScopecounter].SaveCopy(*(this->TransactionIOInterfaces[Transactionscounter][TransactionScopecounter]));
+            }
+
+            // change the state of the committed transaction from opened to committed
+            transactionIdState[Transactionscounter].TransactionState = TransactionScopeState::commited;
+        }
+ 	 }
  }
-
- ////@breif: Commit changes of the transaction to Key Storage
- //void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
- //{
- //    //define an error flag
- //    bool error = false;
-
- //	 //define a counter to use it in the foor loop
- //	 uint8_t Transactionscounter = 0;
- //	 uint8_t TransactionScopecounter = 0;
-
- //	 // loop on every key slot in the TransactionScope to be sure that it has been opened 
- //	 for (Transactionscounter = 0; Transactionscounter < this->transactionIdState.size();Transactionscounter++)
- //	 {
- //       // find the selected TransactionScope correspondant to the provided transactionId
- //		if (transactionIdState[Transactionscounter].TransactionId == id)
- //		{
- //           //check that the TransactionScope correspondant to the provided transactionId is ready to be commited
- //           if (transactionIdState[Transactionscounter].TransactionState != TransactionScopeState::opened)
- //           {
- //               error = true;
- //           }
- //			// required id found so break from searching loop
- //           break;
- //		}
- //       if (error == false)
- //       {
- //           // exract the selected TransactionScope correspondant to the provided transactionId
- //           TransactionScope TransactionsToBeCommited = this->transactionIdState[Transactionscounter].Transaction;
-
- //           // save the changes to the correspondant key slot
- //           for (TransactionScopecounter = 0; TransactionScopecounter < TransactionsToBeCommited.size(); TransactionScopecounter++)
- //           {
- //               TransactionsToBeCommited[TransactionScopecounter].SaveCopy(*(this->TransactionIOInterfaces[Transactionscounter][TransactionScopecounter]));
- //           }
-
- //           // change the state of the committed transaction from opened to committed
- //           transactionIdState[Transactionscounter].TransactionState = TransactionScopeState::commited;
- //       }
- //	 }
- //}
 
 
  ////@breif: Load a key slot
