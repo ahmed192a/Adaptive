@@ -1,56 +1,56 @@
- //#include "../../../../include/ara/crypto/keys/KSP_key_storage_provider.hpp"
+ #include "../../../../include/ara/crypto/keys/KSP_key_storage_provider.hpp"
 
- //using namespace ara::crypto;
- //using namespace ara::crypto::keys;
+ using namespace ara::crypto;
+ using namespace ara::crypto::keys;
 
- ////@breif: Begin new transaction for key slots update
- //TransactionId KSPKeyStorageProvider::BeginTransaction(const TransactionScope& targetSlots) noexcept
- //{
- //	//define a flag which states wheter an error raised or not
- //   bool error = false;
- //   //define a counter to use it in the for loop
- //	uint8_t counter = 0;
+ //@breif: Begin new transaction for key slots update
+ TransactionId KSPKeyStorageProvider::BeginTransaction(const TransactionScope& targetSlots) noexcept
+ {
+ 	//define a flag which states wheter an error raised or not
+    bool error = false;
+    //define a counter to use it in the for loop
+ 	uint8_t counter = 0;
 
- //	// loop on every key slot in the Transactionscope to be sure that it has not already been opened before
- //	for (counter = 0; counter < targetSlots.size(); counter++)
- //	{
- //		if (targetSlots[counter].state != SlotState::opened)
- //		{
- //			// a vector stores all IOInterfaces of this transactionScope
- //           std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
- //           // Open each key slot for updates
- //           // ****************** Comment till implement open ************************
- //           // ***********************************************************************
- //           //thisScopeInterfaces.push_back(targetSlots[counter].Open(1,1));
- //           // add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
- //           this-> TransactionIOInterfaces.push_back (thisScopeInterfaces);
- //		}
-	//	
- //		else
- //		{
- //			// raise CryptoErrorDomain::kBusyResource error
- //           error = true;
- //			break;
- //		}
- //	}
+ 	// loop on every key slot in the Transactionscope to be sure that it has not already been opened before
+ 	for (counter = 0; counter < targetSlots.size(); counter++)
+ 	{
+ 		if (targetSlots[counter].state != SlotState::opened)
+ 		{
+ 			// a vector stores all IOInterfaces of this transactionScope
+            std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
+            // Open each key slot for updates
+            // ****************** Comment till implement open ************************
+            // ***********************************************************************
+            //thisScopeInterfaces.push_back(targetSlots[counter].Open(1,1));
+            // add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
+            this-> TransactionIOInterfaces.push_back (thisScopeInterfaces);
+ 		}
+		
+ 		else
+ 		{
+ 			// raise CryptoErrorDomain::kBusyResource error
+            error = true;
+ 			break;
+ 		}
+ 	}
 
- //   if (error == false)
- //   {
- //       // Assign the Id of this transaction 
- //       TransactionId TransId = this->nextId;
+    if (error == false)
+    {
+        // Assign the Id of this transaction 
+        TransactionId TransId = this->nextId;
 
- //       //increment nextId for the next assignment
- //       (this->nextId)++;
+        //increment nextId for the next assignment
+        (this->nextId)++;
 
- //       // Push this opened transaction to the vector of opened transactions
- //       this->transactionIdState.push_back({ targetSlots,TransId,TransactionScopeState::opened });
+        // Push this opened transaction to the vector of opened transactions
+        this->transactionIdState.push_back({ targetSlots,TransId,TransactionScopeState::opened });
 
- //       return TransId;
- //   }
- //   else
- //       // an error 
- //       return 0;
- //}
+        return TransId;
+    }
+    else
+        // an error 
+        return 0;
+ }
 
  ////@breif: Commit changes of the transaction to Key Storage
  //void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
@@ -94,80 +94,80 @@
  //}
 
 
- //////@breif: Load a key slot
- ////// The function loads the information associated with a KeySlot into a KeySlot object
- ////KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept
- ////{
-	////
- ////}
+ ////@breif: Load a key slot
+ //// The function loads the information associated with a KeySlot into a KeySlot object
+ //KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept
+ //{
+	//
+ //}
 
 
- //////@breif: Rollback all changes executed during the transaction in Key Storage.
- ////// The rollback command permanently cancels all changes made during the transaction in Key Storage.
- ////// A rolled back transaction is completely invisible for all applications.
- ////void RollbackTransaction(TransactionId id) noexcept
- ////{
- ////	//counters for the loop
- ////	uint8_t OpenedTransactionscounter, SlotCounter;
- ////	//a flag to detect when the code exits without finding the provided id
- ////	uint8_t flag = 0;
-	////
- ////	//loop on every opened transaction to find the one to rollback
- ////	for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->spareOpenedTransactions.size(); OpenedTransactionscounter++)
- ////	{
- ////		if (this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionId == id)
- ////		{
- ////			TransactionScope requiredTransaction = this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransaction;
- ////			flag = 1;
- ////			/*if provided id is invalid, i.e. correspondent transaction already was finished (committed or rolled back),
- ////			 *an error is signaled*/
- ////			if (this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState == TransactionScopeState::commited || this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState == TransactionScopeState::rolledback)
- ////			{
- ////				//raising SecurityErrorDomain::kInvalid Argument
- ////			}
- ////			else
- ////			{
- ////				// loop on every key slot in the Transactionscope to remove the changes & rollback
- ////				for (SlotCounter = 0; SlotCounter < requiredTransaction.OpenedTransaction.size(); SlotCounter++)
- ////				{
- ////					//Open each key slot spare & save it to roll back any changes that occurred)
- ////					IOInterface::Uptr IOInterfacePtr = requiredTransaction[SlotCounter].Open(1, 1);
- ////					requiredTransaction[SlotCounter].SaveCopy(IOInterfacePtr);
- ////				}
- ////				//change the state of the transaction to rolledback so that it won't be rolled back again
- ////				this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState = TransactionScopeState::rolledback;
- ////			}
- ////		}
- ////	}
- ////	/*if provided id is invalid, i.e. this ID is unknown (not found), an error is signaled*/
- ////	if (flag == 0)
- ////	{	
- ////		//raising SecurityErrorDomain::kInvalid Argument
- ////	}
- ////}
+ ////@breif: Rollback all changes executed during the transaction in Key Storage.
+ //// The rollback command permanently cancels all changes made during the transaction in Key Storage.
+ //// A rolled back transaction is completely invisible for all applications.
+ //void RollbackTransaction(TransactionId id) noexcept
+ //{
+ //	//counters for the loop
+ //	uint8_t OpenedTransactionscounter, SlotCounter;
+ //	//a flag to detect when the code exits without finding the provided id
+ //	uint8_t flag = 0;
+	//
+ //	//loop on every opened transaction to find the one to rollback
+ //	for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->spareOpenedTransactions.size(); OpenedTransactionscounter++)
+ //	{
+ //		if (this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionId == id)
+ //		{
+ //			TransactionScope requiredTransaction = this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransaction;
+ //			flag = 1;
+ //			/*if provided id is invalid, i.e. correspondent transaction already was finished (committed or rolled back),
+ //			 *an error is signaled*/
+ //			if (this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState == TransactionScopeState::commited || this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState == TransactionScopeState::rolledback)
+ //			{
+ //				//raising SecurityErrorDomain::kInvalid Argument
+ //			}
+ //			else
+ //			{
+ //				// loop on every key slot in the Transactionscope to remove the changes & rollback
+ //				for (SlotCounter = 0; SlotCounter < requiredTransaction.OpenedTransaction.size(); SlotCounter++)
+ //				{
+ //					//Open each key slot spare & save it to roll back any changes that occurred)
+ //					IOInterface::Uptr IOInterfacePtr = requiredTransaction[SlotCounter].Open(1, 1);
+ //					requiredTransaction[SlotCounter].SaveCopy(IOInterfacePtr);
+ //				}
+ //				//change the state of the transaction to rolledback so that it won't be rolled back again
+ //				this->spareOpenedTransactions[OpenedTransactionscounter].OpenedTransactionState = TransactionScopeState::rolledback;
+ //			}
+ //		}
+ //	}
+ //	/*if provided id is invalid, i.e. this ID is unknown (not found), an error is signaled*/
+ //	if (flag == 0)
+ //	{	
+ //		//raising SecurityErrorDomain::kInvalid Argument
+ //	}
+ //}
 
 
- //////@breif: Get a vector of IOInterface from a Transaction id.
- ////vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept
- ////{
- ////	//counters for the loops
- ////	uint8_t OpenedTransactionscounter, SlotCounter;
+ ////@breif: Get a vector of IOInterface from a Transaction id.
+ //vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept
+ //{
+ //	//counters for the loops
+ //	uint8_t OpenedTransactionscounter, SlotCounter;
 
- ////	//loop on every opened transaction to find the one to retrieve its key slots' IOInterfaces
- ////	for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->openedTransactionsWithIds.size(); OpenedTransactionscounter++)
- ////	{
- ////		if (this->openedTransactionsWithIds[OpenedTransactionscounter].OpenedTransactionId == id)
- ////		{
- ////			TransactionScope requiredTransaction = this->openedTransactionsWithIds[OpenedTransactionscounter].OpenedTransaction;
- ////			//loop on every key slot in the required Transactionscope to remove the changes & rollback
- ////			for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
- ////			{
- ////				//push the IOInterfaces to the vector
- ////				this->TransactionIOInterfaces.push_back(requiredTransaction[SlotCounter].IOInterfacePtr);
+ //	//loop on every opened transaction to find the one to retrieve its key slots' IOInterfaces
+ //	for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->openedTransactionsWithIds.size(); OpenedTransactionscounter++)
+ //	{
+ //		if (this->openedTransactionsWithIds[OpenedTransactionscounter].OpenedTransactionId == id)
+ //		{
+ //			TransactionScope requiredTransaction = this->openedTransactionsWithIds[OpenedTransactionscounter].OpenedTransaction;
+ //			//loop on every key slot in the required Transactionscope to remove the changes & rollback
+ //			for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
+ //			{
+ //				//push the IOInterfaces to the vector
+ //				this->TransactionIOInterfaces.push_back(requiredTransaction[SlotCounter].IOInterfacePtr);
 
- ////			}
-	////		
- ////		}	
- ////	}
- ////	return this->TransactionIOInterfaces;
- ////}
+ //			}
+	//		
+ //		}	
+ //	}
+ //	return this->TransactionIOInterfaces;
+ //}
