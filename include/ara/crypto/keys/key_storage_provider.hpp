@@ -24,7 +24,7 @@
  				std::vector <TransactionScopeWithIdAndState> spareOpenedTransactions;
 
  				//@breif: vector to save IOInterfaces of key slots in a transaction
- 				std::vector<IOInterface::Uptr> TransactionIOInterfaces;
+ 				std::vector<std::vector <ConcreteIOInterface::Uptr>> TransactionIOInterfaces;
 
  				/*std::vector < TransactionScope> openedTransactions;
  				std::vector < TransactionId> openedTransactionIds;*/
