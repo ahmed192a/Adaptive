@@ -1,7 +1,7 @@
  #ifndef ARA_CRYPTO_KEYS_ELEMENTARY_ELEMENTS_HPP
  #define ARA_CRYPTO_KEYS_ELEMENTARY_ELEMENTS_HPP
 
-#include <vector>
+//#include <vector>
 //#include "keyslot.hpp"
 #include "Inher_key_slote.hpp"
 
