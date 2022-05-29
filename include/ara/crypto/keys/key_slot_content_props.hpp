@@ -1,9 +1,10 @@
 #ifndef ARA_CRYPTO_KEYS_KEY_SLOT_CONTENT_PROPS_HPP
 #define ARA_CRYPTO_KEYS_KEY_SLOT_CONTENT_PROPS_HPP
 #include <iostream>
-#include <memory>
-#include <vector>
-#include "../cryp/cryobj/crypto_object.hpp"
+//#include <memory>
+//#include <vector>
+#include "../cryp/cryobj/crypto_obj.hpp"
+//#include "../cryp/cryobj/crypto_object.hpp"
 namespace ara
 {
 	namespace crypto
