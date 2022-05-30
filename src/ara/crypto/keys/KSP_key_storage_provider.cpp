@@ -1,7 +1,7 @@
- //#include "../../../../include/ara/crypto/keys/KSP_key_storage_provider.hpp"
+ #include "../../../../include/ara/crypto/keys/KSP_key_storage_provider.hpp"
 
- //using namespace ara::crypto;
- //using namespace ara::crypto::keys;
+ using namespace ara::crypto;
+ using namespace ara::crypto::keys;
 
  ///*@breif: Begin new transaction for key slots update
  //TransactionId KSPKeyStorageProvider::BeginTransaction(const TransactionScope& targetSlots) noexcept

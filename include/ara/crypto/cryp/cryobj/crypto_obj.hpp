@@ -14,7 +14,7 @@ namespace ara
             * @file crypto_obj.hpp
             * @brief A common interface for all cryptograhic objects recognizable by the Crypto Provider.
             **/
-            class cryptoobj : CryptoObject 
+            class cryptoobj : public CryptoObject 
             {
                 public:
                /**
