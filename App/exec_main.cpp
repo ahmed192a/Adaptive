@@ -66,11 +66,11 @@ int main(int, char **)
 
     exec_init_map();
 
-    for(map<string, GLOB>::iterator it = sys_FG.begin(); it!= sys_FG.end(); it++ ){
+    /*for(map<string, GLOB>::iterator it = sys_FG.begin(); it!= sys_FG.end(); it++ ){
     //for(auto it:  sys_FG){
         //lg.Insert("EM: Function group name : " + it->first+ " with number of processes = "+ to_string(it->second.processes.size()) + "\n", "EM");
         cout<<"EM: Function group name : "<<it->first<< " with number of processes = "<<it->second.processes.size()<<endl;
-    }
+    }*/
     mkfifo(SM_FIFO, 0666);
     std::string msg;
     msg.resize(MAX_BUF);
@@ -129,7 +129,7 @@ void exec_init_map(){
     
 }
 
-void operate(){
+void p_operator(){
     for(auto process : process_pool){
          //if running continue
         if(process.prun)continue;
@@ -152,7 +152,7 @@ void operate(){
         if(will_run)process.start();
     }
 }
-void terminate(){
+void p_terminator(){
     for(auto process : process_pool){
          //if not running continue
         if(!process.prun)continue;
@@ -166,7 +166,7 @@ void terminate(){
     }
 
 }
-
+/*
 void terminate_p(GLOB &G){  
     for (vector<Process>::iterator i = G.processes.begin(); i != G.processes.end(); i++)
     {
@@ -207,7 +207,7 @@ void start_p(GLOB &G){
            }
        }
     }
-}
+}*/
 void change_state(std::string n_FG, std::string n_state)
 {
     sys_FG[n_FG].current_FGS.reset();
@@ -215,8 +215,8 @@ void change_state(std::string n_FG, std::string n_state)
     sys_FG[n_FG].current_FGS = std::make_shared<FunctionGroupState>(std::move(token));
     cout<<"\nEM: check transition : "<<sys_FG[n_FG].current_FGS->get_FGname()<<" -> state : "<<sys_FG[n_FG].current_FGS->get_states()<<endl<<endl;
     
-    terminate();
-    operate();
+    p_terminator();
+    p_operator();
     
     //terminate_p(sys_FG[n_FG]);
     //start_p(sys_FG[n_FG]);
