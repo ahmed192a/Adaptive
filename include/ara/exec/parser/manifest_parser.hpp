@@ -19,7 +19,7 @@ using namespace std;
 
 struct GLOB{
     std::shared_ptr<FunctionGroup>c_FG;
-    vector<Process> processes;
+    //vector<Process> processes;
     std::shared_ptr<FunctionGroupState> current_FGS;
 };
 namespace ara

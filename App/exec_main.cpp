@@ -28,12 +28,8 @@ using namespace std;
 
 #define MAX_BUF 1024
 
-// struct GLOB{
-//     FunctionGroup *c_FG;
-//     string FG_name;
-//     vector<Process> processes;
-//     FunctionGroupState *current_FGS;
-// };
+
+std::vector<Process> process_pool;
 static map<string, GLOB> sys_FG;
 
 void exec_init_map();
@@ -42,6 +38,8 @@ void start_p(GLOB &G);
 void change_state(std::string n_FG, std::string n_state);
 void view_out();
 void create_man();
+void operate();
+void terminate();
 
 // Backup streambuffers of  cout
 streambuf* stream_buffer_cout = cout.rdbuf();
@@ -115,8 +113,11 @@ void exec_init_map(){
     cout<<"succeed parsing Execution manifest id = "+EM.manifest_id<<endl;
     cout<<"num process : "<<EM.processes.size()<<endl;
 
+
+    process_pool = EM.processes;
+
     // push the process in vector 
-    for(auto i = 0; i<EM.processes.size(); i++){
+    /*for(auto i = 0; i<EM.processes.size(); i++){
         for (auto j = 0; j < EM.processes[i].startup_configs.size(); j++)
         {
             for (auto h = 0; h < EM.processes[i].startup_configs[j].machine_instance_refs.size(); h++)
@@ -124,9 +125,48 @@ void exec_init_map(){
                 sys_FG[EM.processes[i].startup_configs[j].machine_instance_refs[h].function_group].processes.push_back(EM.processes[i]);
             }
         }
-    }  
+    }*/
+    
+}
+
+void operate(){
+    for(auto process : process_pool){
+         //if running continue
+        if(process.prun)continue;
+        bool will_run = false;
+        //check if the current state doesnt violate the configuration,otherwise terminate
+        for(int config = 0; config < process.startup_configs.size();config++){
+            bool violate = false;
+            for(auto mref: process.startup_configs[config].machine_instance_refs){
+                if(sys_FG[mref.function_group].current_FGS->get_states()!=mref.mode){
+                    violate = true;
+                    break;
+                }
+            }
+            if(!violate){
+                process.current_config = &process.startup_configs[config];
+                will_run = true;
+                break;
+            }
+        }
+        if(will_run)process.start();
+    }
+}
+void terminate(){
+    for(auto process : process_pool){
+         //if not running continue
+        if(!process.prun)continue;
+        //check if the current state doesnt violate the configuration,otherwise terminate
+        for(auto mref:process.current_config->machine_instance_refs){
+            if(sys_FG[mref.function_group].current_FGS->get_states()!=mref.mode){
+                process.terminate();
+                break;
+            }
+        }
+    }
 
 }
+
 void terminate_p(GLOB &G){  
     for (vector<Process>::iterator i = G.processes.begin(); i != G.processes.end(); i++)
     {
@@ -174,9 +214,12 @@ void change_state(std::string n_FG, std::string n_state)
     FunctionGroupState::CtorToken token={n_FG,n_state};
     sys_FG[n_FG].current_FGS = std::make_shared<FunctionGroupState>(std::move(token));
     cout<<"\nEM: check transition : "<<sys_FG[n_FG].current_FGS->get_FGname()<<" -> state : "<<sys_FG[n_FG].current_FGS->get_states()<<endl<<endl;
-
-    terminate_p(sys_FG[n_FG]);
-    start_p(sys_FG[n_FG]);
+    
+    terminate();
+    operate();
+    
+    //terminate_p(sys_FG[n_FG]);
+    //start_p(sys_FG[n_FG]);
 }
 void view_out(){
     namespace fs = std::filesystem;
