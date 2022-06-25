@@ -19,6 +19,7 @@ using namespace ara::crypto;
             IOInterface_State_Empty = IOInterface_State_Emptyvar;
             MaxUpdateAllowed_t = MaxUpdateAllowedvar;
             Slot_Type = Slot_Typevar;
+
         }
          ConcreteIOInterface::ConcreteIOInterface()
          {
@@ -73,7 +74,7 @@ using namespace ara::crypto;
                  {
                      return this->Volatile;
                  }
-bool ConcreteIOInterface::IsExportAllowed() const noexcept 
+                 bool ConcreteIOInterface::IsExportAllowed() const noexcept 
                  {
                      return this->ExportAllowed_t;
                  
@@ -102,7 +103,6 @@ bool ConcreteIOInterface::IsExportAllowed() const noexcept
                  {
                      return this->Slot_Type;
                  }
-
 
 
 				 //ConcreteIOInterface::~ConcreteIOInterface () noexcept
