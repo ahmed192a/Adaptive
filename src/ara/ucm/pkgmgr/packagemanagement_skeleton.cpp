@@ -112,7 +112,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         uint16_t extra_bytes;
         int block_counter = 0;
         std::vector<uint8_t> data_block(buffer.begin()+52, buffer.end());
-        printf("%x", *((uint32_t *)data_block.data()));
+        printf("first address %x\n", *((uint32_t *)data_block.data()));
         packet_num = (uint32_t)(data_block.size() /0x400) ;
         extra_bytes = (data_block.size()% 0x400);
 

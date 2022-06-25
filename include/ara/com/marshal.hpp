@@ -21,7 +21,9 @@ namespace ara
     namespace com
     {
         /**
-         * @brief 
+         * @brief if it's not the last argument of the function, 
+         *         then decrement the argument counter I and send the Tail which is the rest of the arguments.
+         *          until it's  I = 0. then return The Head which is the type of the Argument.
          * 
          * @tparam I 
          * @tparam Head 
@@ -33,7 +35,7 @@ namespace ara
             using type = typename ArgumentTypeImpl<I - 1, Tail...>::type;
         };
         /**
-         * @brief 
+         * @brief if it's the last argument of the function, then return the head which is the type of the argument.
          * 
          * @tparam Head 
          * @tparam Tail 
@@ -46,6 +48,7 @@ namespace ara
 
         template <std::size_t I, typename... Args>
         using ArgumentType = typename ArgumentTypeImpl<I, Args...>::type;
+
         template <std::size_t I, typename... Args>
         struct MessageIndexerImpl
         {
@@ -97,6 +100,7 @@ namespace ara
                 MessageIndexerImpl<sizeof...(Args) - 1, Args...> mindex;
                 mindex(sizes);
             }
+            
             /**
              * @brief unmarshal the data bytes into the required parameters
              * 

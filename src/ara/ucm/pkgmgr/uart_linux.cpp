@@ -13,7 +13,7 @@
 uart_linux::uart_linux(/* args */)
 {
     // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
-    this->serial_port = open("/dev/ttyACM1", O_RDWR | O_NOCTTY | O_SYNC);
+    this->serial_port = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_SYNC);
 
     // Create new termios struct, we call it 'tty' for convention
     struct termios tty;
@@ -24,9 +24,9 @@ uart_linux::uart_linux(/* args */)
         printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
         return ;
     }
-    printf("\n\n");
-    printf("cc %x, ci %x, co %x, cl %x\n",tty.c_cflag, tty.c_iflag,tty.c_oflag, tty.c_lflag  );
-    printf("c_line %x\n", tty.c_line);
+    // printf("\n\n");
+    // printf("cc %x, ci %x, co %x, cl %x\n",tty.c_cflag, tty.c_iflag,tty.c_oflag, tty.c_lflag  );
+    // printf("c_line %x\n", tty.c_line);
 
     tty.c_iflag = 0x1c00;
     tty.c_oflag = 0x0000;

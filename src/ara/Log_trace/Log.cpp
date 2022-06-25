@@ -67,4 +67,7 @@ void Log::Insert(std::string data, std::string from, LogType T){
     myFile_Handler <<"["<<return_current_time_and_date()<<"]\t\t"<<from<<"\t"<< data << endl;
 
 }
+void Log::operator<<(std::string data){
+    myFile_Handler << data << endl;
+}
 

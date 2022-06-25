@@ -39,6 +39,7 @@ public:
     Log() noexcept;
     ~Log() noexcept;
     void Insert(std::string data, std::string from, LogType T = LogType::INFO);
+    void operator<<(std::string data);
 
 };
 
