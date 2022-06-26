@@ -16,7 +16,11 @@
                         "ExecutionDependencies": [
                             {
                                 "Process_name": "Proc_2",
-                                "Mode": "Running"
+                                "Mode": [
+                                    {"Mode":"Running"},
+                                    {"Mode":"on"}
+
+                                ]
                             }
                         ],
                         "FunctionGroupDependencies": [

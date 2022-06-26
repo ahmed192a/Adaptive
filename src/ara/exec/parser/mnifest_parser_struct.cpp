@@ -179,13 +179,13 @@ bool Process::StartupConfig::StartupOption::operator!=(
 bool Process::StartupConfig::MachineInstanceRef::operator==(
     const MachineInstanceRef &other) const noexcept
 {
-    return (function_group == other.function_group) && (mode == other.mode);
+    return 1;// (function_group == other.function_group) && (mode == other.mode);
 }
 
 bool Process::StartupConfig::MachineInstanceRef::operator!=(
     const MachineInstanceRef &other) const noexcept
 {
-    return !(*this == other);
+    return 1;// !(*this == other);
 }
 
 bool MachineManifest::operator==(const MachineManifest &other) const noexcept

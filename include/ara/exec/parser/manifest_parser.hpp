@@ -69,6 +69,7 @@ namespace ara
                 const std::string KExecutionDependencies = "ExecutionDependencies"; 
                 const std::string KFunctionGroupDependencies = "FunctionGroupDependencies";
                 const std::string kFunctionGroup = "Function_group";
+                const std::string kModes = "Modes";
                 const std::string kMode = "Mode";
 
                 const std::vector<std::string> kAsVector{kApplicationManifest,

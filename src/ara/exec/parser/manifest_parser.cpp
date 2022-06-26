@@ -103,20 +103,20 @@ namespace ara
                                 }
 
                                 json machine_instance_refs{};
-                                if (read_value(startup_config, KExecutionDependencies,
-                                               machine_instance_refs))
-                                {
-                                    for (auto &machine_instance_ref : machine_instance_refs)
-                                    {
-                                        Process::StartupConfig::MachineInstanceRef
-                                            mach_inst_ref{};
-                                        read_value(machine_instance_ref, kFunctionGroup,
-                                                   mach_inst_ref.function_group);
-                                        read_value(machine_instance_ref, kMode, mach_inst_ref.mode);
+                                // if (read_value(startup_config, KExecutionDependencies,
+                                //                machine_instance_refs))
+                                // {
+                                //     for (auto &machine_instance_ref : machine_instance_refs)
+                                //     {
+                                //         Process::StartupConfig::MachineInstanceRef
+                                //             mach_inst_ref{};
+                                //         read_value(machine_instance_ref, kFunctionGroup,
+                                //                    mach_inst_ref.function_group);
+                                //         read_value(machine_instance_ref, kMode, mach_inst_ref.mode);
 
-                                        config.machine_instance_refs.push_back(mach_inst_ref);
-                                    }
-                                }
+                                //         config.machine_instance_refs.push_back(mach_inst_ref);
+                                //     }
+                                // }
                                 if (read_value(startup_config, KFunctionGroupDependencies,
                                                machine_instance_refs))
                                 {
@@ -126,10 +126,17 @@ namespace ara
                                             mach_inst_ref{};
                                         read_value(machine_instance_ref, kFunctionGroup,
                                                    mach_inst_ref.function_group);
-                                        //Iam Adjusting Here
                                         json modes{};
-                                        if(read_value(machine_instance_ref, kMode, modes)){
-                                            for (auto &mode : modes)mach_inst_ref.modes.push_back(mode);
+                                        if(read_value(machine_instance_ref, kModes, modes)){
+                                            std::string mode0{};
+                                            for (auto &mode : modes)
+                                            {
+                                                if(read_value(mode, kMode, mode0))
+                                                {
+                                                    mach_inst_ref.modes.push_back(mode0);
+                                                }
+                                            }
+                                            
                                         }
                                         config.machine_instance_refs.push_back(mach_inst_ref);
                                     }

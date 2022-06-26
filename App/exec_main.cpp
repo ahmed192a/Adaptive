@@ -53,6 +53,7 @@ int main(int, char **)
     fstream file;
     file.open("processes/redirected/EM.txt", ios::out);
     cout.rdbuf(file.rdbuf());
+
     // 1. parsing the Mahcine manifest
     // 2. parsing the Execution manifest
     // 3. start state management
@@ -61,6 +62,7 @@ int main(int, char **)
 
     // Log lg;
     // lg.Insert("\n\n----------------------------program started-------------\n", "EM");
+    cout << "h";
     create_man();
     cout << "\n\n----------------------------program started-------------\n";
 
@@ -120,7 +122,8 @@ void p_operator(){
         for(int config = 0; config < process.startup_configs.size();config++){
             bool violate = false;
             for(auto mref: process.startup_configs[config].machine_instance_refs){
-                if(sys_FG[mref.function_group].current_FGS->get_states()!=mref.mode){
+                string key = sys_FG[mref.function_group].current_FGS->get_states();
+                if(!std::count(mref.modes.begin(), mref.modes.end(), key)){
                     violate = true;
                     break;
                 }
@@ -154,7 +157,6 @@ void change_state(std::string n_FG, std::string n_state)
     FunctionGroupState::CtorToken token={n_FG,n_state};
     sys_FG[n_FG].current_FGS = std::make_shared<FunctionGroupState>(std::move(token));
     cout<<"\nEM: check transition : "<<sys_FG[n_FG].current_FGS->get_FGname()<<" -> state : "<<sys_FG[n_FG].current_FGS->get_states()<<endl<<endl;
-    
     p_terminator();
     p_operator();
 }
@@ -251,7 +253,9 @@ void create_man()
             "                        \"FunctionGroupDependencies\": [\n"
             "                            {\n"
             "                                \"Function_group\": \"FG_1\",\n"
-            "                                \"Mode\": \"on\"\n"
+            "                                \"Modes\": [ \n"
+            "                                           {\"Mode\" : \"on\"} \n"
+            "                                           ]\n"
             "                            }\n"
             "                        ]\n"
             "                    }\n"
@@ -270,9 +274,11 @@ void create_man()
             "                            }\n"
             "                        ],\n"
             "                        \"FunctionGroupDependencies\": [\n"
-            "                            {\n"
+            "                            {\n"  //
             "                                \"Function_group\": \"MachineFG\",\n"
-            "                                \"Mode\": \"Starting-up\"\n"
+            "                                \"Modes\": [ \n"
+            "                                           {\"Mode\" : \"Starting-up\"} \n"
+            "                                           ]\n"
             "                            }\n"
             "                        ]\n"
             "                    }\n"
