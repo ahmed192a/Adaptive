@@ -29,7 +29,7 @@ namespace ara
              * 
              */
             class Process
-                {
+            {
                     public:
                     class StartupConfig
                     {
@@ -48,7 +48,7 @@ namespace ara
                         {
                             public:
                             std::string function_group{};
-                            std::string mode{};
+                            std::vector<std::string> modes{};
                             bool operator==(const MachineInstanceRef &) const noexcept;
                             bool operator!=(const MachineInstanceRef &) const noexcept;
                         };
@@ -71,7 +71,7 @@ namespace ara
                     bool operator!=(const Process &) const noexcept;
                     bool start();   // starting the process
                     void terminate();   // used for terminating the process
-                };
+            };
             class ExecutionManifest
             {
                 public:

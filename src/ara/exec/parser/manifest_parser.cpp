@@ -126,8 +126,11 @@ namespace ara
                                             mach_inst_ref{};
                                         read_value(machine_instance_ref, kFunctionGroup,
                                                    mach_inst_ref.function_group);
-                                        read_value(machine_instance_ref, kMode, mach_inst_ref.mode);
-
+                                        //Iam Adjusting Here
+                                        json modes{};
+                                        if(read_value(machine_instance_ref, kMode, modes)){
+                                            for (auto &mode : modes)mach_inst_ref.modes.push_back(mode);
+                                        }
                                         config.machine_instance_refs.push_back(mach_inst_ref);
                                     }
                                 }

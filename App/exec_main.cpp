@@ -64,13 +64,10 @@ int main(int, char **)
     create_man();
     cout << "\n\n----------------------------program started-------------\n";
 
+
     exec_init_map();
 
-    /*for(map<string, GLOB>::iterator it = sys_FG.begin(); it!= sys_FG.end(); it++ ){
-    //for(auto it:  sys_FG){
-        //lg.Insert("EM: Function group name : " + it->first+ " with number of processes = "+ to_string(it->second.processes.size()) + "\n", "EM");
-        cout<<"EM: Function group name : "<<it->first<< " with number of processes = "<<it->second.processes.size()<<endl;
-    }*/
+
     mkfifo(SM_FIFO, 0666);
     std::string msg;
     msg.resize(MAX_BUF);
@@ -99,36 +96,21 @@ int main(int, char **)
 }
 
 void exec_init_map(){
-    // parse machine manifest
+    //parse machine manifest
     ManifestParser parser;
  
     MachineManifest MM = parser.pares_test(std::string(get_current_dir_name())+ MC_MF, sys_FG);
     cout<<"1: succeed parsing Machine manifest id = "+MM.manifest_id<<endl;
-
     cout<<"2: we have "<<sys_FG.size()<<" function groups\n";
-        
     
-    // parse execution manifests
+    //parse execution manifests
     ExecutionManifest EM = parser.parse_execution_manifest(std::string(get_current_dir_name())+ EM_MF);
-    cout<<"succeed parsing Execution manifest id = "+EM.manifest_id<<endl;
-    cout<<"num process : "<<EM.processes.size()<<endl;
+    cout<<"3: succeed parsing Execution manifest id = "+EM.manifest_id<<endl;
+    cout<<"4: num process : "<<EM.processes.size()<<endl;
 
-
+    //fetching processes from execution manifest parser
     process_pool = EM.processes;
-
-    // push the process in vector 
-    /*for(auto i = 0; i<EM.processes.size(); i++){
-        for (auto j = 0; j < EM.processes[i].startup_configs.size(); j++)
-        {
-            for (auto h = 0; h < EM.processes[i].startup_configs[j].machine_instance_refs.size(); h++)
-            {
-                sys_FG[EM.processes[i].startup_configs[j].machine_instance_refs[h].function_group].processes.push_back(EM.processes[i]);
-            }
-        }
-    }*/
-    
 }
-
 void p_operator(){
     for(auto process : process_pool){
          //if running continue
@@ -158,56 +140,14 @@ void p_terminator(){
         if(!process.prun)continue;
         //check if the current state doesnt violate the configuration,otherwise terminate
         for(auto mref:process.current_config->machine_instance_refs){
-            if(sys_FG[mref.function_group].current_FGS->get_states()!=mref.mode){
+            string key = sys_FG[mref.function_group].current_FGS->get_states();
+            if(!(std::count(mref.modes.begin(), mref.modes.end(), key))){
                 process.terminate();
                 break;
             }
         }
     }
-
 }
-/*
-void terminate_p(GLOB &G){  
-    for (vector<Process>::iterator i = G.processes.begin(); i != G.processes.end(); i++)
-    {
-       if((*i).prun == true){
-           for (vector<ara::exec::parser::Process::StartupConfig::MachineInstanceRef>::iterator fg_ref = (*(*i).current_config).machine_instance_refs.begin(); fg_ref != (*(*i).current_config).machine_instance_refs.end(); fg_ref++)
-           {
-               if((*fg_ref).function_group == G.c_FG->get_FGname()){
-                   if((*fg_ref).mode == G.current_FGS->get_states()) continue;
-                   else {
-                       (*i).terminate();
-                       (*i).prun  = false;
-                       (*i).current_config=nullptr;
-                       break;
-                   }
-               }
-           }
-       }
-    }
-}
-void start_p(GLOB &G){
-    for (vector<Process>::iterator i = G.processes.begin(); i != G.processes.end(); i++)
-    {
-       if((*i).current_config == nullptr || (*i).prun == false){
-           for (vector<ara::exec::parser::Process::StartupConfig>::iterator stc = (*i).startup_configs.begin(); stc != (*i).startup_configs.end(); stc++)
-           {
-                for (vector<ara::exec::parser::Process::StartupConfig::MachineInstanceRef>::iterator fg_ref = (*stc).machine_instance_refs.begin(); fg_ref != (*stc).machine_instance_refs.end(); fg_ref++)
-                {
-                    if((*fg_ref).function_group == G.c_FG->get_FGname()){
-                        if((*fg_ref).mode == G.current_FGS->get_states())
-                        { 
-                            (*i).start();
-                            (*i).prun = true;
-                            (*i).current_config=&((*i).startup_configs[stc -(*i).startup_configs.begin()]);
-                            break;
-                        }
-                    }
-                }
-           }
-       }
-    }
-}*/
 void change_state(std::string n_FG, std::string n_state)
 {
     sys_FG[n_FG].current_FGS.reset();
@@ -217,9 +157,6 @@ void change_state(std::string n_FG, std::string n_state)
     
     p_terminator();
     p_operator();
-    
-    //terminate_p(sys_FG[n_FG]);
-    //start_p(sys_FG[n_FG]);
 }
 void view_out(){
     namespace fs = std::filesystem;
@@ -238,7 +175,6 @@ void view_out(){
     }
     
 }
-
 void create_man()
 {
     rmdir("manifest_samples");
