@@ -45,7 +45,7 @@ namespace ara
                 virtual ExecutionManifest parse_execution_manifest(const std::string &path) noexcept(
                     false) override;
                 virtual MachineManifest parse_machine_manifest(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
-                    false) override;
+                    false) ;
             private:    
             
             };

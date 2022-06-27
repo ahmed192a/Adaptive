@@ -221,8 +221,7 @@ namespace ara
              * @param json_obj
              * @param json_keys
              */
-            void validate_content(const json &json_obj,
-                                                  const std::vector<std::string> &json_keys) 
+            void validate_content(const json &json_obj,const std::vector<std::string> &json_keys) 
                 noexcept(false)
             {
                 // If validation will end with failure, this method will throw std::runtime_error
