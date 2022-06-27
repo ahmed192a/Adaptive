@@ -140,11 +140,11 @@ namespace ara
               * Open this key slot and return an IOInterface to its content
               **/
               
-             ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates = false, bool writeable = false)
+             ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates, bool writeable)
            {
 
              //instance of IOInterface//
-                 ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
+                 ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>();
                  //Key Slot Content Properties Struct variables //
                  IOContent->algid = KSCP.mAlgId;
                  IOContent->objectType = KSCP.mObjectType;
