@@ -1,16 +1,16 @@
- //#include "../../../../include/ara/crypto/keys/KSP_key_storage_provider.hpp"
+ #include "../../../../include/ara/crypto/keys/KSP_key_storage_provider.hpp"
 
- //using namespace ara::crypto;
- //using namespace ara::crypto::keys;
+ using namespace ara::crypto;
+ using namespace ara::crypto::keys;
 
- /////@breif: Begin new transaction for key slots update
- //TransactionId KSPKeyStorageProvider::BeginTransaction(const TransactionScope& targetSlots) noexcept
- //{
- //    //
- //	 //define a flag which states wheter an error raised or not
- //    bool error = false;
- //    //define a counter to use it in the for loop
- //	 uint8_t counter = 0;
+ ///@breif: Begin new transaction for key slots update
+ TransactionId KSPKeyStorageProvider::BeginTransaction(const TransactionScope& targetSlots) noexcept
+ {
+     //
+ 	 //define a flag which states wheter an error raised or not
+     bool error = false;
+     //define a counter to use it in the for loop
+ 	 uint8_t counter = 0;
 
  //	 //loop on every key slot in the Transactionscope to be sure that it has not already been opened before
  //	 for (counter = 0; counter < targetSlots.size(); counter++)
@@ -55,7 +55,7 @@
  //        return 0;
  //    }
  //        
- //}
+ }
 
  ////@breif: Commit changes of the transaction to Key Storage
  //void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
