@@ -36,25 +36,25 @@
 		
  	 }
 
- //    if (error == false)
- //    {
- //        //Assign the Id of this transaction 
- //        TransactionId TransId = this->nextId;
+     if (error == false)
+     {
+         //Assign the Id of this transaction 
+         TransactionId TransId = this->nextId;
 
- //        //increment nextId for the next assignment
- //        (this->nextId)++;
+         //increment nextId for the next assignment
+         (this->nextId)++;
 
  //        //Push this opened transaction to the vector of opened transactions
  //        this->transactionIdState.push_back({ targetSlots,TransId,TransactionScopeState::opened });
 
- //        return TransId;
- //    }
- //    else
- //    {
- //        //an error
- //        return 0;
- //    }
- //        
+         return TransId;
+     }
+     else
+     {
+         //an error
+         return 0;
+     }
+         
  }
 
  ////@breif: Commit changes of the transaction to Key Storage
