@@ -17,14 +17,14 @@
  	 {
          if (targetSlots[counter].state != SlotState::opened)
          {
-             //a vector stores all IOInterfaces of this transactionScope
- //            std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
- //            //Open each key slot for updates
- //            //****************** Comment till implement open************************
- //            //***********************************************************************
- //            //thisScopeInterfaces.push_back(targetSlots[counter].Open(1, 1));
- //            //add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
- //            this->TransactionIOInterfaces.push_back(thisScopeInterfaces);
+             a vector stores all IOInterfaces of this transactionScope
+             std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
+             //Open each key slot for updates
+             //****************** Comment till implement open************************
+             //***********************************************************************
+             //thisScopeInterfaces.push_back(targetSlots[counter].Open(1, 1));
+             //add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
+             this->TransactionIOInterfaces.push_back(thisScopeInterfaces);
 
          }
          else
