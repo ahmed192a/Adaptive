@@ -144,7 +144,7 @@ namespace ara
            {
 
              //instance of IOInterface//
-                 ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
+                 ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>();
                  //Key Slot Content Properties Struct variables //
                  IOContent->algid = KSCP.mAlgId;
                  IOContent->objectType = KSCP.mObjectType;
