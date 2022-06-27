@@ -44,15 +44,10 @@ namespace ara
                 virtual ~ManifestParser() noexcept = default;
                 virtual ExecutionManifest parse_execution_manifest(const std::string &path) noexcept(
                     false) override;
-
-                virtual MachineManifest parse_machine_manifest(const std::string &path) noexcept(
+                virtual MachineManifest parse_machine_manifest(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
                     false) override;
-                MachineManifest pares_test(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
-                    false);
-
-            private:
-                
-                
+            private:    
+            
             };
 
             namespace EMJsonKeys
@@ -96,7 +91,6 @@ namespace ara
                 const std::string kFunctionGroupName = "Function_group_name";
                 const std::string kModeDeclarations = "Mode_declarations";
                 const std::string kMode = "Mode";
-
                 const std::vector<std::string> kAsVector{kMachineManifest, kMachineManifestId,
                                                             kModeDeclarationGroup, kFunctionGroupName,
                                                             kModeDeclarations, kMode};

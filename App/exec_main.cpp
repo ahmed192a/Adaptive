@@ -25,21 +25,17 @@ using namespace std;
 #define MC_MF "/manifest_samples/machine_manifest.json"
 #define EM_MF "/manifest_samples/execution_manifest.json"
 #define SM_FIFO "processes/state_client_fifo"
-
 #define MAX_BUF 1024
 
-
-std::vector<Process> process_pool;
 static map<string, GLOB> sys_FG;
+std::vector<Process> process_pool;
 
-void exec_init_map();
-void terminate_p(GLOB &G);
-void start_p(GLOB &G);
+void exec_init();
 void change_state(std::string n_FG, std::string n_state);
 void view_out();
-void create_man();
-void operate();
-void terminate();
+void create_manifests();
+void p_operate();
+void p_terminate();
 
 // Backup streambuffers of  cout
 streambuf* stream_buffer_cout = cout.rdbuf();
@@ -54,21 +50,14 @@ int main(int, char **)
     file.open("processes/redirected/EM.txt", ios::out);
     cout.rdbuf(file.rdbuf());
 
-    // 1. parsing the Mahcine manifest
-    // 2. parsing the Execution manifest
-    // 3. start state management
-    // 4. get the state from SM
-    // 5. switch state (start terminating sequence and starting sequence)
+    // 1. Parsing manifest files
+    // 2. start state management
+    // 3. get the state from SM
+    // 4. switch state (start terminating sequence and starting sequence)
 
-    // Log lg;
-    // lg.Insert("\n\n----------------------------program started-------------\n", "EM");
-    cout << "h";
-    create_man();
-    cout << "\n\n----------------------------program started-------------\n";
-
-
-    exec_init_map();
-
+    cout << "\n-------------Program Started-------------\n";
+    create_manifests();
+    exec_init();
 
     mkfifo(SM_FIFO, 0666);
     std::string msg;
@@ -97,20 +86,20 @@ int main(int, char **)
     return 0;
 }
 
-void exec_init_map(){
-    //parse machine manifest
+void exec_init(){
     ManifestParser parser;
- 
-    MachineManifest MM = parser.pares_test(std::string(get_current_dir_name())+ MC_MF, sys_FG);
-    cout<<"1: succeed parsing Machine manifest id = "+MM.manifest_id<<endl;
-    cout<<"2: we have "<<sys_FG.size()<<" function groups\n";
-    
-    //parse execution manifests
-    ExecutionManifest EM = parser.parse_execution_manifest(std::string(get_current_dir_name())+ EM_MF);
-    cout<<"3: succeed parsing Execution manifest id = "+EM.manifest_id<<endl;
-    cout<<"4: num process : "<<EM.processes.size()<<endl;
 
-    //fetching processes from execution manifest parser
+    //Parse Machine manifest
+    MachineManifest MM = parser.parse_machine_manifest(std::string(get_current_dir_name())+ MC_MF, sys_FG);
+    cout<<"1) Succeed parsing Machine manifest id = "+MM.manifest_id<<endl
+        <<"FG's no.:"<<sys_FG.size()<<endl;
+
+    //Parse Execution manifests
+    ExecutionManifest EM = parser.parse_execution_manifest(std::string(get_current_dir_name())+ EM_MF);
+    cout<<"2) Succeed parsing Execution manifest id = "+EM.manifest_id
+        <<endl<<"processes no.:"<<EM.processes.size()<<endl;
+
+    //Fetching processes from execution manifest parser
     process_pool = EM.processes;
 }
 void p_operator(){
@@ -177,7 +166,7 @@ void view_out(){
     }
     
 }
-void create_man()
+void create_manifests()
 {
     rmdir("manifest_samples");
     const int dir_err = mkdir("manifest_samples", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -277,7 +266,8 @@ void create_man()
             "                            {\n"  //
             "                                \"Function_group\": \"MachineFG\",\n"
             "                                \"Modes\": [ \n"
-            "                                           {\"Mode\" : \"Starting-up\"} \n"
+            "                                           {\"Mode\" : \"Starting-up\"}, \n"
+            "                                           {\"Mode\" : \"Running\"} \n"
             "                                           ]\n"
             "                            }\n"
             "                        ]\n"

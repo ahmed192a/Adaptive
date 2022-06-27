@@ -155,32 +155,7 @@ namespace ara
              * @param path
              * @return MachineManifest
              */
-            MachineManifest ManifestParser::parse_machine_manifest(const std::string &path) noexcept(false)
-            {
-                using namespace MMJsonKeys;
-                auto manifest_json_full = read_manifest_file(path);
-                MachineManifest man{};
-                validate_content(manifest_json_full, kAsVector);
-
-                json manifest_json_content{};
-                read_value(manifest_json_full, kMachineManifest, manifest_json_content);
-
-                read_value(manifest_json_content, kMachineManifestId, man.manifest_id);
-
-                json mode_declaration_groups{};
-                if (read_value(manifest_json_content, kModeDeclarationGroup, mode_declaration_groups))
-                {
-                    std::string FG_name;
-                    for (auto &mode_declaration_group : mode_declaration_groups)
-                    {
-                        std::shared_ptr<FunctionGroup> fg_ptr(new FunctionGroup(std::move(mode_declaration_group)));
-                        
-                        man.mode_declaration_groups.push_back(fg_ptr);
-                    }
-                }
-                return man;
-            }
-            MachineManifest ManifestParser::pares_test(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
+            MachineManifest ManifestParser::parse_machine_manifest(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
                     false)
             {
                 using namespace MMJsonKeys;
@@ -205,7 +180,6 @@ namespace ara
                     sys_FG[fg->get_FGname()].current_FGS = std::make_shared<FunctionGroupState>(std::move(token));
                 }
                 return man;
-
             }
 
 
