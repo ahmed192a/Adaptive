@@ -12,9 +12,9 @@
      //define a counter to use it in the for loop
  	 uint8_t counter = 0;
 
- //	 //loop on every key slot in the Transactionscope to be sure that it has not already been opened before
- //	 for (counter = 0; counter < targetSlots.size(); counter++)
- //	 {
+ 	 //loop on every key slot in the Transactionscope to be sure that it has not already been opened before
+ 	 for (counter = 0; counter < targetSlots.size(); counter++)
+ 	 {
  //        if (targetSlots[counter].state != SlotState::opened)
  //        {
  //            //a vector stores all IOInterfaces of this transactionScope
@@ -34,7 +34,7 @@
  //            break;
  //        }
 	//	
- //	 }
+ 	 }
 
  //    if (error == false)
  //    {
