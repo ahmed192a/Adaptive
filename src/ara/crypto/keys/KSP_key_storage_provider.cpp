@@ -17,7 +17,7 @@
  	 {
          if (targetSlots[counter].state != SlotState::opened)
          {
-             a vector stores all IOInterfaces of this transactionScope
+             //a vector stores all IOInterfaces of this transactionScope
              std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
              //Open each key slot for updates
              //****************** Comment till implement open************************
