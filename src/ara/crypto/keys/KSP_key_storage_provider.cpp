@@ -15,9 +15,9 @@
  	 //loop on every key slot in the Transactionscope to be sure that it has not already been opened before
  	 for (counter = 0; counter < targetSlots.size(); counter++)
  	 {
- //        if (targetSlots[counter].state != SlotState::opened)
- //        {
- //            //a vector stores all IOInterfaces of this transactionScope
+         if (targetSlots[counter].state != SlotState::opened)
+         {
+             //a vector stores all IOInterfaces of this transactionScope
  //            std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
  //            //Open each key slot for updates
  //            //****************** Comment till implement open************************
@@ -26,14 +26,14 @@
  //            //add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
  //            this->TransactionIOInterfaces.push_back(thisScopeInterfaces);
 
- //        }
- //        else
- //        {
- //            //raise CryptoErrorDomain::kBusyResource error
- //            error = true;
- //            break;
- //        }
-	//	
+         }
+         else
+         {
+             //raise CryptoErrorDomain::kBusyResource error
+             error = true;
+             break;
+         }
+		
  	 }
 
  //    if (error == false)
