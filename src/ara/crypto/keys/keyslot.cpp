@@ -140,32 +140,32 @@ namespace ara
               * Open this key slot and return an IOInterface to its content
               **/
               
-//             ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates = false, bool writeable = false)
-//             {
+             ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates = false, bool writeable = false)
+           {
 
-//             //instance of IOInterface//
-//                 ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
-//                 //Key Slot Content Properties Struct variables //
-//                 IOContent->algid = KSCP.mAlgId;
-//                 IOContent->objectType = KSCP.mObjectType;
-//                 IOContent->objectId = KSCP.mObjectUid;
-//                 IOContent->AllowedUsage = KSCP.mContentAllowedUsage;
-//                 IOContent->capacity = KSCP.mObjectSize;
-//                 //Key Slot Prototypes Struct variables//
-//                 IOContent->capacity = KSPP.mSlotCapacity;
-//                 IOContent->Slot_Type= KSPP.mSlotType;
-//                 IOContent->algid = KSPP.mAlgId;
-//                 IOContent->AllocateSpareSlot_t = KSPP.mAllocateSpareSlot;
-//                 IOContent->AllowContentTypeChange_t= KSPP.mAllowContentTypeChange;
-//                 IOContent->MaxUpdateAllowed_t = KSPP.mMaxUpdateAllowed;
-//                 IOContent->ExportAllowed_t = KSPP.mExportAllowed;
-//                 IOContent->AllowedUsage = KSPP.mContentAllowedUsage;
-//                 IOContent->objectTypeRestiction = KSPP.mObjectType;
-//                 //change state of key slot to opened //
-//                 this->state = SlotState::opened;
-//                 return IOContent;
+             //instance of IOInterface//
+                 ConcreteIOInterface::Uptr IOContent = std::make_unique<ConcreteIOInterface>;
+                 //Key Slot Content Properties Struct variables //
+                 IOContent->algid = KSCP.mAlgId;
+                 IOContent->objectType = KSCP.mObjectType;
+                 IOContent->objectId = KSCP.mObjectUid;
+                 IOContent->AllowedUsage = KSCP.mContentAllowedUsage;
+                 IOContent->capacity = KSCP.mObjectSize;
+                 //Key Slot Prototypes Struct variables//
+                 IOContent->capacity = KSPP.mSlotCapacity;
+                 IOContent->Slot_Type= KSPP.mSlotType;
+                 IOContent->algid = KSPP.mAlgId;
+                 IOContent->AllocateSpareSlot_t = KSPP.mAllocateSpareSlot;
+                 IOContent->AllowContentTypeChange_t= KSPP.mAllowContentTypeChange;
+                 IOContent->MaxUpdateAllowed_t = KSPP.mMaxUpdateAllowed;
+                 IOContent->ExportAllowed_t = KSPP.mExportAllowed;
+                 IOContent->AllowedUsage = KSPP.mContentAllowedUsage;
+                 IOContent->objectTypeRestiction = KSPP.mObjectType;
+                 //change state of key slot to opened //
+                 this->state = SlotState::opened;
+                return IOContent;
 
-//             }
+             }
 
 
              KeySlotContentProps InhKeySlot :: GetContentProps () const noexcept
