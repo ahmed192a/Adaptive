@@ -35,7 +35,7 @@ namespace ara
             public:
                 virtual ~IManifestParser() noexcept = default;
                 virtual ExecutionManifest parse_execution_manifest(const std::string &path) noexcept(false) = 0;
-                virtual MachineManifest parse_machine_manifest(const std::string &path) noexcept(false) = 0;
+                virtual MachineManifest parse_machine_manifest(const std::string &path, map<std::string, GLOB> &sys_FG) noexcept(false) = 0;
             };
 
             class ManifestParser : public IManifestParser
@@ -45,7 +45,7 @@ namespace ara
                 virtual ExecutionManifest parse_execution_manifest(const std::string &path) noexcept(
                     false) override;
                 virtual MachineManifest parse_machine_manifest(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
-                    false) ;
+                    false) override;
             private:    
             
             };
