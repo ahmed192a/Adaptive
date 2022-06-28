@@ -12,13 +12,15 @@
      //define a counter to use it in the for loop
  	 uint8_t counter = 0;
 
+     //a vector stores all IOInterfaces of this transactionScope
+     std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
+
  	 //loop on every key slot in the Transactionscope to be sure that it has not already been opened before
  	 for (counter = 0; counter < targetSlots.size(); counter++)
  	 {
          if (targetSlots[counter].state != SlotState::opened)
          {
-             //a vector stores all IOInterfaces of this transactionScope
-             std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
+             
              //Open each key slot for updates
              //****************** Comment till implement open************************
              //***********************************************************************
