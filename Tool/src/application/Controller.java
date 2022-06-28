@@ -1,13 +1,11 @@
 package application;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -17,8 +15,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
@@ -32,25 +28,21 @@ public class Controller
 	public MenuItem load_mi;
 	public MenuItem save_mi;
 	public MenuItem save_as_mi;
-	public MenuItem rename_mi;
 	public MenuItem close_all_mi;
 	public MenuItem verify_mi;
 	public MenuItem generate_mi;
-
 	public FileChooser FC = new FileChooser();
 	public TabPane tabs = new TabPane();
 	public ImageView iv = new ImageView(new Image("bg.png"));
 	public TextArea indicator;
 	public int counter = 1;
-	
 	///////////////   GUI   Code   ///////////////
-	
     public void initialize() {
     	iv.setFitWidth(600);
     	iv.setFitHeight(400);
     	pane.setCenter(iv);
         indicator.appendText("ARA::COM Generator Tool");  
-        indicator.setStyle("text-area-background: FireBrick;");
+        indicator.setStyle("text-area-background: Crimson;");
         tabs.getSelectionModel().selectedItemProperty().addListener(
     	    new ChangeListener<Tab>() {
     	        @Override
@@ -59,12 +51,12 @@ public class Controller
 					    indicator.clear();
 					    String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
 					    if(Path == null) {
-					        indicator.appendText("\""+tabs.getSelectionModel().getSelectedItem().getText()+"\""); 
+					        indicator.appendText("Current File Path: \"Unsaved File\""); 
 					    }
 					    else {
-					        indicator.appendText("\""+Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText())+"\""); 
+					        indicator.appendText("Current File Path: \""+Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText())+"\""); 
 					    }
-				        indicator.setStyle("text-area-background: FireBrick;");
+				        indicator.setStyle("text-area-background: #c86464;");
     	        	}
     	        	refresh();
     	        }
@@ -77,12 +69,11 @@ public class Controller
 	    	iv.setFitHeight(400);
 	    	pane.setCenter(iv);
 		    indicator.clear();
-	        indicator.setStyle("text-area-background: MidnightBlue;"); 
+	        indicator.setStyle("text-area-background: #323278;"); 
 	        indicator.appendText("No Current Files.");  
 	        
 			save_mi.setDisable(true);
 			save_as_mi.setDisable(true);
-	        rename_mi.setDisable(true);
 	        close_all_mi.setDisable(true);
 	        verify_mi.setDisable(true);
 	        generate_mi.setDisable(true);
@@ -92,7 +83,6 @@ public class Controller
 			pane.setCenter(tabs);
 			save_mi.setDisable(false);
 			save_as_mi.setDisable(false);
-			rename_mi.setDisable(false);
 	        close_all_mi.setDisable(false);
 	        verify_mi.setDisable(false);
 	        generate_mi.setDisable(true);
@@ -101,21 +91,22 @@ public class Controller
 	private void add_tab(String name,String text) {
 		Tab tab = new Tab(name);
 		TextArea txt = new TextArea(text);
+		tab.setContent(txt);
+		tabs.getTabs().add(tab);
 		txt.setOnKeyTyped(new EventHandler<Event>() {
 			 @Override
 			    public void handle(Event e) {
 				    indicator.clear();
 				    String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
 				    if(Path == null) {
-				        indicator.appendText("\""+tabs.getSelectionModel().getSelectedItem().getText()+"\""); 
+				        indicator.appendText("*Editing*   Current File Path: \"Unsaved File\""); 
 				    }
 				    else {
-				        indicator.appendText("\""+Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText())+"\""); 
+				        indicator.appendText("*Editing*   Current File Path: \""+Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText())+"\""); 
 				    }
-			        indicator.setStyle("text-area-background: FireBrick;");
+			        indicator.setStyle("text-area-background: #c86464;");
 			    }
 		});
-		tab.setContent(txt);
 		tab.setOnClosed(new EventHandler<Event>() {
 			 @Override
 			    public void handle(Event e) {
@@ -123,20 +114,20 @@ public class Controller
 				    indicator.clear();
 			        indicator.appendText("File \""+tab.getText()+"\" Has Been Closed."); 
 			        indicator.setStyle("text-area-background: #ff8000;");
+			        refresh();
 			    }
 		});
-		tabs.getTabs().add(tab);
 	}
     public void new_mi_func(ActionEvent e) {
 		String tab_name;
-		if(counter == 1) tab_name = "New File";
-		else tab_name = "New File "+Integer.toString(counter);
+		if(counter == 1) tab_name = "New_File";
+		else tab_name = "New_File_"+Integer.toString(counter);
 		add_tab(tab_name,"");
 		counter++;
 		Main.Locations.put(tab_name, null);
 	    indicator.clear();
         indicator.appendText("New File Created Successfully!");  
-        indicator.setStyle("text-area-background: RoyalBlue;");
+        indicator.setStyle("text-area-background: DarkGreen;");
 		refresh();
 	}
 	public void load_mi_func(ActionEvent e) throws IOException {
@@ -152,17 +143,17 @@ public class Controller
 			if(Main.Locations.containsValue(myObj.getPath())){
 				indicator.clear();
 		        indicator.appendText("File Already Opened!");  
-		        indicator.setStyle("text-area-background: DarkSalmon;");
+		        indicator.setStyle("text-area-background: #ff8000;");
 			}
 			else {
 			    Scanner myReader = new Scanner(myObj);
 			    while (myReader.hasNextLine()) data += myReader.nextLine()+'\n';
 			    myReader.close();
-			    Main.Locations.put(myObj.getName(),myObj.getPath());	    
+			    Main.Locations.put(myObj.getName(),myObj.getPath());	
+			    add_tab(myObj.getName(),data);
 			    indicator.clear();
 		        indicator.appendText("File Loaded Successfully!");  
-		        indicator.setStyle("text-area-background: RoyalBlue;");
-			    add_tab(myObj.getName(),data);
+		        indicator.setStyle("text-area-background: DarkGreen;");
 			}
 		}
 		refresh();
@@ -228,7 +219,6 @@ public class Controller
 		}
 		refresh();
 	}
-	public void rename_mi_func(ActionEvent e) {}
 	public void close_all_mi_func(ActionEvent e) {
 		tabs.getTabs().clear();
 		Main.Locations.clear();
@@ -277,8 +267,6 @@ public class Controller
 			}
 		}
 	}
-	
-	
 	///////////////   Algorithm Code   ///////////////
 	public boolean generate_skeleton(Node SI) {
 		String name = SI.Search("short-name").get(0).getVal();
@@ -708,8 +696,6 @@ public class Controller
 		}
 		else return false;
 	}
-	
-
 	public boolean WriteFile(String Path,String Text){
 		File myObj = new File(Path);
         FileWriter myWriter;

@@ -49,5 +49,5 @@
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
-    -fx-text-fill: #e63246;
+    -fx-text-fill: #fa3c64;
 }
