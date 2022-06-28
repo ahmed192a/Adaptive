@@ -50,13 +50,13 @@
                   * @return IOInterface::Uptr 
                   */
                 
-                 ConcreteIOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false);
+                 ConcreteIOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) noexcept;
                  /**
                   * @brief Get the Content Props object
                   * 
                   * @return ara::core::Result<KeySlotContentProps> 
                   */
-                 KeySlotContentProps GetContentProps ()const noexcept=0;
+                 KeySlotContentProps GetContentProps ()const noexcept;
                  /**
                   * @brief Retrieve an instance of the CryptoProvider that owns this KeySlot. Any key slot always has an
                   * associated default Crypto Provider that can serve this key slot. In the simplest case all key slots
@@ -64,13 +64,13 @@
                   * 
                   * @return ara::core::Result<cryp::CryptoProvider::Uptr> 
                   */
-                  cryp::CryptoProvider::Uptr MyProvider ()const noexcept=0;
+                  cryp::CryptoProvider::Uptr MyProvider ()const noexcept;
                  /**
                   * @brief Get the Prototyped Props object
                   * 
                   * @return ara::core::Result<KeySlotPrototypeProps> 
                   */
-                 KeySlotPrototypeProps GetPrototypedProps ()const noexcept=0;
+                 KeySlotPrototypeProps GetPrototypedProps ()const noexcept;
                  /**
                   * @brief 
                   * 

@@ -140,7 +140,7 @@ namespace ara
               * Open this key slot and return an IOInterface to its content
               **/
               
-             ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates, bool writeable)
+             ConcreteIOInterface::Uptr InhKeySlot::Open(bool subscribeForUpdates, bool writeable) noexcept
            {
 
              //instance of IOInterface//

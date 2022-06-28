@@ -51,7 +51,7 @@ namespace ara
                  * @param writeable 
                  * @return IOInterface::Uptr 
                  */
-                virtual ConcreteIOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) const noexcept = 0;
+                virtual ConcreteIOInterface::Uptr Open(bool subscribeForUpdates = false, bool writeable = false) noexcept = 0;
                 /**
                  * @brief 
                  * 
