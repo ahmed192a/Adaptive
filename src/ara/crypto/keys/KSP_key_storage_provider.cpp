@@ -14,7 +14,12 @@
 
      //a vector stores all IOInterfaces of this transactionScope
      std::vector < ConcreteIOInterface::Uptr> thisScopeInterfaces;
+	thisScopeInterfaces.reserve(10);
 
+	while (thisScopeInterfaces.size() < thisScopeInterfaces.capacity())
+	{
+		thisScopeInterfaces.emplace_back(std::make_unique<ConcreteIOInterface::Uptr>());
+	}
  	 //loop on every key slot in the Transactionscope to be sure that it has not already been opened before
  	 for (counter = 0; counter < targetSlots.size(); counter++)
  	 {
