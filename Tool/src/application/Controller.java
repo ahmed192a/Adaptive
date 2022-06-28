@@ -8,11 +8,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
@@ -22,30 +28,106 @@ public class Controller
 {
 	@FXML
 	public BorderPane pane;
-	public MenuItem load_xml_mi;
-	public MenuItem convert_mi;
-	public MenuItem close_all_mi;
 	public MenuItem new_mi;
 	public MenuItem load_mi;
 	public MenuItem save_mi;
 	public MenuItem save_as_mi;
-	public MenuItem close_mi;
+	public MenuItem rename_mi;
+	public MenuItem close_all_mi;
+	public MenuItem verify_mi;
+	public MenuItem generate_mi;
 
 	public FileChooser FC = new FileChooser();
 	public TabPane tabs = new TabPane();
 	public ImageView iv = new ImageView(new Image("bg.png"));
 	public TextArea indicator;
-	
 	public int counter = 1;
+	
+	///////////////   GUI   Code   ///////////////
 	
     public void initialize() {
     	iv.setFitWidth(600);
     	iv.setFitHeight(400);
     	pane.setCenter(iv);
-        indicator.appendText("ARA-COM Tool v1.0");  
+        indicator.appendText("ARA::COM Generator Tool");  
         indicator.setStyle("text-area-background: FireBrick;");
+        tabs.getSelectionModel().selectedItemProperty().addListener(
+    	    new ChangeListener<Tab>() {
+    	        @Override
+    	        public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+    	        	if(tabs.getTabs().size()>0) {
+					    indicator.clear();
+					    String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
+					    if(Path == null) {
+					        indicator.appendText("\""+tabs.getSelectionModel().getSelectedItem().getText()+"\""); 
+					    }
+					    else {
+					        indicator.appendText("\""+Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText())+"\""); 
+					    }
+				        indicator.setStyle("text-area-background: FireBrick;");
+    	        	}
+    	        	refresh();
+    	        }
+    	    }
+    	);
     }
-	public void new_mi_func(ActionEvent e) {
+    public void refresh() {
+		if(tabs.getTabs().isEmpty()) {
+	    	iv.setFitWidth(600);
+	    	iv.setFitHeight(400);
+	    	pane.setCenter(iv);
+		    indicator.clear();
+	        indicator.setStyle("text-area-background: MidnightBlue;"); 
+	        indicator.appendText("No Current Files.");  
+	        
+			save_mi.setDisable(true);
+			save_as_mi.setDisable(true);
+	        rename_mi.setDisable(true);
+	        close_all_mi.setDisable(true);
+	        verify_mi.setDisable(true);
+	        generate_mi.setDisable(true);
+	        counter = 1;
+		}
+		else {
+			pane.setCenter(tabs);
+			save_mi.setDisable(false);
+			save_as_mi.setDisable(false);
+			rename_mi.setDisable(false);
+	        close_all_mi.setDisable(false);
+	        verify_mi.setDisable(false);
+	        generate_mi.setDisable(true);
+		}
+	}
+	private void add_tab(String name,String text) {
+		Tab tab = new Tab(name);
+		TextArea txt = new TextArea(text);
+		txt.setOnKeyTyped(new EventHandler<Event>() {
+			 @Override
+			    public void handle(Event e) {
+				    indicator.clear();
+				    String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
+				    if(Path == null) {
+				        indicator.appendText("\""+tabs.getSelectionModel().getSelectedItem().getText()+"\""); 
+				    }
+				    else {
+				        indicator.appendText("\""+Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText())+"\""); 
+				    }
+			        indicator.setStyle("text-area-background: FireBrick;");
+			    }
+		});
+		tab.setContent(txt);
+		tab.setOnClosed(new EventHandler<Event>() {
+			 @Override
+			    public void handle(Event e) {
+				 	Main.Locations.remove(tab.getText());
+				    indicator.clear();
+			        indicator.appendText("File \""+tab.getText()+"\" Has Been Closed."); 
+			        indicator.setStyle("text-area-background: #ff8000;");
+			    }
+		});
+		tabs.getTabs().add(tab);
+	}
+    public void new_mi_func(ActionEvent e) {
 		String tab_name;
 		if(counter == 1) tab_name = "New File";
 		else tab_name = "New File "+Integer.toString(counter);
@@ -54,7 +136,7 @@ public class Controller
 		Main.Locations.put(tab_name, null);
 	    indicator.clear();
         indicator.appendText("New File Created Successfully!");  
-        indicator.setStyle("text-area-background: SeaGreen;");
+        indicator.setStyle("text-area-background: RoyalBlue;");
 		refresh();
 	}
 	public void load_mi_func(ActionEvent e) throws IOException {
@@ -67,16 +149,23 @@ public class Controller
 				);	
 		File myObj = FC.showOpenDialog(Main.getPrimaryStage());
 		if(myObj!=null) {
-		    Scanner myReader = new Scanner(myObj);
-		    while (myReader.hasNextLine()) data += myReader.nextLine()+'\n';
-		    myReader.close();
-		    Main.Locations.put(myObj.getName(),myObj.getPath());	    
-		    indicator.clear();
-	        indicator.appendText("File Loaded Successfully!");  
-	        indicator.setStyle("text-area-background: RoyalBlue;");
-		    add_tab(myObj.getName(),data);
-		    refresh();
+			if(Main.Locations.containsValue(myObj.getPath())){
+				indicator.clear();
+		        indicator.appendText("File Already Opened!");  
+		        indicator.setStyle("text-area-background: DarkSalmon;");
+			}
+			else {
+			    Scanner myReader = new Scanner(myObj);
+			    while (myReader.hasNextLine()) data += myReader.nextLine()+'\n';
+			    myReader.close();
+			    Main.Locations.put(myObj.getName(),myObj.getPath());	    
+			    indicator.clear();
+		        indicator.appendText("File Loaded Successfully!");  
+		        indicator.setStyle("text-area-background: RoyalBlue;");
+			    add_tab(myObj.getName(),data);
+			}
 		}
+		refresh();
 	}
 	public void save_mi_func(ActionEvent e) throws IOException{
 		Tab current = tabs.getSelectionModel().getSelectedItem();
@@ -111,6 +200,7 @@ public class Controller
 	        indicator.setStyle("text-area-background: Indigo;");
 	        indicator.appendText("File Overwritten Successfully!");  
 		}
+		refresh();
 	}
 	public void save_as_mi_func(ActionEvent e) throws IOException {
 		Tab current = tabs.getSelectionModel().getSelectedItem();
@@ -136,152 +226,60 @@ public class Controller
 	        indicator.setStyle("text-area-background: Indigo;");
 	        indicator.appendText("File Saved in: "+ myObj.getPath());  
 		}
+		refresh();
 	}
-	public void close_mi_func(ActionEvent e) {
-		tabs.getTabs().remove(tabs.getSelectionModel().getSelectedIndex());
-	    indicator.clear();
-        indicator.appendText("File Closed!");  
-        indicator.setStyle("text-area-background: SaddleBrown;");
-	    refresh();
+	public void rename_mi_func(ActionEvent e) {}
+	public void close_all_mi_func(ActionEvent e) {
+		tabs.getTabs().clear();
+		Main.Locations.clear();
+        Main.Tree = null;
+        refresh();
 	}
-	
-	
-	
-	public void load_xml_mi_func(ActionEvent e) throws IOException {
-		String data = new String();
-		FC.setTitle("Load XML");
-		FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML","*.XML"));	
-		File myObj = FC.showOpenDialog(Main.getPrimaryStage());
-		if(myObj!=null) {
-		    Scanner myReader = new Scanner(myObj);
-		    while (myReader.hasNextLine()) 
-		    {
-		      data += myReader.nextLine()+'\n';
-		    }
-		    myReader.close();
-		    Main.Data = data;
-		    Main.Tree = Node.ParseXML(Main.Data);  
-		    if(Main.Tree == null){
-			    indicator.clear();
-		        indicator.appendText("XML File Loaded but inconsistent,Correct it and Reload.");  
-		        indicator.setStyle("text-area-background: orange;");
-		    }
-		    else {
-				Main.Direc = myObj.getPath().substring(0,myObj.getPath().length() - myObj.getName().length());
-			    indicator.clear();
-		        indicator.appendText("XML File Loaded and Verified!.");  
-		        indicator.setStyle("text-area-background: darkgreen;");
-			    add_tab("XML",Main.Data);
-			    load_xml_mi.setDisable(true);
-		        convert_mi.setDisable(false);
-		        close_all_mi.setDisable(false);
-		    }
-		    refresh();
+	public void verify_mi_func(ActionEvent e) {
+		String tab_name = tabs.getSelectionModel().getSelectedItem().getText();
+		if(tab_name.lastIndexOf(".")==-1) {
+			indicator.clear();
+	        indicator.appendText("Current File is Not in XML Format \"*.XML\"");  
+	        indicator.setStyle("text-area-background: DarkSalmon;");
+	        return;
 		}
+		String ext = tab_name.substring(tab_name.indexOf(".")+1);
+		if(!ext.equals("xml")){
+			indicator.clear();
+	        indicator.appendText("Current File is Not in XML Format \"*.XML\"");  
+	        indicator.setStyle("text-area-background: DarkSalmon;");
+	        return;
+		}
+		String data = ((TextArea)tabs.getSelectionModel().getSelectedItem().getContent()).getText();
+	    Main.Tree = Node.ParseXML(data);  
+	    if(Main.Tree == null){
+		    indicator.clear();
+	        indicator.appendText("XML File is inconsistent,Correct it and Reverify.");  
+	        indicator.setStyle("text-area-background: DarkSalmon;");
+	    }
+	    else {
+		    indicator.clear();
+	        indicator.appendText("XML File Loaded and Verified!");  
+	        indicator.setStyle("text-area-background: DarkGreen;");
+	        generate_mi.setDisable(false);
+	    }
 	}
-	public void convert_mi_func(ActionEvent e) throws FileNotFoundException {
+	public void generate_mi_func(ActionEvent e) {
 		ArrayList<Node> SIGroup = Main.Tree.Search("Service-Interface");
-		String names = new String();
 		for(Node SI : SIGroup) {
 			if(generate_skeleton(SI) && generate_proxy(SI) && generate_common(SI) && generate_returntypes(SI)) {
-				indicator.clear();
-		        String s = Main.sFile.get(Main.sFile.size()-1);
-		        String p = Main.pFile.get(Main.sFile.size()-1);
-		        String c = Main.cFile.get(Main.cFile.size()-1);
-		        String r = Main.rFile.get(Main.rFile.size()-1);
-
-		        add_tab(s.substring(s.lastIndexOf('\\') + 1),ReadFile(s));
-		        add_tab(p.substring(p.lastIndexOf('\\') + 1),ReadFile(p));
-		        add_tab(c.substring(c.lastIndexOf('\\') + 1),ReadFile(c));
-		        add_tab(r.substring(r.lastIndexOf('\\') + 1),ReadFile(r));
-
-		        names+="\"" + c_get(SI.Search("short-name").get(0).getVal())+"\",";
 		        if(SIGroup.get(SIGroup.size()-1).equals(SI)) {
-			        indicator.appendText("Header Files for "+ names.substring(0,names.length()-1) +" Generated Successfully!");  
-			        indicator.setStyle("text-area-background: #8e58ee;");
-			        convert_mi.setDisable(true);
+					indicator.clear();
+			        indicator.setStyle("text-area-background: DarkGreen;");
+			        indicator.appendText("Header Files Generated Successfully!");  
+			        refresh();
 		        }
 			}
 		}
 	}
-	public void close_all_mi_func(ActionEvent e) {
-		tabs.getTabs().clear();
-        Main.Tree = null;
-        Main.Data = null;
-        Main.File = null;
-        Main.sFile.clear();
-        Main.pFile.clear();
-        Main.sData.clear();
-        Main.pData.clear();
-        refresh();
-	}
-
 	
 	
-	private void add_tab(String name,String text) {
-		Tab tab = new Tab(name);
-		tab.setClosable(false);
-		TextArea txt = new TextArea(text);
-		tab.setStyle("-fx-background-color:LightSkyBlue;");
-		tab.setContent(txt);
-		tabs.getTabs().add(tab);
-	}
-	public String ReadFile(String Path) throws FileNotFoundException {
-		File myObj = new File(Path);
-		String data = new String();
-	    Scanner myReader = new Scanner(myObj);
-	    while (myReader.hasNextLine()) 
-	    {
-	      data += myReader.nextLine()+'\n';
-	    }
-	    myReader.close();
-	    return data;
-	}
-	public boolean WriteFile(String Path,String Text){
-		File myObj = new File(Path);
-        FileWriter myWriter;
-		try {
-			myWriter = new FileWriter(myObj);
-			myWriter.write(Text);
-	        myWriter.close();  
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-	    return true;
-	}
-	public String c_get(String in) {
-		in = in.replaceAll(" ", "");	
-		in = in.replaceAll("\t", "");	
-		in = in.replaceAll("\n", "");
-		return in;
-	}
-	public void refresh() {
-		if(tabs.getTabs().isEmpty()) {
-	    	iv.setFitWidth(600);
-	    	iv.setFitHeight(400);
-	    	pane.setCenter(iv);
-		    indicator.clear();
-	        indicator.appendText("No Current Files.");  
-	        indicator.setStyle("text-area-background: MidnightBlue;"); 
-	        
-			save_mi.setDisable(true);
-			save_as_mi.setDisable(true);
-	        close_mi.setDisable(true);
-	        close_all_mi.setDisable(true);
-	        counter = 1;
-		}
-		else {
-			pane.setCenter(tabs);
-			save_mi.setDisable(false);
-			save_as_mi.setDisable(false);
-			close_mi.setDisable(false);
-	        close_all_mi.setDisable(false);
-		}
-	}
-	
-	
-	//Algorithm Code
+	///////////////   Algorithm Code   ///////////////
 	public boolean generate_skeleton(Node SI) {
 		String name = SI.Search("short-name").get(0).getVal();
 		if(name == null) return false;
@@ -407,25 +405,19 @@ public class Controller
 
 		Data+= "};\r\n";
 		//Finish
-		for(String i:sym) {
-			Data+=  "}\r\n";
-		}
+		for(int i =0;i<sym.size();i++)	Data+=  "}\r\n";
 		Data+= "#endif";
 		Data = Data.replace("//#include", "");
-
-		Main.sFile.add(Main.Direc + name + "_skeleton.h");
-		try {
-		      File myObj = new File(Main.sFile.get(Main.sFile.size()-1));
-		      if (!myObj.createNewFile()) {
-		        myObj.delete();
-		        myObj.createNewFile();
-		      }	
-		      WriteFile(Main.sFile.get(Main.sFile.size()-1),Data);
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		      return false;
-		    }
-		return true;
+		
+		String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
+		String Directory = Path.substring(0,Path.lastIndexOf("\\")+1);
+		String New_Path = Directory + name + "_skeleton.h";
+		if(WriteFile(New_Path,Data)) {
+			Main.Locations.put(name + "_skeleton.h", New_Path);
+			add_tab(name + "_skeleton.h",Data);
+			return true;
+		}
+		else return false;
 	}
 	public boolean generate_proxy(Node SI) {
 		String name = SI.Search("short-name").get(0).getVal();
@@ -549,24 +541,18 @@ public class Controller
 
 		Data+= "};\r\n";
 		//Finish
-		for(String i:sym) {
-			Data+=  "}\r\n";
-		}
+		for(int i =0;i<sym.size();i++)	Data+=  "}\r\n";
 		Data+= "#endif";
 		Data = Data.replace("//#include", "");
-		Main.pFile.add(Main.Direc + name + "_proxy.h");
-		try {
-		      File myObj = new File(Main.pFile.get(Main.sFile.size()-1));
-		      if (!myObj.createNewFile()) {
-		        myObj.delete();
-		        myObj.createNewFile();
-		      }
-		      WriteFile(Main.pFile.get(Main.pFile.size()-1),Data);
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		      return false;
-		    }
-		return true;
+		String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
+		String Directory = Path.substring(0,Path.lastIndexOf("\\")+1);
+		String New_Path = Directory + name + "_proxy.h";
+		if(WriteFile(New_Path,Data)) {
+			Main.Locations.put(name + "_proxy.h", New_Path);
+			add_tab(name + "_proxy.h",Data);
+			return true;
+		}
+		else return false;
 	}
 	public boolean generate_common(Node SI) {
 		String name = SI.Search("short-name").get(0).getVal();
@@ -638,24 +624,18 @@ public class Controller
 			Data +="::"+m_n+"ReturnType result;\r\n};\r\n";
 		}
 
-		for(String i:sym) {
-			Data+=  "}\r\n";
-		}
+		for(int i =0;i<sym.size();i++)	Data+=  "}\r\n";
 		Data = Data.replace("//#include", "");
 		Data+= "#endif";
-		Main.cFile.add(Main.Direc + name + "_common.h");
-		try {
-		      File myObj = new File(Main.cFile.get(Main.cFile.size()-1));
-		      if (!myObj.createNewFile()) {
-		        myObj.delete();
-		        myObj.createNewFile();
-		      }
-		      WriteFile(Main.cFile.get(Main.cFile.size()-1),Data);
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		      return false;
-		    }
-		return true;
+		String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
+		String Directory = Path.substring(0,Path.lastIndexOf("\\")+1);
+		String New_Path = Directory + name + "_common.h";
+		if(WriteFile(New_Path,Data)) {
+			Main.Locations.put(name + "_common.h", New_Path);
+			add_tab(name + "_common.h",Data);
+			return true;
+		}
+		else return false;
 	}
 	public boolean generate_returntypes(Node SI) {
 		String name = SI.Search("short-name").get(0).getVal();
@@ -715,23 +695,38 @@ public class Controller
 			}
 			Data +="};\r\n";
 		}
-		for(String i:sym) {
-			Data+=  "}\r\n";
-		}
+		for(int i =0;i<sym.size();i++)	Data+=  "}\r\n";
 		Data = Data.replace("//#include", "");
 		Data+= "#endif";
-		Main.rFile.add(Main.Direc + name + "_returntypes.h");
+		String Path = Main.Locations.get(tabs.getSelectionModel().getSelectedItem().getText());
+		String Directory = Path.substring(0,Path.lastIndexOf("\\")+1);
+		String New_Path = Directory + name + "_returntypes.h";
+		if(WriteFile(New_Path,Data)) {
+			Main.Locations.put(name + "_returntypes.h", New_Path);
+			add_tab(name + "_returntypes.h",Data);
+			return true;
+		}
+		else return false;
+	}
+	
+
+	public boolean WriteFile(String Path,String Text){
+		File myObj = new File(Path);
+        FileWriter myWriter;
 		try {
-		      File myObj = new File(Main.rFile.get(Main.rFile.size()-1));
-		      if (!myObj.createNewFile()) {
-		        myObj.delete();
-		        myObj.createNewFile();
-		      }
-		      WriteFile(Main.rFile.get(Main.rFile.size()-1),Data);
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		      return false;
-		    }
-		return true;
+			myWriter = new FileWriter(myObj);
+			myWriter.write(Text);
+	        myWriter.close();  
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	    return true;
+	}
+	public String c_get(String in) {
+		in = in.replaceAll(" ", "");	
+		in = in.replaceAll("\t", "");	
+		in = in.replaceAll("\n", "");
+		return in;
 	}
 }	

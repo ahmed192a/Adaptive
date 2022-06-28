@@ -13,9 +13,41 @@
 }
 .text-area{
 	-fx-font: bold 12px normal;
-	-fx-background-color:gray;
+	-fx-background-color: Gray;
 }
 .text-area .content {
-   -fx-background-color: #eef6f8 ;
+   -fx-background-color: GhostWhite;
    -fx-text-alignment: center;
+}
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 10;
+}
+.tab-pane
+{
+    -fx-tab-min-width:80px;
+}
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+.tab-pane .tab
+{
+    -fx-background-color: #828282;
+
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color: #505050;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #e63246;
 }

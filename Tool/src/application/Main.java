@@ -1,8 +1,6 @@
 package application;
-	
-import java.util.ArrayList;
-import java.util.HashMap;
 
+import java.util.HashMap;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -15,31 +13,11 @@ public class Main extends Application {
 	
 	
     private static Stage primaryStage; // **Declare static Stage**   
+    
+    
     public static HashMap<String, String> Locations = new HashMap<String,String>();
-    
-    
-    
     public static Node Tree;
- 
-    
-   
-    
-    
-    public static String Direc;
-    public static String File;
-    public static String Data;  
 
-    public static ArrayList<String> sFile = new ArrayList<String>();
-    public static ArrayList<String> sData = new ArrayList<String>();
-
-    public static ArrayList<String> pFile = new ArrayList<String>();
-    public static ArrayList<String> pData = new ArrayList<String>();
-    
-    public static ArrayList<String> cFile = new ArrayList<String>();
-    public static ArrayList<String> cData = new ArrayList<String>();
-
-    public static ArrayList<String> rFile = new ArrayList<String>();
-    public static ArrayList<String> rData = new ArrayList<String>();
 
     private void setPrimaryStage(Stage stage) {
         Main.primaryStage = stage;
@@ -56,7 +34,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); 
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setTitle("AUTOSAR COM Tool");
+			primaryStage.setTitle("AUTOSAR Tool [ARA::COM]");
 			Image icon = new Image("icon.png");
 			primaryStage.getIcons().add(icon);
 			primaryStage.setResizable(true);
