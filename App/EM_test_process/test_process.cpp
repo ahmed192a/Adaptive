@@ -12,6 +12,7 @@
 #include "ara/exec/execution_client.hpp"
 #include <unistd.h>
 #include <signal.h>
+#include <csignal>
 #include "ara/Log_trace/Log.hpp"
 using namespace std;
 using namespace ara::exec;
@@ -24,20 +25,19 @@ void handle_sigterm(int sig){
 
 int main(){
 
-    struct sigaction sa;
+    signal(SIGTERM, handle_sigterm);
+    // struct sigaction sa;
 
-    sa.sa_handler = &handle_sigterm;
-    sa.sa_flags= SA_RESTART;
-    sigaction(SIGTERM, &sa, NULL);
+    // sa.sa_handler = &handle_sigterm;
+    // sa.sa_flags= SA_RESTART;
+    // sigaction(SIGTERM, &sa, NULL);
     lg.Insert("[process]you are in the second file", "p");
     lg.Insert("[process]process for testing", "p");
     lg.Insert("[process]creating execution client", "p");
-    cout<<"\n\n\t\t[process]you are in the second file\n";
-    cout<<"\t\t[process]process for testing\n";
-    cout<<"\t\t[process]creating execution client \n";
+    cout<<"\n\n\t\t[process]you are in the second file"<<endl;
+    cout<<"\t\t[process]process for testing"<<endl;
+    cout<<"\t\t[process]creating execution client "<<endl;
     ExecutionClient client;
-        fflush(stdin);
-        fflush(stdout);
     client.ReportExecutionState(ExecutionState::kRunning);
 
 
@@ -45,14 +45,14 @@ int main(){
 
     while (1)
     {
-        cout<<"\t\t[process] running\n";
+        cout<<"\t\t[process] running"<<endl;
         lg.Insert(to_string(sigval), "P");
-        usleep(1000);
+        usleep(3000);
         if(sigval)
         break;
     }
     lg.Insert("[process]finish reporting running to EM", "p");
-    cout<<"\t[process]finish reporting running to EM\n\n";
+    cout<<"\t[process]finish reporting running to EM\n"<<endl;
 
     return 0;
 }

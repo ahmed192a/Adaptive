@@ -131,7 +131,7 @@ bool Process::start(){
 
         //state_ = ProcessState::kStarting;
         _pid = pid;
-        this->prun = true;
+        prun = true;
         //TRACE_INFO("EM: Forked child ’" << executable_ << "’ with PID " <<_pid);
         cout<<"EM: Forked child ’" << name << "’ with PID " <<_pid<<endl;
         // The only successfull return
@@ -143,11 +143,11 @@ bool Process::start(){
 
 void Process::terminate(){
     //  terminate seq of process
+    kill(_pid, SIGTERM);
+    wait(NULL);
     this->prun = false;
     this->current_config = nullptr;
     this->_pid = 0;
-    kill(_pid, SIGTERM);
-    wait(NULL);
 
 }
 
