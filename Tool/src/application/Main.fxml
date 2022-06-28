@@ -5,22 +5,35 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem fx:id="new_mi" mnemonicParsing="false" onAction="#new_mi_func" text="New" />
+                  <MenuItem fx:id="load_mi" mnemonicParsing="false" onAction="#load_mi_func" text="Load" />
+                  <MenuItem fx:id="save_mi" disable="true" mnemonicParsing="false" onAction="#save_mi_func" text="Save" />
+                  <MenuItem fx:id="save_as_mi" disable="true" mnemonicParsing="false" onAction="#save_as_mi_func" text="Save As" />
+                  <MenuItem fx:id="close_mi" disable="true" mnemonicParsing="false" onAction="#close_mi_func" text="Close" />
+              <MenuItem fx:id="close_all_mi" disable="true" mnemonicParsing="false" onAction="#close_all_mi_func" text="Close All" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Options">
             <items>
-              <MenuItem fx:id="load_mi" mnemonicParsing="false" onAction="#load_mi_func" text="Load XML" />
+              <MenuItem fx:id="load_xml_mi" mnemonicParsing="false" onAction="#load_xml_mi_func" text="Load XML" />
               <MenuItem fx:id="convert_mi" mnemonicParsing="false" onAction="#convert_mi_func" text="Generate Headers" />
-              <MenuItem fx:id="close_mi" mnemonicParsing="false" onAction="#close_mi_func" text="Close File" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
    </top>
    <bottom>
-      <TextArea fx:id="indicator" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="25.0" BorderPane.alignment="CENTER" />
+      <TextArea fx:id="indicator" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="25.0" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold Italic" size="10.0" />
+         </font></TextArea>
    </bottom>
 </BorderPane>

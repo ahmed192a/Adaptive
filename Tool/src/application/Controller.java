@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,25 +22,132 @@ public class Controller
 {
 	@FXML
 	public BorderPane pane;
-	public MenuItem load_mi;
+	public MenuItem load_xml_mi;
 	public MenuItem convert_mi;
+	public MenuItem close_all_mi;
+	public MenuItem new_mi;
+	public MenuItem load_mi;
+	public MenuItem save_mi;
+	public MenuItem save_as_mi;
 	public MenuItem close_mi;
 
 	public FileChooser FC = new FileChooser();
 	public TabPane tabs = new TabPane();
 	public ImageView iv = new ImageView(new Image("bg.png"));
-	
 	public TextArea indicator;
+	
+	public int counter = 1;
 	
     public void initialize() {
     	iv.setFitWidth(600);
     	iv.setFitHeight(400);
     	pane.setCenter(iv);
-        indicator.appendText("No File Loaded.");  
-        convert_mi.setDisable(true);
-        close_mi.setDisable(true);
+        indicator.appendText("ARA-COM Tool v1.0");  
+        indicator.setStyle("text-area-background: FireBrick;");
     }
+	public void new_mi_func(ActionEvent e) {
+		String tab_name;
+		if(counter == 1) tab_name = "New File";
+		else tab_name = "New File "+Integer.toString(counter);
+		add_tab(tab_name,"");
+		counter++;
+		Main.Locations.put(tab_name, null);
+	    indicator.clear();
+        indicator.appendText("New File Created Successfully!");  
+        indicator.setStyle("text-area-background: SeaGreen;");
+		refresh();
+	}
 	public void load_mi_func(ActionEvent e) throws IOException {
+		String data = new String();
+		FC.setTitle("Load File");
+		FC.getExtensionFilters().clear();
+		FC.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("XML File","*.XML"),
+				new FileChooser.ExtensionFilter("All Files","*.*")
+				);	
+		File myObj = FC.showOpenDialog(Main.getPrimaryStage());
+		if(myObj!=null) {
+		    Scanner myReader = new Scanner(myObj);
+		    while (myReader.hasNextLine()) data += myReader.nextLine()+'\n';
+		    myReader.close();
+		    Main.Locations.put(myObj.getName(),myObj.getPath());	    
+		    indicator.clear();
+	        indicator.appendText("File Loaded Successfully!");  
+	        indicator.setStyle("text-area-background: RoyalBlue;");
+		    add_tab(myObj.getName(),data);
+		    refresh();
+		}
+	}
+	public void save_mi_func(ActionEvent e) throws IOException{
+		Tab current = tabs.getSelectionModel().getSelectedItem();
+		TextArea txt = (TextArea) current.getContent();
+		String Path = Main.Locations.get(current.getText());
+		if(Path == null) {
+			FC.setTitle("Save File As");
+			FC.setInitialFileName(current.getText());
+			FC.getExtensionFilters().clear();
+			int period = current.getText().lastIndexOf(".");
+			String ext;
+			if(period == -1) ext = "null";
+			else ext = current.getText().substring(period);
+			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter(ext,"*"+ext));	
+			File myObj = FC.showSaveDialog(Main.getPrimaryStage());
+			if(myObj!=null) {
+				PrintWriter myWriter = new PrintWriter(myObj);
+				myWriter.println(txt.getText());
+				myWriter.close();
+				Main.Locations.remove(current.getText());
+				tabs.getTabs().remove(tabs.getSelectionModel().getSelectedIndex());
+				add_tab(myObj.getName(), txt.getText());
+			    Main.Locations.put(myObj.getName(),myObj.getPath());	    
+			    indicator.clear();
+		        indicator.setStyle("text-area-background: Indigo;");
+		        indicator.appendText("File Saved in: "+ myObj.getPath());  
+			}
+		}
+		else {
+			WriteFile(Path,txt.getText());
+			indicator.clear();
+	        indicator.setStyle("text-area-background: Indigo;");
+	        indicator.appendText("File Overwritten Successfully!");  
+		}
+	}
+	public void save_as_mi_func(ActionEvent e) throws IOException {
+		Tab current = tabs.getSelectionModel().getSelectedItem();
+		TextArea txt = (TextArea) current.getContent();
+		FC.setTitle("Save File As");
+		FC.setInitialFileName(current.getText());
+		FC.getExtensionFilters().clear();
+		int period = current.getText().lastIndexOf(".");
+		String ext;
+		if(period == -1) ext = "null";
+		else ext = current.getText().substring(period);
+		FC.getExtensionFilters().add(new FileChooser.ExtensionFilter(ext,"*"+ext));			
+		File myObj = FC.showSaveDialog(Main.getPrimaryStage());
+		if(myObj!=null) {
+			PrintWriter myWriter = new PrintWriter(myObj);
+			myWriter.println(txt.getText());
+			myWriter.close();
+			Main.Locations.remove(current.getText());
+			tabs.getTabs().remove(tabs.getSelectionModel().getSelectedIndex());
+			add_tab(myObj.getName(), txt.getText());
+		    Main.Locations.put(myObj.getName(),myObj.getPath());	    
+		    indicator.clear();
+	        indicator.setStyle("text-area-background: Indigo;");
+	        indicator.appendText("File Saved in: "+ myObj.getPath());  
+		}
+	}
+	public void close_mi_func(ActionEvent e) {
+		tabs.getTabs().remove(tabs.getSelectionModel().getSelectedIndex());
+	    indicator.clear();
+        indicator.appendText("File Closed!");  
+        indicator.setStyle("text-area-background: SaddleBrown;");
+	    refresh();
+	}
+	
+	
+	
+	public void load_xml_mi_func(ActionEvent e) throws IOException {
 		String data = new String();
 		FC.setTitle("Load XML");
 		FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML","*.XML"));	
@@ -63,19 +171,19 @@ public class Controller
 			    indicator.clear();
 		        indicator.appendText("XML File Loaded and Verified!.");  
 		        indicator.setStyle("text-area-background: darkgreen;");
-		        pane.setCenter(tabs);
 			    add_tab("XML",Main.Data);
-			    load_mi.setDisable(true);
+			    load_xml_mi.setDisable(true);
 		        convert_mi.setDisable(false);
-		        close_mi.setDisable(false);
+		        close_all_mi.setDisable(false);
 		    }
+		    refresh();
 		}
 	}
 	public void convert_mi_func(ActionEvent e) throws FileNotFoundException {
 		ArrayList<Node> SIGroup = Main.Tree.Search("Service-Interface");
 		String names = new String();
 		for(Node SI : SIGroup) {
-			if(generate(SI) && generate_proxy(SI) && generate_common(SI) && generate_returntypes(SI)) {
+			if(generate_skeleton(SI) && generate_proxy(SI) && generate_common(SI) && generate_returntypes(SI)) {
 				indicator.clear();
 		        String s = Main.sFile.get(Main.sFile.size()-1);
 		        String p = Main.pFile.get(Main.sFile.size()-1);
@@ -96,15 +204,8 @@ public class Controller
 			}
 		}
 	}
-	public void close_mi_func(ActionEvent e) {
-    	pane.setCenter(iv);
+	public void close_all_mi_func(ActionEvent e) {
 		tabs.getTabs().clear();
-	    indicator.clear();
-        indicator.appendText("No File Loaded.");  
-        indicator.setStyle("text-area-background: #00008b;");
-	    load_mi.setDisable(false);
-        convert_mi.setDisable(true);
-        close_mi.setDisable(true);
         Main.Tree = null;
         Main.Data = null;
         Main.File = null;
@@ -112,17 +213,76 @@ public class Controller
         Main.pFile.clear();
         Main.sData.clear();
         Main.pData.clear();
+        refresh();
 	}
+
+	
+	
 	private void add_tab(String name,String text) {
 		Tab tab = new Tab(name);
 		tab.setClosable(false);
 		TextArea txt = new TextArea(text);
-		txt.setEditable(false);
-		tab.setStyle("-fx-background-color:lightgreen;");
+		tab.setStyle("-fx-background-color:LightSkyBlue;");
 		tab.setContent(txt);
 		tabs.getTabs().add(tab);
 	}
-	public boolean generate(Node SI) {
+	public String ReadFile(String Path) throws FileNotFoundException {
+		File myObj = new File(Path);
+		String data = new String();
+	    Scanner myReader = new Scanner(myObj);
+	    while (myReader.hasNextLine()) 
+	    {
+	      data += myReader.nextLine()+'\n';
+	    }
+	    myReader.close();
+	    return data;
+	}
+	public boolean WriteFile(String Path,String Text){
+		File myObj = new File(Path);
+        FileWriter myWriter;
+		try {
+			myWriter = new FileWriter(myObj);
+			myWriter.write(Text);
+	        myWriter.close();  
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	    return true;
+	}
+	public String c_get(String in) {
+		in = in.replaceAll(" ", "");	
+		in = in.replaceAll("\t", "");	
+		in = in.replaceAll("\n", "");
+		return in;
+	}
+	public void refresh() {
+		if(tabs.getTabs().isEmpty()) {
+	    	iv.setFitWidth(600);
+	    	iv.setFitHeight(400);
+	    	pane.setCenter(iv);
+		    indicator.clear();
+	        indicator.appendText("No Current Files.");  
+	        indicator.setStyle("text-area-background: MidnightBlue;"); 
+	        
+			save_mi.setDisable(true);
+			save_as_mi.setDisable(true);
+	        close_mi.setDisable(true);
+	        close_all_mi.setDisable(true);
+	        counter = 1;
+		}
+		else {
+			pane.setCenter(tabs);
+			save_mi.setDisable(false);
+			save_as_mi.setDisable(false);
+			close_mi.setDisable(false);
+	        close_all_mi.setDisable(false);
+		}
+	}
+	
+	
+	//Algorithm Code
+	public boolean generate_skeleton(Node SI) {
 		String name = SI.Search("short-name").get(0).getVal();
 		if(name == null) return false;
 		name = c_get(name);	
@@ -574,37 +734,4 @@ public class Controller
 		    }
 		return true;
 	}
-	
-	
-	public String ReadFile(String Path) throws FileNotFoundException {
-		File myObj = new File(Path);
-		String data = new String();
-	    Scanner myReader = new Scanner(myObj);
-	    while (myReader.hasNextLine()) 
-	    {
-	      data += myReader.nextLine()+'\n';
-	    }
-	    myReader.close();
-	    return data;
-	}
-	public boolean WriteFile(String Path,String Text){
-		File myObj = new File(Path);
-        FileWriter myWriter;
-		try {
-			myWriter = new FileWriter(myObj);
-			myWriter.write(Text);
-	        myWriter.close();  
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-	    return true;
-	}
-	public String c_get(String in) {
-		in = in.replaceAll(" ", "");	
-		in = in.replaceAll("\t", "");	
-		in = in.replaceAll("\n", "");
-		return in;
-	}
-
 }	

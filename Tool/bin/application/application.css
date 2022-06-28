@@ -2,14 +2,13 @@
 	-fx-text-alignment: center;
 }
 #indicator{
-	-fx-font: bold 10px italic;
-	-fx-background-color:gray;
+	-fx-font: bold 12px Calibri;
+	-fx-font-style: italic; 
 	-fx-text-fill:white;
 	 text-area-background: #00008b ;
-	
 }
 #indicator .content {
-   -fx-background-color: text-area-background ;
+   -fx-background-color: text-area-background;
    -fx-padding: 5 0;   
 }
 .text-area{

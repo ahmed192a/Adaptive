@@ -1,6 +1,7 @@
 package application;
 	
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +14,17 @@ import javafx.scene.image.Image;
 public class Main extends Application {
 	
 	
-    private static Stage primaryStage; // **Declare static Stage**    
+    private static Stage primaryStage; // **Declare static Stage**   
+    public static HashMap<String, String> Locations = new HashMap<String,String>();
+    
+    
+    
     public static Node Tree;
  
+    
+   
+    
+    
     public static String Direc;
     public static String File;
     public static String Data;  
@@ -47,7 +56,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); 
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setTitle("AUTOSAR Generator Tool");
+			primaryStage.setTitle("AUTOSAR COM Tool");
 			Image icon = new Image("icon.png");
 			primaryStage.getIcons().add(icon);
 			primaryStage.setResizable(true);
