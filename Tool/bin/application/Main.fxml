@@ -4,24 +4,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: whitesmoke;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: whitesmoke;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
-      <Button fx:id="gen_em_but" layoutX="61.0" layoutY="55.0" mnemonicParsing="false" onAction="#gen_em" text="Generate&#10;Execution Manifest" textAlignment="CENTER">
+      <AnchorPane layoutX="5.0" layoutY="14.0" prefHeight="194.0" prefWidth="390.0" />
+      <Button fx:id="Gen_EM_Btn" layoutX="35.0" layoutY="231.0" mnemonicParsing="false" onAction="#Gen_EM" prefHeight="46.0" prefWidth="329.0" text="Generate Execution Manifest" textAlignment="CENTER" textFill="#0079ff">
          <font>
             <Font name="Bell MT Bold" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="344.0" layoutY="55.0" mnemonicParsing="false" text="Modify&#10;Execution Manifest" textAlignment="CENTER">
-         <font>
-            <Font name="Bell MT Bold" size="15.0" />
-         </font>
-      </Button>
-      <Button layoutX="61.0" layoutY="177.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="150.0" text="Generate&#10;Machine Manifest" textAlignment="CENTER">
-         <font>
-            <Font name="Bell MT Bold" size="15.0" />
-         </font>
-      </Button>
-      <Button layoutX="344.0" layoutY="177.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="150.0" text="Modify&#10;Machine Manifest" textAlignment="CENTER">
+      <Button layoutX="35.0" layoutY="300.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="330.0" text="Modify Execution Manifest" textAlignment="CENTER" textFill="#0079ff">
          <font>
             <Font name="Bell MT Bold" size="15.0" />
          </font>

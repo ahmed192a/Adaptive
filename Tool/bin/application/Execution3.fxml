@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ExecutionCTR">
+   <children>
+      <HBox alignment="CENTER_LEFT" layoutX="13.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: gray;">
+         <children>
+            <Label text="Execution ID" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="13.0" />
+               </font>
+            </Label>
+            <TextField alignment="CENTER" prefWidth="385.0" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Save" />
+         </children>
+      </HBox>
+      <VBox layoutX="14.0" layoutY="53.0" prefHeight="600.0" prefWidth="570.0" style="-fx-border-color: gray; -fx-border-width: 2; -fx-border-radius: 0;">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+               <children>
+                  <Button fx:id="Add_Cfg_Btn" mnemonicParsing="false" onAction="#Add_Cfg" text="+ Startup-Cfg" textFill="#055119" />
+                  <Label text="Process Name" textFill="#002bd9">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField alignment="CENTER" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" text="+ ST-Op" textFill="#055119" />
+                  <Button mnemonicParsing="false" text="+ FG-Dep" textFill="#055119" />
+               </children>
+            </HBox>
+            <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+              <panes>
+                  <TitledPane alignment="TOP_CENTER" contentDisplay="RIGHT" graphicTextGap="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Startup-Cfg-0" textAlignment="CENTER">
+                     <content>
+                        <Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                          <panes>
+                            <TitledPane alignment="TOP_CENTER" animated="false" contentDisplay="RIGHT" graphicTextGap="10.0" text="ST-Op-0">
+                                 <content>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                                             <children>
+                                                <Label text="Option_kind">
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" right="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField alignment="CENTER" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                                             <children>
+                                                <Label text="Option_name">
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" right="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField alignment="CENTER" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                                             <children>
+                                                <Label text="Option_arg">
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" right="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField alignment="CENTER" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                                 <graphic>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" graphicTextGap="0.0" mnemonicParsing="false" text="X" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="Arial Bold" size="10.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                            </TitledPane>
+                            <TitledPane alignment="TOP_CENTER" animated="false" contentDisplay="RIGHT" graphicTextGap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="FG-Dep-0">
+                                 <graphic>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" graphicTextGap="0.0" mnemonicParsing="false" text="X" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="Arial Bold" size="10.0" />
+                                       </font>
+                                    </Button>
+                                 </graphic>
+                                 <content>
+                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                                             <children>
+                                                <Label text="FG_Name">
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" right="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                                             <children>
+                                                <Label text="Modes">
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" right="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField alignment="CENTER" promptText="Comma Separated" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </content>
+                     <graphic>
+                        <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" graphicTextGap="0.0" mnemonicParsing="false" text="X" textAlignment="CENTER">
+                           <font>
+                              <Font name="Arial Bold" size="10.0" />
+                           </font>
+                        </Button>
+                     </graphic>
+                  </TitledPane>
+              </panes>
+            </Accordion>
+         </children>
+      </VBox>
+      <HBox layoutX="14.0" layoutY="659.0" spacing="90.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="New" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Delete" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Previous" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Next" />
+         </children>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</AnchorPane>
