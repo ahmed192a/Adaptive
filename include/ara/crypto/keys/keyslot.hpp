@@ -58,7 +58,7 @@ namespace ara
                  * @return true 
                  * @return false 
                  */
-                virtual bool IsEmpty() const noexcept = 0;
+                virtual bool IsEmpty() noexcept = 0;
                 /**
                  * @brief 
                  * 
