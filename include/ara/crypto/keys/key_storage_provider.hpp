@@ -57,10 +57,10 @@
  				virtual std::vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept = 0;
 
  				//@breif: Copy-assign another KeyStorageProvider to this instance.
- 				KeyStorageProvider& operator= (const KeyStorageProvider& other) = default;
+ 				//KeyStorageProvider& operator= (const KeyStorageProvider& other) = default;
 
  				//@breif: Move-assign another KeyStorageProvider to this instance.
- 				KeyStorageProvider& operator= (KeyStorageProvider&& other) = default;
+ 				//KeyStorageProvider& operator= (KeyStorageProvider&& other) = default;
  			};
 
  		}
