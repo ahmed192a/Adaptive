@@ -97,14 +97,14 @@ namespace ara
                  * @param other 
                  * @return KeySlot& 
                  */
-                KeySlot& operator= (const KeySlot &other)=default;
+                //KeySlot& operator= (const KeySlot &other)=default;
                 /**
                  * @brief Move-assign another KeySlot to this instance
                  * 
                  * @param other 
                  * @return KeySlot& 
                  */
-                KeySlot& operator= (KeySlot &&other)=default;
+                //KeySlot& operator= (KeySlot &&other)=default;
 
 
             };
