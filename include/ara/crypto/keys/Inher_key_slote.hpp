@@ -83,14 +83,14 @@
                   * @param other 
                   * @return KeySlot& 
                   */
-                 KeySlot& operator= (const KeySlot &other);
+                 InhKeySlot& operator= (const InhKeySlot& other) = default;
                  /**
                   * @brief Move-assign another KeySlot to this instance
                   * 
                   * @param other 
                   * @return KeySlot& 
                   */
-                 KeySlot& operator= (KeySlot &&other);
+                 InhKeySlot& operator= (InhKeySlot&& other) = default;
              };
          }
      }
