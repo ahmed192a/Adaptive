@@ -85,24 +85,24 @@
             break;
  		}
  
- //       if (error == 0)
- //       {
- //           // exract the selected TransactionScope correspondant to the provided transactionId
- //           TransactionScope TransactionsToBeCommited = this->transactionIdState[Transactionscounter].transaction;
+        if (error == 0)
+        {
+            // exract the selected TransactionScope correspondant to the provided transactionId
+            TransactionScope TransactionsToBeCommited = this->transactionIdState[Transactionscounter].transaction;
 
- //           // save the changes to the correspondant key slot
- //           for (TransactionScopecounter = 0; TransactionScopecounter < TransactionsToBeCommited.size(); TransactionScopecounter++)
- //           {
- //               TransactionsToBeCommited[TransactionScopecounter].SaveCopy(*(this->TransactionIOInterfaces[Transactionscounter][TransactionScopecounter]));
- //           }
+            // save the changes to the correspondant key slot
+            for (TransactionScopecounter = 0; TransactionScopecounter < TransactionsToBeCommited.size(); TransactionScopecounter++)
+            {
+                TransactionsToBeCommited[TransactionScopecounter].SaveCopy(*(this->TransactionIOInterfaces[Transactionscounter][TransactionScopecounter]));
+            }
 
- //           // change the state of the committed transaction from opened to committed
- //           transactionIdState[Transactionscounter].transactionState = TransactionScopeState::commited;
- //       }
- //       else
- //       {
- //           /* Misra */
- //       }
+            // change the state of the committed transaction from opened to committed
+            transactionIdState[Transactionscounter].transactionState = TransactionScopeState::commited;
+        }
+        else
+        {
+            /* Misra */
+        }
  	 }
  }
 
