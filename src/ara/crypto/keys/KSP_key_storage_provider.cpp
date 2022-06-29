@@ -4,7 +4,7 @@
  using namespace ara::crypto::keys;
 
  ///@breif: Begin new transaction for key slots update
- TransactionId KSPKeyStorageProvider::BeginTransaction( TransactionScope& targetSlots) noexcept
+ /*TransactionId KSPKeyStorageProvider::BeginTransaction( TransactionScope& targetSlots) noexcept
  {
      //
  	 //define a flag which states wheter an error raised or not
@@ -58,30 +58,33 @@
          
  }
 
- ////@breif: Commit changes of the transaction to Key Storage
- //void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
- //{
- //    //define an error flag
- //    uint8_t error = 0;
+*/
 
- //	 //define a counter to use it in the foor loop
- //	 uint8_t Transactionscounter = 0;
- //	 uint8_t TransactionScopecounter = 0;
+ //@breif: Commit changes of the transaction to Key Storage
+ void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
+ {
+     //define an error flag
+     uint8_t error = 0;
 
- //	 // loop on every key slot in the TransactionScope to be sure that it has been opened 
- //	 for (Transactionscounter = 0; Transactionscounter < this->transactionIdState.size();Transactionscounter++)
- //	 {
- //       // find the selected TransactionScope correspondant to the provided transactionId
- //		if (transactionIdState[Transactionscounter].transactionId == id)
- //		{
- //           //check that the TransactionScope correspondant to the provided transactionId is ready to be commited
- //           if (transactionIdState[Transactionscounter].transactionState != TransactionScopeState::opened)
- //           {
- //               error = 1;
- //           }
- //			// required id found so break from searching loop
- //           break;
- //		}
+ 	 //define a counter to use it in the foor loop
+ 	 uint8_t Transactionscounter = 0;
+ 	 uint8_t TransactionScopecounter = 0;
+
+ 	 // loop on every key slot in the TransactionScope to be sure that it has been opened 
+ 	 for (Transactionscounter = 0; Transactionscounter < this->transactionIdState.size();Transactionscounter++)
+ 	 {
+        // find the selected TransactionScope correspondant to the provided transactionId
+ 		if (transactionIdState[Transactionscounter].transactionId == id)
+ 		{
+            //check that the TransactionScope correspondant to the provided transactionId is ready to be commited
+            if (transactionIdState[Transactionscounter].transactionState != TransactionScopeState::opened)
+            {
+                error = 1;
+            }
+ 			// required id found so break from searching loop
+            break;
+ 		}
+ 
  //       if (error == 0)
  //       {
  //           // exract the selected TransactionScope correspondant to the provided transactionId
@@ -100,8 +103,8 @@
  //       {
  //           /* Misra */
  //       }
- //	 }
- //}
+ 	 }
+ }
 
 
  //////@breif: Load a key slot
