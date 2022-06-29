@@ -10,7 +10,7 @@
  			{
  			public:
  				//@breif: Begin new transaction for key slots update
- 				TransactionId BeginTransaction(const TransactionScope& targetSlots) noexcept;
+ 				TransactionId BeginTransaction( TransactionScope& targetSlots) noexcept;
 
  				//@breif: Commit changes of the transaction to Key Storage
  				void CommitTransaction(TransactionId id) noexcept ;

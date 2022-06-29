@@ -39,7 +39,7 @@
  				virtual ~KeyStorageProvider() noexcept = default;
 				
  				//@breif: Begin new transaction for key slots update
- 				virtual TransactionId BeginTransaction(const TransactionScope& targetSlots) noexcept = 0;
+ 				virtual TransactionId BeginTransaction( TransactionScope& targetSlots) noexcept = 0;
 
  				//@breif: Commit changes of the transaction to Key Storage
  				virtual void CommitTransaction(TransactionId id) noexcept = 0;
