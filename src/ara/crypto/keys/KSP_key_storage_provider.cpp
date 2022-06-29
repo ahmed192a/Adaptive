@@ -24,7 +24,7 @@
              thisScopeInterfaces.push_back(std::move((targetSlots[counter]).Open(1, 1)));
              
              //add the vector of IOInterfaces of this transactionScope to the vector of IOInterfaces of all scopes
-             this->TransactionIOInterfaces.push_back(thisScopeInterfaces);
+             (this->TransactionIOInterfaces).push_back(thisScopeInterfaces);
 
          }
          else
