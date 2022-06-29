@@ -15,7 +15,7 @@
  		{
  			class KeyStorageProvider
  			{
- 			protected:
+ 			public:
 				
  				//@breif: vector to keep track of opened TransactionScopes which are ready to be commited with changes
  				std::vector < TransactionScopeWithIdAndState> transactionIdState;
@@ -32,7 +32,7 @@
  				// incremental variable to carry the next TransactionId to be assigned to opened transaction
  				TransactionId nextId = 1;
 
- 			public:
+ 			
  				using Uptr = std::unique_ptr<KeyStorageProvider>;
 				
  				//@breif: destructor
