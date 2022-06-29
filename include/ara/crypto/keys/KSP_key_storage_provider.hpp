@@ -6,7 +6,7 @@
  	{
  		namespace keys
  		{
- 			class KSPKeyStorageProvider :KeyStorageProvider
+ 			class KSPKeyStorageProvider :public KeyStorageProvider
  			{
  			public:
  				//@breif: Begin new transaction for key slots update
