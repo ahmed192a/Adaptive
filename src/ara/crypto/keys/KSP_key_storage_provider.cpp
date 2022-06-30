@@ -130,7 +130,7 @@
      {
          if (this->spareOpenedTransactions[OpenedTransactionscounter].transactionId == id)
          {
-             TransactionScope requiredTransaction = this->spareOpenedTransactions[OpenedTransactionscounter].transaction;
+             TransactionScope requiredTransaction = std::move(this->spareOpenedTransactions[OpenedTransactionscounter].transaction);
              flag = 1;
              /*if provided id is invalid, i.e. correspondent transaction already was finished (committed or rolled back),
               *an error is signaled*/
