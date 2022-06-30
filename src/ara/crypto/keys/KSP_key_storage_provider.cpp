@@ -45,8 +45,8 @@
          //increment nextId for the next assignment
          (this->nextId)++;
 
- //        //Push this opened transaction to the vector of opened transactions
- //        this->transactionIdState.push_back({ targetSlots,TransId,TransactionScopeState::opened });
+         //Push this opened transaction to the vector of opened transactions
+         this->transactionIdState.push_back({ targetSlots,TransId,TransactionScopeState::opened });
 
          return TransId;
      }
