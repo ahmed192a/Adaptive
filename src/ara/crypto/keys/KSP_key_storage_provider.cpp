@@ -46,7 +46,7 @@
          (this->nextId)++;
 
          //Push this opened transaction to the vector of opened transactions
-         this->transactionIdState.push_back({ targetSlots,TransId,TransactionScopeState::opened });
+         this->transactionIdState.push_back({ std::move(targetSlots),TransId,TransactionScopeState::opened });
 
          return TransId;
      }
