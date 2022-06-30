@@ -31,6 +31,7 @@ public class ExecutionCTR {
 	public VBox container;
 	public HBox indicator;
 	public TextField p_name;
+	public TextField exec_id;
 
 	public ArrayList<Accordion> process_list = new ArrayList<>();
 	public ArrayList<String> process_name = new ArrayList<>();
@@ -227,5 +228,11 @@ public class ExecutionCTR {
 		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
 				Integer.toString(current+1) +" of "+Integer.toString(process_list.size()));
 	}
-	public void Save(ActionEvent e) {}
+	public void Save(ActionEvent e) {
+		Node JSONTree = Node.GUIToTree(exec_id.getText(),process_list, process_name);
+		//Now we hopefully have the tree, make it json and save it(Save As)
+		//Further Steps Is 
+		//1- Check Empty Fields
+		//2- Implement Modify Manifest(Save Only)
+	}
 }

@@ -2,7 +2,12 @@ package application;
 
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class Node {
 	private Node parent;
@@ -41,9 +46,6 @@ public class Node {
 	public String getVal() {
 		return val;
 	}
-	
-
-	
 	
 	public static Node ParseXML(String Data) {
 		Node root = new Node(null,"root");  
@@ -112,14 +114,52 @@ public class Node {
 		}
         return Res;
 	}
-	////New
-	public static Node GuiToTree(ArrayList<Accordion> process_list) {
+	public static Node GUIToTree(String manifest_id,ArrayList<Accordion> process_list,ArrayList<String> process_name) {
 		Node root = new Node(null,"root");  
 		Node current = root;
-		for(Accordion process:process_list) {
-			
+		current.addNode(new Node(current,"Execution_manifest_id",manifest_id));
+		current = current.addNode(new Node(current,"Process"));
+		for(int i=0;i<process_list.size();i++) {
+			current = current.addNode(new Node(current,""));
+			current.addNode(new Node(current,"Process_name",process_name.get(i)));
+			current = current.addNode(new Node(current,"Mode_dependent_startup_configs"));
+			ObservableList<TitledPane> cfgs = process_list.get(i).getPanes();
+			for(int ii=0;ii<cfgs.size();ii++) {
+				current = current.addNode(new Node(current,""));
+				Accordion cfg =  (Accordion)cfgs.get(ii).getContent();
+				ObservableList<TitledPane> all = cfg.getPanes();				
+				current = current.addNode(new Node(current,"Startup_options"));
+				for(int iii=0;iii<all.size();iii++) {
+					if(all.get(iii).getText().charAt(0)=='f')break;
+					current = current.addNode(new Node(current,""));		
+					VBox vb = (VBox)all.get(iii).getContent();
+					String s1 = ((TextField)((HBox)vb.getChildren().get(0)).getChildren().get(1)).getText();
+					String s2 = ((TextField)((HBox)vb.getChildren().get(1)).getChildren().get(1)).getText();
+					String s3 = ((TextField)((HBox)vb.getChildren().get(2)).getChildren().get(1)).getText();
+					current.addNode(new Node(current,"Option_kind",s1));
+					current.addNode(new Node(current,"Option_name",s2));
+					current.addNode(new Node(current,"Option_arg",s3));
+					current = current.getParent();
+				}
+				current = current.getParent();
+				current = current.addNode(new Node(current,"FunctionGroupDependencies"));
+				for(int iii=0;iii<all.size();iii++) {
+					if(all.get(iii).getText().charAt(0)=='s')continue;
+					current = current.addNode(new Node(current,""));		
+					VBox vb = (VBox)all.get(iii).getContent();
+					String s1 = ((TextField)((HBox)vb.getChildren().get(0)).getChildren().get(1)).getText();
+					String s2 = ((TextField)((HBox)vb.getChildren().get(1)).getChildren().get(1)).getText();
+					current.addNode(new Node(current,"Function_group",s1));
+					current.addNode(new Node(current,"Modes",s2));
+					current = current.getParent();
+				}
+				current = current.getParent();
+				current = current.getParent();
+			}
+			current = current.getParent();
+			current = current.getParent();
 		}
+		current = current.getParent();
 		return root;
 	}
-	
 }
