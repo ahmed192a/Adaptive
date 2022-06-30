@@ -1,21 +1,18 @@
 package application;
 
+import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 public class ExecutionCTR {
 	
@@ -23,11 +20,23 @@ public class ExecutionCTR {
 	public Accordion process_acc;
 	public Button Add_Cfg_Btn;
 	public Button Add_Op_Btn;
+	public Button Add_Dep_Btn;
+	public Button New_Proc_Btn;
+	public Button Del_Proc_Btn;
+	public Button Prev_Btn;
+	public Button Next_Btn;
+	public VBox container;
+	public HBox indicator;
+
+	public ArrayList<Accordion> process_list = new ArrayList<>();
 
 	public void initialize() {
-	
+		process_list.add(process_acc);
+		Del_Proc_Btn.setDisable(true);
+		Next_Btn.setDisable(true);
+		Prev_Btn.setDisable(true);
+		((Label)indicator.getChildren().get(0)).setText("Current Process: 1 of 1");
 	}
-
 	public void Add_Cfg(ActionEvent e) {
 		String cfg_name = "startup_config_"+Integer.toString(process_acc.getPanes().size());
 		TitledPane tp = new TitledPane();
@@ -47,7 +56,7 @@ public class ExecutionCTR {
 				 process_acc.getPanes().remove(process_acc.getPanes().indexOf(tp));
 				 for(int i=0;i<process_acc.getPanes().size();i++) {
 					 TitledPane current = process_acc.getPanes().get(i);
-					 String cfg_name = "startup_config_-"+Integer.toString(i);
+					 String cfg_name = "startup_config_"+Integer.toString(i);
 					 current.setText(cfg_name);
 				 }
 			    }
@@ -101,6 +110,103 @@ public class ExecutionCTR {
 			    }
 		});
 		content.getPanes().add(index, op);
+	}
+	public void Add_Dep(ActionEvent e) {
+		TitledPane selected = process_acc.getExpandedPane();
+		if(selected == null)return;
+		Accordion content = (Accordion) selected.getContent();
+		ObservableList<TitledPane> panes = content.getPanes();
+		int index = 0,offset;
+		while(index<panes.size() && panes.get(index).getText().charAt(0) == 's')index++;
+		offset = index;
+		while(index<panes.size() && panes.get(index).getText().charAt(0) == 'f')index++;
+		index = index - offset;
+		Button delete_dep = new Button("X");
+		delete_dep.setDefaultButton(true);
+		delete_dep.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+		
+		TitledPane dep = new TitledPane();
+		dep.setText("fg_dependency_"+Integer.toString(index));
+		dep.setGraphic(delete_dep);
+		dep.setGraphicTextGap(25);
+		dep.setAnimated(true);
+		dep.setAlignment(Pos.TOP_CENTER);
+		dep.setContentDisplay(ContentDisplay.RIGHT);
+		
+		VBox options = new VBox();
+		HBox o1 = new HBox();
+		HBox o2 = new HBox();
+		o1.getChildren().addAll(new Label("fg_name"),new TextField());
+		o1.setSpacing(20);
+		o2.getChildren().addAll(new Label("modes"),new TextField());
+		o2.setSpacing(30);
+		options.getChildren().addAll(o1,o2);
+		dep.setContent(options);
+		delete_dep.setOnAction(new EventHandler<ActionEvent>() {
+			 @Override
+			    public void handle(ActionEvent e) {
+				 content.getPanes().remove(content.getPanes().indexOf(dep));
+				 int index = 0,offset;
+				 while(index<content.getPanes().size() && 
+							content.getPanes().get(index).getText().charAt(0) == 's')index++;
+				 offset = index;
+					while(index<content.getPanes().size() && 
+							content.getPanes().get(index).getText().charAt(0) == 'f') {
+						 content.getPanes().get(index).setText("fg_dependency_"+Integer.toString(index-offset));
+						 index++;
+					}
+			    }
+		});
+		content.getPanes().add(panes.size(), dep);
+	}
+	public void New_Proc(ActionEvent e) {
+		process_list.add(new Accordion());
+		process_acc = process_list.get(process_list.size()-1);
+		container.getChildren().remove(2);
+		container.getChildren().add(process_acc);
+		Next_Btn.setDisable(true);
+		Prev_Btn.setDisable(false);
+		Del_Proc_Btn.setDisable(false);
+		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
+				Integer.toString(process_list.size()) +" of "+Integer.toString(process_list.size()));
+	}
+	public void Del_Proc(ActionEvent e) {
+		if(process_list.size()==1)return;
+		int current = process_list.indexOf(process_acc);
+		process_list.remove(current);
+		if(current == process_list.size())current--;
+		process_acc = process_list.get(current);
+		container.getChildren().remove(2);
+		container.getChildren().add(process_acc);
+		if(current==0) {
+			Prev_Btn.setDisable(true);
+			Del_Proc_Btn.setDisable(true);
+		}
+		if(current == process_list.size()-1)Next_Btn.setDisable(true);
+		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
+				Integer.toString(current+1) +" of "+Integer.toString(process_list.size()));
+	}
+	public void Next_Proc(ActionEvent e) {
+		int current = process_list.indexOf(process_acc);
+		current++;
+		process_acc = process_list.get(current);
+		container.getChildren().remove(2);
+		container.getChildren().add(process_acc);
+		Prev_Btn.setDisable(false);
+		if(current == process_list.size()-1)Next_Btn.setDisable(true);
+		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
+				Integer.toString(current+1) +" of "+Integer.toString(process_list.size()));
+	}
+	public void Prev_Proc(ActionEvent e) {
+		int current = process_list.indexOf(process_acc);
+		current--;
+		process_acc = process_list.get(current);
+		container.getChildren().remove(2);
+		container.getChildren().add(process_acc);
+		Next_Btn.setDisable(false);
+		if(current==0)Prev_Btn.setDisable(true);
+		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
+				Integer.toString(current+1) +" of "+Integer.toString(process_list.size()));
 	}
 
 }

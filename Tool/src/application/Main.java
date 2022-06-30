@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 
 public class Main extends Application {
 	
@@ -20,7 +21,10 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		setPrimaryStage(primaryStage);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		primaryStage.setTitle("AUTOSAR Generator Tool [ARA::EM]");
+		Image icon = new Image("icon.png");
+		primaryStage.getIcons().add(icon);
+		primaryStage.setResizable(false);
+		primaryStage.setTitle("AUTOSAR Manifest Tool");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

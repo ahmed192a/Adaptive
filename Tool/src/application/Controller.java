@@ -7,6 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Controller {
@@ -18,16 +21,22 @@ public class Controller {
 	
 	@FXML
 	public Button Gen_EM_Btn;
+	public BorderPane img;
+	public ImageView iv = new ImageView(new Image("bg.png"));
 
-	public void initialize() throws IOException {
+	public void initialize() {
+    	img.setCenter(iv);
+	}
+	public void Gen_EM(ActionEvent e) throws IOException  {
+		Image icon = new Image("icon.png");
+		secondaryStage.getIcons().add(icon);
+		secondaryStage.setResizable(false);
 		Parent root = FXMLLoader.load(getClass().getResource("Execution.fxml")); 
 		Scene scene = new Scene(root);
 		secondaryStage.setScene(scene);
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		secondaryStage.setTitle("Execution Manifest Generator");
 		secondaryStage.setScene(scene);
-	}
-	public void Gen_EM(ActionEvent e) {
 		secondaryStage.show();
 	}
 	
@@ -47,20 +56,14 @@ public class Controller {
                         "Option_arg": "inputfile_1"
                     }
                 ],
-                "ExecutionDependencies": [
+                "FunctionGroupDependencies": [
                     {
-                        "Process_name": "Proc_2",
-                        "Mode": [
+                        "Function_group": "FG_1",
+                         "Modes": [
                             {"Mode":"Running"},
                             {"Mode":"on"}
 
                         ]
-                    }
-                ],
-                "FunctionGroupDependencies": [
-                    {
-                        "Function_group": "FG_1",
-                        "Mode": "on"
                     }
                 ]
             }

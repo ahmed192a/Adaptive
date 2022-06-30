@@ -145,10 +145,10 @@
       </VBox>
       <HBox layoutX="14.0" layoutY="659.0" spacing="90.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="New" />
+            <Button fx:id="Add_Proc_Btn" mnemonicParsing="false" onAction="#Add_Proc" prefHeight="26.0" prefWidth="75.0" text="New" />
             <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Delete" />
             <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Previous" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Next" />
+            <Button fx:id="Next_Proc_Btn" mnemonicParsing="false" onAction="#Next_Proc" prefHeight="26.0" prefWidth="75.0" text="Next" />
          </children>
          <padding>
             <Insets right="10.0" />
