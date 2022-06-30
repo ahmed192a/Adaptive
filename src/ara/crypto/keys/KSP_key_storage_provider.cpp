@@ -180,7 +180,7 @@
                  //loop on every key slot in the required Transactionscope to remove the changes & rollback
                  for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
                  {
-                     IOContent.push_back(std::move(requiredTransaction[SlotCounter].IOInterfacePtr));
+                     IOContent.push_back(requiredTransaction[SlotCounter].IOInterfacePtr);
 
                  }
              }
