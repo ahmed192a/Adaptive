@@ -37,7 +37,9 @@ public class Controller {
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		secondaryStage.setTitle("Execution Manifest Generator");
 		secondaryStage.setScene(scene);
-		secondaryStage.show();
+		Main.getPrimaryStage().close();
+		secondaryStage.showAndWait();
+		Main.getPrimaryStage().show();
 	}
 	
 }

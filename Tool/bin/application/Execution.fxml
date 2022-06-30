@@ -54,7 +54,7 @@
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Label>
-                  <TextField alignment="CENTER" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="p_name" alignment="CENTER" HBox.hgrow="ALWAYS" />
                   <Button fx:id="Add_Op_Btn" mnemonicParsing="false" onAction="#Add_Op" text="(+) ST-Op" textFill="#055119">
                      <font>
                         <Font name="System Italic" size="12.0" />

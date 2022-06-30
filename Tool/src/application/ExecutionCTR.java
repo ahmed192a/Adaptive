@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -23,12 +25,15 @@ public class ExecutionCTR {
 	public Button Add_Dep_Btn;
 	public Button New_Proc_Btn;
 	public Button Del_Proc_Btn;
+	public Button Save_Btn;
 	public Button Prev_Btn;
 	public Button Next_Btn;
 	public VBox container;
 	public HBox indicator;
+	public TextField p_name;
 
 	public ArrayList<Accordion> process_list = new ArrayList<>();
+	public ArrayList<String> process_name = new ArrayList<>();
 
 	public void initialize() {
 		process_list.add(process_acc);
@@ -36,6 +41,12 @@ public class ExecutionCTR {
 		Next_Btn.setDisable(true);
 		Prev_Btn.setDisable(true);
 		((Label)indicator.getChildren().get(0)).setText("Current Process: 1 of 1");
+		p_name.setText("new_process");
+		process_name.add(p_name.getText());
+		p_name.textProperty().addListener((observable, oldValue, newValue) -> {
+			int current = process_list.indexOf(process_acc);
+		 	process_name.set(current, newValue);
+		});
 	}
 	public void Add_Cfg(ActionEvent e) {
 		String cfg_name = "startup_config_"+Integer.toString(process_acc.getPanes().size());
@@ -161,7 +172,9 @@ public class ExecutionCTR {
 	}
 	public void New_Proc(ActionEvent e) {
 		process_list.add(new Accordion());
+		process_name.add("new_process");
 		process_acc = process_list.get(process_list.size()-1);
+		p_name.setText(process_name.get(process_name.size()-1));
 		container.getChildren().remove(2);
 		container.getChildren().add(process_acc);
 		Next_Btn.setDisable(true);
@@ -169,13 +182,17 @@ public class ExecutionCTR {
 		Del_Proc_Btn.setDisable(false);
 		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
 				Integer.toString(process_list.size()) +" of "+Integer.toString(process_list.size()));
+		
+		
+		
 	}
 	public void Del_Proc(ActionEvent e) {
-		if(process_list.size()==1)return;
 		int current = process_list.indexOf(process_acc);
 		process_list.remove(current);
+		process_name.remove(current);
 		if(current == process_list.size())current--;
 		process_acc = process_list.get(current);
+		p_name.setText(process_name.get(current));
 		container.getChildren().remove(2);
 		container.getChildren().add(process_acc);
 		if(current==0) {
@@ -190,6 +207,7 @@ public class ExecutionCTR {
 		int current = process_list.indexOf(process_acc);
 		current++;
 		process_acc = process_list.get(current);
+		p_name.setText(process_name.get(current));
 		container.getChildren().remove(2);
 		container.getChildren().add(process_acc);
 		Prev_Btn.setDisable(false);
@@ -201,6 +219,7 @@ public class ExecutionCTR {
 		int current = process_list.indexOf(process_acc);
 		current--;
 		process_acc = process_list.get(current);
+		p_name.setText(process_name.get(current));
 		container.getChildren().remove(2);
 		container.getChildren().add(process_acc);
 		Next_Btn.setDisable(false);
@@ -208,5 +227,5 @@ public class ExecutionCTR {
 		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
 				Integer.toString(current+1) +" of "+Integer.toString(process_list.size()));
 	}
-
+	public void Save(ActionEvent e) {}
 }
