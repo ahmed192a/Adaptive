@@ -54,7 +54,7 @@
  				virtual void RollbackTransaction(TransactionId id) noexcept = 0;
 
  				//@breif: Get a vector of IOInterface from a Transaction id.
- 				virtual std::vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept = 0;
+ 				virtual std::vector<ConcreteIOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept = 0;
 
  				//@breif: Copy-assign another KeyStorageProvider to this instance.
  				//KeyStorageProvider& operator= (const KeyStorageProvider& other) = default;

@@ -118,7 +118,7 @@
 ///@breif: Rollback all changes executed during the transaction in Key Storage.
 //The rollback command permanently cancels all changes made during the transaction in Key Storage.
 //A rolled back transaction is completely invisible for all applications.
- void KeyStorageProvider::RollbackTransaction(TransactionId id) noexcept
+ void KSPKeyStorageProvider::RollbackTransaction(TransactionId id) noexcept
  {
      //counters for the loop
      uint8_t OpenedTransactionscounter, SlotCounter;
@@ -161,28 +161,33 @@
  }
 
 
- ////@breif: Get a vector of IOInterface from a Transaction id.
- //std::vector<IOInterface::Uptr> KeyStorageProvider:: GetIOInterfaceFromid(TransactionId id) noexcept
- //{
- //	//counters for the loops
- //	uint8_t OpenedTransactionscounter, SlotCounter;
+ ///@breif: Get a vector of IOInterface from a Transaction id.
+ std::vector<ConcreteIOInterface::Uptr> KSPKeyStorageProvider::GetIOInterfaceFromid(TransactionId id) noexcept
+ {
+     //counters for the loops
+     uint8_t OpenedTransactionscounter, SlotCounter;
 
- //	//loop on every opened transaction to find the one to retrieve its key slots' IOInterfaces
- //	for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->transactionIdState.size(); OpenedTransactionscounter++)
- //	{
- //		if (this->transactionIdState[OpenedTransactionscounter].transactionId == id)
- //		{
+     //vector of IOInterfaces of the required transaction to be returned
+     std::vector<ConcreteIOInterface::Uptr> IOContent;
+     //loop on every opened transaction to find the one to retrieve its key slots' IOInterfaces
+     for (OpenedTransactionscounter = 1; OpenedTransactionscounter < this->transactionIdState.size(); OpenedTransactionscounter++)
+     {
+         if (this->transactionIdState[OpenedTransactionscounter].transactionId == id)
+         {
+             if (this->transactionIdState[OpenedTransactionscounter].transactionState == TransactionScopeState::opened)
+             {
+                 TransactionScope requiredTransaction = this->transactionIdState[OpenedTransactionscounter].transaction;
+                 //loop on every key slot in the required Transactionscope to remove the changes & rollback
+                 for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
+                 {
+                     IOContent.push_back(std::move(requiredTransaction[SlotCounter].IOInterfacePtr));
 
- //			TransactionScope requiredTransaction = this->transactionIdState[OpenedTransactionscounter].transaction;
- //			//loop on every key slot in the required Transactionscope to remove the changes & rollback
- //			for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
- //			{
- //				//push the IOInterfaces to the vector
- //				(this->TransactionIOInterfaces).push_back(std::move(requiredTransaction[SlotCounter].IOInterfacePtr));
+                 }
+             }
 
- //			}
-    //		
- //		}	
- //	}
- //	return this->TransactionIOInterfaces;
- //}
+
+         }
+     }
+     return IOContent;
+ }
+

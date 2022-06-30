@@ -26,7 +26,7 @@
 
                 /******************************* Not in SWS *********************************/
  				//@breif: Get a vector of IOInterface from a Transaction id.
- 				std::vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept;
+ 				std::vector<ConcreteIOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept;
  			};
  		}
  	}
