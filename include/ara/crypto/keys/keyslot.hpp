@@ -31,7 +31,7 @@ namespace ara
 
                 /********** variables needed by KeyStorageProvider using the keySlot *********/
                  SlotState state = SlotState::closed;
-                 IOInterface::Uptr IOInterfacePtr;
+                 ConcreteIOInterface::Uptr IOInterfacePtr;
                  /****************************************************************************/
                  KeySlotContentProps KSCP ;
                  KeySlotPrototypeProps KSPP;
