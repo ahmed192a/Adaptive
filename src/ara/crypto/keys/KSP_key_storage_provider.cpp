@@ -144,9 +144,8 @@
                  for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
                  {
                      //Open each key slot spare & save it to roll back any changes that occurred)
-                     IOInterface::Uptr IOInterfacePtr = requiredTransaction[SlotCounter].Open(1, 1);
-                     /******************************* this line needs syntax correction ****************************/
-                     //requiredTransaction[SlotCounter].SaveCopy(&(*IOInterfacePtr));
+                     ConcreteIOInterface::Uptr IOInterfacePtr = requiredTransaction[SlotCounter].Open(1, 1);
+                     requiredTransaction[SlotCounter].SaveCopy(std::move(IOInterfacePtr));
                  }
                  //change the state of the transaction to rolledback so that it won't be rolled back again
                  this->spareOpenedTransactions[OpenedTransactionscounter].transactionState = TransactionScopeState::rolledback;
