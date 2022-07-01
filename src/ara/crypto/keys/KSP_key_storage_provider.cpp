@@ -144,8 +144,8 @@
                  for (SlotCounter = 0; SlotCounter < requiredTransaction.size(); SlotCounter++)
                  {
                      //Open each key slot spare & save it to roll back any changes that occurred)
-                     //std::unique_ptr<crypto::ConcreteIOInterface> IOInterfacePtr = std::move(requiredTransaction[SlotCounter].Open(1, 1));
-                     requiredTransaction[SlotCounter].SaveCopy(std::move(requiredTransaction[SlotCounter].Open(1, 1)));
+                     ConcreteIOInterface::Uptr IOInterfacePtr = std::move(requiredTransaction[SlotCounter].Open(1, 1));
+                     requiredTransaction[SlotCounter].SaveCopy(*IOInterfacePtr);
                  }
                  //change the state of the transaction to rolledback so that it won't be rolled back again
                  this->spareOpenedTransactions[OpenedTransactionscounter].transactionState = TransactionScopeState::rolledback;
