@@ -16,8 +16,7 @@ public class Controller {
 	
 	// **Declare static Stage**  
 	private static Stage secondaryStage = new Stage(); 
-	private void setSecondaryStage(Stage stage) {Controller.secondaryStage = stage;}
-	static public Stage getPrimaryStage() {return Controller.secondaryStage;}
+	static public Stage getSecondaryStage() {return Controller.secondaryStage;}
 	
 	@FXML
 	public Button Gen_EM_Btn;
@@ -44,34 +43,30 @@ public class Controller {
 	
 }
 /*{
-"Execution_manifest": {
-"Execution_manifest_id": "exec_id",
-"Process": [
-    {
-        "Process_name": "process1",
-        "Mode_dependent_startup_configs": [
-            {
-                "Startup_options": [
-                    {
-                        "Option_kind": "commandLineShortForm",
-                        "Option_name": "EM_test_process",
-                        "Option_arg": "inputfile_1"
-                    }
-                ],
-                "FunctionGroupDependencies": [
-                    {
-                        "Function_group": "FG_1",
-                         "Modes": [
-                            {"Mode":"Running"},
-                            {"Mode":"on"}
-
-                        ]
-                    }
-                ]
-            }
-        ]
-        
-    }
-]
-}
+	"Execution_manifest": {
+		"Execution_manifest_id": "exec_id",
+		"Process": [
+		    {
+		        "Process_name": "process1",
+		        "Mode_dependent_startup_configs": [
+		            {
+		                "Startup_options": [
+		                    {
+		                        "Option_kind": "commandLineShortForm",
+		                        "Option_name": "EM_test_process",
+		                        "Option_arg": "inputfile_1"
+		                    }
+		                ],
+		                "FunctionGroupDependencies": [
+		                    {
+		                        "Function_group": "FG_1",
+		                         "Modes": "Running,On"
+		                    }
+		                ]
+		            }
+		        ]
+		        
+		    }
+		]
+	}
 }*/

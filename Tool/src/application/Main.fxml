@@ -13,7 +13,7 @@
             <Font name="Bell MT Bold" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="35.0" layoutY="300.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="330.0" text="Modify Execution Manifest" textAlignment="CENTER" textFill="#185cd9">
+      <Button disable="true" layoutX="35.0" layoutY="300.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="330.0" text="Modify Execution Manifest" textAlignment="CENTER" textFill="#185cd9">
          <font>
             <Font name="Bell MT Bold" size="15.0" />
          </font>

@@ -115,8 +115,8 @@ public class Node {
         return Res;
 	}
 	public static Node GUIToTree(String manifest_id,ArrayList<Accordion> process_list,ArrayList<String> process_name) {
-		Node root = new Node(null,"root");  
-		Node current = root;
+		Node root = new Node(null,"");  
+		Node current = root.addNode(new Node(root,"Execution_manifest"));
 		current.addNode(new Node(current,"Execution_manifest_id",manifest_id));
 		current = current.addNode(new Node(current,"Process"));
 		for(int i=0;i<process_list.size();i++) {
@@ -161,5 +161,35 @@ public class Node {
 		}
 		current = current.getParent();
 		return root;
+	}
+	public static String TreeToJSON(String Data,ArrayList<Node> row,int lvl) {
+		for(Node node:row) {
+			//Value
+			if((!node.getTag().equals(""))&&node.getVal()!=null) {		
+				for(int i=0;i<lvl;i++)Data+="\t";
+				Data+="\""+node.getTag()+"\": \""+node.getVal()+"\"";
+			}
+			//ArrayElement
+			else if(node.getTag().equals("")){		
+				for(int i=0;i<lvl;i++)Data+="\t";
+				Data+="{\n";
+				Data = TreeToJSON(Data,node.getChilds(),lvl+1);
+				for(int i=0;i<lvl;i++)Data+="\t";
+				Data+="}";			
+			}
+			//Either Array Or Single Element
+			else {			
+				for(int i=0;i<lvl;i++)Data+="\t";
+				Data+="\""+node.getTag()+"\": ";
+				//which ? Array Or Single Element
+				Data+=(node.getChilds().get(0).getTag()=="")? "[\n":"{\n";
+				Data = TreeToJSON(Data,node.getChilds(),lvl+1);
+				for(int i=0;i<lvl;i++)Data+="\t";
+				Data+=(node.getChilds().get(0).getTag()=="")? "]":"}";
+			}
+			if(row.indexOf(node)!=row.size()-1)Data+=",";
+			Data+="\n";
+		}
+		return Data;
 	}
 }

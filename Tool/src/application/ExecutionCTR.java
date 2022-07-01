@@ -1,5 +1,8 @@
 package application;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
@@ -8,13 +11,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
 
 public class ExecutionCTR {
 	
@@ -32,7 +34,8 @@ public class ExecutionCTR {
 	public HBox indicator;
 	public TextField p_name;
 	public TextField exec_id;
-
+	
+	public FileChooser FC = new FileChooser();
 	public ArrayList<Accordion> process_list = new ArrayList<>();
 	public ArrayList<String> process_name = new ArrayList<>();
 
@@ -228,11 +231,23 @@ public class ExecutionCTR {
 		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
 				Integer.toString(current+1) +" of "+Integer.toString(process_list.size()));
 	}
-	public void Save(ActionEvent e) {
+	public void Save(ActionEvent e) throws IOException {
 		Node JSONTree = Node.GUIToTree(exec_id.getText(),process_list, process_name);
-		//Now we hopefully have the tree, make it json and save it(Save As)
-		//Further Steps Is 
-		//1- Check Empty Fields
-		//2- Implement Modify Manifest(Save Only)
+		String Data = "";
+		ArrayList<Node> row = new ArrayList<>();
+		row.add(JSONTree);
+		Data = Node.TreeToJSON(Data,row, 0);
+	
+		FC.setTitle("Save File As");
+		FC.setInitialFileName(JSONTree.getChilds().get(0).getChilds().get(0).getVal());
+		FC.getExtensionFilters().clear();
+		FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File","*.JSON"));			
+		File myObj = FC.showSaveDialog(Main.getPrimaryStage());
+		if(myObj!=null) {
+			PrintWriter myWriter = new PrintWriter(myObj);
+			myWriter.println(Data);
+			myWriter.close();
+		}
+		Controller.getSecondaryStage().close();
 	}
 }
