@@ -163,4 +163,4 @@ public:
     }
 };
 
-#endif
+#endif // _SUBSCRIBER_FILE_H_

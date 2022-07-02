@@ -103,4 +103,4 @@ public:
 	void CloseSocket();
 };
 
-#endif
+#endif // CCLIENT_H

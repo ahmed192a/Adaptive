@@ -29,5 +29,5 @@ enum error_kind
 };
 
 
-#endif
+#endif // ERRORS_H
 

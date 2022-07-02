@@ -15,4 +15,4 @@ namespace ara
 
     }
 }
-#endif
+#endif // ARA_CORE_H_

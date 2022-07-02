@@ -115,4 +115,4 @@ private:
     }
 };
 
-#endif
+#endif // __CPP_TIMER_H_
