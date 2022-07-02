@@ -1,0 +1,22 @@
+#indicator .text{
+	-fx-text-alignment: center;
+}
+#indicator{
+	-fx-font: bold 10px italic;
+	-fx-background-color:gray;
+	-fx-text-fill:white;
+	 text-area-background: #00008b ;
+	
+}
+#indicator .content {
+   -fx-background-color: text-area-background ;
+   -fx-padding: 5 0;   
+}
+.text-area{
+	-fx-font: bold 12px normal;
+	-fx-background-color:gray;
+}
+.text-area .content {
+   -fx-background-color: #eef6f8 ;
+   -fx-text-alignment: center;
+}
