@@ -78,7 +78,7 @@ namespace ara
                 return _result;
             }
 
-            /*ServiceEntry ServiceEntry::CreateOfferServiceEntry(
+            ServiceEntry ServiceEntry::CreateOfferServiceEntry(
                 uint16_t serviceId,
                 uint16_t instanceId,
                 uint8_t majorVersion,
@@ -101,7 +101,7 @@ namespace ara
                     minorVersion);
 
                 return _result;
-            }*/
+            }
 
             ServiceEntry ServiceEntry::CreateStopOfferEntry(
                 uint16_t serviceId,

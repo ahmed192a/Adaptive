@@ -77,24 +77,7 @@ namespace ara
                     uint16_t instanceId,
                     uint8_t majorVersion,
                     uint32_t minorVersion,
-                    uint32_t ttl = InfiniteTtl){
-                        const EntryType cOfferServiceEntry = EntryType::Offering;
-
-                        if (ttl == 0)
-                        {
-                            throw std::invalid_argument("offer TTL cannot be zero.");
-                        }
-
-                        ServiceEntry _result(
-                            cOfferServiceEntry,
-                            serviceId,
-                            instanceId,
-                            ttl,
-                            majorVersion,
-                            minorVersion);
-
-                        return _result;
-                    }
+                    uint32_t ttl = InfiniteTtl);
 
                 /// @brief Stop offer a service entry factory
                 /// @param serviceId Service in interest ID

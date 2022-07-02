@@ -94,7 +94,7 @@ namespace ara
                         const uint32_t minorV = 0;
                         const uint8_t majorV = 1;
                         SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
-                        entry::ServiceEntry offer_service_e = entry::ServiceEntry::CreateOfferServiceEntry(m_service_id, m_instance_id.GetInstanceId(), majorV, minorV, 55);
+                        entry::ServiceEntry offer_service_e = entry::ServiceEntry::CreateOfferServiceEntry(m_service_id, m_instance_id.GetInstanceId(), majorV, minorV);
                         option::Ipv4EndpointOption optionA = option::Ipv4EndpointOption::CreateSdEndpoint(false, helper::Ipv4Address(127, 0, 0, 1), option::Layer4ProtocolType::Udp, m_skeleton_handle.service_portnum);
                         offer_service_e.AddFirstOption(&optionA);
                         sd_msg.AddEntry(&offer_service_e);
@@ -117,7 +117,8 @@ namespace ara
                         this->m_skeleton_udp.OpenSocket();
                         // SD_data service = {m_service_id.GetInstanceId(), getpid() ,m_skeleton_handle.service_portnum, false};
                         SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
-                        entry::ServiceEntry stop_offer_e = entry::ServiceEntry::CreateOfferServiceEntry(m_service_id, 0, majorV, minorV, stop_ttl);
+                        //entry::ServiceEntry stop_offer_e = entry::ServiceEntry::CreateOfferServiceEntry(m_service_id, 0, majorV, minorV, stop_ttl);
+                        entry::ServiceEntry stop_offer_e = entry::ServiceEntry::CreateStopOfferEntry(m_service_id, m_instance_id.GetInstanceId(), majorV, minorV);
                         sd_msg.AddEntry(&stop_offer_e);
                         std::vector<uint8_t> _payload = sd_msg.Serializer();
                         uint32_t _size = _payload.size();

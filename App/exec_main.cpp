@@ -94,6 +94,9 @@ int main(int argc, char ** argv){
     change_state("MachineFG" , "Pre-Starting-up"); 
     change_state("MachineFG" , "Starting-up");  
     int fd = open(SM_FIFO, O_RDONLY);   // open the fifo to read the state from SM
+
+
+    /***********************************************************************************/
     // get FG name and new state from SM an change the state
     int n =read(fd,&msg[0],MAX_BUF);    // read the FG state from SM
     msg[n] = '\0';                      // set the end of string
@@ -104,6 +107,11 @@ int main(int argc, char ** argv){
     // change the state of the FG to the state received from SM
     change_state(msg.substr(0, msg.find('/')), msg.substr(msg.find('/')+1, n-(msg.find('/')+1)) );  
     usleep(10000);                      // sleep for 10ms
+    /***********************************************************************************/
+
+
+
+
     change_state("FG_1" , "off");       // change the state of FG_1 to off
     cout<<"FG_1 is off"<<endl;
     change_state("MachineFG" , "off");  // change the state of MachineFG to off
