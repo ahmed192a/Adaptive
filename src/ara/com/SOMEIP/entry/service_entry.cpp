@@ -64,7 +64,7 @@ namespace ara
 
                 if (ttl == 0)
                 {
-                    throw std::invalid_argument("TTL cannot be zero.");
+                    throw std::invalid_argument("find TTL cannot be zero.");
                 }
 
                 ServiceEntry _result(
@@ -78,18 +78,18 @@ namespace ara
                 return _result;
             }
 
-            ServiceEntry ServiceEntry::CreateOfferServiceEntry(
+            /*ServiceEntry ServiceEntry::CreateOfferServiceEntry(
                 uint16_t serviceId,
                 uint16_t instanceId,
                 uint8_t majorVersion,
                 uint32_t minorVersion,
-                uint32_t ttl)
+                uint32_t ttl )
             {
                 const EntryType cOfferServiceEntry = EntryType::Offering;
 
                 if (ttl == 0)
                 {
-                    throw std::invalid_argument("TTL cannot be zero.");
+                    throw std::invalid_argument("offer TTL cannot be zero.");
                 }
 
                 ServiceEntry _result(
@@ -101,7 +101,7 @@ namespace ara
                     minorVersion);
 
                 return _result;
-            }
+            }*/
 
             ServiceEntry ServiceEntry::CreateStopOfferEntry(
                 uint16_t serviceId,

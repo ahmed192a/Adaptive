@@ -51,7 +51,7 @@ add_subdirectory(App)
 
 # option for unit 0testing
 option(build_tests "Build all the tests.")
-set(build_tests ON)
+set(build_tests OFF)
 message(STATUS "print_all_variables------------------------------------------${build_tests}")
 add_subdirectory(Testing)
 

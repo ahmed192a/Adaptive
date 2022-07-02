@@ -17,10 +17,14 @@
 using namespace std;
 using namespace ara::exec;
 Log lg;
+ExecutionClient client;
+
 int sigval = 0;
 void handle_sigterm(int sig){
     sigval = sig;
     lg.Insert("terminating","p");
+    client.ReportExecutionState(ExecutionState::kTerminating);
+
 }
 
 int main(){
@@ -37,7 +41,6 @@ int main(){
     cout<<"\n\n\t\t[process]you are in the second file"<<endl;
     cout<<"\t\t[process]process for testing"<<endl;
     cout<<"\t\t[process]creating execution client "<<endl;
-    ExecutionClient client;
     client.ReportExecutionState(ExecutionState::kRunning);
 
 

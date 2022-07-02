@@ -94,7 +94,7 @@ namespace ara
                         const uint32_t minorV = 0;
                         const uint8_t majorV = 1;
                         SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
-                        entry::ServiceEntry offer_service_e = entry::ServiceEntry::CreateOfferServiceEntry(m_service_id, m_instance_id.GetInstanceId(), majorV, minorV);
+                        entry::ServiceEntry offer_service_e = entry::ServiceEntry::CreateOfferServiceEntry(m_service_id, m_instance_id.GetInstanceId(), majorV, minorV, 55);
                         option::Ipv4EndpointOption optionA = option::Ipv4EndpointOption::CreateSdEndpoint(false, helper::Ipv4Address(127, 0, 0, 1), option::Layer4ProtocolType::Udp, m_skeleton_handle.service_portnum);
                         offer_service_e.AddFirstOption(&optionA);
                         sd_msg.AddEntry(&offer_service_e);

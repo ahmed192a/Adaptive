@@ -153,14 +153,26 @@ bool Process::start(){
 void Process::terminate(){
     //  terminate seq of process
     kill(_pid, SIGTERM);
+    int fd = open(("processes/"+name+"/execution_client_fifo").c_str(), O_RDONLY);
+    if(fd == -1) {
+        cout<< "EM:[ERROR] => can't open fifo"<<endl;
+    }else{
+        ara::exec::ExecutionState state;
+        if (read(fd, &state, sizeof(state)) == -1)
+        {
+            // TO DO
+            // Log Error : counldn't send the state to fifo
+            cout<<"EM: couldn't read the state to fifo"<<endl;
+        }
+        close(fd);
+        if(state == ara::exec::ExecutionState::kTerminating) 
+        cout<<"EM: report succeed terminatting "<<(int) state<<endl;
+    }
     wait(NULL);
+    unlink(("processes/"+name+"/execution_client_fifo").c_str());
     this->prun = false;
     this->current_config = nullptr;
     this->_pid = 0;
-    
-    // unlink(("processes/"+name+"/execution_client_fifo").c_str()); unlink in the terminating process
-
-
 }
 
 bool Process::StartupConfig::operator==(const StartupConfig &other) const
