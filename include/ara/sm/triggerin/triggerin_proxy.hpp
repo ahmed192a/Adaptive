@@ -16,8 +16,7 @@ namespace ara
             {
                 namespace fields
                 {
-                    // using Trigger = int;
-                    // using Trigger = ara::com::proxy_skeleton::proxy::Field<int>;
+
                     using UCM_Trigger = ara::com::proxy_skeleton::proxy::FieldType<ara::sm::triggerin::UCM_State, true, true, true>::type;
                     using OTA_Trigger = ara::com::proxy_skeleton::proxy::FieldType<ara::sm::triggerin::OTA_State, true, true, true>::type;
                 }

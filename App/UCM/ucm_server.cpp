@@ -1,3 +1,4 @@
+/// Includes
 #include <iostream>
 #include <string.h>
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
@@ -5,8 +6,9 @@
 #include "ara/com/SOMEIP/Message.hpp"
 #include "ara/sm/triggerin/triggerin_proxy.hpp"
 #include "ara/sm/triggerin/triggerin_types.hpp"
+#include "ara/exec/execution_client.hpp"
 
-
+/// Defines
 #define SERVER_PORT         5365
 #define SD_PORT             1690
 #define MAX_QUEUE_CLIENTS   5
@@ -14,29 +16,38 @@
 #define NUM_THREADS         3
 #define SM_TRIGGERIN_SERVICE_ID 55
 
+/// Namespaces
 using namespace std;
-// using namespace ara::sm::triggerin;
+using namespace ara::exec;
+
+/// Functions declarations
+void *pthread0(void *v_var);
+void *pthread1(void *v_var);
+void  handle_sigterm(int sig);
+
+
+/// Globale variables
+int sigval = 0;
 
 ara::com::InstanceIdentifier instance(INSTANCE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
 std::shared_ptr<ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton> server_skeleton_ptr = std::make_shared<ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton>(instance, skeleton_handle);
-
-
-void *pthread0(void *v_var);
-void *pthread1(void *v_var);
-
 // Socket for events
 CServer server_main_socket_DG(SOCK_DGRAM);
-
+// main server TCP socket for methods handle
+CServer server_main_socket(SOCK_STREAM); 
 ara::com::FindServiceHandle findhandle{SM_TRIGGERIN_SERVICE_ID, 45, SD_PORT};
-
-
-
 ara::sm::triggerin::UCM_State ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_UNKNOWN;
 std::shared_ptr<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy> triggerin_proxy_ptr;
 
 int main()
 {
+    signal(SIGTERM, handle_sigterm);
+    cout<<"\t\t[UCM]creating execution client "<<endl;
+    ExecutionClient client;
+    client.ReportExecutionState(ExecutionState::kRunning);
+
+
 
     // UDP Server sockets for events
     server_main_socket_DG.OpenSocket(SERVER_PORT);
@@ -70,11 +81,19 @@ int main()
     return 0;
 }
 
+void handle_sigterm(int sig){
+    sigval = 1;
+    cout<<"{UCM} terminating"<<endl;
+    // send termination to EM
+    server_skeleton_ptr->StopOfferService();    // stop offering service
+    server_main_socket.CloseSocket();           // close server socket
+    server_main_socket_DG.CloseSocket();        // close server socket
+
+    exit(0);
+}
+
 void *pthread0(void *v_var)
 {
-    // main server TCP socket for methods handle
-    CServer server_main_socket(SOCK_STREAM); 
-
     // TCP with client 
     cout<<"[UCM SERVER] OPEN SOCKET ON "<<endl;
     server_main_socket.OpenSocket(SERVER_PORT);
@@ -128,8 +147,6 @@ void *pthread0(void *v_var)
 }
 void *pthread1(void *v_var)
 {
-
-
     while (1)
     {
         sockaddr_in echoClntAddr;                       // Address of datagram source 

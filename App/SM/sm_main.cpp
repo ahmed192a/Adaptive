@@ -15,7 +15,6 @@
 #define SERVER_PORT         5375
 #define SD_PORT             1690
 #define INSTANCE_ID         1
-
 #define MAX_QUEUE_CLIENTS   3        
 
 ///// Namespaces
@@ -84,7 +83,7 @@ int main(){
 void handle_sigterm(int sig){
     sigval = 1;
     cout<<"{SM} terminating"<<endl;
-
+    // send termination to EM
     UCM_triggerin_skeleton_ptr->StopOfferService();    // stop offering service
     server_main_socket.CloseSocket();           // close server socket
     server_main_socket_DG.CloseSocket();        // close server socket
