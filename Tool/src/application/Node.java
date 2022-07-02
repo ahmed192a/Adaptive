@@ -114,23 +114,45 @@ public class Node {
 		}
         return Res;
 	}
-	public static Node GUIToTree(String manifest_id,ArrayList<Accordion> process_list,ArrayList<String> process_name) {
+	
+
+	
+	
+	
+	
+	public static Node GUIToTree(String manifest_id,ArrayList<Accordion> process_list,ArrayList<String> process_name,StringBuilder Error) {
 		Node root = new Node(null,"");  
 		Node current = root.addNode(new Node(root,"Execution_manifest"));
+		if(manifest_id.equals("")) {
+			Error.append("Manifest ID Missing!");
+			return null;
+		}
 		current.addNode(new Node(current,"Execution_manifest_id",manifest_id));
 		current = current.addNode(new Node(current,"Process"));
 		for(int i=0;i<process_list.size();i++) {
 			current = current.addNode(new Node(current,""));
+			if(process_name.get(i).equals("")) {
+				Error.append("Process no."+ i +" Name is Missing!");
+				return null;
+			}
+			if(process_name.indexOf(process_name.get(i))!=process_name.lastIndexOf(process_name.get(i))) {
+				Error.append("Process Name \""+ process_name.get(i) +"\" is Duplicated!");
+				return null;
+			}
 			current.addNode(new Node(current,"Process_name",process_name.get(i)));
-			current = current.addNode(new Node(current,"Mode_dependent_startup_configs"));
 			ObservableList<TitledPane> cfgs = process_list.get(i).getPanes();
+			if(cfgs.size()<1) {
+				Error.append("Process Name \""+ process_name.get(i) +"\" Should Have At Least One Startup Config!");
+				return null;
+			}
+			current = current.addNode(new Node(current,"Mode_dependent_startup_configs"));
 			for(int ii=0;ii<cfgs.size();ii++) {
 				current = current.addNode(new Node(current,""));
 				Accordion cfg =  (Accordion)cfgs.get(ii).getContent();
 				ObservableList<TitledPane> all = cfg.getPanes();				
-				current = current.addNode(new Node(current,"Startup_options"));
 				for(int iii=0;iii<all.size();iii++) {
 					if(all.get(iii).getText().charAt(0)=='f')break;
+					if(!current.getTag().equals("Startup_options"))current = current.addNode(new Node(current,"Startup_options"));
 					current = current.addNode(new Node(current,""));		
 					VBox vb = (VBox)all.get(iii).getContent();
 					String s1 = ((TextField)((HBox)vb.getChildren().get(0)).getChildren().get(1)).getText();
@@ -141,25 +163,32 @@ public class Node {
 					current.addNode(new Node(current,"Option_arg",s3));
 					current = current.getParent();
 				}
-				current = current.getParent();
-				current = current.addNode(new Node(current,"FunctionGroupDependencies"));
+				if(current.getTag().equals("Startup_options"))current = current.getParent();
 				for(int iii=0;iii<all.size();iii++) {
 					if(all.get(iii).getText().charAt(0)=='s')continue;
+					if(!current.getTag().equals("FunctionGroupDependencies"))current = current.addNode(new Node(current,"FunctionGroupDependencies"));
 					current = current.addNode(new Node(current,""));		
 					VBox vb = (VBox)all.get(iii).getContent();
 					String s1 = ((TextField)((HBox)vb.getChildren().get(0)).getChildren().get(1)).getText();
 					String s2 = ((TextField)((HBox)vb.getChildren().get(1)).getChildren().get(1)).getText();
+					if(s1.equals("")||s2.equals("")) {
+						Error.append("Process Name \""+ process_name.get(i) +"\" FG Dependency Data is Empty!");
+						return null;
+					}
 					current.addNode(new Node(current,"Function_group",s1));
 					current.addNode(new Node(current,"Modes",s2));
 					current = current.getParent();
 				}
-				current = current.getParent();
+				if(current.getTag().equals("FunctionGroupDependencies"))current = current.getParent();
+				else {
+					Error.append("Process Name \""+ process_name.get(i) +"\" Should Have At Least One FG Dependency!");
+					return null;
+				}
 				current = current.getParent();
 			}
 			current = current.getParent();
 			current = current.getParent();
 		}
-		current = current.getParent();
 		return root;
 	}
 	public static String TreeToJSON(String Data,ArrayList<Node> row,int lvl) {
@@ -182,14 +211,18 @@ public class Node {
 				for(int i=0;i<lvl;i++)Data+="\t";
 				Data+="\""+node.getTag()+"\": ";
 				//which ? Array Or Single Element
-				Data+=(node.getChilds().get(0).getTag()=="")? "[\n":"{\n";
+				Data+=(node.getChilds().size()==0||node.getChilds().get(0).getTag()!="")? "{\n":"[\n";
 				Data = TreeToJSON(Data,node.getChilds(),lvl+1);
 				for(int i=0;i<lvl;i++)Data+="\t";
-				Data+=(node.getChilds().get(0).getTag()=="")? "]":"}";
+				Data+=(node.getChilds().size()==0||node.getChilds().get(0).getTag()!="")? "}":"]";
 			}
 			if(row.indexOf(node)!=row.size()-1)Data+=",";
 			Data+="\n";
 		}
 		return Data;
 	}
+
+
+
+
 }

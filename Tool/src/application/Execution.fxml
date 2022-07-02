@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ExecutionCTR">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ExecutionCTR">
    <children>
       <HBox alignment="CENTER_LEFT" layoutX="13.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: gray;">
          <children>
@@ -26,7 +26,7 @@
             <Button fx:id="Save_Btn" mnemonicParsing="false" onAction="#Save" prefHeight="26.0" prefWidth="75.0" text="Save" />
          </children>
       </HBox>
-      <VBox fx:id="container" layoutX="14.0" layoutY="53.0" prefHeight="600.0" prefWidth="570.0" style="-fx-border-color: gray; -fx-border-width: 1; -fx-border-radius: 0;">
+      <VBox fx:id="container" layoutX="14.0" layoutY="53.0" prefHeight="550.0" prefWidth="570.0" style="-fx-border-color: gray; -fx-border-width: 1; -fx-border-radius: 0;">
          <children>
             <HBox fx:id="indicator" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="12.0" spacing="100.0" style="-fx-background-color: #e6fff5;">
                <children>
@@ -68,7 +68,7 @@
             <Accordion fx:id="process_acc" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" />
          </children>
       </VBox>
-      <HBox layoutX="14.0" layoutY="659.0" spacing="90.0">
+      <HBox layoutX="14.0" layoutY="609.0" spacing="90.0">
          <children>
             <Button fx:id="New_Proc_Btn" mnemonicParsing="false" onAction="#New_Proc" prefHeight="26.0" prefWidth="75.0" text="(+) Process" />
             <Button fx:id="Del_Proc_Btn" mnemonicParsing="false" onAction="#Del_Proc" prefHeight="26.0" prefWidth="75.0" text="(-) Process" />

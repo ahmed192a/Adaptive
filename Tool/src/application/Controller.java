@@ -19,28 +19,35 @@ public class Controller {
 	static public Stage getSecondaryStage() {return Controller.secondaryStage;}
 	
 	@FXML
-	public Button Gen_EM_Btn;
+	public Button EM_Btn;
 	public BorderPane img;
 	public ImageView iv = new ImageView(new Image("bg.png"));
 
 	public void initialize() {
     	img.setCenter(iv);
 	}
-	public void Gen_EM(ActionEvent e) throws IOException  {
-		Image icon = new Image("icon.png");
-		secondaryStage.getIcons().add(icon);
-		secondaryStage.setResizable(false);
-		Parent root = FXMLLoader.load(getClass().getResource("Execution.fxml")); 
-		Scene scene = new Scene(root);
-		secondaryStage.setScene(scene);
-		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		secondaryStage.setTitle("Execution Manifest Generator");
-		secondaryStage.setScene(scene);
-		Main.getPrimaryStage().close();
-		secondaryStage.showAndWait();
-		Main.getPrimaryStage().show();
+	public void EM(ActionEvent e) throws IOException  {
+		ChoiceDialog<String> choice = new ChoiceDialog<String>("Generate Manifest","Generate Manifest","Modify Manifest");
+		choice.setTitle("Execution Manifest");
+		choice.setContentText("Operation: ");
+		choice.setHeaderText("Select Operation");
+		choice.showAndWait();
+		if(choice.resultProperty().getValue()==null)return;
+		if(choice.resultProperty().getValue().equals("Generate Manifest")) {
+			Image icon = new Image("icon.png");
+			secondaryStage.getIcons().add(icon);
+			secondaryStage.setResizable(false);
+			Parent root = FXMLLoader.load(getClass().getResource("Execution.fxml")); 
+			Scene scene = new Scene(root);
+			secondaryStage.setScene(scene);
+			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			secondaryStage.setTitle("Execution Manifest Generator");
+			secondaryStage.setScene(scene);
+			Main.getPrimaryStage().close();
+			secondaryStage.showAndWait();
+			Main.getPrimaryStage().show();
+		}
 	}
-	
 }
 /*{
 	"Execution_manifest": {

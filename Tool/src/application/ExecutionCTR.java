@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -232,13 +233,20 @@ public class ExecutionCTR {
 				Integer.toString(current+1) +" of "+Integer.toString(process_list.size()));
 	}
 	public void Save(ActionEvent e) throws IOException {
-		Node JSONTree = Node.GUIToTree(exec_id.getText(),process_list, process_name);
+		StringBuilder Error = new StringBuilder ();		
+		Node JSONTree = Node.GUIToTree(exec_id.getText(),process_list, process_name,Error);
+		if(JSONTree == null) {
+			String msg = Error.toString();
+			Alert alert = new Alert(AlertType.WARNING,"Please Solve issues and Retry",ButtonType.OK);
+			alert.setHeaderText(msg);
+			alert.show();
+			return;
+		}
 		String Data = "";
 		ArrayList<Node> row = new ArrayList<>();
 		row.add(JSONTree);
 		Data = Node.TreeToJSON(Data,row, 0);
-	
-		FC.setTitle("Save File As");
+		FC.setTitle("Export Execution Manifest JSON");
 		FC.setInitialFileName(JSONTree.getChilds().get(0).getChilds().get(0).getVal());
 		FC.getExtensionFilters().clear();
 		FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File","*.JSON"));			
@@ -247,7 +255,11 @@ public class ExecutionCTR {
 			PrintWriter myWriter = new PrintWriter(myObj);
 			myWriter.println(Data);
 			myWriter.close();
+			Alert alert = new Alert(AlertType.INFORMATION,"Path: "+myObj.getPath(),ButtonType.OK);
+			alert.setHeaderText("File Saved Successfully");
+			alert.setTitle("Execution Manifest Exportation");
+			alert.showAndWait();
+			Controller.getSecondaryStage().close();
 		}
-		Controller.getSecondaryStage().close();
 	}
 }
