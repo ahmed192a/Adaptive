@@ -36,7 +36,7 @@ std::shared_ptr<ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton> server_sk
 CServer server_main_socket_DG(SOCK_DGRAM);
 // main server TCP socket for methods handle
 CServer server_main_socket(SOCK_STREAM); 
-ara::com::FindServiceHandle findhandle{SM_TRIGGERIN_SERVICE_ID, 45, SD_PORT};
+ara::com::FindServiceHandle findhandle{SM_TRIGGERIN_SERVICE_ID, 0, SD_PORT};
 ara::sm::triggerin::UCM_State ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_UNKNOWN;
 std::shared_ptr<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy> triggerin_proxy_ptr;
 

@@ -41,7 +41,7 @@ void *pthread1(void *v_var);
 std::shared_ptr<ara::ucm::pkgmgr::proxy::PackageManagementProxy> server_proxy_ptr ;
 
 CServer ssevent(SOCK_DGRAM);
-ara::com::FindServiceHandle findhandle{SERVICE_ID, 45, SD_PORT};
+ara::com::FindServiceHandle findhandle{SERVICE_ID, 0, SD_PORT};
 
 
 int main(void) {
