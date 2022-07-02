@@ -123,8 +123,9 @@ int main()
 void handle_sigterm(int sig){
     sigval = 1;
     cout<<"{UCM} terminating"<<endl;
-    // send termination to EM
-    server_skeleton_ptr->StopOfferService();    /* stop offering service */
+    client.ReportExecutionState(ExecutionState::kTerminating);  // report execution state to the execution server         
+    
+    // server_skeleton_ptr->StopOfferService();    /* stop offering service */
     server_main_socket.CloseSocket();           /* close server socket   */
     server_main_socket_DG.CloseSocket();        /* close server socket   */
 

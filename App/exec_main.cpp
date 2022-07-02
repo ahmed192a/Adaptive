@@ -98,23 +98,33 @@ int main(int argc, char ** argv){
 
     /***********************************************************************************/
     // get FG name and new state from SM an change the state
-    int n =read(fd,&msg[0],MAX_BUF);    // read the FG state from SM
-    msg[n] = '\0';                      // set the end of string
-    msg = msg.substr(0,n);              // remove the extra bytes from the string
-    
-    cout<<"Received From SM : "<<msg<<endl;
+    while(sys_FG["MachineFG"].current_FGS->get_states() != "off"){
+        int n= read(fd, &msg[0], MAX_BUF); // read the state from SM
+        std::string FG_name = msg.substr(0, msg.find("/")); // get the FG name
+        std::string new_state = msg.substr(msg.find("/")+1, n-(msg.find('/')+1)); // get the new state
+        change_state(FG_name, new_state); // change the state of FG
+    }
 
-    // change the state of the FG to the state received from SM
-    change_state(msg.substr(0, msg.find('/')), msg.substr(msg.find('/')+1, n-(msg.find('/')+1)) );  
-    usleep(10000);                      // sleep for 10ms
+
+    // int n =read(fd,&msg[0],MAX_BUF);    // read the FG state from SM
+    // msg[n] = '\0';                      // set the end of string
+    // msg = msg.substr(0,n);              // remove the extra bytes from the string
+    
+    // cout<<"Received From SM : "<<msg<<endl;
+
+    // // change the state of the FG to the state received from SM
+    // change_state(msg.substr(0, msg.find('/')), msg.substr(msg.find('/')+1, n-(msg.find('/')+1)) );  
+    //usleep(10000);                      // sleep for 10ms
+
+
     /***********************************************************************************/
 
 
 
 
-    change_state("FG_1" , "off");       // change the state of FG_1 to off
-    cout<<"FG_1 is off"<<endl;
-    change_state("MachineFG" , "off");  // change the state of MachineFG to off
+    // change_state("FG_1" , "off");       // change the state of FG_1 to off
+
+    // change_state("MachineFG" , "off");  // change the state of MachineFG to off
     close(fd);                          // close the fifo
     unlink(SM_FIFO);                    // delete the fifo
     cout<<"\n-------------Program Ended-------------"<<endl;
@@ -316,7 +326,7 @@ void create_manifests()
             "        \"Execution_manifest_id\": \"exec_id\",\n"
             "        \"Process\": [\n"
             "            {\n"
-            "                \"Process_name\": \"process1\",\n"
+            "                \"Process_name\": \"ota_process\",\n"
             "                \"Mode_dependent_startup_configs\": [\n"
             "                    {\n"
             "                        \"Startup_options\": [\n"
@@ -331,6 +341,12 @@ void create_manifests()
             "                                \"Function_group\": \"FG_1\",\n"
             "                                \"Modes\": [ \n"
             "                                           {\"Mode\" : \"on\"} \n"
+            "                                           ]\n"
+            "                            },\n"
+            "                            {\n"
+            "                                \"Function_group\": \"MachineFG\",\n"
+            "                                \"Modes\": [ \n"
+            "                                           {\"Mode\" : \"Running\"} \n"
             "                                           ]\n"
             "                            }\n"
             "                        ]\n"

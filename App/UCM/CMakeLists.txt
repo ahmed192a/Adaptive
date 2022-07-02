@@ -1,4 +1,4 @@
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes/UCM_SERVER)
 
 add_executable(UCM_SERVER ucm_server.cpp )
 target_compile_features(

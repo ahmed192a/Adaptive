@@ -64,10 +64,10 @@ namespace ara
                         {
                         case 0:
                             if(message.Length() > 16){
-                                trigger.HandleGet(message, cserver);
+                                trigger.HandleSet(message, cserver);
                             }
                             else{
-                                trigger.HandleSet(message, cserver);
+                                trigger.HandleGet(message, cserver);
                             }
                             // Trigger.HandleCall(message, cserver);
                             break;
@@ -94,6 +94,10 @@ namespace ara
                     {
                     }
                     ~Trigger_In_OTA_Skeleton(){};
+                    const ara::com::proxy_skeleton::ServiceId GetServiceId()
+                    {
+                        return serviceid;
+                    }
 
 
                     // Fields
@@ -109,10 +113,10 @@ namespace ara
                         {
                         case 0:
                             if(message.Length() > 16){
-                                trigger.HandleGet(message, cserver);
+                                trigger.HandleSet(message, cserver);
                             }
                             else{
-                                trigger.HandleSet(message, cserver);
+                                trigger.HandleGet(message, cserver);
                             }
                             // Trigger.HandleCall(message, cserver);
                             break;

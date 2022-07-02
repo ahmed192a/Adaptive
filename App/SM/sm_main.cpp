@@ -15,6 +15,7 @@
 #define SERVER_PORT             5375    // port for the server socket OF State Manament used with UDP and TCP sockets
 #define SD_PORT                 1690    // port of Service Discovery
 #define T_IN_UCM_INSTANCE_ID    1       // instance id Trigger in UCM service (1)
+#define T_IN_OTA_INSTANCE_ID    2       // instance id Trigger in UCM service (2)
 #define MAX_QUEUE_CLIENTS       3       // max number of clients in the queue for STREAM server socket
 
 ///// Namespaces
@@ -30,17 +31,40 @@ void *pthread1(void *v_var);
 ////// global variables
 int sigval = 0;        // signal value
 bool newState = false; // used for FSM of SM
+//// create enum for different states of the FSM
+enum class State {
+    STATE_UNKNOWN,
+    STATE_INITIAL,
+    STATE_RUNNING,
+    STATE_UPDATE,
+    STATE_STOPPED,
+    STATE_ERROR
+};
 
+State SM_State = State::STATE_UNKNOWN;
 
-
-ara::com::InstanceIdentifier instance(T_IN_UCM_INSTANCE_ID);    // instance id of Trigger in UCM service (1)
-ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle triggerin_handle{SERVER_PORT, SD_PORT};  // skeleton handle for constructor Trigger in UCM service 
+/**    UCM Trigger In Skeleton    **/
+// instance id of Trigger in UCM service (1)
+ara::com::InstanceIdentifier instance(T_IN_UCM_INSTANCE_ID);    
+// skeleton handle for constructor Trigger in UCM service
+ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle triggerin_handle{SERVER_PORT, SD_PORT};  
 // Create shared pointer object of Trigger in UCM service skeleton
 std::shared_ptr<ara::sm::triggerin::skeleton::Trigger_In_UCM_Skeleton> UCM_triggerin_skeleton_ptr = std::make_shared<ara::sm::triggerin::skeleton::Trigger_In_UCM_Skeleton>(instance, triggerin_handle); 
+
+/**     OTA Trigger In Skeleton    **/
+// instance id of Trigger in OTA service (2)
+ara::com::InstanceIdentifier instance_ota(T_IN_OTA_INSTANCE_ID);
+// skeleton handle for constructor Trigger in OTA service
+ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle triggerin_handle_ota{SERVER_PORT, SD_PORT};
+// Create shared pointer object of Trigger in OTA service skeleton
+std::shared_ptr<ara::sm::triggerin::skeleton::Trigger_In_OTA_Skeleton> OTA_triggerin_skeleton_ptr = std::make_shared<ara::sm::triggerin::skeleton::Trigger_In_OTA_Skeleton>(instance_ota, triggerin_handle_ota);
+
 
 CServer server_main_socket_DG(SOCK_DGRAM);  // socket for events (UDP)
 CServer server_main_socket(SOCK_STREAM);    // socket for methods handle (TCP)
 ExecutionClient client;
+std::shared_ptr<ara::exec::StateClient> state_client_ptr;
+
 
 /**
  * @brief Main code for State management
@@ -53,7 +77,7 @@ int main(){
     signal(SIGTERM, handle_sigterm);                        // register signal handler
     client.ReportExecutionState(ExecutionState::kRunning);  // report execution state to the execution server
 
-    StateClient sm_client;      // change Function Group state
+    state_client_ptr = std::make_shared<ara::exec::StateClient>();
 
     
 
@@ -75,24 +99,6 @@ int main(){
         exit(-1);
     }
 
-    FunctionGroupState::CtorToken token;
-    token.fg_name = "FG_1";
-    token.c_state = "on";
-    FunctionGroupState FGS(std::move(token));
-    std::cout<<"[SM] FGS created "<<endl;
-    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = sm_client.SetState(FGS);
-    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
-    std::cout<<"[SM] state changed"<<endl;
-    cout<<"\t\t[SM] result "<<var.index()<<endl;
-    // get<1>(var).get();
-    while (1)
-    {
-        cout<<"\t\t[SM] running"<<endl;
-        usleep(3000);
-        if(sigval) break;
-    }
-    cout<<"\t[SM]finish reporting running to EM\n"<<endl;
-
 
     pthread_exit(NULL);                                     // exit thread
 
@@ -108,9 +114,8 @@ int main(){
 void handle_sigterm(int sig){
     sigval = 1;                                 // set signal value will be used as flag
     cout<<"{SM} terminating"<<endl;            
-    // TODO: send termination to EM    
     client.ReportExecutionState(ExecutionState::kTerminating);  // report execution state to the execution server         
-    UCM_triggerin_skeleton_ptr->StopOfferService();     // stop offering service
+    // UCM_triggerin_skeleton_ptr->StopOfferService();     // stop offering service
     server_main_socket.CloseSocket();                   // close server socket
     server_main_socket_DG.CloseSocket();                // close server socket
     exit(0);                                            // exit program
@@ -133,7 +138,22 @@ void *pthread0(void *v_var){
 
     cout<<"[SM] Offering service to the SD"<<endl;      
     UCM_triggerin_skeleton_ptr->OfferService();         // offering service to the SD
-    cout<<"[SM] Offered service to the SD"<<endl;         
+    OTA_triggerin_skeleton_ptr->OfferService();         // offering service to the SD
+    cout<<"[SM] Offered service to the SD"<<endl;  
+
+
+    // Create Function group state for MachineFG to Running state
+    FunctionGroupState::CtorToken token;
+    token.fg_name = "MachineFG";
+    token.c_state = "Running";
+    FunctionGroupState FGS(std::move(token));
+    std::cout<<"[SM] FGS created "<<endl;
+    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+    std::cout<<"[SM] state changed"<<endl;
+    cout<<"\t\t[SM] result "<<var.index()<<endl;
+    SM_State = State::STATE_INITIAL;
+
 
 
     while(1){
@@ -168,13 +188,45 @@ void *pthread0(void *v_var){
             {
                 UCM_triggerin_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
             }
+            else if(someip_msg.MessageId().serivce_id == OTA_triggerin_skeleton_ptr->GetServiceId())
+            {
+                OTA_triggerin_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
+            }
+            else
+            {
+                cout << "Unknown service id" << endl;
+            }
         }
         cout<< "finish request \n";
 
 
         /*******************************          FSM           **************************************/
+        if(SM_State == State::STATE_INITIAL && UCM_triggerin_skeleton_ptr->trigger.get_event() == ara::sm::triggerin::UCM_State::UCM_STATE_INITIALIZED)
+        {
+            FunctionGroupState::CtorToken token;
+            token.fg_name = "FG_1";
+            token.c_state = "on";
+            FunctionGroupState FGS(std::move(token));
+            std::cout<<"[SM] FGS created "<<endl;
+            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+            std::cout<<"[SM] state changed"<<endl;
+            SM_State = State::STATE_RUNNING;
+        }
+        else if (SM_State == State::STATE_RUNNING && OTA_triggerin_skeleton_ptr->trigger.get_event() == ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED){
+            // used for OTA
+            cout<<"[SM] OTA_STATE_INITIALIZED"<<endl;
+            SM_State = State::STATE_UPDATE;
+            FunctionGroupState::CtorToken token;
+            token.fg_name = "MachineFG";
+            token.c_state = "off";
+            FunctionGroupState FGS(std::move(token));
+            std::cout<<"[SM] FGS created "<<endl;
+            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+            std::cout<<"[SM] state changed"<<endl;
 
-
+        }
 
         /*******************************        END OF FSM      **************************************/
 

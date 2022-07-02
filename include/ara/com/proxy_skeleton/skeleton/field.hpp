@@ -74,7 +74,6 @@ namespace ara
 
                         ara::com::Deserializer dser;
                         this->event_data = dser.deserialize<T>(_data, 0);
-
                         // Setpayload in message
                         R_msg.SetPayload(_data);
                         _data = R_msg.Serializer();

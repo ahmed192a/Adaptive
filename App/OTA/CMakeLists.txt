@@ -1,5 +1,5 @@
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes/ota_process)
 add_executable(
     ota_process
     ota_main.cpp

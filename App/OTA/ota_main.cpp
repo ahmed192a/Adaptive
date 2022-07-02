@@ -19,6 +19,7 @@
 #include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 #include "ara/ucm/pkgmgr/packagemanagement_proxy.hpp"
 #include "ara/exec/execution_client.hpp"
+#include "ara/sm/triggerin/triggerin_proxy.hpp"
 
 
 //// Defines
@@ -27,10 +28,11 @@
 
 
 // ara::com related defines
-#define SD_PORT             1690
-#define PKG_SERVICE_ID      45
-#define UDP_PORT_EVENTS     7575
-#define NUM_THREADS         3
+#define SD_PORT                         1690
+#define PKG_SERVICE_ID                  45
+#define SM_OTA_TRIGGERIN_SERVICE_ID     56
+#define UDP_PORT_EVENTS                 7575
+#define NUM_THREADS                     3
 
 //// Namespaces
 using namespace OTA;
@@ -44,11 +46,19 @@ void *pthread1(void *v_var);
 
 //// Globale variables
 CServer ssevent(SOCK_DGRAM);
+
+/** pakage management proxy **/
 ara::com::FindServiceHandle findhandle{PKG_SERVICE_ID, 0, SD_PORT};
 std::shared_ptr<ara::ucm::pkgmgr::proxy::PackageManagementProxy> server_proxy_ptr;
+/** OTA Trigger in Proxy    **/
+ara::com::FindServiceHandle findhandle_ota_triggerin{SM_OTA_TRIGGERIN_SERVICE_ID, 0, SD_PORT};
+std::shared_ptr<ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy> server_proxy_ota_triggerin_ptr;
+
+ara::sm::triggerin::OTA_State ota_state_g = ara::sm::triggerin::OTA_State::OTA_STATE_UNKNOWN;
+
+
 ExecutionClient client;                                 // create execution client
 int sigval = 0;
-
 
 int main(void) {
     signal(SIGTERM, handle_sigterm);                        // register signal handler
@@ -61,13 +71,16 @@ int main(void) {
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (ara::ucm::pkgmgr::proxy::PackageManagementProxy::FindService(findhandle)[0]);
     hand.UDP_port = UDP_PORT_EVENTS;
     server_proxy_ptr = std::make_shared<ara::ucm::pkgmgr::proxy::PackageManagementProxy>(hand);
+    server_proxy_ota_triggerin_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy>(ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy::FindService(findhandle_ota_triggerin)[0]);
 
     cout<<"[OTA] Starting OTA process"<<endl;
     std::cout << "handle : " << hand.m_server_com.port_number << " " << hand.m_server_com.service_id << std::endl;
     std::cout << "\t\t\t[CLIENT] starting\n";
+    ota_state_g = ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED;
+    server_proxy_ota_triggerin_ptr->trigger.Set(ota_state_g);
 
 
-    /*thread*/
+    /* thread */
     pthread_t threads[NUM_THREADS];
 
     int th1, th2;
