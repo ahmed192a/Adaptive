@@ -15,7 +15,7 @@
 #define SM_TRIGGERIN_SERVICE_ID 55
 
 using namespace std;
-using namespace ara::sm::triggerin;
+// using namespace ara::sm::triggerin;
 
 ara::com::InstanceIdentifier instance(INSTANCE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
@@ -32,8 +32,8 @@ ara::com::FindServiceHandle findhandle{SM_TRIGGERIN_SERVICE_ID, 45, SD_PORT};
 
 
 
-UCM_State ucm_state_g = UCM_State::UCM_STATE_UNKNOWN;
-std::shared_ptr<ara::sm::triggerin::proxy::Trigger_In_Proxy<UCM_State>> triggerin_proxy_ptr;
+ara::sm::triggerin::UCM_State ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_UNKNOWN;
+std::shared_ptr<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy> triggerin_proxy_ptr;
 
 int main()
 {
@@ -41,9 +41,9 @@ int main()
     // UDP Server sockets for events
     server_main_socket_DG.OpenSocket(SERVER_PORT);
     server_main_socket_DG.BindServer();
-    ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (ara::sm::triggerin::proxy::Trigger_In_Proxy<UCM_State>::FindService(findhandle)[0]);
+    ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy::FindService(findhandle)[0]);
     hand.UDP_port = SERVER_PORT;
-    triggerin_proxy_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_Proxy<UCM_State>>(hand);
+    triggerin_proxy_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy>(hand);
 
 
     pthread_t threads[NUM_THREADS];
@@ -83,7 +83,7 @@ void *pthread0(void *v_var)
 
     cout<<"[UCM SERVER] OFFER SERVER "<<endl;
     server_skeleton_ptr->OfferService();
-    ucm_state_g = UCM_State::UCM_STATE_INITIALIZED; // set ucm state to initialized
+    ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_INITIALIZED; // set ucm state to initialized
     triggerin_proxy_ptr->trigger.Set(ucm_state_g);  // set triggerin proxy state to initialized to inform SM
 
     cout << "\t[SERVER]  Ready" << endl;

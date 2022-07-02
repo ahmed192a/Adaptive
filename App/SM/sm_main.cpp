@@ -36,7 +36,7 @@ bool newState = false; // used for FSM of SM
 
 ara::com::InstanceIdentifier instance(INSTANCE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle triggerin_handle{SERVER_PORT, SD_PORT};
-std::shared_ptr<ara::sm::triggerin::skeleton::Trigger_In_Skeleton<UCM_State>> UCM_triggerin_skeleton_ptr = std::make_shared<ara::sm::triggerin::skeleton::Trigger_In_Skeleton<UCM_State>>(instance, triggerin_handle);
+std::shared_ptr<ara::sm::triggerin::skeleton::Trigger_In_UCM_Skeleton> UCM_triggerin_skeleton_ptr = std::make_shared<ara::sm::triggerin::skeleton::Trigger_In_UCM_Skeleton>(instance, triggerin_handle);
 
 CServer server_main_socket_DG(SOCK_DGRAM);
 CServer server_main_socket(SOCK_STREAM); 
@@ -84,6 +84,11 @@ int main(){
 void handle_sigterm(int sig){
     sigval = 1;
     cout<<"{SM} terminating"<<endl;
+
+    UCM_triggerin_skeleton_ptr->StopOfferService();    // stop offering service
+    server_main_socket.CloseSocket();           // close server socket
+    server_main_socket_DG.CloseSocket();        // close server socket
+    exit(0);
 }
 
 void *pthread0(void *v_var){
