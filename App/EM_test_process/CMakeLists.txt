@@ -1,5 +1,5 @@
 #################################### test process to test EM
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes/process1)
 add_executable(
     process1
     test_process.cpp 

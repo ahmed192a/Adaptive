@@ -16,7 +16,6 @@
 #include "ara/exec/execution_client.hpp"
 #include "ara/exec/function_group.hpp"
 #include <memory>
-#define  W_DIR "processes"
 
 namespace ara
 {

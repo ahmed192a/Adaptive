@@ -18,33 +18,42 @@
 #include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 #include "ara/ucm/pkgmgr/packagemanagement_proxy.hpp"
+#include "ara/exec/execution_client.hpp"
 
+
+//// Defines
 #define META_DATA_FILE_PATH "./meta-data.dat"
-#define FREQUENCY 10 // 10 seconds
+#define FREQUENCY 10        // 10 seconds
 
 
 // ara::com related defines
-#define SD_PORT 1690
-#define SERVICE_ID 45
-#define UDP_PORT_EVENTS  7575
-#define NUM_THREADS 3
+#define SD_PORT             1690
+#define PKG_SERVICE_ID      45
+#define UDP_PORT_EVENTS     7575
+#define NUM_THREADS         3
 
+//// Namespaces
 using namespace OTA;
+using namespace ara::exec;
 
-
-void Event_Handler();
+//// Functions declarations
+void  handle_sigterm(int sig);  
 void *pthread0(void *v_var);
 void *pthread1(void *v_var);
 
 
-
-std::shared_ptr<ara::ucm::pkgmgr::proxy::PackageManagementProxy> server_proxy_ptr ;
-
+//// Globale variables
 CServer ssevent(SOCK_DGRAM);
-ara::com::FindServiceHandle findhandle{SERVICE_ID, 0, SD_PORT};
+ara::com::FindServiceHandle findhandle{PKG_SERVICE_ID, 0, SD_PORT};
+std::shared_ptr<ara::ucm::pkgmgr::proxy::PackageManagementProxy> server_proxy_ptr;
+ExecutionClient client;                                 // create execution client
+int sigval = 0;
 
 
 int main(void) {
+    signal(SIGTERM, handle_sigterm);                        // register signal handler
+    cout<<"\t\t[OTA]creating execution client "<<endl;
+    client.ReportExecutionState(ExecutionState::kRunning);  // report execution state to the execution server
 
     ssevent.OpenSocket(UDP_PORT_EVENTS);
     ssevent.BindServer();
@@ -53,12 +62,10 @@ int main(void) {
     hand.UDP_port = UDP_PORT_EVENTS;
     server_proxy_ptr = std::make_shared<ara::ucm::pkgmgr::proxy::PackageManagementProxy>(hand);
 
-
+    cout<<"[OTA] Starting OTA process"<<endl;
     std::cout << "handle : " << hand.m_server_com.port_number << " " << hand.m_server_com.service_id << std::endl;
+    std::cout << "\t\t\t[CLIENT] starting\n";
 
-    std::cout << "\t\t\t[CLIENT] starting\n";
-    sleep(2);
-    std::cout << "\t\t\t[CLIENT] starting\n";
 
     /*thread*/
     pthread_t threads[NUM_THREADS];
@@ -86,6 +93,20 @@ int main(void) {
 
 }
 
+/////// Functions definitions
+/**
+ * @brief Signal handler for SIGTERM
+ * @param sig signal number
+ * @return void
+ */
+void handle_sigterm(int sig){
+    sigval = 1;                                 // set signal value will be used as flag
+    cout<<"{SM} terminating"<<endl;            
+    // TODO: send termination to EM   
+
+
+    exit(0);
+}
 
 
 void *pthread0(void *v_var) {
@@ -218,45 +239,43 @@ void *pthread0(void *v_var) {
 void *pthread1(void *v_var)
 {
     while (1)
-        Event_Handler();
-}
-
-void Event_Handler()
-{
-    sockaddr_in echoClntAddr;                    /* Address of datagram source */
-    unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
-
-     // ara::com::proxy_skeleton::event_info evr;
-    std::vector<uint8_t> msg;
-    uint32_t msg_size;
-
-    ssevent.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
-    msg.reserve(msg_size);
-    ssevent.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
-    printf("\t[CLIENT]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
-    fflush(stdout);
-
-    ara::com::proxy_skeleton::Client_udp_Info cudp;
-    cudp.port = echoClntAddr.sin_port;
-    cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
-    ara::com::SOMEIP_MESSAGE::Message Nmsg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
-    msg = Nmsg.GetPayload();
-
-    switch (Nmsg.MessageId().serivce_id)
     {
-    case SERVICE_ID:
-        switch (Nmsg.MessageId().method_id & 0x7FFF)
+        sockaddr_in echoClntAddr;                    /* Address of datagram source */
+        unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
+
+        // ara::com::proxy_skeleton::event_info evr;
+        std::vector<uint8_t> msg;
+        uint32_t msg_size;
+
+        ssevent.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
+        msg.reserve(msg_size);
+        ssevent.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+        printf("\t[CLIENT]  ->> Handling client %s %d\n", inet_ntoa(echoClntAddr.sin_addr), echoClntAddr.sin_port);
+        fflush(stdout);
+
+        ara::com::proxy_skeleton::Client_udp_Info cudp;
+        cudp.port = echoClntAddr.sin_port;
+        cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
+        ara::com::SOMEIP_MESSAGE::Message Nmsg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
+        msg = Nmsg.GetPayload();
+
+        switch (Nmsg.MessageId().serivce_id)
         {
-        case 0:
-            server_proxy_ptr->CurrentStatus.handlecall(msg);
-            std::cout << "NEW EVENT1 : " << server_proxy_ptr->CurrentStatus.get_value() << std::endl;
+        case PKG_SERVICE_ID:
+            switch (Nmsg.MessageId().method_id & 0x7FFF)
+            {
+            case 0:
+                server_proxy_ptr->CurrentStatus.handlecall(msg);
+                std::cout << "NEW EVENT1 : " << server_proxy_ptr->CurrentStatus.get_value() << std::endl;
+                break;
+            default:
+                break;
+            }
             break;
+
         default:
             break;
         }
-        break;
-
-    default:
-        break;
     }
 }
+

@@ -1,5 +1,5 @@
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../processes/sm_process)
 add_executable(
     sm_process
     sm_main.cpp

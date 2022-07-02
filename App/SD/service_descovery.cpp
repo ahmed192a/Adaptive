@@ -19,21 +19,31 @@
 #include "color/color.hpp"
 #include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
+#include "ara/exec/execution_client.hpp"
 
 #define CSV_FILE "data.csv"
 
 using namespace std;
+using namespace ara::exec;
 
-int portNumber = 1690;
-SD_data receive; // global variable to store the data received from the server
-CSV   csv;
-
+//// Functions declarations
+void  handle_sigterm(int sig);  
 void *pthread0(void *); 
 void *pthread1(void *);
 
+//// Globale variables
+int sigval = 0;
+int portNumber = 1690;
+SD_data receive; // global variable to store the data received from the server
+CSV   csv;
+ExecutionClient client;
+
 int main()
 {
-    cout << "SD\n";
+    cout<<endl<<"[SD]"<<std::string(get_current_dir_name())<<endl;
+    cout << "SD"<<endl;
+    signal(SIGTERM, handle_sigterm);
+    client.ReportExecutionState(ExecutionState::kRunning);
 
     pthread_t threads[2]; // create two threads
     int i = 0;            // thread number
@@ -59,12 +69,29 @@ int main()
     return 0;
 }
 
+
+/////// Functions definitions
+/**
+ * @brief Signal handler for SIGTERM
+ * @param sig signal number
+ * @return void
+ */
+void handle_sigterm(int sig){
+    sigval = 1;                                 // set signal value will be used as flag
+    cout<<"{SM} terminating"<<endl;            
+    // TODO: send termination to EM   
+    client.ReportExecutionState(ExecutionState::kTerminating);
+    exit(0);
+}
+
+
 /**
  * @brief listen to all clients and find the requested service
  * @return void* 
  */
 void *pthread1(void *)
 {
+    cout<<"[SD] thread 1 is running"<<endl;
     vector<SD_data> data;      // vector to store the data from the csv file
     CServer s1(SOCK_STREAM);   // create a server object
     int service_id;            // service id
@@ -126,6 +153,7 @@ void *pthread1(void *)
  */
 void *pthread0(void *)
 {
+    cout<<"[SD] thread 0 is running"<<endl;
     CServer s1(SOCK_DGRAM);    // create a server object
     s1.OpenSocket(portNumber); // open a socket on port 1690
     s1.BindServer();           // bind the server to the port

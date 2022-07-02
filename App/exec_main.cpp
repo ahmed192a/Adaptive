@@ -91,6 +91,7 @@ int main(int argc, char ** argv){
 
    
    // change the state of MachineFG to Starting-up to start the state management process
+    change_state("MachineFG" , "Pre-Starting-up"); 
     change_state("MachineFG" , "Starting-up");  
     int fd = open(SM_FIFO, O_RDONLY);   // open the fifo to read the state from SM
     // get FG name and new state from SM an change the state
@@ -258,6 +259,9 @@ void create_manifests()
             "                      \"Mode\": \"off\"\n"
             "                    },\n"
             "                    {\n"
+            "                      \"Mode\": \"Pre-Starting-up\"\n"
+            "                    },\n"
+            "                    {\n"
             "                      \"Mode\": \"Starting-up\"\n"
             "                    },\n"
             "                    {\n"
@@ -319,6 +323,31 @@ void create_manifests()
             "                                \"Function_group\": \"FG_1\",\n"
             "                                \"Modes\": [ \n"
             "                                           {\"Mode\" : \"on\"} \n"
+            "                                           ]\n"
+            "                            }\n"
+            "                        ]\n"
+            "                    }\n"
+            "                ]\n"
+            "                \n"
+            "            },\n"
+            "            {\n"
+            "                \"Process_name\": \"SD\",\n"
+            "                \"Mode_dependent_startup_configs\": [\n"
+            "                    {\n"
+            "                        \"Startup_options\": [\n"
+            "                            {\n"
+            "                                \"Option_kind\": \"commandLineShortForm\",\n"
+            "                                \"Option_name\": \"filename\",\n"
+            "                                \"Option_arg\": \"inputfile_1\"\n"
+            "                            }\n"
+            "                        ],\n"
+            "                        \"FunctionGroupDependencies\": [\n"
+            "                            {\n"  //
+            "                                \"Function_group\": \"MachineFG\",\n"
+            "                                \"Modes\": [ \n"
+            "                                               {\"Mode\" : \"Pre-Starting-up\"}, \n"
+            "                                               {\"Mode\" : \"Starting-up\"}, \n"
+            "                                               {\"Mode\" : \"Running\"} \n"
             "                                           ]\n"
             "                            }\n"
             "                        ]\n"

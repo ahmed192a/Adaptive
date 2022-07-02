@@ -40,21 +40,24 @@ std::shared_ptr<ara::sm::triggerin::skeleton::Trigger_In_UCM_Skeleton> UCM_trigg
 
 CServer server_main_socket_DG(SOCK_DGRAM);  // socket for events (UDP)
 CServer server_main_socket(SOCK_STREAM);    // socket for methods handle (TCP)
-
+ExecutionClient client;
 
 /**
  * @brief Main code for State management
  * @return 0 if successful
  */
 int main(){
-    signal(SIGTERM, handle_sigterm);                        // register signal handler
-
     // Print the current directory will be used later to load the configuration files
     cout<<endl<<"[SM]"<<std::string(get_current_dir_name())<<endl;
+    
+    signal(SIGTERM, handle_sigterm);                        // register signal handler
+    client.ReportExecutionState(ExecutionState::kRunning);  // report execution state to the execution server
+
+    StateClient sm_client;      // change Function Group state
+
+    
 
     cout<<"\t\t[SM]creating execution client "<<endl;
-    ExecutionClient client;                                 // create execution client
-    client.ReportExecutionState(ExecutionState::kRunning);  // report execution state to the execution server
 
 
     server_main_socket_DG.OpenSocket(SERVER_PORT);          // open socket for events (UDP)
@@ -72,6 +75,25 @@ int main(){
         exit(-1);
     }
 
+    FunctionGroupState::CtorToken token;
+    token.fg_name = "FG_1";
+    token.c_state = "on";
+    FunctionGroupState FGS(std::move(token));
+    std::cout<<"[SM] FGS created "<<endl;
+    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = sm_client.SetState(FGS);
+    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+    std::cout<<"[SM] state changed"<<endl;
+    cout<<"\t\t[SM] result "<<var.index()<<endl;
+    // get<1>(var).get();
+    while (1)
+    {
+        cout<<"\t\t[SM] running"<<endl;
+        usleep(3000);
+        if(sigval) break;
+    }
+    cout<<"\t[SM]finish reporting running to EM\n"<<endl;
+
+
     pthread_exit(NULL);                                     // exit thread
 
     return 0;
@@ -86,7 +108,8 @@ int main(){
 void handle_sigterm(int sig){
     sigval = 1;                                 // set signal value will be used as flag
     cout<<"{SM} terminating"<<endl;            
-    // TODO: send termination to EM               
+    // TODO: send termination to EM    
+    client.ReportExecutionState(ExecutionState::kTerminating);  // report execution state to the execution server         
     UCM_triggerin_skeleton_ptr->StopOfferService();     // stop offering service
     server_main_socket.CloseSocket();                   // close server socket
     server_main_socket_DG.CloseSocket();                // close server socket
@@ -100,7 +123,7 @@ void handle_sigterm(int sig){
  * @return void*    
  */
 void *pthread0(void *v_var){
-    StateClient sm_client;      // change Function Group state
+    
 
     cout<<"{SM} pthread0"<<endl;
     cout<<"[SM SERVER] OPEN SOCKET ON "<<endl;
@@ -160,7 +183,7 @@ void *pthread0(void *v_var){
     server_main_socket.CloseSocket();           // close server socket
 }
 
-
+/*
 int main0()
 {
     cout<<endl<<"[SM]"<<std::string(get_current_dir_name())<<endl;
@@ -198,7 +221,7 @@ int main0()
     cout<<"\t[SM]finish reporting running to EM\n"<<endl;
     return 0;
 }
-
+*/
 
 
 /**

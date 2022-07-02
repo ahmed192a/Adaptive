@@ -17,6 +17,9 @@
 #include <sys/wait.h>
 #include "sys/stat.h"
 #include <signal.h>
+
+#define  W_DIR "processes/"
+
 // #include <string>
 using namespace ara::exec::parser;
 using namespace std;
@@ -51,13 +54,17 @@ bool Process::start(){
     //TRACE_INFO("EM: Starting executable " << executable_);
     cout<<"EM: Starting executable "+name<<endl;
 
-    if (mkfifo("processes/execution_client_fifo", 0666) == -1)
+    if (mkfifo(("processes/"+name+"/execution_client_fifo").c_str(), 0666) == -1)
     {
         if (errno != EEXIST)
         {
             // TO DO
             // Log Error : coundn't create fifo
+            cout<<"EM: couldn't create fifo"<<endl;
+            
         }
+        cout<<"EM: fifo already exists"<<endl;
+        return false;
     }
     int pid = fork();
     if (pid < 0) {
@@ -69,9 +76,9 @@ bool Process::start(){
         // The child process
 
         // Change working directory to application root
-        if (chdir(W_DIR) != 0) {
+        if (chdir((W_DIR+name).c_str()) != 0) {
             //TRACE_FATAL("EM: chdir() failed for dir " << childWorkDir << ",errno: " << errno);
-            cout<<"EM(child): chdir() failed for dir " << W_DIR << ",errno: " << errno<<endl;
+            cout<<"EM(child): chdir() failed for dir " << W_DIR+name << ",errno: " << errno<<endl;
         } else {
             // Set environment variables
             //for (const auto& variable : environment_) {
@@ -80,7 +87,7 @@ bool Process::start(){
 
             // Redirect terminal output for application to /var/redirected/<application_name_>
             // utility::RedirectProcessOutput(("/var/redirected/"+name).c_str());
-            freopen (("redirected/"+name+".txt").c_str(), "w", stdout);
+            freopen (("../redirected/"+name+".txt").c_str(), "w", stdout);
 
             //cout<<"EM(child): in dir "<<get_current_dir_name()<<endl;
             // Execute the executable with the specified arguments
@@ -88,12 +95,12 @@ bool Process::start(){
                 &name[0],
                 NULL
             };
+            cout<<"[EM] child: executing "<<name<<endl;
             execve(args[0], &args[0],NULL);
 
             // When execv() is successful, the current process is replaced by the child.
             // Otherwise, the following code will be reached.
-            //TRACE_FATAL("EM: execv() failed for executable " << childPath<< ", errno: " << errno);
-            cout<<"EM(child): execv() failed for executable " << name.c_str() << ", errno: " << errno<<endl;
+            cout<<"EM(child): execv() failed for executable " << name << ", errno: " << errno<<endl;
         }
 
 
@@ -104,20 +111,22 @@ bool Process::start(){
     } else if (pid > 0) {
         // The parent process
 
-   
+        // print current directory
+        cout<<"EM(parent): in dir "<<get_current_dir_name()<<endl;
         // get file discreptor
-        int fd = open("processes/execution_client_fifo", O_RDONLY);
+        int fd = open(("processes/"+name+"/execution_client_fifo").c_str(), O_RDONLY);
         if(fd == -1) {
-            cout<< "EM:[ERROR] => can't open fifo";
+            cout<< "EM:[ERROR] => can't open fifo"<<endl;
         }else{
             ara::exec::ExecutionState state;
             if (read(fd, &state, sizeof(state)) == -1)
             {
                 // TO DO
                 // Log Error : counldn't send the state to fifo
+                cout<<"EM: couldn't read the state to fifo"<<endl;
+                return false;
             }
             close(fd);
-            unlink("processes/execution_client_fifo");
             if(state == ara::exec::ExecutionState::kRunning) 
             cout<<"EM: report succeed "<<(int) state<<endl;
         }
@@ -148,6 +157,9 @@ void Process::terminate(){
     this->prun = false;
     this->current_config = nullptr;
     this->_pid = 0;
+    
+    // unlink(("processes/"+name+"/execution_client_fifo").c_str()); unlink in the terminating process
+
 
 }
 

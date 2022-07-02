@@ -66,6 +66,7 @@ CServer server_main_socket(SOCK_STREAM);
 ara::com::FindServiceHandle findhandle{SM_TRIGGERIN_SERVICE_ID, 0, SD_PORT};
 ara::sm::triggerin::UCM_State ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_UNKNOWN;
 std::shared_ptr<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy> triggerin_proxy_ptr;
+ExecutionClient client;
 
 /**
  * @brief Main Function 
@@ -76,7 +77,6 @@ int main()
 {
     signal(SIGTERM, handle_sigterm);
     cout<<"\t\t[UCM]creating execution client "<<endl;
-    ExecutionClient client;
     client.ReportExecutionState(ExecutionState::kRunning);
 
 
