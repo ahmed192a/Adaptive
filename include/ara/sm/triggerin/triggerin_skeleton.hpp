@@ -28,12 +28,15 @@ namespace ara
                      */
                     using Trigger = ara::com::proxy_skeleton::skeleton::FieldType<ara::sm::triggerin::TriggerInType, true, true, true>::type;
                 }
+                template <typename T>
                 class Trigger_In_Skeleton : public ara::com::proxy_skeleton::skeleton::ServiceSkeleton
                 {
                 private:
                     ara::com::InstanceIdentifier serviceid;
 
                 public:
+                    using Trigger_t = ara::com::proxy_skeleton::skeleton::FieldType<T, true, true, true>::type;
+
                     Trigger_In_Skeleton(
                         ara::com::InstanceIdentifier instance,
                         ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle) : serviceid(55),
@@ -44,7 +47,8 @@ namespace ara
                     ~Trigger_In_Skeleton();
 
                     // Fields
-                    fields::Trigger Trigger;
+                    // fields::Trigger Trigger;
+                    Trigger_t Trigger;
 
                     void field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
                     {
@@ -55,12 +59,12 @@ namespace ara
                         switch (event_id)
                         {
                         case 0:
-                        if(message.Length() > 16){
-                            Trigger.HandleGet(message, cserver);
-                        }
-                        else{
-                            Trigger.HandleSet(message, cserver);
-                        }
+                            if(message.Length() > 16){
+                                Trigger.HandleGet(message, cserver);
+                            }
+                            else{
+                                Trigger.HandleSet(message, cserver);
+                            }
                             // Trigger.HandleCall(message, cserver);
                             break;
                         default:

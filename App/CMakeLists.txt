@@ -4,6 +4,7 @@ add_executable(
     ${PROJECT_NAME} 
     exec_main.cpp 
 )
+
 target_compile_features(
     ${PROJECT_NAME}  
     PRIVATE 
@@ -15,7 +16,11 @@ target_link_libraries(
     PUBLIC
     ara_lib
 )
+
 add_subdirectory(EM_test_process)
+add_subdirectory(SD)
 add_subdirectory(SM)
+add_subdirectory(UCM)
 add_subdirectory(OTA)
+
 

@@ -28,12 +28,16 @@ endif()
 # The compiled library code is here
 add_subdirectory(src)
 add_subdirectory(App)
+
+
+## For Subsystem testing
+
 # add_subdirectory(test_partial_processes/SAM/server)
 # add_subdirectory(test_partial_processes/SD_TEST/server)
 # add_subdirectory(test_partial_processes/SD_TEST/client)
- add_subdirectory(test_partial_processes/SD_TEST/SD)
-add_subdirectory(test_partial_processes/SD_TEST/ucm_client)
- add_subdirectory(test_partial_processes/SD_TEST/ucm_server)
+# add_subdirectory(test_partial_processes/SD_TEST/SD)
+# add_subdirectory(test_partial_processes/SD_TEST/ucm_client)
+# add_subdirectory(test_partial_processes/SD_TEST/ucm_server)
 # add_subdirectory(test_partial_processes/SD_TEST/Classic)
 
 # add_subdirectory(test_partial_processes/SomeIP/some_client)
@@ -44,34 +48,8 @@ add_subdirectory(test_partial_processes/SD_TEST/ucm_client)
 
 
 
-# add_executable(
-#   SOMEIP_SP
-#   test_partial_processes/server_someip.cpp
-#   ${SRC_FILES}
-# )
-# target_link_libraries(
-#   SOMEIP_SP
-#   PUBLIC
-#   ara
-#   nlohmann_json::nlohmann_json
 
-# )
-# add_executable(
-#   SOMEIP_CP
-#   test_partial_processes/client_someip.cpp
-#   ${SRC_FILES}
-# )
-# target_link_libraries(
-#   SOMEIP_CP
-#   PUBLIC
-#   ara
-#   nlohmann_json::nlohmann_json
-  
-# )
-
-
-
-# option for testing
+# option for unit 0testing
 option(build_tests "Build all the tests.")
 set(build_tests ON)
 message(STATUS "print_all_variables------------------------------------------${build_tests}")
