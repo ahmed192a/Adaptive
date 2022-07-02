@@ -82,6 +82,7 @@ namespace ara
                      * 
                      */
                     virtual ~ServiceSkeleton() {}
+
                     /**
                      * @brief Offer Service 
                      * 
@@ -103,6 +104,7 @@ namespace ara
                         this->m_skeleton_udp.UDPSendTo((void *)_payload.data(), _payload.size(), (struct sockaddr *)&this->cliaddr);
                         this->m_skeleton_udp.CloseSocket();
                     }
+
                     /**
                      * @brief StopOfferService
                      * 

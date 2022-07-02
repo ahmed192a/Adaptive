@@ -12,7 +12,7 @@
 #define SERVER_PORT         5365
 #define SD_PORT             1690
 #define MAX_QUEUE_CLIENTS   5
-#define INSTANCE_ID          45
+#define INSTANCE_ID         45
 #define NUM_THREADS         3
 #define SM_TRIGGERIN_SERVICE_ID 55
 

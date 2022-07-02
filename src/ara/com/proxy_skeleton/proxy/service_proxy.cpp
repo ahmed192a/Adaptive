@@ -58,7 +58,7 @@ namespace ara
                     std::vector<uint8_t> _payload = m_info.Serializer();
                     uint32_t _payload_size = _payload.size();
 
-                    Client_SD.GetHost("127.0.0.1", FSH.uid);
+                    Client_SD.GetHost("127.0.0.1", FSH.portnum);
                     Client_SD.ClientConnect();
 
                     // send the service id

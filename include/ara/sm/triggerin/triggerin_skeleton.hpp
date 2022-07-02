@@ -47,7 +47,10 @@ namespace ara
                     {
                     }
                     ~Trigger_In_UCM_Skeleton(){};
-
+                    const ara::com::proxy_skeleton::ServiceId GetServiceId()
+                    {
+                        return serviceid;
+                    }
                     // Fields
                     fields::UCM_Trigger trigger;
 
@@ -91,6 +94,7 @@ namespace ara
                     {
                     }
                     ~Trigger_In_OTA_Skeleton(){};
+
 
                     // Fields
                     fields::OTA_Trigger trigger;
