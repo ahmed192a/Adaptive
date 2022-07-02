@@ -1,44 +1,82 @@
-#include"Message.h"
+/**
+ * @file Message.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#include"ara/com/SOMEIP/Message.hpp"
+#include <unistd.h>
 
 namespace ara
 {
     namespace com
     {
-        namespace entry
+        namespace SOMEIP_MESSAGE
         {
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept:Header(mID,length,rID,protocol_version,interface_version,Mtype,Rcode)noexcept:
-            GBMessageID{mID},GBlength{length},GBRequest_ID{rID},GBProtocol_Version{protocol_version},GBinterface_version{interface_version},GBMessageType{MType},GBReturnCode{Rcodr}
+            Message::Message(
+                struct Message_ID mID,
+                struct Request_ID rID,
+                uint8_t protocol_version,
+                uint8_t interface_version,
+                enum MessageType Mtype,
+                enum ReturnCode Rcode)noexcept:
+            Header(mID,rID,protocol_version,interface_version,Mtype,Rcode)
             {}
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept
-            :Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode::E_OK)
+            Message::Message(
+                struct Message_ID mID,
+                struct Request_ID rID,
+                uint8_t protocol_version,
+                uint8_t interface_version,
+                enum MessageType Mtype)noexcept:
+            Message( 
+                mID, 
+                rID, 
+                protocol_version, 
+                interface_version, 
+                Mtype, 
+                ReturnCode::E_OK)
             {
-                 if ((MessageType != Message::REQUEST) &&
-                    (MessageType != Message::NOTIFICATION))
+                /*
+                 if ((Mtype != MessageType::REQUEST) &&
+                    (Mtype != MessageType::NOTIFICATION))
                 {
                     // E2E is not supported yet.
                     throw std::invalid_argument("Invalid message type.");
                 }
+                */
             }
-            Message::Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)noexcept
-            :Message(struct Message_ID mID,uint32_t length,struct Request_ID rID,uint8_t protocol_version,uint8_t interface_version,MessageType Mtype,ReturnCode Rcode)
+
+            Message::Message(
+                Request_ID rID,
+                Message_ID mID,
+                uint8_t protocol_version,
+                uint8_t interface_version,
+                ReturnCode Rcode,
+                MessageType Mtype
+                )noexcept:
+            Message( mID, rID, protocol_version, interface_version, Mtype, Rcode)
             {
-                 if ((MessageType != Message::REQUEST) ||
-                    (MessageType != Message::NOTIFICATION))
-                {
-                    // E2E is not supported yet.
-                    throw std::invalid_argument("Invalid message type.");
-                }
-                else if ((MessageType != Message::ERROR) &&
-                         (ReturnCode == ReturnCode::E_OK))
-                {
-                    // Error message cannot have OK return code.
-                    throw std::invalid_argument("Invalid return code.");
-                }
+                //  if ((Mtype != MessageType::REQUEST) ||
+                //     (Mtype != MessageType::NOTIFICATION))
+                // {
+                //     // E2E is not supported yet.
+                //     throw std::invalid_argument("Invalid message type.");
+                // }
+                // else if ((Mtype != MessageType::ERROR) &&
+                //          (Rcode == ReturnCode::E_OK))
+                // {
+                //     // Error message cannot have OK return code.
+                //     throw std::invalid_argument("Invalid return code.");
+                // }
 
             }
-              uint32_t Message::MessageId() const noexcept
+            struct Message_ID Message::MessageId() const noexcept
             {
-                return GBMessageType;
+                return GBMessageID;
             }
 
             uint16_t Message::ClientId() const noexcept
@@ -48,12 +86,12 @@ namespace ara
 
             uint16_t Message::SessionId() const noexcept
             {
-                return GBRequest_ID.Session_id;
+                return GBRequest_ID.session_id;
             }
             
             void Message::SetSessionId(uint16_t sessionId)
             {
-                 GBRequest_ID.Session_id = sessionId;
+                GBRequest_ID.session_id = sessionId;
             }
 
             bool Message::IncrementSessionId() noexcept
@@ -61,21 +99,21 @@ namespace ara
                 const uint8_t SessionIdMin = 1;
                 constexpr uint8_t SessionIdMax = std::numeric_limits<uint8_t>::max();
 
-                if ( GBRequest_ID.Session_id == SessionIdMax)
+                if ( GBRequest_ID.session_id == SessionIdMax)
                 {
-                    GBRequest_ID.Session_id= SessionIdMin;
+                    GBRequest_ID.session_id= SessionIdMin;
                     return true;
                 }
                 else
                 {
-                    GBRequest_ID.Session_id++;
+                    GBRequest_ID.session_id++;
                     return false;
                 }
             }
             
             uint8_t Message::ProtocolVersion() const noexcept
             {
-                return GBprotocolversion;
+                return GBProtocol_Version;
             }
 
             uint8_t Message::InterfaceVersion() const noexcept
@@ -83,18 +121,103 @@ namespace ara
                 return GBinterface_version;
             }
 
-            Message Message::MessageType() const noexcept
+            MessageType Message::Messagetype() const noexcept
             {
                 return GBMessageType;
             }
 
-            ReturnCode Message::ReturnCode() const noexcept
+            ReturnCode Message::Returncode() const noexcept
             {
                 return GBReturnCode;
             }
+            uint32_t Message::Length() noexcept {
+					return GBlength;
+				}
 
-            std::vector<uint8_t> Message::Payload() const
+            std::vector<uint8_t> Message::Serializer() 
             {
+                std::vector<uint8_t> result;
+                Message_ID mid = MessageId();
+
+                helper::Inject(result, mid.serivce_id);
+                helper::Inject(result, mid.method_id); 
+                helper::Inject(result, GBlength);
+                helper::Inject(result, ClientId());
+                helper::Inject(result, SessionId());
+                result.push_back(ProtocolVersion());
+                result.push_back(InterfaceVersion());
+
+                uint8_t messageType = static_cast<uint8_t>(MessageType());
+                result.push_back(messageType);
+
+                uint8_t returnCode = static_cast<uint8_t>(ReturnCode());
+                result.push_back(returnCode);
+                // concatenate result and payload and put them in the result
+                result.insert(result.end(), payload.begin(), payload.end());
+
+                return result;
+            }
+            void Message::SetPayload(std::vector<uint8_t>&data){
+                payload = data;
+                GBlength+=payload.size();
+            }
+
+            std::vector<uint8_t> Message::GetPayload()
+            {
+                return payload;
+            }
+
+            Message Message::Deserialize(const std::vector<uint8_t> &msg)
+            {
+                // if (payload.size() < Header::HeaderSize)
+                // {
+                //     throw std::invalid_argument("Invalid payload size.");
+                // }
+                uint32_t offset = 0;
+                Message_ID _mid;
+                _mid.serivce_id = msg[offset]<<8 | msg[offset+1];
+                _mid.method_id = msg[offset+2]<<8 | msg[offset+3];
+                offset += 4;
+                uint32_t length ;
+                length = msg[offset] <<24 | msg[offset+1] << 16 | msg[offset+2] << 8 | msg[offset+3];
+                offset += 4;
+                Request_ID _rid;
+                _rid.client_id = msg[offset]<<8 | msg[offset+1];
+                _rid.session_id = msg[offset+2]<<8 | msg[offset+3];
+                offset += 4;
+
+                uint8_t GBProtocol_Version = msg[offset];
+                uint8_t GBinterface_version = msg[offset+1];
+                MessageType GBMessageType = static_cast<MessageType>(msg[offset+2]);
+                ReturnCode GBReturnCode = static_cast<ReturnCode>(msg[offset+3]);
+                offset += 4;
+
+                Message m (_mid, _rid, GBProtocol_Version, GBinterface_version, GBMessageType, GBReturnCode);
+               
+                // GBlength = Header::HeaderSize;
+                if(length > Header::HeaderSize){
+                    std::vector<uint8_t> pay = {msg.begin()+offset, msg.begin()+length};
+                    m.SetPayload(pay);
+                }
+                return m;
+            }
+
+
+            Message& Message::operator=(Message &msg){
+                GBMessageID = msg.MessageId();
+                GBlength = msg.Length();
+                GBRequest_ID.client_id = msg.ClientId();
+                GBRequest_ID.session_id = msg.SessionId();
+                GBProtocol_Version = msg.ProtocolVersion();
+                GBinterface_version = msg.InterfaceVersion();
+                GBMessageType = msg.Messagetype();
+                GBReturnCode = msg.Returncode();
+                payload = msg.Serializer();
+                return *this;
+            }
+
+            std::vector<uint8_t> Message::getload(){
+                return payload;
             }
 
         }

@@ -1,4 +1,14 @@
-#include "Log.h"
+/**
+ * @file Log.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#include "ara/Log_trace/Log.hpp"
 #include "sys/stat.h"
 #include "sys/types.h"
 #include "errno.h"
@@ -56,5 +66,8 @@ void Log::Insert(std::string data, std::string from, LogType T){
 	
     myFile_Handler <<"["<<return_current_time_and_date()<<"]\t\t"<<from<<"\t"<< data << endl;
 
+}
+void Log::operator<<(std::string data){
+    myFile_Handler << data << endl;
 }
 

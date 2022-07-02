@@ -1,4 +1,4 @@
-#include <PowerMode.h>
+#include "ara/sm/powermode.hpp"
 using namespace ara::sm;
 void PowerMode::message(PowerMode::PowerModeMsg &msg) noexcept
 {

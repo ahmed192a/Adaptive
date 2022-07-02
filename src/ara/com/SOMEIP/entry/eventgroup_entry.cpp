@@ -1,4 +1,14 @@
-#include "eventgroup_entry.h"
+/**
+ * @file eventgroup_entry.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 
 namespace ara
 {
@@ -6,15 +16,15 @@ namespace ara
     {
         namespace entry
         {
-            EventgroupEntry::EventgroupEntry(EntryType type,
-                                             uint16_t serviceId,
-                                             uint16_t instanceId,
-                                             uint32_t ttl,
-                                             uint8_t majorVersion,
-                                             uint16_t eventgroupId) noexcept : Entry(type, serviceId, instanceId, ttl, majorVersion),
-                                                                               GBEventgroupId{eventgroupId}
-            {
-            }
+            // EventgroupEntry::EventgroupEntry(EntryType type,
+            //                                  uint16_t serviceId,
+            //                                  uint16_t instanceId,
+            //                                  uint32_t ttl,
+            //                                  uint8_t majorVersion,
+            //                                  uint16_t eventgroupId) noexcept : Entry(type, serviceId, instanceId, ttl, majorVersion),
+            //                                                                    GBEventgroupId{eventgroupId}
+            // {
+            // }
 
             bool EventgroupEntry::isAcknowledge() const noexcept
             {
@@ -66,6 +76,8 @@ namespace ara
                 return _result;
             }
 
+            
+
             uint16_t EventgroupEntry::EventgroupId() const noexcept
             {
                 return GBEventgroupId;
@@ -93,10 +105,10 @@ namespace ara
                 const uint32_t SubscribeEventTTL = 0xffffff;
 
                 EventgroupEntry _result(
-                    cSubscribeEventEntry,
+                    SubscribeEventEntry,
                     serviceId,
                     instanceId,
-                    cSubscribeEventTTL,
+                    SubscribeEventTTL,
                     majorVersion,
                     eventgroupId);
 

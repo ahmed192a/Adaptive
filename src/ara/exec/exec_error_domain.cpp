@@ -1,5 +1,14 @@
-
- #include "exec_error_domain.h"
+/**
+ * @file exec_error_domain.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+ #include "ara/exec/exec_error_domain.hpp"
  #include <iostream>
 
  namespace ara
@@ -14,7 +23,6 @@
  		 */
  		 /*ExecException::ExecException(ara::core::ErrorCode errorCode) noexcept :  ara::core::Exception(errorCode)
  		 {
-
  		 	this->errorCode = errorCode;
  		 }*/
 
@@ -40,12 +48,12 @@
  		 *
  		 *\return ara::core::ErrorCode             An ErrorCode object.
  		 */
- 		 ara::core::ErrorCode ExecException::MakeErrorCode (ara::exec::ExecErrc code, ara::core::ErrorDomain::SupportDataType data = ara::core::ErrorDomain::SupportDataType()) noexcept
- 		 {
- 			ara::core::ErrorDomain *ref = nullptr;
- 		 	ara::core::ErrorCode obj((ara::core::ErrorDomain::CodeType)code, ref, (ara::core::ErrorDomain::SupportDataType)data);
- 		 	return obj;
- 		 }
+		// ara::core::ErrorCode ExecException::MakeErrorCode (ara::exec::ExecErrc code, ara::core::ErrorDomain::SupportDataType data = ara::core::ErrorDomain::SupportDataType()) noexcept
+		// {
+		// ara::core::ErrorDomain *ref = nullptr;
+		// ara::core::ErrorCode obj((ara::core::ErrorDomain::CodeType)code, ref, (ara::core::ErrorDomain::SupportDataType)data);
+		// return obj;
+		// }
 
 
 
@@ -68,10 +76,10 @@
  		 *
  		 * \return char const*      The message associated with the error code.
  		 */
- 		std::string ExecErrorDomain::Message(CodeType errorCode) const noexcept
+ 		char const * ExecErrorDomain::Message(CodeType errorCode) const noexcept
  		{
  			std::string codeTypeStr = std::to_string((int)errorCode);
- 			return "CodeType of error message: " + codeTypeStr;
+ 			return ("CodeType of error message: " + codeTypeStr).c_str();
 
 
  		}
@@ -84,9 +92,8 @@
  		 */
  		void ExecErrorDomain::ThrowAsException(ara::core::ErrorCode &errorCode) const noexcept(false)
  		{
- 			ara::core::Exception exp(errorCode);
+ 			ara::core::Exception exp(std::move(errorCode));
  			std::string c = exp.what();
  		}
  	}
  }
-

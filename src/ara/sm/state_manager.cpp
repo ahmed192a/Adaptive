@@ -1,4 +1,4 @@
-#include "state_manager.h"
+#include "ara/sm/state_manager.hpp"
 
 using namespace ara::sm;
 
@@ -9,6 +9,6 @@ void StateManager::init(void) {
     // //  check the implementation critiria of the function_group_state (if we should extract it manually in the SM)
 
     // /** initial communication with EM **/
-    EM.GetInitialMachineStateTransitionResult();
+    //EM.GetInitialMachineStateTransitionResult();
 
 }

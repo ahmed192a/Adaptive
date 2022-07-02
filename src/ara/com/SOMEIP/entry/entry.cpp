@@ -1,4 +1,14 @@
-#include "entry.h"
+/**
+ * @file entry.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#include "ara/com/SOMEIP/entry/entry.hpp"
 
 namespace ara
 {
@@ -9,12 +19,12 @@ namespace ara
             Entry::Entry(EntryType type,
                          uint16_t serviceId,
                          uint16_t instanceId,
-                         uint32_t ttl,
+                         uint32_t ttl, 
                          uint8_t majorVersion) noexcept :GBType{type},
                                                          GBServiceId{serviceId},
                                                          GBInstanceId{instanceId},
-                                                         GBTTL{ttl},
-                                                         GBMajorVersion{majorVersion}
+                                                         GBMajorVersion{majorVersion},
+                                                         GBTTL{ttl}
             {
             }
 
@@ -27,28 +37,28 @@ namespace ara
                 case option::OptionType::Configuration:
                 {
                     bool _containsConfiguration =
-                        !ContainsOption(option::OptionType::Configuration);
+                        ContainsOption(option::OptionType::Configuration);
 
                     // Each entry can only have at maximum one configuration option.
-                    _result = _containsConfiguration;
+                    _result = !_containsConfiguration;
 
                     break;
                 }
                 case option::OptionType::LoadBalancing:
                 {
                     bool _containsLoadBalancing =
-                        !ContainsOption(option::OptionType::LoadBalancing);
+                        ContainsOption(option::OptionType::LoadBalancing);
 
                     // Each entry can only have at maximum one load balancing option.
-                    _result = _containsLoadBalancing;
+                    _result = !_containsLoadBalancing;
 
                     break;
                 }
                 case option::OptionType::IPv4SdEndpoint:
                 case option::OptionType::IPv6SdEndpoint:
                 {
-                    // Service discovery endpoints are not allowed in entries.
-                    _result = false;
+
+                    _result = true;
 
                     break;
                 }
@@ -63,6 +73,8 @@ namespace ara
 
                 return _result;
             }
+
+            
 
             bool Entry::ContainsOption(option::OptionType optionType) const noexcept
             {
@@ -117,16 +129,10 @@ namespace ara
 
             void Entry::AddFirstOption(option::Option *firstOption)
             {
-                bool _valid = ValidateOption(firstOption);
-
-                if (_valid)
-                {
-                    mFirstOptions.push_back(firstOption);
-                }
-                else
-                {
-                    throw std::invalid_argument("The option cannot be added.");
-                }
+                
+                     GBFirstOptions.push_back(firstOption);
+                
+            
             }
 
             const std::vector<option::Option *> &Entry::SecondOptions() const noexcept
@@ -136,16 +142,11 @@ namespace ara
 
             void Entry::AddSecondOption(option::Option *secondOption)
             {
-                bool _valid = ValidateOption(secondOption);
-
-                if (_valid)
-                {
+                
+                
                     GBSecondOptions.push_back(secondOption);
-                }
-                else
-                {
-                    throw std::invalid_argument("The option cannot be added.");
-                }
+                
+                
             }
 
             std::vector<uint8_t> Entry::BasePayload(uint8_t &optionIndex) const

@@ -1,120 +1,79 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(Adaptive_Platform VERSION 0.1.0)
+project(
+  Adaptive_Platform 
+  VERSION 0.1.0
+  LANGUAGES CXX)
 
 
 
-# This AUTOSAR Adaptive Platform requires C++14
-set(CMAKE_CXX_STANDARD 14)
+# This AUTOSAR Adaptive Platform requires C++17
+set(CMAKE_CXX_STANDARD 17)
 # Enable 'rdyamic' switch to export the executable's symbols for debugging
 set(CMAKE_ENABLE_EXPORTS 1)
 
-
-
+# Let's nicely support folders in IDEs
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ########################################################################
 #
 # Dependencies:
-
-#https://discourse.cmake.org/t/better-way-to-work-by-modules-with-cmake-and-gtest-or-any-library/3699/3
-#message(STATUS "Fetching googletest")
+# FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
+# FetchContent_MakeAvailable was not added until CMake 3.14; use our shim
+if(${CMAKE_VERSION} VERSION_LESS 3.14)
+  include(cmake/add_FetchContent_MakeAvailable.cmake)
+endif()
 
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG release-1.11.0
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE)
-FetchContent_MakeAvailable(googletest)
 
-#message(STATUS "Fetching JSON library")
-set(JSON_BuildTests OFF CACHE INTERNAL "")
-FetchContent_Declare(
-        json
-        GIT_REPOSITORY https://github.com/nlohmann/json
-        GIT_TAG v3.9.1
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE)
-FetchContent_MakeAvailable(json)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+# The compiled library code is here
+add_subdirectory(src)
+add_subdirectory(App)
+# add_subdirectory(test_partial_processes/SAM/server)
+# add_subdirectory(test_partial_processes/SD_TEST/server)
+# add_subdirectory(test_partial_processes/SD_TEST/client)
+ add_subdirectory(test_partial_processes/SD_TEST/SD)
+add_subdirectory(test_partial_processes/SD_TEST/ucm_client)
+ add_subdirectory(test_partial_processes/SD_TEST/ucm_server)
+# add_subdirectory(test_partial_processes/SD_TEST/Classic)
 
-########################################################################
-#
-# Source Directories:
+# add_subdirectory(test_partial_processes/SomeIP/some_client)
+# add_subdirectory(test_partial_processes/SomeIP/some_server)
 
-  set(source_ara_dir
-  "${CMAKE_SOURCE_DIR}/src/ara")
 
-file(GLOB_RECURSE SRC_FILES ${source_ara_dir}/*.cpp)
-file(GLOB_RECURSE HED_FILES ${source_ara_dir}/*.h)
-add_library(
-    ara 
-    ${SRC_FILES}
-    ${HED_FILES}
-    )
+# set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
 
-# set_target_properties(
-#   ara
-#   PROPERTIES LINKER_LANGUAGE CXX
+
+
+# add_executable(
+#   SOMEIP_SP
+#   test_partial_processes/server_someip.cpp
+#   ${SRC_FILES}
 # )
-target_link_libraries(
-  ara
-  PUBLIC
-  nlohmann_json::nlohmann_json
-) 
+# target_link_libraries(
+#   SOMEIP_SP
+#   PUBLIC
+#   ara
+#   nlohmann_json::nlohmann_json
 
-target_include_directories(
-  ara 
-  PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/core>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/exec/parser>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/ara/sm>
-)
-# get executable 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
-add_executable(
-  process1
-  src/test_process.cpp
-)
-target_link_libraries(
-  process1
-  ara
-)
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src)
-add_executable(
-  ${PROJECT_NAME} 
-  src/exec_main.cpp 
-  )
-target_link_libraries(
-  ${PROJECT_NAME} 
-  ara
-)
+# )
+# add_executable(
+#   SOMEIP_CP
+#   test_partial_processes/client_someip.cpp
+#   ${SRC_FILES}
+# )
+# target_link_libraries(
+#   SOMEIP_CP
+#   PUBLIC
+#   ara
+#   nlohmann_json::nlohmann_json
+  
+# )
 
 
 
 # option for testing
 option(build_tests "Build all the tests.")
-set(build_tests OFF)
+set(build_tests ON)
 message(STATUS "print_all_variables------------------------------------------${build_tests}")
+add_subdirectory(Testing)
 
-if(build_tests)
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/test)
-
-  enable_testing()
- 
-  add_executable(
-    ara_unit_test
-    Testing/hello_test.cpp
-  )
-  target_link_libraries(
-    ara_unit_test
-    gtest_main
-    gmock_main
-    ara
-    
-  )
-
-endif()

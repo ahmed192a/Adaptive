@@ -1,4 +1,14 @@
-#include "./service_entry.h"
+/**
+ * @file service_entry.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+#include "ara/com/SOMEIP/entry/service_entry.hpp"
 
 namespace ara
 {
@@ -29,6 +39,7 @@ namespace ara
                 return _result;
             }
 
+            
             uint32_t ServiceEntry::MinorVersion() const noexcept
             {
                 return GBMinorVersion;
@@ -102,10 +113,10 @@ namespace ara
                 const uint32_t StopOfferTTL = 0x000000;
 
                 ServiceEntry _result(
-                    cOfferServiceEntry,
+                    OfferServiceEntry,
                     serviceId,
                     instanceId,
-                    cStopOfferTTL,
+                    StopOfferTTL,
                     majorVersion,
                     minorVersion);
 
