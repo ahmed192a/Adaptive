@@ -100,6 +100,15 @@ namespace ara
                      * 
                      */
                     ~Event() {}
+
+                    /**
+                     * @brief get the event variable
+                     */
+                    T get_event()
+                    {
+                        return event_data;
+                    }
+
                     /**
                      * @brief Set the subscriber object
                      * 
