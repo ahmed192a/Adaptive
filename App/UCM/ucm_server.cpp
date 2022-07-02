@@ -20,13 +20,15 @@
 #include "ara/sm/triggerin/triggerin_types.hpp"
 #include "ara/exec/execution_client.hpp"
 
-/// Defines
-#define SERVER_PORT         5365
-#define SD_PORT             1690
-#define MAX_QUEUE_CLIENTS   5
-#define INSTANCE_ID         45
-#define NUM_THREADS         3
-#define SM_TRIGGERIN_SERVICE_ID 55
+/************************************************************************
+ *                           Defines                                    *
+ ************************************************************************/
+#define SERVER_PORT         5365              /*server port number*/
+#define SD_PORT             1690              /*Service discovery port number*/
+#define MAX_QUEUE_CLIENTS   5                 /*Max number of clients*/
+#define PKG_INSTANCE_ID     1                 /*Instance Id*/
+#define NUM_THREADS         3                 /*number of threads*/
+#define SM_TRIGGERIN_SERVICE_ID 55            /*SM_TRIGGERIN_SERVICE_ID in UCM skeleton*/
 
 /// Namespaces
 using namespace std;
@@ -49,7 +51,7 @@ int sigval = 0;
  * 
  * @return ara::com::InstanceIdentifier 
  */
-ara::com::InstanceIdentifier instance(INSTANCE_ID);
+ara::com::InstanceIdentifier instance(PKG_INSTANCE_ID);
 ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SK_Handle skeleton_handle{SERVER_PORT, SD_PORT};
 
 /*             Shared Pointer                       */
@@ -223,7 +225,7 @@ void *pthread1(void *v_var)
 
             switch (entry->ServiceId())
             {
-            case INSTANCE_ID:
+            case PKG_INSTANCE_ID:
                 switch (entry->EventgroupId())
                 {
                 case 0:
