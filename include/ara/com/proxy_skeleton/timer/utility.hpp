@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2022
  * 
  */
+#ifndef __TIMER_UTILITY
+#define __TIMER_UTILITY
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +21,7 @@
 #include <thread>
 #include <chrono>
 /**
- * @brief 
+ * @brief  This function is called by the timer. It's the handler for the timer.
  * 
  * @param timer_id 
  * @param user_data 
@@ -29,7 +31,7 @@ void time_handler1(size_t timer_id, void *user_data)
     printf("Single shot timer expired.(%ld)\n", timer_id);
 }
 /**
- * @brief 
+ * @brief  This function is called by the timer. It's the handler for the timer.
  * 
  * @param timer_id 
  * @param user_data 
@@ -39,7 +41,7 @@ void time_handler2(size_t timer_id, void *user_data)
     printf("2 s timer expired. (%ld)\n", timer_id);
 }
 /**
- * @brief 
+ * @brief  This function is called by the timer. It's the handler for the timer.
  * 
  * @param timer_id 
  * @param user_data 
@@ -55,7 +57,7 @@ void time_handler3(size_t timer_id, void *user_data)
 class MyTimer : public Timer
 {
     /**
-     * @brief 
+     * @brief   The timer event runnable.
      * 
      */
     void timerEvent()
@@ -64,13 +66,13 @@ class MyTimer : public Timer
     }
 };
 /**
- * @brief 
+ * @brief   
  * 
  */
 class Callback1 : public TimerCallback::Runnable
 {
     /**
-     * @brief 
+     * @brief  The timer event runnable.
      * 
      */
     void run()
@@ -86,7 +88,7 @@ class Callback1 : public TimerCallback::Runnable
 class Callback2 : public TimerCallback::Runnable
 {
     /**
-     * @brief 
+     * @brief The timer event runnable.
      * 
      */
     void run()
@@ -95,3 +97,4 @@ class Callback2 : public TimerCallback::Runnable
         fflush(stdout);
     }
 };
+#endif // __TIMER_UTILITY

@@ -68,4 +68,4 @@ private:
     Runnable *timerEventRunnable = NULL;
 };
 
-#endif
+#endif // __TIMER_CALLBACK

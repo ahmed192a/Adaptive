@@ -1,3 +1,16 @@
+/**
+ * @file option_desrializer.hpp
+ * @author 
+ * @brief 
+ * @version 0.1
+ * @date 2022-03-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
+#ifndef OPTION_DESRIALIZER_H
+#define OPTION_DESRIALIZER_H
 #include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
 #include "ara/com/SOMEIP/option/option.hpp"
 #include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
@@ -100,3 +113,4 @@ namespace ara{
         }
     }
 }
+#endif // OPTION_DESRIALIZER_H

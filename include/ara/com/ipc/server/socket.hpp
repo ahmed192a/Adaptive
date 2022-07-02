@@ -87,4 +87,4 @@ public:
 };
 
 
-#endif
+#endif // IPC_SERVER_H

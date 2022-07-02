@@ -23,31 +23,31 @@
 #define CSV_FILE "data.csv"
 
 using namespace std;
+
 int portNumber = 1690;
-SD_data receive;
+SD_data receive; // global variable to store the data received from the server
 CSV   csv;
 
-void *pthread0(void *);
+void *pthread0(void *); 
 void *pthread1(void *);
 
 int main()
 {
-
     cout << "SD\n";
 
-    pthread_t threads[2];
-    int i = 0;
+    pthread_t threads[2]; // create two threads
+    int i = 0;            // thread number
 
-    csv.clear(CSV_FILE);
-    // use the child instance for sercice discovery (Listen to all servers and get services information)
-    int th1 = pthread_create(&threads[0], NULL, pthread0, (void *)&i);
+    csv.clear(CSV_FILE); // clear the csv file before starting the program
+
+    int th1 = pthread_create(&threads[0], NULL, pthread0, (void *)&i); // create thread 0 to receive data from the server
     if (th1)
     {
         cout << "ERROR" << th1 << endl;
         exit(-1);
     }
     i = 1;
-    int th2 = pthread_create(&threads[1], NULL, pthread1, (void *)&i);
+    int th2 = pthread_create(&threads[1], NULL, pthread1, (void *)&i); // create thread 1 to listen to the clients
     if (th2)
     {
         cout << "ERROR" << th2 << endl;
@@ -59,94 +59,96 @@ int main()
     return 0;
 }
 
+/**
+ * @brief listen to all clients and find the requested service
+ * @return void* 
+ */
 void *pthread1(void *)
 {
-    vector<SD_data> data;
-    // wait until a client request a service
-    // if a client requests a service,  search the csv file to find this service
-    CServer s1(SOCK_STREAM);
-    int service_id;
-    s1.OpenSocket(portNumber);
-    s1.BindServer();
-    s1.ListenServer(3);
+    vector<SD_data> data;      // vector to store the data from the csv file
+    CServer s1(SOCK_STREAM);   // create a server object
+    int service_id;            // service id
+    s1.OpenSocket(portNumber); // open a socket on port 1690
+    s1.BindServer();           // bind the server to the port
+    s1.ListenServer(3);        // listen to the port
     while (1)
     {
         uint32_t _size = 0;
-        std::vector<uint8_t> _msg;
-        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
-        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage R_msg;
+        std::vector<uint8_t> _msg;                            // vector to store the serialized message
+        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg; // create a SomeIP SD message to store the deserialized message received from the client
+        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage R_msg;  // create a SomeIP SD message to send the message to the client
 
-        Socket soc = s1.AcceptServer();
+        Socket soc = s1.AcceptServer(); // accept the client connection
 
-        // receive the service id
-        soc.Receive(&_size, sizeof(_size));
-        _msg.reserve(_size);
-        soc.Receive(&_msg[0], _size);
-        sd_msg.Deserialize(_msg);
+        // read the message from the client
+        soc.Receive(&_size, sizeof(_size)); // receive the size of the message
+        _msg.reserve(_size);                // reserve memory for the message
+        soc.Receive(&_msg[0], _size);       // receive the message
+        sd_msg.Deserialize(_msg);           // deserialize the message
+
         // Loop on entries
-        auto entry = sd_msg.Entries()[0];
-        uint32_t serviceid = entry->ServiceId();
-        ara::com::entry::ServiceEntry eventgroup_entry = ara::com::entry::ServiceEntry::CreateFindServiceEntry(serviceid);
+        auto entry = sd_msg.Entries()[0];        // get the first entry
+        uint32_t serviceid = entry->ServiceId(); // get the service id
+        ara::com::entry::ServiceEntry eventgroup_entry = ara::com::entry::ServiceEntry::CreateFindServiceEntry(serviceid); // get the service entry
 
-        std::cout << "[SD] client requested service id  : " << serviceid << std::endl;
+        std::cout << "[SD] client requested service id  : " << serviceid << std::endl; // print the service id
 
-        // search the file,
-        // it takes a vector of structs "in case there's more than one server offers the service"
-        csv.FindRow(CSV_FILE, serviceid, data);
+        csv.FindRow(CSV_FILE, serviceid, data); // search the file for the service id
         // for (auto i : data)
         // {
-            cout << "instance id : " << data[0].instance_id << endl;
-            cout << "service id : " << data[0].service_id << endl;
-            cout << "port number : " << data[0].port_number << endl;
+            cout << "instance id : " << data[0].instance_id << endl; // print the instance id
+            cout << "service id : " << data[0].service_id << endl;   // print the service id
+            cout << "port number : " << data[0].port_number << endl; // print the port number
+
             // create dynamic Ipv4EndpointOption object from static function
             ara::com::option::Ipv4EndpointOption ipv4_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, ara::com::helper::Ipv4Address(127, 0, 0, 1), ara::com::option::Layer4ProtocolType::Udp, data[0].port_number);
 
-            eventgroup_entry.AddFirstOption(&ipv4_option);
+            eventgroup_entry.AddFirstOption(&ipv4_option); // add the ipv4 option to the eventgroup entry
         // }
 
-        R_msg.AddEntry(&eventgroup_entry);
-        std::vector<uint8_t> R_msg_serialized = R_msg.Serializer();
-        uint32_t R_msg_size = R_msg_serialized.size();
+        R_msg.AddEntry(&eventgroup_entry);                          // add the eventgroup entry to the SomeIP SD message
+        std::vector<uint8_t> R_msg_serialized = R_msg.Serializer(); // serialize the SomeIP message
+        uint32_t R_msg_size = R_msg_serialized.size();              // get the size of the serialized message
 
-        // in the future, a number should be sent first to indicate how many struct is gonna be sent
-        // then a for loop to send the vector "containing port numbers" element by element
-
-        // send the struct to the client
-        soc.Send(&R_msg_size, sizeof(R_msg_size));
-        soc.Send(&R_msg_serialized[0], R_msg_size);
-        soc.CloseSocket();
+        soc.Send(&R_msg_size, sizeof(R_msg_size));  // send the size of the message
+        soc.Send(&R_msg_serialized[0], R_msg_size); // send the message
+        
+        soc.CloseSocket(); // close the socket 
     }
 
-    s1.CloseSocket();
+    s1.CloseSocket(); // close the socket
 
 }
 
+/**
+ * @brief listen to all servers and get services information
+ * @return void* 
+ */
 void *pthread0(void *)
 {
-    // listen to all servers
-    // save instance id, service id, and port number into the csv file
-    CServer s1(SOCK_DGRAM);
-    s1.OpenSocket(portNumber);
-    s1.BindServer();
+    CServer s1(SOCK_DGRAM);    // create a server object
+    s1.OpenSocket(portNumber); // open a socket on port 1690
+    s1.BindServer();           // bind the server to the port
 
-    struct sockaddr_in cliaddr;
-    socklen_t len = sizeof(cliaddr);
+    struct sockaddr_in cliaddr;      // create a struct to store the client address
+    socklen_t len = sizeof(cliaddr); // create a variable to store the size of the client address   
     while (1)
     {
-        uint32_t _size = 0;
-        std::vector<uint8_t> _msg;
-        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
-        // receive a struct containing the service information
-        s1.UDPRecFrom(&_size, sizeof(_size), (struct sockaddr *)&cliaddr, &len);
-        _msg.reserve(_size);
-        s1.UDPRecFrom(&_msg[0], _size, (struct sockaddr *)&cliaddr, &len);
-        // s1.UDPRecFrom(&receive, sizeof(SD_data), (struct sockaddr *)&cliaddr, &len);
-        // data.push_back(receive);
-        cout << "[SD] : receiving offers" << endl;
-        cout << "size is " << _size << endl;
-        sd_msg.Deserialize(_msg);
+        uint32_t _size = 0;        // create a variable to store the size of the message
+        std::vector<uint8_t> _msg; // create a vector to store the received message
+
+        ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg; // create a SomeIP SD message to store the deserialized message received from the server
+        
+        s1.UDPRecFrom(&_size, sizeof(_size), (struct sockaddr *)&cliaddr, &len); // receive the size of the message
+        _msg.reserve(_size);                                                     // reserve memory for the message
+        s1.UDPRecFrom(&_msg[0], _size, (struct sockaddr *)&cliaddr, &len);       // receive the message
+
+        cout << "[SD] : receiving offers" << endl; 
+        cout << "size is " << _size << endl; // print the size of the message
+        sd_msg.Deserialize(_msg);            // deserialize the message
+
         // Loop on entries
-        auto entrie = sd_msg.Entries();
+        auto entrie = sd_msg.Entries(); // get the entries
         for (auto entry : entrie)
         {
             switch (entry->Type())
@@ -154,35 +156,35 @@ void *pthread0(void *)
             case ara::com::entry::EntryType::Finding:
             {
                 cout << "EntryType: Finding" << endl;
-                // uint32_t _service_id = entry->ServiceId();
-                // uint32_t _instance_id = entry->InstanceId();
             }
             break;
             case ara::com::entry::EntryType::Offering:
             {
                 cout << "EntryType: Offering" << endl;
-                auto first_option = entry->FirstOptions()[0];
-                ara::com::option::Ipv4EndpointOption *ipv4_option = (ara::com::option::Ipv4EndpointOption *)first_option;
+
+                auto first_option = entry->FirstOptions()[0]; // get the first entry option
+
+                ara::com::option::Ipv4EndpointOption *ipv4_option = (ara::com::option::Ipv4EndpointOption *)first_option; // store first option as ipv4 option
+                
+                // print the ipv4 address
                 cout << "IPv4: " << int(ipv4_option->IpAddress().Octets[0]) << "." << int(ipv4_option->IpAddress().Octets[1]) << "." << int(ipv4_option->IpAddress().Octets[2]) << "." << int(ipv4_option->IpAddress().Octets[3]) << endl;
-                cout << "Port: " << ipv4_option->Port() << endl;
-                cout << "ServiceId: " << entry->ServiceId() << endl;
-                // uint16_t _port = ipv4_option->Port();
-                // uint32_t _service_id = entry->ServiceId();
-                // uint32_t _instance_id = entry->InstanceId();
+                cout << "Port: " << ipv4_option->Port() << endl;     // print the port number
+                cout << "ServiceId: " << entry->ServiceId() << endl; // print the service id
+
                 // place info into recvieve object
-                receive.instance_id = entry->InstanceId();
-                receive.service_id = entry->ServiceId();
-                receive.port_number = ipv4_option->Port();
-                // save the information into the csv file
+                receive.instance_id = entry->InstanceId(); // store the instance id
+                receive.service_id = entry->ServiceId();   // store the service id
+                receive.port_number = ipv4_option->Port(); // store the port number
+
                 // check TTL
                 if (entry->TTL() > 0)
                 {
-                    csv.write(CSV_FILE, receive);
+                    csv.write(CSV_FILE, receive); // write the service info in the csv file
                 }
                 else
                 {
                     cout << "TTL is 0" << endl;
-                    csv.delete_record(CSV_FILE, receive.service_id, receive.instance_id);
+                    csv.delete_record(CSV_FILE, receive.service_id, receive.instance_id); // delete the service record from the csv file
                 }
             }
             break;
@@ -199,5 +201,5 @@ void *pthread0(void *)
             }
         }
     }
-    s1.CloseSocket();
+    s1.CloseSocket(); // close the socket
 }
