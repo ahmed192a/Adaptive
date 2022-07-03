@@ -33,7 +33,7 @@ namespace ara
         class StateClient
         {
             // location of FIFO to communicate between EM & SM
-            char fifo_l[30] = "../state_client_fifo";
+            char fifo_l[30] = "state_client_fifo";
             // index of File descriptor
             int fd;
             public:
