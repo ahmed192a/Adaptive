@@ -200,7 +200,7 @@ public class ExecutionCTR {
 		p_name.setText(process_name.get(current));
 		container.getChildren().remove(2);
 		container.getChildren().add(process_acc);
-		if(current==0) {
+		if(process_list.size()==0) {
 			Prev_Btn.setDisable(true);
 			Del_Proc_Btn.setDisable(true);
 		}
@@ -242,10 +242,9 @@ public class ExecutionCTR {
 			alert.show();
 			return;
 		}
-		String Data = "";
 		ArrayList<Node> row = new ArrayList<>();
 		row.add(JSONTree);
-		Data = Node.TreeToJSON(Data,row, 0);
+		String Data = Node.TreeToJSON("",row, 0);
 		FC.setTitle("Export Execution Manifest JSON");
 		FC.setInitialFileName(JSONTree.getChilds().get(0).getChilds().get(0).getVal());
 		FC.getExtensionFilters().clear();
