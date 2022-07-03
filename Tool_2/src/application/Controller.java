@@ -2,7 +2,6 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import javafx.event.ActionEvent;
@@ -45,6 +44,7 @@ public class Controller {
 			Image icon = new Image("icon.png");
 			secondaryStage.getIcons().add(icon);
 			secondaryStage.setResizable(false);
+			ExecutionCTR.mode=0;
 			Parent root = FXMLLoader.load(getClass().getResource("Execution.fxml")); 
 			Scene scene = new Scene(root);
 			secondaryStage.setScene(scene);
@@ -72,15 +72,24 @@ public class Controller {
 					alert.showAndWait();
 					return;
 				}
-			    ArrayList<Node> r = new ArrayList<>();
-				r.add(JSONTree);
-				Dialog<String> dialog = new Dialog<>();
-				dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CLOSE);
-				dialog.getDialogPane().setContent(new TextArea(Node.TreeToJSON("",r, 0)));
-				dialog.setResizable(true);
-				dialog.setTitle("JSON");
-				dialog.showAndWait();
-			    //transform the file and show it with generate
+			    Image icon = new Image("icon.png");
+				secondaryStage.getIcons().add(icon);
+				secondaryStage.setResizable(false);
+				ExecutionCTR.mode=1;
+				ExecutionCTR.path=myObj.getPath();
+				GUI res = Node.TreeToGUI(JSONTree);
+				ExecutionCTR.process_list=res.process_list;
+				ExecutionCTR.process_name=res.process_name;
+				ExecutionCTR.manifest_id = res.manifest_id;
+				
+				Parent root = FXMLLoader.load(getClass().getResource("Execution.fxml")); 
+				Scene scene = new Scene(root);
+				secondaryStage.setScene(scene);
+				secondaryStage.setTitle("Execution Manifest Modify");
+				secondaryStage.setScene(scene);
+				Main.getPrimaryStage().close();
+				secondaryStage.showAndWait();
+				Main.getPrimaryStage().show();
 			}
 		}
 	}

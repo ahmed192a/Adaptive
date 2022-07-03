@@ -37,17 +37,88 @@ public class ExecutionCTR {
 	public TextField exec_id;
 	
 	public FileChooser FC = new FileChooser();
-	public ArrayList<Accordion> process_list = new ArrayList<>();
-	public ArrayList<String> process_name = new ArrayList<>();
+	public static ArrayList<Accordion> process_list = new ArrayList<>();
+	public static ArrayList<String> process_name = new ArrayList<>();
+	public static String manifest_id = new String("new_manifest");
 
+	
+	public static int mode = 0;
+	public static String path;
+
+	
 	public void initialize() {
-		process_list.add(process_acc);
-		Del_Proc_Btn.setDisable(true);
-		Next_Btn.setDisable(true);
-		Prev_Btn.setDisable(true);
-		((Label)indicator.getChildren().get(0)).setText("Current Process: 1 of 1");
-		p_name.setText("new_process");
-		process_name.add(p_name.getText());
+		if(mode == 1) {
+			exec_id.setText(manifest_id);
+			if(process_list.size()>1) {
+				Del_Proc_Btn.setDisable(false);
+				Next_Btn.setDisable(false);
+				Prev_Btn.setDisable(true);
+			}
+			else {
+				Del_Proc_Btn.setDisable(true);
+				Next_Btn.setDisable(true);
+				Prev_Btn.setDisable(true);
+			}
+			for(Accordion i:process_list) {
+				for(TitledPane ii:i.getPanes()) {
+					Button del = (Button) ii.getGraphic();
+					del.setOnAction(new EventHandler<ActionEvent>() {
+						 @Override
+						    public void handle(ActionEvent e) {
+							 i.getPanes().remove(i.getPanes().indexOf(ii));
+							 for(int c=0;c<i.getPanes().size();c++) {
+								 TitledPane current = i.getPanes().get(c);
+								 String cfg_name = "startup_config_"+Integer.toString(c);
+								 current.setText(cfg_name);
+							 }
+						 }
+					});
+					for(TitledPane iii:((Accordion)ii.getContent()).getPanes()) {
+						Button del2 = (Button) iii.getGraphic();
+						del2.setOnAction(new EventHandler<ActionEvent>() {
+							 @Override
+							    public void handle(ActionEvent e) {
+								 ((Accordion)ii.getContent()).getPanes()
+								 	.remove(((Accordion)ii.getContent()).getPanes().indexOf(iii));
+								 int index = 0;
+									while(index<((Accordion)ii.getContent()).getPanes().size() && 
+											((Accordion)ii.getContent()).getPanes().get(index).getText().charAt(0) == 's') {
+										((Accordion)ii.getContent()).getPanes().get(index).setText("startup_option_"+Integer.toString(index));
+										 index++;
+									}
+									 int offset = index;
+										while(index<((Accordion)ii.getContent()).getPanes().size() && 
+												((Accordion)ii.getContent()).getPanes().get(index).getText().charAt(0) == 'f') {
+											((Accordion)ii.getContent()).getPanes().get(index).setText("fg_dependency_"+Integer.toString(index-offset));
+											 index++;
+										}
+									
+									
+									
+							    }
+						});
+					}
+				}
+			}
+			process_acc = process_list.get(0);
+			container.getChildren().remove(2);
+			container.getChildren().add(process_acc);
+			p_name.setText(process_name.get(0));
+			((Label)indicator.getChildren().get(0)).setText("Current Process: 1 of "
+					+Integer.toString(process_list.size()));
+		}
+		else {
+			process_list = new ArrayList<>();
+			process_name = new ArrayList<>();
+			exec_id.setText(manifest_id);
+			process_list.add(process_acc);
+			Del_Proc_Btn.setDisable(true);
+			Next_Btn.setDisable(true);
+			Prev_Btn.setDisable(true);
+			((Label)indicator.getChildren().get(0)).setText("Current Process: 1 of 1");
+			p_name.setText("new_process");
+			process_name.add(p_name.getText());
+		}
 		p_name.textProperty().addListener((observable, oldValue, newValue) -> {
 			int current = process_list.indexOf(process_acc);
 		 	process_name.set(current, newValue);
@@ -200,7 +271,7 @@ public class ExecutionCTR {
 		p_name.setText(process_name.get(current));
 		container.getChildren().remove(2);
 		container.getChildren().add(process_acc);
-		if(process_list.size()==0) {
+		if(process_list.size()==1) {
 			Prev_Btn.setDisable(true);
 			Del_Proc_Btn.setDisable(true);
 		}
@@ -245,20 +316,33 @@ public class ExecutionCTR {
 		ArrayList<Node> row = new ArrayList<>();
 		row.add(JSONTree);
 		String Data = Node.TreeToJSON("",row, 0);
-		FC.setTitle("Export Execution Manifest JSON");
-		FC.setInitialFileName(JSONTree.getChilds().get(0).getChilds().get(0).getVal());
-		FC.getExtensionFilters().clear();
-		FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File","*.JSON"));			
-		File myObj = FC.showSaveDialog(Main.getPrimaryStage());
-		if(myObj!=null) {
+		if(mode==1) {
+			File myObj = new File(path);
 			PrintWriter myWriter = new PrintWriter(myObj);
 			myWriter.println(Data);
 			myWriter.close();
 			Alert alert = new Alert(AlertType.INFORMATION,"Path: "+myObj.getPath(),ButtonType.OK);
-			alert.setHeaderText("File Saved Successfully");
+			alert.setHeaderText("File Overwritten Successfully");
 			alert.setTitle("Execution Manifest Exportation");
 			alert.showAndWait();
 			Controller.getSecondaryStage().close();
+		}
+		else {
+			FC.setTitle("Export Execution Manifest JSON");
+			FC.setInitialFileName(JSONTree.getChilds().get(0).getChilds().get(0).getVal());
+			FC.getExtensionFilters().clear();
+			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File","*.JSON"));			
+			File myObj = FC.showSaveDialog(Main.getPrimaryStage());
+			if(myObj!=null) {
+				PrintWriter myWriter = new PrintWriter(myObj);
+				myWriter.println(Data);
+				myWriter.close();
+				Alert alert = new Alert(AlertType.INFORMATION,"Path: "+myObj.getPath(),ButtonType.OK);
+				alert.setHeaderText("File Saved Successfully");
+				alert.setTitle("Execution Manifest Exportation");
+				alert.showAndWait();
+				Controller.getSecondaryStage().close();
+			}
 		}
 	}
 }

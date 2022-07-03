@@ -3,11 +3,18 @@ package application;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class Node {
 	
@@ -198,86 +205,189 @@ public class Node {
 		}
 		return (JSONTree==Current && JSONTree.getChilds().size()!=0)?JSONTree.getChilds().get(0):null;
 	}
+	public static GUI TreeToGUI(Node Tree) {
+		if(!Tree.getTag().equalsIgnoreCase("")||!Tree.getType().equals("element"))return null;
+		Node Current = Tree;
+		ArrayList<Node> Search;
+		/////Data To Be Filled/////////
+		GUI res = new GUI();
+		///////////////////////////////
+		Search = Current.Search("Execution_manifest");
+		if(Search.size()==0)	return null;
+		Current = Search.get(0);
+		
+		Search = Current.Search("Execution_manifest_id");
+		if(Search.size()==0||Search.get(0).getVal()==null) res.manifest_id = "";
+		else res.manifest_id = Search.get(0).getVal();
 
-}
+		Search = Current.Search("Process");
+		if(Search.size()==0)	return null;
+		Current = Search.get(0);
+		if(!Current.getType().equals("array"))	return null;
+		
+		ArrayList<Node> processes = Current.getChilds();
+		for(Node process:processes) { // Process is "" tag
+			//Use Search From Here
+			res.process_list.add(new Accordion());
+			Search = process.Search("Process_name");
+			if(Search.size()==0||Search.get(0).getVal()==null) res.process_name.add("");
+			else res.process_name.add(Search.get(0).getVal());
 
+			Search = process.Search("Mode_dependent_startup_configs");
+			if(Search.size()!=0) {	
+				Current = Search.get(0);
+				if(!Current.getType().equals("array"))	return null;
+				ArrayList<Node> cfgs = Current.getChilds();
+				for(Node cfg:cfgs) {
+					String cfg_name = "startup_config_"+Integer.toString(cfgs.indexOf(cfg));
+					TitledPane tp = new TitledPane();
+					tp.setText(cfg_name);
+					Button delete = new Button("X");
+					delete.setDefaultButton(true);
+					delete.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+					tp.setGraphic(delete);
+					tp.setGraphicTextGap(30);
+					tp.setAnimated(true);
+					tp.setAlignment(Pos.TOP_LEFT);
+					tp.setContentDisplay(ContentDisplay.RIGHT);
+					res.process_list.get(res.process_list.size()-1).getPanes().add(tp);
+					Accordion Content = new Accordion();
+					Content.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+					
+					Search = cfg.Search("Startup_options");
+					if(Search.size()!=0) {	
+						Current = Search.get(0);
+						if(!Current.getType().equals("array"))	return null;
+						ArrayList<Node> ops = Current.getChilds();
+						for(Node op:ops) {
+							
+							Button delete_op = new Button("X");
+							delete_op.setDefaultButton(true);
+							delete_op.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+							
+							TitledPane otp = new TitledPane();
+							otp.setText("startup_option_"+Integer.toString(ops.indexOf(op)));
+							otp.setGraphic(delete_op);
+							otp.setGraphicTextGap(25);
+							otp.setAnimated(true);
+							otp.setAlignment(Pos.TOP_CENTER);
+							otp.setContentDisplay(ContentDisplay.RIGHT);
+							
+							String Option_kind,Option_name,Option_arg;
+							
+							if(op.Search("Option_kind").size()==0
+									||op.Search("Option_kind").get(0).getVal()==null)Option_kind="";
+							else Option_kind = op.Search("Option_kind").get(0).getVal();
 
+							if(op.Search("Option_name").size()==0
+									||op.Search("Option_name").get(0).getVal()==null)Option_name="";
+							else Option_name = op.Search("Option_name").get(0).getVal();
+							
+							if(op.Search("Option_arg").size()==0
+									||op.Search("Option_arg").get(0).getVal()==null)Option_arg="";
+							else Option_arg = op.Search("Option_arg").get(0).getVal();
+							
+							VBox options = new VBox();
+							HBox o1 = new HBox();
+							HBox o2 = new HBox();
+							HBox o3 = new HBox();
+							o1.getChildren().addAll(new Label("option_kind"),new TextField(Option_kind));
+							o1.setSpacing(20);
+							o2.getChildren().addAll(new Label("option_name"),new TextField(Option_name));
+							o2.setSpacing(10);
+							o3.getChildren().addAll(new Label("option_arg"),new TextField(Option_arg));
+							o3.setSpacing(20);
+							options.getChildren().addAll(o1,o2,o3);
+							otp.setContent(options);
+							Content.getPanes().add(otp);
+						}
+					}
+					Search = cfg.Search("FunctionGroupDependencies");
+					if(Search.size()!=0) {	
+						Current = Search.get(0);
+						if(!Current.getType().equals("array"))	return null;
+						ArrayList<Node> deps = Current.getChilds();
+						for(Node dep:deps) {
+							
+								
+							Button delete_dep = new Button("X");
+							delete_dep.setDefaultButton(true);
+							delete_dep.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+							
+							TitledPane dtp = new TitledPane();
+							dtp.setText("fg_dependency_"+Integer.toString(deps.indexOf(dep)));
+							dtp.setGraphic(delete_dep);
+							dtp.setGraphicTextGap(25);
+							dtp.setAnimated(true);
+							dtp.setAlignment(Pos.TOP_CENTER);
+							dtp.setContentDisplay(ContentDisplay.RIGHT);
+							
+							String Function_group,Modes;
+							
+							if(dep.Search("Function_group").size()==0
+									||dep.Search("Function_group").get(0).getVal()==null)Function_group="";
+							else Function_group = dep.Search("Function_group").get(0).getVal();
 
-
-
-
-
-
-
-
-/*
-public static Node ParseXML(String Data) {
-	Node root = new Node(null,"root");  
-	Node current = root;
-	for(int Ptr = 0;Ptr < Data.length();Ptr++) {
-		if(Character.isWhitespace(Data.charAt(Ptr)))continue;
-		else if(Data.charAt(Ptr)=='<') {
-			Ptr++;
-			if(Ptr==Data.length())return null;
-			else if(Data.charAt(Ptr) == '/'){
-				Ptr++;
-				String nextTag = get_tag(Data,Ptr);
-				if(current.getTag().equals(nextTag)) {
-					current = current.getParent();
-					Ptr+=nextTag.length();
-				}
-				else return null;
-			}
-			else {
-				String nextTag = get_tag(Data,Ptr);
-				Ptr+=nextTag.length();
-				if(hasChild(Data,Ptr+1)){
-					current = current.addNode(new Node(current,nextTag));
-				}
-				else {
-					int end = Ptr + 1;
-					for(; end+1!=Data.length() && Data.charAt(end+1)!='<'&& Data.charAt(end+1)!='>';end++);
-					if(end+1 == Data.length() || Data.charAt(end+1)=='>')return null;
-					String Val= Data.substring(Ptr+1, end+1);
-					Ptr = end;
-					current = current.addNode(new Node(current,nextTag,Val));
+							if(dep.Search("Modes").size()==0
+									||dep.Search("Modes").get(0).getVal()==null)Modes="";
+							else Modes = dep.Search("Modes").get(0).getVal();
+							
+							
+							VBox options = new VBox();
+							HBox o1 = new HBox();
+							HBox o2 = new HBox();
+							o1.getChildren().addAll(new Label("fg_name"),new TextField(Function_group));
+							o1.setSpacing(20);
+							o2.getChildren().addAll(new Label("modes"),new TextField(Modes));
+							o2.setSpacing(30);
+							options.getChildren().addAll(o1,o2);
+							dtp.setContent(options);
+							Content.getPanes().add(dtp);	
+						}
+					}
+					
+					tp.setContent(Content);
 				}
 			}
 		}
-		else return null;
+		return res;
 	}
-	if(current != root)return null;
-	else return root;
-}
-private static String get_tag(String Data,int start) {
-	int end = start;
-	for(;end+1!=Data.length() && Data.charAt(end+1)!='<' && Data.charAt(end+1)!='>';end++);
-	if(end + 1 == Data.length() || Data.charAt(end+1)=='<')return "ERROR";
-	return Data.substring(start,end+1);
-}
-private static boolean hasChild(String Data,int pos) {
-	while(pos!=Data.length() && Character.isWhitespace(Data.charAt(pos)))pos++;
-	if(pos == Data.length() || Data.charAt(pos) == '<')return true;
-	else return false;
-}	
-public ArrayList<Node> Search(String...strings) {
-	ArrayList<Node> Res = new ArrayList<Node>();
-	Node current = this;
-	for (String path : strings) {
-		for(Node i : current.getChilds()) {
-			if(i.getTag().equals(path)) {
-				if(path.equals(strings[strings.length - 1])) {
-					Res.add(i);
-				}
-				else {
-					current = i;
-					break;	
+	
+	public ArrayList<Node> Search(String...strings) {
+		ArrayList<Node> Res = new ArrayList<Node>();
+		Node current = this;
+		for (String path : strings) {
+			boolean found = false;
+			for(Node i : current.getChilds()) {
+				if(i.getTag().equalsIgnoreCase(path)) {
+					found = true;
+					if(path.equals(strings[strings.length - 1])) {
+						Res.add(i);
+					}
+					else {
+						current = i;
+						break;	
+					}
 				}
 			}
+			if(!found)return Res;
 		}
+	    return Res;
 	}
-    return Res;
-}*/
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
