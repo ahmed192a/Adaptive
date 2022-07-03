@@ -39,7 +39,7 @@ public class ExecutionCTR {
 	public FileChooser FC = new FileChooser();
 	public static ArrayList<Accordion> process_list = new ArrayList<>();
 	public static ArrayList<String> process_name = new ArrayList<>();
-	public static String manifest_id = new String("new_manifest");
+	public static String manifest_id;
 
 	
 	public static int mode = 0;
@@ -110,6 +110,7 @@ public class ExecutionCTR {
 		else {
 			process_list = new ArrayList<>();
 			process_name = new ArrayList<>();
+			manifest_id = "new_manifest";
 			exec_id.setText(manifest_id);
 			process_list.add(process_acc);
 			Del_Proc_Btn.setDisable(true);
@@ -325,7 +326,6 @@ public class ExecutionCTR {
 			alert.setHeaderText("File Overwritten Successfully");
 			alert.setTitle("Execution Manifest Exportation");
 			alert.showAndWait();
-			Controller.getSecondaryStage().close();
 		}
 		else {
 			FC.setTitle("Export Execution Manifest JSON");
@@ -341,7 +341,9 @@ public class ExecutionCTR {
 				alert.setHeaderText("File Saved Successfully");
 				alert.setTitle("Execution Manifest Exportation");
 				alert.showAndWait();
-				Controller.getSecondaryStage().close();
+				path = myObj.getPath();
+				mode = 1;
+				Controller.getSecondaryStage().setTitle("Execution Manifest Modify");
 			}
 		}
 	}
