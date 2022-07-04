@@ -200,7 +200,6 @@ void p_operator(){
                             break;
                         }
                 }
-                    std::cout << "first 'needle' found at: " << found << '\n';
             }
             if(!violate){           // if the current state doesnt violate the configuration
                 process.current_config = &process.startup_configs[config];  // set the current configuration 
@@ -224,10 +223,23 @@ void p_terminator(){
         if(!process.prun)continue;
         //check if the current state doesnt violate the configuration,otherwise terminate
         for(auto &mref:process.current_config->machine_instance_refs){
+
             string key = sys_FG[mref.function_group].current_FGS->get_states();
-            if(!(std::count(mref.modes.begin(), mref.modes.end(), key))){
+
+            // if the current state of the FG doesnt match the mode
+            auto found = mref.modes.find(key);
+            cout <<"found is :"<<found<<endl;
+            if (found==std::string::npos){
+                // set the flag to true to indicate that the current state violates the configuration
                 process.terminate();
                 break;
+            }//
+            else{
+                if((found>0 && mref.modes[found-1]!=',')||
+                    (found<mref.modes.size()-key.size() && mref.modes[found+key.size()]!=',')){
+                        process.terminate();
+                        break;
+                    }
             }
         }
     }
