@@ -187,11 +187,20 @@ void p_operator(){
                 // get the current state of the FG
                 string key = sys_FG[mref.function_group].current_FGS->get_states(); 
                 // if the current state of the FG doesnt match the mode
-                if(!std::count(mref.modes.begin(), mref.modes.end(), key)){ 
+                 std::size_t found = mref.modes.find(key);
+                if (found==std::string::npos){
                     // set the flag to true to indicate that the current state violates the configuration
                     violate = true;         
                     break;
+                }//run,on //6 0>5
+                else{
+                    if((found>0 && mref.modes[found-1]!=',')||
+                        (found<mref.modes.size()-key.size() && mref.modes[found+key.size()]!=',')){
+                            violate=true;
+                            break;
+                        }
                 }
+                    std::cout << "first 'needle' found at: " << found << '\n';
             }
             if(!violate){           // if the current state doesnt violate the configuration
                 process.current_config = &process.startup_configs[config];  // set the current configuration 
