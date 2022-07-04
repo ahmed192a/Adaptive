@@ -6,7 +6,6 @@
 #include <vector>
 #include <boost/variant2/variant.hpp>
 #include "ara/sm/sm_error_domain.hpp"
-#include "ara/core/result.hpp"
 
 namespace ara {
     namespace sm {

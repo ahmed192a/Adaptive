@@ -36,9 +36,9 @@ jobs:
       working-directory: ${{github.workspace}}/build/App 
       run: ./Adaptive_Platform
 
-    # - name: Test
-    #   working-directory: ${{github.workspace}}/build/Testing
-    #   run: ./Adaptive_Platform-ut
+    - name: Test
+      working-directory: ${{github.workspace}}/build/Testing
+      run: ./Adaptive_Platform-ut
 
     #   # Generate Doxygen code dodumentation and publish it to the GitHub Pages
     # - uses: langroodi/doxygenize@v1

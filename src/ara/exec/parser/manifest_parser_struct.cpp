@@ -114,29 +114,28 @@ bool Process::start(){
         // print current directory
         cout<<"EM(parent): in dir "<<get_current_dir_name()<<endl;
         // get file discreptor
-        int fd = open(("processes/"+name+"/execution_client_fifo").c_str(), O_RDONLY);
-        if(fd == -1) {
+        exec_clinet_fd = open(("processes/"+name+"/execution_client_fifo").c_str(), O_RDONLY);
+        if(exec_clinet_fd == -1) {
             cout<< "EM:[ERROR] => can't open fifo"<<endl;
         }else{
-            ara::exec::ExecutionState state;
-            if (read(fd, &state, sizeof(state)) == -1)
+            if (read(exec_clinet_fd, &current_state, sizeof(current_state)) == -1)
             {
                 // TO DO
                 // Log Error : counldn't send the state to fifo
                 cout<<"EM: couldn't read the state to fifo"<<endl;
                 return false;
             }
-            close(fd);
-            if(state == ara::exec::ExecutionState::kRunning) 
-            cout<<"EM: report succeed "<<(int) state<<endl;
+            //close(fd);
+            if(current_state == ara::exec::ExecutionState::kRunning) 
+            cout<<"EM: report succeed "<<(int) current_state<<endl;
         }
 
 
 
 
 
-       // int status = 11;
-        //waitpid(pid, &status, 0);
+        //  int status = 11;
+        //  waitpid(pid, &status, 0);
 
         //state_ = ProcessState::kStarting;
         _pid = pid;
@@ -151,99 +150,57 @@ bool Process::start(){
 }
 
 void Process::terminate(){
-    //  terminate seq of process
-    kill(_pid, SIGTERM);
-    int fd = open(("processes/"+name+"/execution_client_fifo").c_str(), O_RDONLY);
-    if(fd == -1) {
-        cout<< "EM:[ERROR] => can't open fifo"<<endl;
-    }else{
-        ara::exec::ExecutionState state;
-        if (read(fd, &state, sizeof(state)) == -1)
-        {
-            // TO DO
-            // Log Error : counldn't send the state to fifo
-            cout<<"EM: couldn't read the state to fifo"<<endl;
-        }
-        close(fd);
-        if(state == ara::exec::ExecutionState::kTerminating) 
-        cout<<"EM: report succeed terminatting "<<(int) state<<endl;
+    kill(_pid, SIGTERM);        // send SIGTERM to the process to terminate it 
+
+    // wait for the process to terminate and read its status from execution client
+    if (read(exec_clinet_fd, &current_state, sizeof(current_state)) == -1){
+        // TO DO
+        // Log Error : counldn't send the state to fifo
+        cout<<"EM: couldn't read the state to fifo"<<endl;
     }
-    wait(NULL);
-    unlink(("processes/"+name+"/execution_client_fifo").c_str());
-    this->prun = false;
-    this->current_config = nullptr;
-    this->_pid = 0;
+    close(exec_clinet_fd);      // close the execution client fifo
+
+    if(current_state == ara::exec::ExecutionState::kTerminating) 
+        cout<<"EM: report succeed terminatting "<<(int) current_state<<endl;
+    else
+        cout<<"EM: ERROR: coundn't Terminate the process"<<endl;
+    
+    wait(NULL);                 // wait for the process to be terminated
+    // delete the unused execution client fifo
+    unlink(("processes/"+name+"/execution_client_fifo").c_str());   
+    this->prun = false;         // set flag to indicated process not running
+    this->current_config = nullptr; // clear the pointer of current configuration
+    this->_pid = 0;             // reset the process id to default value 0
 }
 
-bool Process::StartupConfig::operator==(const StartupConfig &other) const
-    noexcept
-{
-    return (startup_options == other.startup_options) &&
-            (machine_instance_refs == other.machine_instance_refs);
+bool Process::StartupConfig::operator==(const StartupConfig &other) const noexcept{
+    return (startup_options == other.startup_options) && (machine_instance_refs == other.machine_instance_refs);
 }
 
-bool Process::StartupConfig::operator!=(const StartupConfig &other) const
-    noexcept
-{
+bool Process::StartupConfig::operator!=(const StartupConfig &other) const noexcept{
     return !(*this == other);
 }
 
-bool Process::StartupConfig::StartupOption::operator==(
-    const StartupOption &other) const noexcept
-{
+bool Process::StartupConfig::StartupOption::operator==( const StartupOption &other) const noexcept{
     return (kind == other.kind) && (name == other.name) && (arg == other.arg);
 }
 
-bool Process::StartupConfig::StartupOption::operator!=(
-    const StartupOption &other) const noexcept
-{
+bool Process::StartupConfig::StartupOption::operator!=( const StartupOption &other) const noexcept{
     return !(*this == other);
 }
 
-bool Process::StartupConfig::MachineInstanceRef::operator==(
-    const MachineInstanceRef &other) const noexcept
-{
-    return 1;// (function_group == other.function_group) && (mode == other.mode);
+bool Process::StartupConfig::MachineInstanceRef::operator==( const MachineInstanceRef &other) const noexcept{
+    return  (function_group == other.function_group) && (modes == other.modes);
 }
 
-bool Process::StartupConfig::MachineInstanceRef::operator!=(
-    const MachineInstanceRef &other) const noexcept
-{
-    return 1;// !(*this == other);
+bool Process::StartupConfig::MachineInstanceRef::operator!=( const MachineInstanceRef &other) const noexcept{
+    return  !(*this == other);
 }
 
-bool MachineManifest::operator==(const MachineManifest &other) const noexcept
-{
-    return (manifest_id == other.manifest_id) &&
-            (mode_declaration_groups == other.mode_declaration_groups);
+bool MachineManifest::operator==(const MachineManifest &other) const noexcept{
+    return (manifest_id == other.manifest_id) && (mode_declaration_groups == other.mode_declaration_groups);
 }
 
-bool MachineManifest::operator!=(const MachineManifest &other) const noexcept
-{
+bool MachineManifest::operator!=(const MachineManifest &other) const noexcept{
     return !(*this == other);
 }
-
-// bool MachineManifest::ModeDeclarationGroup::operator==(const ModeDeclarationGroup &other) const
-//     noexcept
-// {
-//     return (function_group_name == other.function_group_name) &&
-//             (mode_declarations == other.mode_declarations);
-// }
-
-// bool MachineManifest::ModeDeclarationGroup::operator!=(const ModeDeclarationGroup &other) const
-//     noexcept
-// {
-//     return !(*this == other);
-// }
-
-// bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator==(
-//     const ModeDeclaration &other) const noexcept
-// {
-//     return (mode == other.mode);
-// }
-
-// bool MachineManifest::ModeDeclarationGroup::ModeDeclaration::operator!=(
-//     const ModeDeclaration &other) const noexcept
-// {
-//     return !(*this == other);
-// }

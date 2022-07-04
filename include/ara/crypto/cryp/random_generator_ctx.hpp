@@ -6,7 +6,6 @@
 #include "cryobj/sec_seed.hpp"
 #include "../common/mem_region.hpp"
 #include "cryobj/symmetric_key.hpp"
-//#include "ara/core/result.hpp"
 
 namespace ara {
     namespace crypto {

@@ -11,11 +11,10 @@
 #ifndef ARA_EXEC_PARSER_MANIFEST_PARSER_class_H_
 #define ARA_EXEC_PARSER_MANIFEST_PARSER_class_H_
 
-// #include <string>
-// #include <vector>
+#include <memory>
 #include "ara/exec/execution_client.hpp"
 #include "ara/exec/function_group.hpp"
-#include <memory>
+
 
 namespace ara
 {
@@ -24,15 +23,29 @@ namespace ara
         namespace parser
         {
             /**
-             * @brief class for execution manifiest
+             * @brief class Process to hold all prcoess configuration and handles to 
+             *          run and terminate the process
              * 
              */
             class Process
             {
                     public:
+                    /**
+                     * @brief Class startup configuration to store the configurations
+                     *           on which we will run the process
+                     * 
+                     */
                     class StartupConfig
                     {
                         public:
+                        /**
+                         * @brief Class startup options to store all options that can be passed 
+                         *              to the process before running it
+                         * @note ex. -p <port> -d <debug>
+                         * @param   kind: to choose if it's short name option (-v) or long name (--version)
+                         * @param   name: name of the option (ex. -p , -v, -d, .....)
+                         * @param   arg:  is the passed arrgument (ex. portnum, debug flag,....)
+                         */
                         class StartupOption
                         {
                             public:
@@ -42,7 +55,13 @@ namespace ara
                             bool operator==(const StartupOption &) const noexcept;
                             bool operator!=(const StartupOption &) const noexcept;
                         };
-
+                        /**
+                         * @brief Class Machine Instance Reference to store the reference 
+                         *          to the Funcion groups state which this process depends on
+                         * @param function_group name of the functiongroup
+                         * @param modes          all modes that the process depend on FG to be in them
+                         * 
+                         */
                         class MachineInstanceRef
                         {
                             public:
@@ -57,25 +76,28 @@ namespace ara
                         bool operator==(const StartupConfig &) const noexcept;
                         bool operator!=(const StartupConfig &) const noexcept;
                     };
-                    std::vector<Process *> dep_process;
-                    int _pid=0;
-                    //ara::exec::ExecutionState current_state;
-                    std::string current_state;
-                    std::string name{};
-                    std::vector<StartupConfig> startup_configs{};
-                    StartupConfig *current_config = nullptr;
-                    bool prun = false;
+                    std::vector<Process *> dep_process; // pointer to all dependent processes
+                    int _pid    = 0;                    // process id which is initialized by zero in case not running
+                    ara::exec::ExecutionState current_state = ara::exec::ExecutionState::kTerminating; // current state of the process
+                    std::string name{};                 // name of the process
+                    std::vector<StartupConfig> startup_configs{};   // startup configurations of the process
+                    StartupConfig *current_config = nullptr;        // pointer to the current startup configuration of the process
+                    bool prun = false;                  // flag to indicate if the process is running or not
+                    int exec_clinet_fd= 0;              // file discriptor for execution client fifo
 
-                    bool operator==(const Process &) const noexcept;
-                    bool operator!=(const Process &) const noexcept;
-                    bool start();   // starting the process
-                    void terminate();   // used for terminating the process
+                    bool operator==(const Process &) const noexcept;    // equality operator
+                    bool operator!=(const Process &) const noexcept;    // inequality operator
+                    bool start();                       // starting the process
+                    void terminate();                   // terminating the process
             };
+
+            /**
+             * @brief 
+             * 
+             */
             class ExecutionManifest
             {
                 public:
-                
-
                 std::string manifest_id{};
                 std::vector<Process> processes{};
 
@@ -91,23 +113,6 @@ namespace ara
             class MachineManifest
             {
                 public:
-                // class ModeDeclarationGroup
-                // {
-                //     public:
-                //     class ModeDeclaration
-                //     {
-                //         public:
-                //         std::string mode{};
-                //         bool operator==(const ModeDeclaration &) const noexcept;
-                //         bool operator!=(const ModeDeclaration &) const noexcept;
-                //     };
-
-                //     std::string function_group_name{};
-                //     std::vector<ModeDeclaration> mode_declarations{};
-                //     bool operator==(const ModeDeclarationGroup &) const noexcept;
-                //     bool operator!=(const ModeDeclarationGroup &) const noexcept;
-                // };
-                // mach_id/fuG_ID
                 std::string manifest_id{};
                 std::vector<std::shared_ptr<FunctionGroup>> mode_declaration_groups{};
                 bool operator==(const MachineManifest &) const noexcept;

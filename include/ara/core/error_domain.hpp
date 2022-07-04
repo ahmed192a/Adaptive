@@ -25,9 +25,9 @@ namespace ara
         class ErrorDomain
         {
         public:
-            using IdType = std::uint64_t;
-            using CodeType = std::int32_t;
-            using SupportDataType = std::int32_t;
+            using IdType            = std::uint64_t;
+            using CodeType          = std::int32_t;
+            using SupportDataType   = std::int32_t;
 
             ErrorDomain(ErrorDomain const &) = delete;
             ErrorDomain(ErrorDomain &&) = delete;

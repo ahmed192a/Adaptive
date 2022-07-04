@@ -7,7 +7,6 @@
 #include "../common/mem_region.hpp"
 //#include "../common/base_id_types.hpp"
 //#include "../common/vendor_specific_algorithm_identifier.hpp"
-//#include "../../core/result.hpp"
 
 namespace ara {
 namespace crypto {
