@@ -1,4 +1,7 @@
  #include "key_storage_provider.hpp"
+#include <filesystem>
+#include <fstream>
+
 
  namespace ara
  {
@@ -17,7 +20,7 @@
 
  				//@breif: Load a key slot
  				// The function loads the information associated with a KeySlot into a KeySlot object
- 				//KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept ;
+                InhKeySlot::Uptr LoadKeySlot(std::string KeySlotName) noexcept;
 
  				//@breif: Rollback all changes executed during the transaction in Key Storage.
  				// The rollback command permanently cancels all changes made during the transaction in Key Storage.
@@ -27,6 +30,8 @@
                 /******************************* Not in SWS *********************************/
  				//@breif: Get a vector of IOInterface from a Transaction id.
  				std::vector<ConcreteIOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept;
+
+                InhKeySlot::Uptr CreateNewKeySlot(std::string name);
  			};
  		}
  	}

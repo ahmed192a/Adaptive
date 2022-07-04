@@ -190,3 +190,26 @@
      return IOContent;
  }
 
+
+ InhKeySlot::Uptr KSPKeyStorageProvider::CreateNewKeySlot(std::string name)
+ {
+     std::ifstream my_file;
+     my_file.open("keyslotsfile.txt");
+     std::string lines;
+     //my_file >> lines;
+     //std::cout << lines;
+     while (!my_file.eof())
+     {
+         //std::cout << "while entered\n";
+         my_file >> lines;
+         std::cout << lines;
+         if (lines == name)
+         {
+             //Call Laod keySlot
+             return;
+         }
+
+     }
+     InhKeySlot::Uptr newCreatedSlot = std::make_unique<InhKeySlot>(name);
+ }
+
