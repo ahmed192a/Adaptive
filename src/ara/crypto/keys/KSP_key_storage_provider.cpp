@@ -210,8 +210,8 @@
          }
 
      }
-     /******************* This line needs syntax correction ***************************/
-     //InhKeySlot::Uptr newCreatedSlot = std::make_unique<InhKeySlot>(name);
-     //return newCreatedSlot;
+     
+     InhKeySlot::Uptr newCreatedSlot = std::make_unique<InhKeySlot>(name);
+     return newCreatedSlot;
  }
 

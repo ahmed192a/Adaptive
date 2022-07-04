@@ -78,7 +78,7 @@ namespace ara
                  * 
                  * @return ara::core::Result<cryp::CryptoProvider::Uptr> 
                  */
-                virtual cryp::CryptoProvider::Uptr MyProvider ()const noexcept=0;
+                //virtual cryp::CryptoProvider::Uptr MyProvider ()const noexcept=0;
                 /**
                  * @brief Get the Prototyped Props object
                  * 

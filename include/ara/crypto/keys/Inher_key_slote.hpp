@@ -64,7 +64,7 @@
                   * 
                   * @return ara::core::Result<cryp::CryptoProvider::Uptr> 
                   */
-                  cryp::CryptoProvider::Uptr MyProvider ()const noexcept;
+                  //cryp::CryptoProvider::Uptr MyProvider ()const noexcept;
                  /**
                   * @brief Get the Prototyped Props object
                   * 

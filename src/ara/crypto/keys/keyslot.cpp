@@ -172,12 +172,12 @@ namespace ara
              {
                   return KSCP;
              }
-             
+             /*
              cryp::CryptoProvider::Uptr InhKeySlot ::MyProvider ()const noexcept
              {
                   return  std::unique_ptr<ara::crypto::cryp::CryptoProvider>();
              }
-             
+             */
              KeySlotPrototypeProps InhKeySlot :: GetPrototypedProps ()const noexcept
              {
                  return KSPP;
