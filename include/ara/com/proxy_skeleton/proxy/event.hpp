@@ -53,6 +53,17 @@ namespace ara
                     {
                         event_data = std::make_shared<T>();
                     }
+
+
+                    /**
+                     * @brief get the id of the event (unique identifier)
+                     * 
+                     * @return int 
+                     */
+                    int Get_event_id()
+                    {
+                        return m_event_id;
+                    }
                     /**
                      * @brief Destroy the Event object
                      * 
