@@ -272,23 +272,36 @@ void *pthread1(void *v_var)
         ara::com::SOMEIP_MESSAGE::Message Nmsg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
         msg = Nmsg.GetPayload();
 
-        switch (Nmsg.MessageId().serivce_id)
-        {
-        case PKG_SERVICE_ID:
-            switch (Nmsg.MessageId().method_id & 0x7FFF)
-            {
-            case 0:
+        if(Nmsg.MessageId().serivce_id == server_proxy_ptr->CurrentStatus.Get_event_id()){ //lkd wgdnaha
+            if(Nmsg.MessageId().method_id & 0x7FFF == 0){
                 server_proxy_ptr->CurrentStatus.handlecall(msg);
                 std::cout << "NEW EVENT1 : " << server_proxy_ptr->CurrentStatus.get_value() << std::endl;
-                break;
-            default:
-                break;
             }
-            break;
-
-        default:
-            break;
+            else{
+                ///@todo Send Error Message unknown event_id
+            }
         }
+        else{
+            ///@todo Send Error Message unknown service_id
+        }
+
+        // switch (Nmsg.MessageId().serivce_id)
+        // {
+        // case PKG_SERVICE_ID:
+        //     switch (Nmsg.MessageId().method_id & 0x7FFF)
+        //     {
+        //     case 0:
+        //         server_proxy_ptr->CurrentStatus.handlecall(msg);
+        //         std::cout << "NEW EVENT1 : " << server_proxy_ptr->CurrentStatus.get_value() << std::endl;
+        //         break;
+        //     default:
+        //         break;
+        //     }
+        //     break;
+
+        // default:
+        //     break;
+        // }
     }
 }
 

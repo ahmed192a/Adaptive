@@ -333,24 +333,23 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::
 
 void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::field_method_dispatch(ara::com::SOMEIP_MESSAGE::Message &message, Socket &cserver)
 {
-    //extract event id
+    // extract event id
     uint16_t event_id = message.MessageId().method_id & 0x7FFF;
-    switch (event_id) 
+    switch (event_id)
     {
-    case 0: // Id of CurrentStatus Field
+    case 0:                                                                  // Id of CurrentStatus Field
         if (message.Length() > ara::com::SOMEIP_MESSAGE::Header::HeaderSize) // if Message has payload So it's Set request with the new data
-        {     
-            // CurrentStatus does't have setter
-            NoMethodHandler(event_id, cserver);       // Send Error Message unknown event_id
-
-        }
-        else    // if Message doesn't have payload So it's Get request with just the header 16 Bytes
         {
-            CurrentStatus.HandleGet(message, cserver); 
+            // CurrentStatus does't have setter
+            NoMethodHandler(event_id, cserver); // Send Error Message unknown event_id
+        }
+        else // if Message doesn't have payload So it's Get request with just the header 16 Bytes
+        {
+            CurrentStatus.HandleGet(message, cserver);
         }
         break;
     default:
-        NoMethodHandler(event_id, cserver);       // Send Error Message unknown event_id
+        NoMethodHandler(event_id, cserver); // Send Error Message unknown event_id
         break;
     }
 }
@@ -365,11 +364,11 @@ void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::method_dispatch(ara:
 
     switch (methodID)
     {
-    case 7://TransferStart
+    case 7: // TransferStart
         HandleCall(*this, &PackageManagementSkeleton::TransferStart, message, cserver);
 
         break;
-    case 8://TransferData
+    case 8: // TransferData
     {
         std::vector<uint8_t> msg = message.GetPayload();
         ara::ucm::pkgmgr::PackageManagement::ByteVectorType data;
@@ -418,7 +417,7 @@ void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::method_dispatch(ara:
         HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, message, cserver);
         break;
     default:
-        NoMethodHandler(methodID, cserver);       // Send Error Message unknown method
+        NoMethodHandler(methodID, cserver); // Send Error Message unknown method
         // cserver.Send(&result, sizeof(int));
         // cserver.CloseSocket();
         break;

@@ -61,6 +61,7 @@ namespace ara
                         _result = new EventgroupEntry(EntryType::Acknowledging, _serviceId, _instanceId, _ttl, _majorVersion, _groupId);
                         break;
                     default:
+                        
                         break;
                     }
                     return _result;

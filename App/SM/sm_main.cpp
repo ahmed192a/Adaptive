@@ -178,6 +178,7 @@ void *pthread0(void *v_var){
             if (someip_msg.check_Methode_ID() == true){ // No methods in SM Services
                 cout << "This is method request from UCM_triggerin " << endl;
             }else{
+                
                 UCM_triggerin_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
             }
         }else if(someip_msg.MessageId().serivce_id == OTA_triggerin_skeleton_ptr->GetServiceId()){
@@ -188,6 +189,8 @@ void *pthread0(void *v_var){
             }
         }else{
             cout << "Unknown service id" << endl;
+            ara::com::proxy_skeleton::skeleton::ServiceSkeleton::NoServiceHandler(someip_msg, Sclient);
+
         }
 
         

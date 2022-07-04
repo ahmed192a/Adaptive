@@ -83,6 +83,10 @@ namespace ara
                      */
                     virtual ~ServiceSkeleton() {}
 
+                    const ara::com::proxy_skeleton::ServiceId GetServiceId()
+                    {
+                        return m_service_id;
+                    }
                     /**
                      * @brief Offer Service 
                      * 
@@ -162,6 +166,28 @@ namespace ara
                         this->m_skeleton_udp.UDPSendTo((void *)&size, sizeof(size), (sockaddr *)&client_add);
                         this->m_skeleton_udp.UDPSendTo((void *)&__payload[0], __payload.size(), (sockaddr *)&client_add);
                         this->m_skeleton_udp.CloseSocket();
+                    }
+                    /**
+                     * @brief No Handler --> handle error
+                     * 
+                     * @param SomeIP_MESSAGE::Message msg --> message from client
+                     * @param binding 
+                     */
+                    static void NoServiceHandler(SOMEIP_MESSAGE::Message S_msg, Socket &binding)
+                    {
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            SOMEIP_MESSAGE::Message_ID{S_msg.MessageId().serivce_id, S_msg.MessageId().method_id}, 
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::ReturnCode::E_UNKNOWN_SERVICE,
+                            SOMEIP_MESSAGE::MessageType::ERROR);
+
+                        std::vector<uint8_t> _Payload = R_msg.Serializer();
+                        uint32_t size = _Payload.size();
+                        binding.Send(&size, sizeof(size));
+                        binding.Send(_Payload.data(), size);
+                        binding.CloseSocket();
                     }
 
                 protected:
@@ -337,6 +363,7 @@ namespace ara
                         binding.Send(_Payload.data(), size);
                         binding.CloseSocket();
                     }
+
                 private:
                 /**
                  * @brief sHandleCall

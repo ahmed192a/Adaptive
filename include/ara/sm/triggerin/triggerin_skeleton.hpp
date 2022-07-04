@@ -72,6 +72,7 @@ namespace ara
                             // Trigger.HandleCall(message, cserver);
                             break;
                         default:
+                            NoMethodHandler(message.MessageId().method_id, cserver);
                             // cserver.Send(&result2, sizeof(int));
                             // cserver.CloseSocket();
 
@@ -121,6 +122,7 @@ namespace ara
                             // Trigger.HandleCall(message, cserver);
                             break;
                         default:
+                            NoMethodHandler(message.MessageId().method_id, cserver);
                             // cserver.Send(&result2, sizeof(int));
                             // cserver.CloseSocket();
 
