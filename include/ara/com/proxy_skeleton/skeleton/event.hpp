@@ -102,6 +102,16 @@ namespace ara
                     ~Event() {}
 
                     /**
+                     * @brief return the id of the event
+                     * 
+                     * @return int 
+                     */
+                    int Get_event_id()
+                    {
+                        return m_event_id;
+                    }
+
+                    /**
                      * @brief get the event variable
                      */
                     T get_event()
