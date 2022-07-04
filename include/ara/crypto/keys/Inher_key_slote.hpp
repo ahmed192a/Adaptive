@@ -76,7 +76,7 @@
                   * 
                   * @return ara::core::Result<void> 
                   */
-                 void Clear () noexcept=0;
+                 void Clear () noexcept;
                  /**
                   * @brief Copy-assign another KeySlot to this instanc
                   * 
