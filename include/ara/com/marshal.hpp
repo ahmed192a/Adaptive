@@ -13,7 +13,6 @@
 #define ARA_COM_MARSHAL_H_
 
 #include "ara/com/deserializer.hpp"
-#include <vector>
 #include <iostream>
 
 namespace ara

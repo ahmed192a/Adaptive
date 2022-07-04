@@ -37,10 +37,7 @@ namespace ara
         {
             namespace skeleton
             {
-                namespace EVENT
-                {
-                    void set_handle(void (*handler)(int, siginfo_t *, void *));
-                }
+
 
                 template <typename T>
                 class Event

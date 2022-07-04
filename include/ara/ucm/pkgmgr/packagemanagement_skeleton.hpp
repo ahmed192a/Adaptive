@@ -13,23 +13,20 @@
 #define ARA_UCM_PKGMGR_PackageManagement_SKELETON_H_
 
 #include "ara/com/proxy_skeleton/skeleton/field.hpp"
-#include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
 #include "ara/ucm/pkgmgr/ucm_types.hpp"
-#include "ucm_return_types.hpp"
-#include "ucm_error.hpp"
+#include "ara/ucm/pkgmgr/ucm_return_types.hpp"
+#include "ara/ucm/pkgmgr/ucm_error.hpp"
 #include "ara/ucm/pkgmgr/packet.hpp"
-
-
 #include <future>
 #include <vector>
 #include <iterator>
 #include <algorithm>
 #include <boost/uuid/uuid.hpp>
+#include <boost/uuid/random_generator.hpp>
 // #include <boost/uuid/uuid_generators.hpp>
 // #include <boost/uuid/uuid_io.hpp>
 // #include <boost/lexical_cast.hpp>
-#include <boost/uuid/random_generator.hpp>
 // #include <boost/variant2/variant.hpp>
 // #include <bits/stdc++.h>
 

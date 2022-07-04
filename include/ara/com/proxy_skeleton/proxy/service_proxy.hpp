@@ -15,6 +15,12 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <cstring>
+#include <signal.h>
+#include <future>
+#include <arpa/inet.h>
+#include <algorithm>
+#include <queue>
 #include "ara/com/ipc/client/socket_Client.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/proxy_skeleton/definitions.hpp"
@@ -22,16 +28,8 @@
 #include "ara/com/serializer.hpp"
 #include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
-#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
-#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
 #include "ara/com/deserializer.hpp"
-#include <cstring>
-#include <signal.h>
-#include <future>
-#include <arpa/inet.h>
-#include "algorithm"
 
-#include <queue>
 using SD_data = ara::com::proxy_skeleton::SD_data;
 
 namespace ara

@@ -12,18 +12,15 @@
 #ifndef ARA_COM_proxy_skeleton_SKELETON_SERVICE_SKELETON_H_
 #define ARA_COM_proxy_skeleton_SKELETON_SERVICE_SKELETON_H_
 
-// #include "ara/com/proxy_skeleton/definitions.hpp"
+#include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
 #include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
 #include "ara/com/ipc/client/socket_Client.hpp"
 #include "ara/com/SOMEIP/SomeipSDMessage.hpp"
-#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
+#include "ara/com/serializer.hpp"
 #include "ara/com/marshal.hpp"
 #include <utility>
 #include <unistd.h>
-#include "ara/com/serializer.hpp"
-#include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
-// #include <map>
 #include <queue>
 #include <future>
 

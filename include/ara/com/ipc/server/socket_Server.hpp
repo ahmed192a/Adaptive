@@ -10,9 +10,6 @@
  */
 #ifndef CSERVER_H
 #define CSERVER_H
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include "ara/com/ipc/ipc_errors.hpp"
 #include "ara/com/ipc/server/socket.hpp"
 
 class CServer
