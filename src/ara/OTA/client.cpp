@@ -3,8 +3,12 @@
 #include <string.h> //strlen
 #include <sys/socket.h> //socket
 #include <unistd.h>// close socket
+#include "../../../include/ara/crypto/cryp/concrete_crypto_provider.hpp"
+
 using namespace std;
 using namespace OTA;
+using namespace ara::crypto::cryp;
+using namespace ara::crypto;
 
 /*
     constructor
@@ -99,7 +103,7 @@ bool Client::requestMetadata(std::string &data){
     
 }
 
-bool Client::requestPackage(std::vector<uint8_t> &data){
+bool Client::requestPackage(std::vector<uint8_t> &data, std::vector<uint8_t>& sign){
 
 
     if(this->sendData("Requesting Package")==0){
@@ -113,7 +117,33 @@ bool Client::requestPackage(std::vector<uint8_t> &data){
     {
         return false;
     }
-   return true;
+
+    /******************* Added to decrypt ******************************/
+
+    //Receive the signature from the server
+    int macSize;
+    recv(sock, &macSize, sizeof(macSize), 0);
+    sign.resize(macSize);
+    if (recv(sock, sign.data(), macSize, 0) < 0)
+    {
+        return false;
+    }
+
+    ara::crypto::cryp::ConcreteCryptoProvider::Uptr a = std::make_unique<ConcreteCryptoProvider>();
+    Authentication::Uptr authenticatedpointer = a->CreateAuthCipherCtx(1);
+    ara::crypto::cryp::SymmetricKey key;
+    key.keyVal = { 'a','a','a','a','s','s','s','s','u','k','j','h','h','h','h','j','h','h','h','h','y','h','u','y','d','y','g','i','y','u','t','u' };
+    authenticatedpointer->Transform_set = CryptoTransform::kDecrypt;
+    authenticatedpointer->SetKey(key, CryptoTransform::kDecrypt);
+    authenticatedpointer->Start();
+    std::vector<uint8_t> authenticatedDecrypted = authenticatedpointer->ProcessConfidentialData(data, sign);
+    // If authenticatedDecrypted vector is empty,
+    if (!(authenticatedDecrypted.size()))
+    {
+        return false;
+    }
+
+    return true;
     
 }
 
