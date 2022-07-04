@@ -206,7 +206,7 @@
          if (lines == name)
          {
              InhKeySlot::Uptr LoadedCreatedSlot = LoadKeySlot(name);
-             return;
+             return LoadedCreatedSlot;
          }
 
      }
