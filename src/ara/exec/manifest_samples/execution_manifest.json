@@ -16,9 +16,7 @@
                         "FunctionGroupDependencies": [
                             {
                                 "Function_group": "FG_1",
-                                "Modes": [ 
-                                           {"Mode" : "on"} 
-                                           ]
+                                "Modes": "on"
                             },
                             {
                                 "Function_group": "MachineFG",

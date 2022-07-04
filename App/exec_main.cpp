@@ -187,7 +187,8 @@ void p_operator(){
                 // get the current state of the FG
                 string key = sys_FG[mref.function_group].current_FGS->get_states(); 
                 // if the current state of the FG doesnt match the mode
-                 std::size_t found = mref.modes.find(key);
+                auto found = mref.modes.find(key);
+
                 if (found==std::string::npos){
                     // set the flag to true to indicate that the current state violates the configuration
                     violate = true;         
@@ -235,11 +236,11 @@ void p_terminator(){
                 break;
             }//
             else{
-                if((found>0 && mref.modes[found-1]!=',')||
-                    (found<mref.modes.size()-key.size() && mref.modes[found+key.size()]!=',')){
-                        process.terminate();
-                        break;
-                    }
+                // if((found>0 && mref.modes[found-1]!=',')||
+                //     (found<mref.modes.size()-key.size() && mref.modes[found+key.size()]!=',')){
+                //         process.terminate();
+                //         break;
+                //     }
             }
         }
     }
@@ -374,15 +375,11 @@ void create_manifests()
             "                        \"FunctionGroupDependencies\": [\n"
             "                            {\n"
             "                                \"Function_group\": \"FG_1\",\n"
-            "                                \"Modes\": [ \n"
-            "                                           {\"Mode\" : \"on\"} \n"
-            "                                           ]\n"
+            "                                \"Modes\": \"on\" \n"
             "                            },\n"
             "                            {\n"
             "                                \"Function_group\": \"MachineFG\",\n"
-            "                                \"Modes\": [ \n"
-            "                                           {\"Mode\" : \"Running\"} \n"
-            "                                           ]\n"
+            "                                \"Modes\":  \"Running\" \n"
             "                            }\n"
             "                        ]\n"
             "                    }\n"
@@ -403,9 +400,7 @@ void create_manifests()
             "                        \"FunctionGroupDependencies\": [\n"
             "                            {\n"
             "                                \"Function_group\": \"MachineFG\",\n"
-            "                                \"Modes\": [ \n"
-            "                                           {\"Mode\" : \"Running\"} \n"
-            "                                           ]\n"
+            "                                \"Modes\": \"Running\" \n"
             "                            }\n"
             "                        ]\n"
             "                    }\n"
@@ -426,11 +421,7 @@ void create_manifests()
             "                        \"FunctionGroupDependencies\": [\n"
             "                            {\n"  //
             "                                \"Function_group\": \"MachineFG\",\n"
-            "                                \"Modes\": [ \n"
-            "                                               {\"Mode\" : \"Pre-Starting-up\"}, \n"
-            "                                               {\"Mode\" : \"Starting-up\"}, \n"
-            "                                               {\"Mode\" : \"Running\"} \n"
-            "                                           ]\n"
+            "                                \"Modes\": \"Pre-Starting-up,Starting-up,Running\" \n"
             "                            }\n"
             "                        ]\n"
             "                    }\n"
@@ -451,10 +442,7 @@ void create_manifests()
             "                        \"FunctionGroupDependencies\": [\n"
             "                            {\n"  //
             "                                \"Function_group\": \"MachineFG\",\n"
-            "                                \"Modes\": [ \n"
-            "                                           {\"Mode\" : \"Starting-up\"}, \n"
-            "                                           {\"Mode\" : \"Running\"} \n"
-            "                                           ]\n"
+            "                                \"Modes\": \"Starting-up,Running\" \n"
             "                            }\n"
             "                        ]\n"
             "                    }\n"
