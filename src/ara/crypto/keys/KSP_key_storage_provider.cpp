@@ -205,7 +205,7 @@
          std::cout << lines;
          if (lines == name)
          {
-             InhKeySlot::Uptr LoadedCreatedSlot = LoadKeySlot(name);
+             InhKeySlot::Uptr LoadedCreatedSlot = std::move (LoadKeySlot(name));
              return LoadedCreatedSlot;
          }
 
