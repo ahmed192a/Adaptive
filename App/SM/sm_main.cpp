@@ -174,29 +174,23 @@ void *pthread0(void *v_var){
         ara::com::SOMEIP_MESSAGE::Message someip_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg); 
 
         // check if message is a method call or field methods (SET, GET)
-        if (someip_msg.check_Methode_ID() == true)
-        {
-            // No methods in SM Services
-            cout << "This is method request " << endl;
-        }
-        else
-        {
-            // handling GET or SET field request
-            cout << "This is SET OR GET request" << endl;
-            // check service id and switch over them 
-            if(someip_msg.MessageId().serivce_id == UCM_triggerin_skeleton_ptr->GetServiceId())
-            {
+        if(someip_msg.MessageId().serivce_id == UCM_triggerin_skeleton_ptr->GetServiceId()){
+            if (someip_msg.check_Methode_ID() == true){ // No methods in SM Services
+                cout << "This is method request from UCM_triggerin " << endl;
+            }else{
                 UCM_triggerin_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
             }
-            else if(someip_msg.MessageId().serivce_id == OTA_triggerin_skeleton_ptr->GetServiceId())
-            {
+        }else if(someip_msg.MessageId().serivce_id == OTA_triggerin_skeleton_ptr->GetServiceId()){
+            if (someip_msg.check_Methode_ID() == true){ // No methods in SM Services
+                cout << "This is method request from OTA_triggerin " << endl;
+            }else{
                 OTA_triggerin_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
             }
-            else
-            {
-                cout << "Unknown service id" << endl;
-            }
+        }else{
+            cout << "Unknown service id" << endl;
         }
+
+        
         cout<< "finish request \n";
 
 

@@ -38,6 +38,7 @@ namespace ara
          */
         class ExecutionClient final
         {
+        private:
             // location of FIFO to communicate between EM & SM
             char fifo_l[30] = "execution_client_fifo";
             // index of File descriptor

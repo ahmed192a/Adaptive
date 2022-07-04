@@ -26,7 +26,6 @@ namespace ara
 		 * \brief Defines an enumeration class for the Execution Management error codes.
 		 * 
 		 */
-		//enum class ExecErrc : ara::core::ErrorDomain::CodeType {...};
 		enum class ExecErrc : ara::core::ErrorDomain::CodeType
 		{
 			kGeneralError = 1,       /*< Some unspecified error occurred */
