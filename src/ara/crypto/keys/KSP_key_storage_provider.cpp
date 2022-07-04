@@ -211,5 +211,6 @@
 
      }
      InhKeySlot::Uptr newCreatedSlot = std::make_unique<InhKeySlot>(name);
+     return newCreatedSlot;
  }
 
