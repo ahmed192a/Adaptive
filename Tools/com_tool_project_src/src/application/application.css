@@ -1,0 +1,53 @@
+#indicator .text{
+	-fx-text-alignment: center;
+}
+#indicator{
+	-fx-font: bold 12px Calibri;
+	-fx-font-style: italic; 
+	-fx-text-fill:white;
+	 text-area-background: #00008b ;
+}
+#indicator .content {
+   -fx-background-color: text-area-background;
+   -fx-padding: 5 0;   
+}
+.text-area{
+	-fx-font: bold 12px normal;
+	-fx-background-color: Gray;
+}
+.text-area .content {
+   -fx-background-color: GhostWhite;
+   -fx-text-alignment: center;
+}
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 10;
+}
+.tab-pane
+{
+    -fx-tab-min-width:80px;
+}
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+.tab-pane .tab
+{
+    -fx-background-color: #828282;
+
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color: #505050;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #fa3c64;
+}
