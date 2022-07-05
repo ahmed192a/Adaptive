@@ -154,6 +154,10 @@ public class Node {
 			current = current.addNode(new Node(current,"Mode_declarations",1));
 			for(int ii=0;ii<modes.size();ii++) {
 				Node mode = new Node(current,"",0);
+				if(((TextField)((Button)modes.get(ii).getGraphic()).getGraphic()).getText().equals("")) {
+					Error.append("Mode Fields Must Be Filled!");
+					return null;
+				}
 				mode.addNode(new Node(current,"Mode",
 						((TextField)((Button)modes.get(ii).getGraphic()).getGraphic()).getText()));
 				current.addNode(mode);
@@ -242,7 +246,7 @@ public class Node {
 		}
 		return (JSONTree==Current && JSONTree.getChilds().size()!=0)?JSONTree.getChilds().get(0):null;
 	}
-	public static GUI TreeToGUI(Node Tree) {
+	public static GUI EM_TreeToGUI(Node Tree) {
 		if(!Tree.getTag().equalsIgnoreCase("")||!Tree.getType().equals("element"))return null;
 		Node Current = Tree;
 		ArrayList<Node> Search;
@@ -265,10 +269,10 @@ public class Node {
 		ArrayList<Node> processes = Current.getChilds();
 		for(Node process:processes) { // Process is "" tag
 			//Use Search From Here
-			res.process_list.add(new Accordion());
+			res.acc_list.add(new Accordion());
 			Search = process.Search("Process_name");
-			if(Search.size()==0||Search.get(0).getVal()==null) res.process_name.add("");
-			else res.process_name.add(Search.get(0).getVal());
+			if(Search.size()==0||Search.get(0).getVal()==null) res.acc_names.add("");
+			else res.acc_names.add(Search.get(0).getVal());
 
 			Search = process.Search("Mode_dependent_startup_configs");
 			if(Search.size()!=0) {	
@@ -287,7 +291,7 @@ public class Node {
 					tp.setAnimated(true);
 					tp.setAlignment(Pos.TOP_LEFT);
 					tp.setContentDisplay(ContentDisplay.RIGHT);
-					res.process_list.get(res.process_list.size()-1).getPanes().add(tp);
+					res.acc_list.get(res.acc_list.size()-1).getPanes().add(tp);
 					Accordion Content = new Accordion();
 					Content.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 					
@@ -389,6 +393,67 @@ public class Node {
 		}
 		return res;
 	}
+	public static GUI MM_TreeToGUI(Node Tree) {
+		if(!Tree.getTag().equalsIgnoreCase("")||!Tree.getType().equals("element"))return null;
+		Node Current = Tree;
+		ArrayList<Node> Search;
+		/////Data To Be Filled/////////
+		GUI res = new GUI();
+		///////////////////////////////
+		Search = Current.Search("Machine_manifest");
+		if(Search.size()==0)	return null;
+		Current = Search.get(0);
+		
+		Search = Current.Search("Machine_manifest_id");
+		if(Search.size()==0||Search.get(0).getVal()==null) res.manifest_id = "";
+		else res.manifest_id = Search.get(0).getVal();
+
+		Search = Current.Search("Mode_declaration_group");
+		if(Search.size()==0)	return null;
+		Current = Search.get(0);
+		if(!Current.getType().equals("array"))	return null;
+		
+		ArrayList<Node> processes = Current.getChilds();
+		for(Node process:processes) { // Process is "" tag
+			//Use Search From Here
+			res.acc_list.add(new Accordion());
+			Search = process.Search("Function_group_name");
+			if(Search.size()==0||Search.get(0).getVal()==null) res.acc_names.add("");
+			else res.acc_names.add(Search.get(0).getVal());
+
+			Search = process.Search("Mode_declarations");
+			if(Search.size()!=0) {	
+				Current = Search.get(0);
+				if(!Current.getType().equals("array"))	return null;
+				ArrayList<Node> modes = Current.getChilds();
+				for(Node mode:modes) {
+					String mode_name = "mode_"+Integer.toString(modes.indexOf(mode));
+					TitledPane tp = new TitledPane();
+					tp.setText(mode_name);
+					Button delete = new Button("X");
+					delete.setDefaultButton(true);
+					delete.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+					delete.setGraphic(new TextField());
+					tp.setGraphic(delete);
+					tp.setGraphicTextGap(30);
+					tp.setAnimated(true);
+					tp.setAlignment(Pos.CENTER);
+					tp.setContentDisplay(ContentDisplay.RIGHT);
+					tp.setCollapsible(false);
+					res.acc_list.get(res.acc_list.size()-1).getPanes().add(tp);
+					Search = mode.Search("Mode");
+					if(Search.size()!=0) {	
+						Current = Search.get(0);
+						if(!Current.getType().equals("value"))	return null;
+						((TextField)delete.getGraphic()).setText(Current.getVal());
+					}
+				}
+			}
+		}
+		return res;
+	}
+		
+
 	
 	public ArrayList<Node> Search(String...strings) {
 		ArrayList<Node> Res = new ArrayList<Node>();

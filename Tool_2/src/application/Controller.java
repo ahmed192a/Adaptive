@@ -32,12 +32,17 @@ public class Controller {
 	
 	public void initialize() {
     	img.setCenter(iv);
+    	iv.setScaleX(0.5);
+    	iv.setScaleY(0.6);
+
 	}
 	public void EM(ActionEvent e) throws IOException  {
 		ChoiceDialog<String> choice = new ChoiceDialog<String>("Generate Manifest","Generate Manifest","Modify Manifest");
 		choice.setTitle("Execution Manifest");
 		choice.setContentText("Operation: ");
 		choice.setHeaderText("Select Operation");
+		Stage stage = (Stage) choice.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(new Image("icon.png"));
 		choice.showAndWait();
 		if(choice.resultProperty().getValue()==null)return;
 		if(choice.resultProperty().getValue().equals("Generate Manifest")) {
@@ -69,6 +74,8 @@ public class Controller {
 			    if(JSONTree==null) {
 					Alert alert = new Alert(AlertType.ERROR,"Please Load Consistent JSON File",ButtonType.CLOSE);
 					alert.setHeaderText("JSON FILE INCONSISTENT!");
+					Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+					stage2.getIcons().add(new Image("err.png"));
 					alert.showAndWait();
 					return;
 				}
@@ -77,15 +84,17 @@ public class Controller {
 				secondaryStage.setResizable(false);
 				ExecutionCTR.mode=1;
 				ExecutionCTR.path=myObj.getPath();
-				GUI res = Node.TreeToGUI(JSONTree);
+				GUI res = Node.EM_TreeToGUI(JSONTree);
 				if(res==null) {
 					Alert alert = new Alert(AlertType.ERROR,"JSON Loaded Is Not Execution Manifest!",ButtonType.CLOSE);
 					alert.setHeaderText("FILE NOT EXECUTION MANIFEST!");
+					Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+					stage2.getIcons().add(new Image("err.png"));
 					alert.showAndWait();
 					return;
 				}
-				ExecutionCTR.process_list=res.process_list;
-				ExecutionCTR.process_name=res.process_name;
+				ExecutionCTR.process_list=res.acc_list;
+				ExecutionCTR.process_name=res.acc_names;
 				ExecutionCTR.manifest_id = res.manifest_id;
 				
 				Parent root = FXMLLoader.load(getClass().getResource("Execution.fxml")); 
@@ -104,6 +113,8 @@ public class Controller {
 		choice.setTitle("Machine Manifest");
 		choice.setContentText("Operation: ");
 		choice.setHeaderText("Select Operation");
+		Stage stage = (Stage) choice.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(new Image("icon.png"));
 		choice.showAndWait();
 		if(choice.resultProperty().getValue()==null)return;
 		if(choice.resultProperty().getValue().equals("Generate Manifest")) {
@@ -121,7 +132,7 @@ public class Controller {
 			Main.getPrimaryStage().show();
 		}
 		else if (choice.resultProperty().getValue().equals("Modify Manifest")) {
-			/*Node JSONTree;
+			Node JSONTree;
 			String Data = new String();
 			FC.setTitle("Load JSON File");
 			FC.getExtensionFilters().clear();
@@ -135,28 +146,38 @@ public class Controller {
 			    if(JSONTree==null) {
 					Alert alert = new Alert(AlertType.ERROR,"Please Load Consistent JSON File",ButtonType.CLOSE);
 					alert.setHeaderText("JSON FILE INCONSISTENT!");
+					Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+					stage2.getIcons().add(new Image("err.png"));
 					alert.showAndWait();
 					return;
 				}
 			    Image icon = new Image("icon.png");
 				secondaryStage.getIcons().add(icon);
 				secondaryStage.setResizable(false);
-				ExecutionCTR.mode=1;
-				ExecutionCTR.path=myObj.getPath();
-				GUI res = Node.TreeToGUI(JSONTree);
-				ExecutionCTR.process_list=res.process_list;
-				ExecutionCTR.process_name=res.process_name;
-				ExecutionCTR.manifest_id = res.manifest_id;
+				MachineCTR.mode=1;
+				MachineCTR.path=myObj.getPath();
+				GUI res = Node.MM_TreeToGUI(JSONTree);
+				if(res==null) {
+					Alert alert = new Alert(AlertType.ERROR,"JSON Loaded Is Not Machine Manifest!",ButtonType.CLOSE);
+					alert.setHeaderText("FILE NOT MACHINE MANIFEST!");
+					Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+					stage2.getIcons().add(new Image("err.png"));
+					alert.showAndWait();
+					return;
+				}
+				MachineCTR.fg_list=res.acc_list;
+				MachineCTR.fg_names=res.acc_names;
+				MachineCTR.manifest_id = res.manifest_id;
 				
-				Parent root = FXMLLoader.load(getClass().getResource("Execution.fxml")); 
+				Parent root = FXMLLoader.load(getClass().getResource("Machine.fxml")); 
 				Scene scene = new Scene(root);
 				secondaryStage.setScene(scene);
-				secondaryStage.setTitle("Execution Manifest Modify");
+				secondaryStage.setTitle("Machine Manifest Modify");
 				secondaryStage.setScene(scene);
 				Main.getPrimaryStage().close();
 				secondaryStage.showAndWait();
 				Main.getPrimaryStage().show();
-			}*/
+			}
 		}
 	}
 

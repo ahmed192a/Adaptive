@@ -6,11 +6,11 @@ import javafx.scene.control.Accordion;
 
 public class GUI {
 	public String manifest_id;
-	public ArrayList<Accordion> process_list;
-	public ArrayList<String> process_name;
+	public ArrayList<Accordion> acc_list;
+	public ArrayList<String> acc_names;
 	public GUI() {
 		manifest_id = new String();
-		process_list = new ArrayList<>();
-		process_name = new ArrayList<>();
+		acc_list = new ArrayList<>();
+		acc_names = new ArrayList<>();
 	}
 }

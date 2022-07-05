@@ -11,11 +11,13 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class MachineCTR {
 	
@@ -43,7 +45,7 @@ public class MachineCTR {
 
 	
 	public void initialize() {
-		if(mode == 1) {/*
+		if(mode == 1) {
 			mac_id.setText(manifest_id);
 			if(fg_list.size()>1) {
 				Del_FG_Btn.setDisable(false);
@@ -64,34 +66,11 @@ public class MachineCTR {
 							 i.getPanes().remove(i.getPanes().indexOf(ii));
 							 for(int c=0;c<i.getPanes().size();c++) {
 								 TitledPane current = i.getPanes().get(c);
-								 String cfg_name = "startup_config_"+Integer.toString(c);
-								 current.setText(cfg_name);
+								 String mode_name = "mode_"+Integer.toString(c);
+								 current.setText(mode_name);
 							 }
 						 }
 					});
-					for(TitledPane iii:((Accordion)ii.getContent()).getPanes()) {
-						Button del2 = (Button) iii.getGraphic();
-						del2.setOnAction(new EventHandler<ActionEvent>() {
-							 @Override
-							    public void handle(ActionEvent e) {
-								 ((Accordion)ii.getContent()).getPanes()
-								 	.remove(((Accordion)ii.getContent()).getPanes().indexOf(iii));
-								 int index = 0;
-									while(index<((Accordion)ii.getContent()).getPanes().size() && 
-											((Accordion)ii.getContent()).getPanes().get(index).getText().charAt(0) == 's') {
-										((Accordion)ii.getContent()).getPanes().get(index).setText("startup_option_"+Integer.toString(index));
-										 index++;
-									}
-									 int offset = index;
-										while(index<((Accordion)ii.getContent()).getPanes().size() && 
-												((Accordion)ii.getContent()).getPanes().get(index).getText().charAt(0) == 'f') {
-											((Accordion)ii.getContent()).getPanes().get(index).setText("fg_dependency_"+Integer.toString(index-offset));
-											 index++;
-										}
-
-							    }
-						});
-					}
 				}
 			}
 			fg_acc = fg_list.get(0);
@@ -100,7 +79,7 @@ public class MachineCTR {
 			fg_name.setText(fg_names.get(0));
 			((Label)indicator.getChildren().get(0)).setText("Current Function Group: 1 of "
 					+Integer.toString(fg_list.size()));
-		*/}
+		}
 		else {
 			fg_list = new ArrayList<>();
 			fg_names = new ArrayList<>();
@@ -202,21 +181,25 @@ public class MachineCTR {
 			String msg = Error.toString();
 			Alert alert = new Alert(AlertType.WARNING,"Please Solve issues and Retry",ButtonType.OK);
 			alert.setHeaderText(msg);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("warn.png"));
 			alert.show();
 			return;
 		}
 		ArrayList<Node> row = new ArrayList<>();
 		row.add(JSONTree);
 		String Data = Node.TreeToJSON("",row, 0);
-		if(mode==1) {/*
+		if(mode==1) {
 			File myObj = new File(path);
 			PrintWriter myWriter = new PrintWriter(myObj);
 			myWriter.println(Data);
 			myWriter.close();
 			Alert alert = new Alert(AlertType.INFORMATION,"Path: "+myObj.getPath(),ButtonType.OK);
 			alert.setHeaderText("File Overwritten Successfully");
-			alert.setTitle("Execution Manifest Exportation");
-			alert.showAndWait();*/
+			alert.setTitle("Machine Manifest Exportation");
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("ok.png"));
+			alert.showAndWait();
 		}
 		else {
 			FC.setTitle("Export Machine Manifest JSON");
@@ -231,10 +214,12 @@ public class MachineCTR {
 				Alert alert = new Alert(AlertType.INFORMATION,"Path: "+myObj.getPath(),ButtonType.OK);
 				alert.setHeaderText("File Saved Successfully");
 				alert.setTitle("Machine Manifest Exportation");
+				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage.getIcons().add(new Image("ok.png"));
 				alert.showAndWait();
-				/*path = myObj.getPath();
+				path = myObj.getPath();
 				mode = 1;
-				Controller.getSecondaryStage().setTitle("Execution Manifest Modify");*/
+				Controller.getSecondaryStage().setTitle("Machine Manifest Modify");
 			}
 		}
 	}
