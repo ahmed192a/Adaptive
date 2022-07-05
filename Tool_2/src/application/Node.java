@@ -55,7 +55,7 @@ public class Node {
 		return type.name();
 	}
 	
-	public static Node GUIToTree(String manifest_id,ArrayList<Accordion> process_list,ArrayList<String> process_name,StringBuilder Error) {
+	public static Node EM_GUIToTree(String manifest_id,ArrayList<Accordion> process_list,ArrayList<String> process_name,StringBuilder Error) {
 		Node root = new Node(null,"",0);  
 		Node current = root.addNode(new Node(root,"Execution_manifest",0));
 		if(manifest_id.equals("")) {
@@ -120,6 +120,43 @@ public class Node {
 					return null;
 				}
 				current = current.getParent();
+			}
+			current = current.getParent();
+			current = current.getParent();
+		}
+		return root;
+	}
+	public static Node MM_GUIToTree(String manifest_id,ArrayList<Accordion> fg_list,ArrayList<String> fg_names,StringBuilder Error) {
+		Node root = new Node(null,"",0);  
+		Node current = root.addNode(new Node(root,"Machine_manifest",0));
+		if(manifest_id.equals("")) {
+			Error.append("Manifest ID Missing!");
+			return null;
+		}
+		current.addNode(new Node(current,"Machine_manifest_id",manifest_id));
+		current = current.addNode(new Node(current,"Mode_declaration_group",1));
+		for(int i=0;i<fg_list.size();i++) {
+			current = current.addNode(new Node(current,"",0));
+			if(fg_names.get(i).equals("")) {
+				Error.append("FG no."+ i +" Name is Missing!");
+				return null;
+			}
+			if(fg_names.indexOf(fg_names.get(i))!=fg_names.lastIndexOf(fg_names.get(i))) {
+				Error.append("FG Name \""+ fg_names.get(i) +"\" is Duplicated!");
+				return null;
+			}
+			current.addNode(new Node(current,"Function_group_name",fg_names.get(i)));
+			ObservableList<TitledPane> modes = fg_list.get(i).getPanes();
+			if(modes.size()<1) {
+				Error.append("FG Name \""+ fg_names.get(i) +"\" Should Have At Least One Mode!");
+				return null;
+			}
+			current = current.addNode(new Node(current,"Mode_declarations",1));
+			for(int ii=0;ii<modes.size();ii++) {
+				Node mode = new Node(current,"",0);
+				mode.addNode(new Node(current,"Mode",
+						((TextField)((Button)modes.get(ii).getGraphic()).getGraphic()).getText()));
+				current.addNode(mode);
 			}
 			current = current.getParent();
 			current = current.getParent();

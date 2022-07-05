@@ -250,18 +250,10 @@ public class ExecutionCTR {
 	public void New_Proc(ActionEvent e) {
 		process_list.add(new Accordion());
 		process_name.add("new_process");
-		process_acc = process_list.get(process_list.size()-1);
-		p_name.setText(process_name.get(process_name.size()-1));
-		container.getChildren().remove(2);
-		container.getChildren().add(process_acc);
-		Next_Btn.setDisable(true);
-		Prev_Btn.setDisable(false);
+		Next_Btn.setDisable(false);
 		Del_Proc_Btn.setDisable(false);
 		((Label)indicator.getChildren().get(0)).setText("Current Process: "+ 
-				Integer.toString(process_list.size()) +" of "+Integer.toString(process_list.size()));
-		
-		
-		
+				Integer.toString(process_list.indexOf(process_acc) + 1) +" of "+Integer.toString(process_list.size()));
 	}
 	public void Del_Proc(ActionEvent e) {
 		int current = process_list.indexOf(process_acc);
@@ -306,7 +298,7 @@ public class ExecutionCTR {
 	}
 	public void Save(ActionEvent e) throws IOException {
 		StringBuilder Error = new StringBuilder ();		
-		Node JSONTree = Node.GUIToTree(exec_id.getText(),process_list, process_name,Error);
+		Node JSONTree = Node.EM_GUIToTree(exec_id.getText(),process_list, process_name,Error);
 		if(JSONTree == null) {
 			String msg = Error.toString();
 			Alert alert = new Alert(AlertType.WARNING,"Please Solve issues and Retry",ButtonType.OK);
