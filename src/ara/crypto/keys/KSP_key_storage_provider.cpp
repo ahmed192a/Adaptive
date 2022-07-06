@@ -115,6 +115,63 @@
  ////}
 
 
+ //Additional function to check if the text is 
+bool KSPKeyStorageProvider::check_text(char * a, std::string b)
+{
+    for(int i = 0; i < b.length(); i++)
+    {
+        if(a[i] == b[i])
+        {
+            continue;
+        }
+        else 
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+//function to convert the string into enum for using it in a switch case statement 
+TextVariables KSPKeyStorageProvider::String_to_enum(std::string a)
+{
+    if(a == "KSCP.mAlgId" || a == "KSCP.mAlgId " )
+        return KSCP_mAlgId;
+    else if(a == "KSCP.mObjectType" || a == "KSCP.mObjectType ")
+        return KSCP_mObjectType;
+    else if(a == "KSCP.mObjectUid.mGeneratorUid.mQwordLs" || a == "KSCP.mObjectUid.mGeneratorUid.mQwordLs ")
+        return KSCP_mObjectUid_mGeneratorUid_mQwordLs;
+    else if(a == "KSCP.mObjectUid.mGeneratorUid.mQwordMs" || a == "KSCP.mObjectUid.mGeneratorUid.mQwordMs ")
+        return KSCP_mObjectUid_mGeneratorUid_mQwordMs;
+    else if(a == "KSCP.mObjectUid.mVersionStamp" || a == "KSCP.mObjectUid.mVersionStamp ")
+        return KSCP_mObjectUid_mVersionStamp;
+    else if(a == "KSCP.mContentAllowedUsage" || a == "KSCP.mContentAllowedUsage ")
+        return KSCP_mContentAllowedUsage;
+    else if(a == "KSCP.mObjectSize" || a == "KSCP.mObjectSize ")
+        return KSCP_mObjectSize;
+    else if(a == "KSPP.mSlotCapacity" || a == "KSPP.mSlotCapacity ")
+        return KSPP_mSlotCapacity;
+    else if(a == "KSPP.mSlotType" || a == "KSPP.mSlotType ")
+        return KSPP_mSlotType;
+    else if(a == "KSPP.mAlgId" || a == "KSPP.mAlgId ")
+        return KSPP_mAlgId;
+    else if(a == "KSPP.mAllocateSpareSlot" || a == "KSPP.mAllocateSpareSlot ")
+        return KSPP_mAllocateSpareSlot;
+    else if(a == "KSPP.mAllowContentTypeChange" || a == "KSPP.mAllowContentTypeChange ")
+        return KSPP_mAllowContentTypeChange;
+    else if(a == "KSPP.mMaxUpdateAllowed" || a == "KSPP.mMaxUpdateAllowed ")
+        return KSPP_mMaxUpdateAllowed;
+    else if(a == "KSPP.mExportAllowed" || a == "KSPP.mExportAllowed ")
+        return KSPP_mExportAllowed;
+    else if(a == "KSPP.mContentAllowedUsage" || a == "KSPP.mContentAllowedUsage ")
+        return KSPP_mContentAllowedUsage;
+    else if(a == "KSPP.mObjectType" || a == "KSPP.mObjectType ")
+        return KSPP_mObjectType;
+}
+
+
+
+
 ///@breif: Rollback all changes executed during the transaction in Key Storage.
 //The rollback command permanently cancels all changes made during the transaction in Key Storage.
 //A rolled back transaction is completely invisible for all applications.
