@@ -4,7 +4,7 @@
  //#include <memory>
  //#include <vector>
  #include "elementary_types.hpp"
- //#include "../../core/instance_specifier.hpp"
+ #include "../../core/InstanceSpecifier.hpp"
  #include "Inher_key_slote.hpp"
 
  namespace ara
@@ -46,7 +46,7 @@
 
  				//@breif: Load a key slot
  				// The function loads the information associated with a KeySlot into a KeySlot object
- 				//virtual KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept = 0;
+ 				virtual KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept = 0;
 
  				//@breif: Rollback all changes executed during the transaction in Key Storage.
  				// The rollback command permanently cancels all changes made during the transaction in Key Storage.

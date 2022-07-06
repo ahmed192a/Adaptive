@@ -9,8 +9,33 @@
  	{
  		namespace keys
  		{
+			enum TextVariables {
+				KSCP_mAlgId,
+				KSCP_mObjectType,
+				KSCP_mObjectUid_mGeneratorUid_mQwordLs,
+				KSCP_mObjectUid_mGeneratorUid_mQwordMs,
+				KSCP_mObjectUid_mVersionStamp,
+				KSCP_mContentAllowedUsage,
+				KSCP_mObjectSize,
+				KSPP_mSlotCapacity,
+				KSPP_mSlotType,
+				KSPP_mAlgId,
+				KSPP_mAllocateSpareSlot,
+				KSPP_mAllowContentTypeChange,
+				KSPP_mMaxUpdateAllowed,
+				KSPP_mExportAllowed,
+				KSPP_mContentAllowedUsage,
+				KSPP_mObjectType
+				};
+
  			class KSPKeyStorageProvider :public KeyStorageProvider
  			{
+			private:
+				bool check_text(char * a, std::string b);
+				TextVariables String_to_enum(std::string a);
+				//variable contains the path of keyslots
+				std::string my_path = "ara/crypto/keys/KeySlot/";
+
  			public:
  				//@breif: Begin new transaction for key slots update
  				TransactionId BeginTransaction( TransactionScope& targetSlots) noexcept;
