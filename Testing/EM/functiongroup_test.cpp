@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/exec/function_group.hpp"
-#include "ara/exec/exec_error_domain.hpp"
+#include "../../include/ara/exec/function_group.hpp"
+#include "../../include/ara/exec/exec_error_domain.hpp"
 #include <gtest/gtest.h>
 #include <boost/variant2/variant.hpp>
 #include <iostream>
