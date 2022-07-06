@@ -22,15 +22,16 @@ uart_linux::uart_linux(/* args */)
     if (tcgetattr(serial_port, &tty) != 0)
     {
         printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
+        exit(1);
         return ;
     }
     // printf("\n\n");
     // printf("cc %x, ci %x, co %x, cl %x\n",tty.c_cflag, tty.c_iflag,tty.c_oflag, tty.c_lflag  );
     // printf("c_line %x\n", tty.c_line);
 
-    tty.c_iflag = 0x1c00;
-    tty.c_oflag = 0x0000;
-    tty.c_lflag = 0x8a20; 
+    // tty.c_iflag = 0x1c00;
+    // tty.c_oflag = 0x0000;
+    // tty.c_lflag = 0x8a20; 
 
     // tty.c_cflag &= ~PARENB;                 // Clear parity bit, disabling parity (most common)
     // tty.c_cflag &= ~CSTOPB;                 // Clear stop field, only one stop bit used in communication (most common)
@@ -45,11 +46,11 @@ uart_linux::uart_linux(/* args */)
     // cfsetospeed(&tty, B9600);
 
     // Save tty settings, also checking for error
-    if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
-    {
-        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
-        return ;
-    }
+    // if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
+    // {
+    //     printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+    //     return ;
+    // }
 
 
 }

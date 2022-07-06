@@ -111,6 +111,8 @@ class CSV{
             getline(csv_file, second_item, ',');
             getline(csv_file, third_item, '\n');
             int service = stoi(first_item);
+            cout<<"----------"<<endl;
+            cout<<"service from file "<<service<< " sd id "<<service_id<<endl;
             if (service == service_id)
             {
                 data.service_id = service;

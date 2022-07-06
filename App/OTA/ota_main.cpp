@@ -71,10 +71,13 @@ int main(void) {
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (ara::ucm::pkgmgr::proxy::PackageManagementProxy::FindService(findhandle)[0]);
     hand.UDP_port = UDP_PORT_EVENTS;
     server_proxy_ptr = std::make_shared<ara::ucm::pkgmgr::proxy::PackageManagementProxy>(hand);
-    server_proxy_ota_triggerin_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy>(ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy::FindService(findhandle_ota_triggerin)[0]);
+    ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand_OTA = ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy::FindService(findhandle_ota_triggerin)[0];
+    hand_OTA.UDP_port = UDP_PORT_EVENTS;
+    server_proxy_ota_triggerin_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy>(hand_OTA);
 
     cout<<"[OTA] Starting OTA process"<<endl;
     std::cout << "handle : " << hand.m_server_com.port_number << " " << hand.m_server_com.service_id << std::endl;
+    std::cout << "handle : " << hand_OTA.m_server_com.port_number << " " << hand_OTA.m_server_com.service_id << std::endl;
     std::cout << "\t\t\t[CLIENT] starting\n";
     ota_state_g = ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED;
     server_proxy_ota_triggerin_ptr->trigger.Set(ota_state_g);

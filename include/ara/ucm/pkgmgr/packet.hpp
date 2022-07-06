@@ -26,27 +26,27 @@
  * @brief request to update the application
  * 
  */
-#define REQUEST_TO_UPDATE						0x1111
+#define REQUEST_TO_UPDATE						 0x6161
 /**
  * @brief Send to request the expected frame information
  * 
  */
-#define RECEIVE_REQUEST_FREAME_INFO                        0x2222
+#define RECEIVE_REQUEST_FREAME_INFO                        0x6262
 /**
  * @brief Receive the expected frame information
  * 
  */
-#define SEND_FRAME_INFO                      0x3333
+#define SEND_FRAME_INFO                      0x6363
 /**
  * @brief ready to receive update
  * 
  */
-#define READY_TO_SEND_UPDATE                 0x4444
+#define READY_TO_SEND_UPDATE                 0x6464
 /**
  * @brief receive packet 
  * 
  */
-#define SEND_PACKET   						0x5555
+#define SEND_PACKET   						0x6565
 /**
  * @brief request new packet
  * 
@@ -56,17 +56,17 @@
  * @brief update ended
  * 
  */
-#define END_OF_UPDATE 							0x7777
+#define END_OF_UPDATE 							0x6767
 /**
  * @brief Check if cancelling update is requested
  * 
  */
-#define CHECK_CANCEL_UPDATE					    0x8888
+#define CHECK_CANCEL_UPDATE					    0x6868
 /**
  * @brief cancelling update is requested
  * 
  */
-#define CANCEL_UPDATE_REQUEST				    0x9999
+#define CANCEL_UPDATE_REQUEST				    0x6969
 /**
  * @brief update ended successfully
  * 
@@ -74,6 +74,8 @@
 #define UPDATE_SUCCESS							0x3535
 /**
  * @brief Activate
+ * @todo check commands apdate and activate in classic
+ *
  * 
  */
 #define Activate_s							    0x1212
@@ -84,3 +86,5 @@
 #define trigger_seq                             0xCCCC
 
 #endif
+
+

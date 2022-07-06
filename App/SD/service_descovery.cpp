@@ -91,7 +91,6 @@ void handle_sigterm(int sig){
 void *pthread1(void *)
 {
     cout<<"[SD] thread 1 is running"<<endl;
-    vector<SD_data> data;      // vector to store the data from the csv file
     CServer s1(SOCK_STREAM);   // create a server object
     int service_id;            // service id
     s1.OpenSocket(portNumber); // open a socket on port 1690
@@ -99,6 +98,7 @@ void *pthread1(void *)
     s1.ListenServer(3);        // listen to the port
     while (1)
     {
+        vector<SD_data> data;      // vector to store the data from the csv file
         uint32_t _size = 0;
         std::vector<uint8_t> _msg;                            // vector to store the serialized message
         ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg; // create a SomeIP SD message to store the deserialized message received from the client

@@ -7,11 +7,11 @@ sudo gnome-terminal -- './ucm_server/ucm_server_test';
 
 # compiling the cloud server application
 cd ../../../Cloud
-# g++ server.cpp -o output.exe
+g++ server.cpp -o output.exe
 
-# # running the cloud server application
-# gnome-terminal -- './output.exe';
+# running the cloud server application
+gnome-terminal -- './output.exe';
 
 # running the OTA
-cd ../build/App/processes
+cd ../build/App/processes/ota_process
 gnome-terminal -- './ota_process';

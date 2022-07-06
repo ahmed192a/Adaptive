@@ -53,8 +53,8 @@
                         "Startup_options": [
                             {
                                 "Option_kind": "commandLineShortForm",
-                                "Option_name": "filename",
-                                "Option_arg": "inputfile_1"
+                                "Option_name": "-d",
+                                "Option_arg": "0"
                             }
                         ],
                         "FunctionGroupDependencies": [

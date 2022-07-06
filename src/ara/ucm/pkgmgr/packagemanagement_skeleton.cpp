@@ -10,6 +10,7 @@
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
 #include "ara/ucm/pkgmgr/uart_linux.hpp"
 #include <cmath>
+#include <filesystem>
 
 static uint16_t current_state; /*!< variable to store the state of the bootloader updating sequence */
 
@@ -130,26 +131,28 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
 
             case trigger_seq:
             {
-                cout<<"Tig\n";
+                cout<<"Tig"<<endl;
                 std::vector<uint8_t> start ;
                 start.push_back('s');
                 int st = start.size();
                 u_linux.UART_sendBlock(start.data(),st);
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-                std::cout<<"receive seq\n";
-                printf("COMAAND : %x\n", current_state);
-                if(current_state == 1) current_state = trigger_seq;
+                std::cout<<"receive seq"<<endl;
+                printf("COMAAND2 : %x", current_state);
+                cout<<endl;
+                // if(current_state == 1) current_state = trigger_seq;
                 break;
             }
             case 2:
             {
+                // sleep(1);
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
                 printf("COMAAND : %x\n", current_state);
                 break;
             }
             case RECEIVE_REQUEST_FREAME_INFO:
             {
-
+                cout << " recieveeeee " << endl;
                 int FRAME_SIZE = 4;
                 uint8_t Frame [4];
 
@@ -160,7 +163,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                 
                 u_linux.UART_sendBlock(Frame, FRAME_SIZE);
 
-                std::cout<<"SEND_FRAME_INFO  \n";
+                std::cout<<"SEND_FRAME_INFO  "<<endl;
                 current_state = 2;
             break;	
             }
@@ -176,7 +179,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                         break;
                 }
                 u_linux.UART_sendBlock(small_data.data(), small_data.size());
-
+                        
 
                 
                 std::cout<<"SEND Packet : "<< block_counter <<" Packet size "<< small_data.size()<<std::endl;
@@ -209,7 +212,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
 
             default:
             {
-                current_state = trigger_seq; 			/* Initialize the current state */
+                current_state = 2; 			/* Initialize the current state */
                 break;
             }
         }
@@ -294,8 +297,13 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
         for(int i =0 ; i<16;i++){
             str += " ";
             snprintf(&str[i], 4, "%d", id[i]);
-        }   
-         str = "ucm_server/" + str + ".out";
+        }  
+        // check if folder SWP doesn't exists
+        if(!std::filesystem::exists("./SWP"))
+        {
+            std::filesystem::create_directory("./SWP");
+        } 
+        str = "SWP/" + str + ".out";
         SaveBlock(str.data() , this->buffer); 
         return result; });
 

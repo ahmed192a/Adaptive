@@ -104,6 +104,7 @@ namespace ara
                         (ser.serialize(std::forward<Args>(args)), ...);
 
                         service_proxy_tcp.OpenSocket();
+                        cout<<"Send request "<< this->m_proxy_handle.m_server_com.port_number<<endl;
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
 
