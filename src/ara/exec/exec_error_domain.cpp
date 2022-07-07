@@ -15,17 +15,6 @@
  {
  	namespace exec
  	{
- 		// SWS_EM_02283
- 		/**
- 		 * \brief Constructs a new ExecException object containing an error code.
- 		 *
- 		 * \param[in] errorCode     The error code.
- 		 */
- 		 /*ExecException::ExecException(ara::core::ErrorCode errorCode) noexcept :  ara::core::Exception(errorCode)
- 		 {
- 		 	this->errorCode = errorCode;
- 		 }*/
-
 
  		//SWS_EM_02290
  		/*
@@ -37,24 +26,6 @@
  		{
  			return this->errorCode.Domain();
  		}
-
-
- 		//SWS_EM_02291
- 		/*
- 		 *\brief Creates an instance of ErrorCode.
- 		 *
- 		 *\param[in] code         Error code number.
- 		 *\param[in] data         Vendor defined data associated with the error.
- 		 *
- 		 *\return ara::core::ErrorCode             An ErrorCode object.
- 		 */
-		// ara::core::ErrorCode ExecException::MakeErrorCode (ara::exec::ExecErrc code, ara::core::ErrorDomain::SupportDataType data = ara::core::ErrorDomain::SupportDataType()) noexcept
-		// {
-		// ara::core::ErrorDomain *ref = nullptr;
-		// ara::core::ErrorCode obj((ara::core::ErrorDomain::CodeType)code, ref, (ara::core::ErrorDomain::SupportDataType)data);
-		// return obj;
-		// }
-
 
 
  		// SWS_EM_02287
