@@ -111,188 +111,141 @@
 ////// The function loads the information associated with a KeySlot into a KeySlot object
 KeySlot::Uptr KSPKeyStorageProvider::LoadKeySlot(ara::core::InstanceSpecifier &iSpecify) noexcept
 {
-   //first checking if the input is already existing or not 
-   struct dirent *d;
+    //first checking if the input is already existing or not 
 
-   //struct stat dst;
-   std::string temp = iSpecify.stringview;
-   std::string given_type = temp + ".txt";
-   
-   DIR *dr;
-   bool FOUND_FLAG = 0;
-   std::cout << my_path << std::endl;
-   dr = opendir(my_path.c_str());
-   std::string file_location;
-   
-   if(dr != NULL)
-   {
-       for (d = readdir(dr); d != NULL; d = readdir(dr))
-       {
-           std::string type = d -> d_name;
-           type = my_path + type;
-            //std::cout << d -> d_name << "\t";
-            if (check_text(d->d_name ,given_type))
-            {
-                std::cout << "IS_FOUND" << std::endl;
-                FOUND_FLAG = 1;
-                file_location = type;
-                break;
-            }
-        }
-        closedir(dr);
-        if(FOUND_FLAG == 0)
+     //struct dirent *d;
+     //struct stat dst;
+    std::string temp = iSpecify.stringview;
+    std::string given_type = temp + ".txt";
+
+    //DIR *dr;
+    bool FOUND_FLAG = 0;
+
+    std::cout << my_path << std::endl;
+    //dr = opendir(my_path.c_str());
+    std::string file_location;
+    file_location = my_path + given_type;
+
+    //reading the text file 
+    KeySlot::Uptr returned_KeySlot = std::make_unique<InhKeySlot>();
+
+    std::ifstream infile(file_location);
+
+    if (infile.is_open())
+    {
+        std::string line;
+        while (std::getline(infile, line))
         {
-            std::cout<<"Text file is not found"<< std::endl;
-            //create a new keyslot instance 
-            KeySlot::Uptr x = std::make_unique<InhKeySlot>(temp);
-            return x;
-        }
-        else
-        {
-            //reading the text file 
-            KeySlot::Uptr returned_KeySlot = std::make_unique<InhKeySlot>();
-
-            std::ifstream infile(file_location);
-
-            if (infile.is_open()) 
+            size_t found = line.find("=");
+            size_t length = line.length();
+            if (found != std::string::npos)
             {
-                std::string line;
-                while (std::getline(infile, line)) 
+                std::string z;
+                std::string tempp;
+                std::string a = line.substr(0, found);
+                std::cout << a << "   " << length << std::endl;
+                TextVariables x = String_to_enum(a);
+                std::string b = line.substr(found + 1, 1);
+                std::cout << found << "\t";
+                if (b == " ")
                 {
-                    size_t found = line.find("=");
-                    size_t length = line.length();
-                    if (found != std::string::npos)
-                    {
-                        std::string z;
-                        std::string tempp;
-                        std::string a = line.substr(0,found);
-                        std::cout<<a << "   " << length << std::endl;
-                        TextVariables x = String_to_enum(a);
-                        std::string b = line.substr(found+1,1);
-                        std::cout << found << "\t";
-                        if(b == " ")
-                        {
-                            found++;
-                            std::cout << found << std::endl;
-                        }
-                        z = line.substr(found+1,(length-found));
-                        std::cout << z << "\t" << stoi(z) << std::endl;
-                        switch(x)
-                        {
-                            case(KSCP_mAlgId):
-                                returned_KeySlot->KSCP.mAlgId = stoi(z);
-                                break;
-                            case(KSCP_mObjectType):
-                                returned_KeySlot->KSCP.mObjectType = CryptoObjectType(stoi(z));
-                                break;
-                            case(KSCP_mObjectUid_mGeneratorUid_mQwordLs):
-                                returned_KeySlot->KSCP.mObjectUid.mGeneratorUid.mQwordLs = stoi(z);
-                                break;
-                            case(KSCP_mObjectUid_mGeneratorUid_mQwordMs):
-                                returned_KeySlot->KSCP.mObjectUid.mGeneratorUid.mQwordMs = stoi(z);
-                                break;
-                            case(KSCP_mObjectUid_mVersionStamp):
-                                returned_KeySlot->KSCP.mObjectUid.mVersionStamp = stoi(z);
-                                break;
-                            case(KSCP_mContentAllowedUsage):
-                                returned_KeySlot->KSCP.mContentAllowedUsage = stoi(z);
-                                break;
-                            case(KSCP_mObjectSize):
-                                returned_KeySlot->KSCP.mObjectSize = stoi(z);
-                                break;
-                            case(KSPP_mSlotCapacity):
-                                returned_KeySlot->KSPP.mSlotCapacity = stoi(z);
-                                break;
-                            case(KSPP_mSlotType):
-                                returned_KeySlot->KSPP.mSlotType = KeySlotType(stoi(z));
-                                break;
-                            case(KSPP_mAlgId):
-                                returned_KeySlot->KSPP.mAlgId = stoi(z);
-                                break;
-                            case(KSPP_mAllocateSpareSlot):
-                                returned_KeySlot->KSPP.mAllocateSpareSlot = stoi(z);
-                                break;
-                            case(KSPP_mAllowContentTypeChange):
-                                returned_KeySlot->KSPP.mAllowContentTypeChange = stoi(z);
-                                break;
-                            case(KSPP_mMaxUpdateAllowed):
-                                returned_KeySlot->KSPP.mMaxUpdateAllowed = stoi(z);
-                                break;
-                            case(KSPP_mExportAllowed):
-                                returned_KeySlot->KSPP.mExportAllowed = stoi(z);
-                                break;
-                            case(KSPP_mContentAllowedUsage):
-                                returned_KeySlot->KSPP.mContentAllowedUsage = stoi(z);
-                                break;
-                            case(KSPP_mObjectType):
-                                returned_KeySlot->KSPP.mObjectType = CryptoObjectType(stoi(z));
-                                break;
-                        }
-                    }
+                    found++;
+                    std::cout << found << std::endl;
                 }
-                infile.close();
+                z = line.substr(found + 1, (length - found));
+                std::cout << z << "\t" << stoi(z) << std::endl;
+                switch (x)
+                {
+                case(KSCP_mAlgId):
+                    returned_KeySlot->KSCP.mAlgId = stoi(z);
+                    break;
+                case(KSCP_mObjectType):
+                    returned_KeySlot->KSCP.mObjectType = CryptoObjectType(stoi(z));
+                    break;
+                case(KSCP_mObjectUid_mGeneratorUid_mQwordLs):
+                    returned_KeySlot->KSCP.mObjectUid.mGeneratorUid.mQwordLs = stoi(z);
+                    break;
+                case(KSCP_mObjectUid_mGeneratorUid_mQwordMs):
+                    returned_KeySlot->KSCP.mObjectUid.mGeneratorUid.mQwordMs = stoi(z);
+                    break;
+                case(KSCP_mObjectUid_mVersionStamp):
+                    returned_KeySlot->KSCP.mObjectUid.mVersionStamp = stoi(z);
+                    break;
+                case(KSCP_mContentAllowedUsage):
+                    returned_KeySlot->KSCP.mContentAllowedUsage = stoi(z);
+                    break;
+                case(KSCP_mObjectSize):
+                    returned_KeySlot->KSCP.mObjectSize = stoi(z);
+                    break;
+                case(KSPP_mSlotCapacity):
+                    returned_KeySlot->KSPP.mSlotCapacity = stoi(z);
+                    break;
+                case(KSPP_mSlotType):
+                    returned_KeySlot->KSPP.mSlotType = KeySlotType(stoi(z));
+                    break;
+                case(KSPP_mAlgId):
+                    returned_KeySlot->KSPP.mAlgId = stoi(z);
+                    break;
+                case(KSPP_mAllocateSpareSlot):
+                    returned_KeySlot->KSPP.mAllocateSpareSlot = stoi(z);
+                    break;
+                case(KSPP_mAllowContentTypeChange):
+                    returned_KeySlot->KSPP.mAllowContentTypeChange = stoi(z);
+                    break;
+                case(KSPP_mMaxUpdateAllowed):
+                    returned_KeySlot->KSPP.mMaxUpdateAllowed = stoi(z);
+                    break;
+                case(KSPP_mExportAllowed):
+                    returned_KeySlot->KSPP.mExportAllowed = stoi(z);
+                    break;
+                case(KSPP_mContentAllowedUsage):
+                    returned_KeySlot->KSPP.mContentAllowedUsage = stoi(z);
+                    break;
+                case(KSPP_mObjectType):
+                    returned_KeySlot->KSPP.mObjectType = CryptoObjectType(stoi(z));
+                    break;
+                }
             }
-            return returned_KeySlot;
         }
+        infile.close();
     }
-    else
-    {
-        std::cout << "Director is Empty " << std::endl;
-    }
-}
-
-
- //Additional function to check if the text is 
-bool KSPKeyStorageProvider::check_text(char * a, std::string b)
-{
-    for(int i = 0; i < b.length(); i++)
-    {
-        if(a[i] == b[i])
-        {
-            continue;
-        }
-        else 
-        {
-            return 0;
-        }
-    }
-    return 1;
+    return returned_KeySlot;
 }
 
 //function to convert the string into enum for using it in a switch case statement 
 TextVariables KSPKeyStorageProvider::String_to_enum(std::string a)
 {
-    if(a == "KSCP.mAlgId" || a == "KSCP.mAlgId " )
+    if (a == "KSCP.mAlgId" || a == "KSCP.mAlgId ")
         return KSCP_mAlgId;
-    else if(a == "KSCP.mObjectType" || a == "KSCP.mObjectType ")
+    else if (a == "KSCP.mObjectType" || a == "KSCP.mObjectType ")
         return KSCP_mObjectType;
-    else if(a == "KSCP.mObjectUid.mGeneratorUid.mQwordLs" || a == "KSCP.mObjectUid.mGeneratorUid.mQwordLs ")
+    else if (a == "KSCP.mObjectUid.mGeneratorUid.mQwordLs" || a == "KSCP.mObjectUid.mGeneratorUid.mQwordLs ")
         return KSCP_mObjectUid_mGeneratorUid_mQwordLs;
-    else if(a == "KSCP.mObjectUid.mGeneratorUid.mQwordMs" || a == "KSCP.mObjectUid.mGeneratorUid.mQwordMs ")
+    else if (a == "KSCP.mObjectUid.mGeneratorUid.mQwordMs" || a == "KSCP.mObjectUid.mGeneratorUid.mQwordMs ")
         return KSCP_mObjectUid_mGeneratorUid_mQwordMs;
-    else if(a == "KSCP.mObjectUid.mVersionStamp" || a == "KSCP.mObjectUid.mVersionStamp ")
+    else if (a == "KSCP.mObjectUid.mVersionStamp" || a == "KSCP.mObjectUid.mVersionStamp ")
         return KSCP_mObjectUid_mVersionStamp;
-    else if(a == "KSCP.mContentAllowedUsage" || a == "KSCP.mContentAllowedUsage ")
+    else if (a == "KSCP.mContentAllowedUsage" || a == "KSCP.mContentAllowedUsage ")
         return KSCP_mContentAllowedUsage;
-    else if(a == "KSCP.mObjectSize" || a == "KSCP.mObjectSize ")
+    else if (a == "KSCP.mObjectSize" || a == "KSCP.mObjectSize ")
         return KSCP_mObjectSize;
-    else if(a == "KSPP.mSlotCapacity" || a == "KSPP.mSlotCapacity ")
+    else if (a == "KSPP.mSlotCapacity" || a == "KSPP.mSlotCapacity ")
         return KSPP_mSlotCapacity;
-    else if(a == "KSPP.mSlotType" || a == "KSPP.mSlotType ")
+    else if (a == "KSPP.mSlotType" || a == "KSPP.mSlotType ")
         return KSPP_mSlotType;
-    else if(a == "KSPP.mAlgId" || a == "KSPP.mAlgId ")
+    else if (a == "KSPP.mAlgId" || a == "KSPP.mAlgId ")
         return KSPP_mAlgId;
-    else if(a == "KSPP.mAllocateSpareSlot" || a == "KSPP.mAllocateSpareSlot ")
+    else if (a == "KSPP.mAllocateSpareSlot" || a == "KSPP.mAllocateSpareSlot ")
         return KSPP_mAllocateSpareSlot;
-    else if(a == "KSPP.mAllowContentTypeChange" || a == "KSPP.mAllowContentTypeChange ")
+    else if (a == "KSPP.mAllowContentTypeChange" || a == "KSPP.mAllowContentTypeChange ")
         return KSPP_mAllowContentTypeChange;
-    else if(a == "KSPP.mMaxUpdateAllowed" || a == "KSPP.mMaxUpdateAllowed ")
+    else if (a == "KSPP.mMaxUpdateAllowed" || a == "KSPP.mMaxUpdateAllowed ")
         return KSPP_mMaxUpdateAllowed;
-    else if(a == "KSPP.mExportAllowed" || a == "KSPP.mExportAllowed ")
+    else if (a == "KSPP.mExportAllowed" || a == "KSPP.mExportAllowed ")
         return KSPP_mExportAllowed;
-    else if(a == "KSPP.mContentAllowedUsage" || a == "KSPP.mContentAllowedUsage ")
+    else if (a == "KSPP.mContentAllowedUsage" || a == "KSPP.mContentAllowedUsage ")
         return KSPP_mContentAllowedUsage;
-    else if(a == "KSPP.mObjectType" || a == "KSPP.mObjectType ")
+    else if (a == "KSPP.mObjectType" || a == "KSPP.mObjectType ")
         return KSPP_mObjectType;
 }
 
@@ -389,7 +342,7 @@ TextVariables KSPKeyStorageProvider::String_to_enum(std::string a)
          std::cout << lines;
          if (lines == name)
          {
-             InhKeySlot::Uptr LoadedCreatedSlot = std::move (LoadKeySlot(name));
+             //InhKeySlot::Uptr LoadedCreatedSlot = std::move (LoadKeySlot(name));
              return LoadedCreatedSlot;
          }
 

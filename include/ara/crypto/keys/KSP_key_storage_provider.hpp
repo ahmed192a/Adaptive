@@ -31,7 +31,7 @@
  			class KSPKeyStorageProvider :public KeyStorageProvider
  			{
 			private:
-				bool check_text(char * a, std::string b);
+				//bool check_text(char * a, std::string b);
 				TextVariables String_to_enum(std::string a);
 				//variable contains the path of keyslots
 				std::string my_path = "ara/crypto/keys/KeySlot/";
@@ -45,7 +45,7 @@
 
  				//@breif: Load a key slot
  				// The function loads the information associated with a KeySlot into a KeySlot object
-                InhKeySlot::Uptr LoadKeySlot(std::string KeySlotName) noexcept;
+                KeySlot::Uptr KSPKeyStorageProvider::LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept;
 
  				//@breif: Rollback all changes executed during the transaction in Key Storage.
  				// The rollback command permanently cancels all changes made during the transaction in Key Storage.

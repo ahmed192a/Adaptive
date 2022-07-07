@@ -5,8 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <dirent.h>
-#include <curses.h>
+//#include <dirent.h>
+//#include <curses.h>
 #include <string>
 #include "elementary_types.hpp"
 #include "../../core/InstanceSpecifier.hpp"
