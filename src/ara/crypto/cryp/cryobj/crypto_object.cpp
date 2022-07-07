@@ -7,7 +7,7 @@ namespace ara
     {
         namespace cryp
         {
-            cryptoobj::cryptoobj(std::size_t payloadSize , bool session,bool exportable)
+            cryptoobj::cryptoobj(std::size_t payloadSize , bool session,bool exportable,CryptoObjectType object_type)
             {
                 payloadSize = payloadSize;
                 session = session;
