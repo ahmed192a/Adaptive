@@ -15,11 +15,30 @@ namespace ara
 {
     namespace exec
     {
+        /**
+         * @brief Class to implement worker thread for Deterministic Client 
+         * 
+         */
         class WorkerThread
         {
         public:
+            /**
+             * @brief Construct a new Worker Thread instance
+             * 
+             */
             WorkerThread(){}
+
+            /**
+             * @brief Returns a deterministic pseudo-random number which is unique for each container element.
+             * 
+             * @return uint64_t 
+             */
             uint64_t GetRandom() noexcept{ return 0;}
+
+            /**
+             * @brief Destroy the Worker Thread object
+             * 
+             */
             virtual ~WorkerThread(){}
         };
     } // namespace exec
