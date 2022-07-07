@@ -45,7 +45,7 @@ namespace ara
                 bool exportable;
 
                  cryptoobj()=default;
-                 cryptoobj(std::size_t payloadSize , bool session,bool exportable);
+                 cryptoobj(std::size_t payloadSize , bool session,bool exportable,CryptoObjectType object_type);
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
