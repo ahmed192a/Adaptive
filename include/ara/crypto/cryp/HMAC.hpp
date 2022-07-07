@@ -5,7 +5,6 @@
 #include "sha256.hpp" // temporariy till hash implementation is finished
 
 
-
 namespace ara {
     namespace crypto {
         namespace cryp {
