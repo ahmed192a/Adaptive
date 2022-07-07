@@ -15,7 +15,6 @@ RUN echo "y" | sudo apt-get install g++
 RUN g++ -o out server.cpp
 
 # Installing the CryptoPP Library dependencies
-RUN sudo apt-get update 
 RUN sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
 
 # Exposing port 8888
