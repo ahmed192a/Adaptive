@@ -33,9 +33,30 @@ namespace ara
 
             // FunctionGroup f ; 
             using CtorToken = struct{std::string fg_name; std::string c_state;};
+            /**
+             * @brief Set the FG name
+             * 
+             * @param fg_name 
+             */
             void set_FGname(std::string fg_name);
+
+            /**
+             * @brief Set the FG state
+             * 
+             * @param state 
+             */
             void set_states(std::string state);
+            /**
+             * @brief Get the FG name
+             * 
+             * @return std::string 
+             */
             std::string get_FGname() const noexcept;
+            /**
+             * @brief Get the FG state
+             * 
+             * @return std::string 
+             */
             std::string get_states() const noexcept;
             // SWS_EM_02270
             /**
