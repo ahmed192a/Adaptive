@@ -22,7 +22,8 @@ jobs:
     steps:
       - name: Checkout the Repository Code
         uses: actions/checkout@v2
-
+      - name: Installing cryptopp dependencies 
+        run: sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
       - name: Building the cloud application
         run: g++ -o out server.cpp
         working-directory: ${{ env.CLOUD_DIR }}
