@@ -12,6 +12,7 @@ namespace ara
                 payloadSize = payloadSize;
                 session = session;
                 exportable = exportable;
+                CO_ID.mCOType= object_type;
             }
            /** template <class ConcreteObject> typename ConcreteObject::Uptrc cryptoobj:: Downcast(CryptoObject::Uptrc &&object) noexcept
             {
