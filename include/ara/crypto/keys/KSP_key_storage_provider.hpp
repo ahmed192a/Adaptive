@@ -45,7 +45,7 @@
 
  				//@breif: Load a key slot
  				// The function loads the information associated with a KeySlot into a KeySlot object
-                KeySlot::Uptr KSPKeyStorageProvider::LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept;
+                KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept;
 
  				//@breif: Rollback all changes executed during the transaction in Key Storage.
  				// The rollback command permanently cancels all changes made during the transaction in Key Storage.

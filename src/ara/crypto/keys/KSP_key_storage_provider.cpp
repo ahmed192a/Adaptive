@@ -342,7 +342,9 @@ TextVariables KSPKeyStorageProvider::String_to_enum(std::string a)
          std::cout << lines;
          if (lines == name)
          {
-             //InhKeySlot::Uptr LoadedCreatedSlot = std::move (LoadKeySlot(name));
+             ara::core::InstanceSpecifier ins;
+             ins.stringview = name;
+             InhKeySlot::Uptr LoadedCreatedSlot = std::move(LoadKeySlot(ins));
              return LoadedCreatedSlot;
          }
 

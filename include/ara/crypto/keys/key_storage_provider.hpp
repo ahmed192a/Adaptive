@@ -1,13 +1,10 @@
  #ifndef ARA_CRYPTO_KEYS_KEY_STORAGE_PROVIDER_HPP
  #define ARA_CRYPTO_KEYS_KEY_STORAGE_PROVIDER_HPP
 
-#include <sys/stat.h>
+//#include <sys/stat.h>
 #include <iostream>
-#include <fstream>
-#include <sstream>
 //#include <dirent.h>
 //#include <curses.h>
-#include <string>
 #include "elementary_types.hpp"
 #include "../../core/InstanceSpecifier.hpp"
 #include "Inher_key_slote.hpp"
