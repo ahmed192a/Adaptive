@@ -31,7 +31,7 @@
  			class KSPKeyStorageProvider :public KeyStorageProvider
  			{
 			private:
-				bool check_text(char * a, std::string b);
+				//bool check_text(char * a, std::string b);
 				TextVariables String_to_enum(std::string a);
 				//variable contains the path of keyslots
 				std::string my_path = "ara/crypto/keys/KeySlot/";
