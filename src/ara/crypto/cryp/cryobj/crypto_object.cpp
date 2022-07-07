@@ -14,11 +14,7 @@ namespace ara
                 exportable = exportable;
                 CO_ID.mCOType= object_type;
             }
-           /** template <class ConcreteObject> typename ConcreteObject::Uptrc cryptoobj:: Downcast(CryptoObject::Uptrc &&object) noexcept
-            {
-                ara::core::Result<typename ConcreteObject::Uptrc> & op =  && object ;
-                return op;
-            }**/
+         
 
             CryptoPrId::Uptr cryptoobj:: GetCryptoPrimitiveId () const noexcept
             {
@@ -49,12 +45,13 @@ namespace ara
                 else
                 return true;
             }
+            
             //void cryptoobj::Save (ConcreteIOInterface &container) const noexcept
             //{
                //(*this).CO_ID= container.AllowedUsage;
               // this->exportable=container.ExportAllowed_t;
 
-            //}////To Do after io-interface be done.
+            //}
           
             cryptoobj& cryptoobj::operator= (const cryptoobj &other)
             {
