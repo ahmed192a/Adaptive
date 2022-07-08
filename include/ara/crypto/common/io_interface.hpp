@@ -19,9 +19,9 @@ namespace ara
 			{
 				public:
 
-				using Uptr = std::unique_ptr<IOInterface>;
+				using Uptr = std::unique_ptr<IOInterface>();
 
-				using Uptrc = std::unique_ptr<const IOInterface>;
+				using Uptrc = std::unique_ptr<const IOInterface>();
 
 				virtual AllowedUsageFlags GetAllowedUsage () const noexcept=0;
 

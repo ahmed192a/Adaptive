@@ -1,3 +1,11 @@
+/*****************************************************************
+ * @file authentication.cpp
+ * @author
+ * @brief  ara::crypto::cryp::authentication class implementation
+ * @version R20-11
+ *****************************************************************/
+
+
 #include "../../../../include/ara/crypto/cryp/authentication.hpp"
 
 using namespace ara:: crypto;
@@ -133,7 +141,7 @@ void Authentication:: UpdateAssociatedData(std::uint8_t in) noexcept
 		// update the digest through the Update function of the mac context in this authentication instance
 		this->macPtr->Update(in);
 
-		this->status == AuthCipherCtx_Status::updated;
+		this->status = AuthCipherCtx_Status::updated;
 	}
 
 	//// UpdateAssociatedData raises error if ProcessConfedentialData has been already called 

@@ -1,5 +1,5 @@
 #pragma once
-#include <memory>
+//#include <memory>
 #include <iostream>
 #include "crypto_object.hpp"
 namespace ara
@@ -14,7 +14,7 @@ namespace ara
             * @file crypto_obj.hpp
             * @brief A common interface for all cryptograhic objects recognizable by the Crypto Provider.
             **/
-            class cryptoobj : CryptoObject 
+            class cryptoobj : public CryptoObject 
             {
                 public:
                /**

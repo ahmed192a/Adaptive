@@ -1,9 +1,10 @@
 #pragma once
-#include <memory>
+//#include <memory>
 #include <iostream>
 #include "../../common/base_id_types.hpp"
 #include "crypto_primitive_id.hpp"
-#include "ara/crypto/common/vendor_specific_algorithm_identifier.hpp"
+//#include "ara/crypto/common/vendor_specific_algorithm_identifier.hpp"
+#include "../../common/vendor_specific_algorithm_identifier.hpp"
 //#include "../concrete_crypto_provider.hpp"
 
 

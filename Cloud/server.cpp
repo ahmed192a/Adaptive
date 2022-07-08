@@ -12,6 +12,9 @@
 
 
 using namespace std;
+//global key
+std::vector<char> key = { 'a','a','a','a','s','s','s','s','u','k','j','h','h','h','h','j','h','h','h','h','y','h','u','y','d','y','g','i','y','u','t','u' };
+std::vector<char> ProcessBlock(std::vector<char> in, bool suppressPadding);
 std::vector<char> ReadAllBytes(char const *filename)
 {
     ifstream ifs(filename, ios::binary | ios::ate);
@@ -99,16 +102,33 @@ int main(int argc, char const *argv[])
                     // }
                     // packageFile.close();
                     std::vector<char> packageData = ReadAllBytes(PACKAGE_FILE);
+                    std::vector<char> encryptedData = ProcessBlock(packageData, false);
 
                     int packageDataSize = packageData.size() ;
                     send(new_socket ,  &packageDataSize , sizeof(packageDataSize) , 0);
 
-					if( send(new_socket ,  packageData.data() , packageDataSize , 0) < 0) 
+                    if (send(new_socket, encryptedData, encryptedData.size(), 0) < 0)
                     {
-                        cout<<"Send Error";
+                        cout << "Send Error";
                     }
-                    cout<<"Package sent\n";
+                    cout << "Package sent\n";
 
+                    string plain, mac;
+                    // to convert package data to string
+                    for (char i = 0; i < packageData.size(); i++)
+                    {
+                        plain += packageData[i];
+                    }
+                    HMAC <SHA256> hmac(key, key.size());
+                    StringSource ss2(plain, true, newHashFilter(hmac, new StringSink(mac)));
+                    int macSize = mac.size();
+
+                    send(new_socket, &macSize, sizeof(macSize));
+                    if (send(new_socket, mac, mac.size(), 0) < 0)
+                    {
+                        cout << "Send Error";
+                    }
+                    cout << "Mac sent\n";
                 }
                 else if (temp=="End Connection")
                 {
@@ -120,3 +140,55 @@ int main(int argc, char const *argv[])
     }
 	return 0;
 }
+
+/*Process (encrypt / decrypt) an input block according to the crypto configuration*/
+std::vector<char> ProcessBlock(std::vector<char> in, bool suppressPadding)
+{
+
+
+    std::string in_data, out_data;
+    std::vector<char> return_data;
+
+    for (char i = 0; i < in.size(); i++)
+    {
+        in_data += in[i];
+    }
+
+    /*raise and error if the boolean parameter {suppressPadding} was set to TRUE and
+     the provided input buffer does not match the block-size*/
+    if (suppressPadding == true && in.size() != 16)
+    {
+        //raise CryptoErrorDomain::kInvalidInputSize
+    }
+    //raise and error if the context was not initialized by calling SetKey()/
+
+    else
+    {
+        try
+        {
+            CryptoPP::CBC_Mode<CryptoPP::AES>::Encryption e;
+
+            CryptoPP::StringSource s(in_data, true,
+                new CryptoPP::StreamTransformationFilter(e,
+                    new CryptoPP::StringSink(out_data)
+                ) // StreamTransformationFilter
+            ); // StringSource
+
+        }
+        catch (const CryptoPP::Exception& e)
+        {
+            std::cerr << e.what() << std::endl;
+            exit(1);
+        }
+
+        //Convert the string result into vector of bytes
+        for (uint8_t i = 0; i < out_data.length(); i++)
+        {
+            return_data.push_back(out_data[i]);
+        }
+
+        return return_data;
+    }
+}
+
+

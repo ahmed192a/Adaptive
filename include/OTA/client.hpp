@@ -5,6 +5,14 @@
 #include <arpa/inet.h> //inet_addr
 #include <vector>
 
+//#include <cryptlib.h>
+#include <aes.h> //crypto++
+#include <modes.h> //crypto++
+#include <rijndael.h> //crypto++
+#include <files.h> //crypto++
+#include <hex.h> //crypto++
+
+
 // #define OTA_IP_CLOUD "104.211.5.19"
 #define OTA_IP_CLOUD "127.0.0.1"
 #define OTA_PORT_CLOUD 8888
@@ -73,7 +81,7 @@ private:
 
      */
 
-        bool requestPackage(std::vector<uint8_t> &data);
+        bool requestPackage(std::vector<uint8_t> &data, std::vector<uint8_t>& sign);
 
 
 

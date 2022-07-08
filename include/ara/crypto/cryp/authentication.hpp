@@ -1,3 +1,11 @@
+/*****************************************************************
+ * @file authentication.hpp
+ * @author
+ * @brief  ara::crypto::cryp::Authentication class interface
+ * @version R20-11
+ *****************************************************************/
+
+
 //#ifndef  ARA_CRYPTO_AUTHENTICATION_H
 //#define  ARA_CRYPTO_AUTHENTICATION_H
 #pragma once
