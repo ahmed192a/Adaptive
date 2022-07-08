@@ -45,7 +45,7 @@ namespace ara
                 bool exportable;
 
                  cryptoobj()=default;
-                 cryptoobj(std::size_t payloadSize , bool session,bool exportable);
+                 cryptoobj(std::size_t payloadSize , bool session,bool exportable ,CryptoObjectType object_type);
                  /*
                 * SWS_CRYPT_20502
                 * Unique smart pointer of the constant interface.
@@ -70,7 +70,7 @@ namespace ara
             **/ 
               
             
-            template <class ConcreteObject> static typename ConcreteObject::Uptrc Downcast(CryptoObject::Uptrc &&object) noexcept;
+            // template <class ConcreteObject> static typename ConcreteObject::Uptrc Downcast(CryptoObject::Uptrc &&object) noexcept;
                 
             /**
              * SWS_CRYPT_20505
@@ -125,7 +125,7 @@ namespace ara
              * @brief Save itself to provided IOInterface A CryptoObject with property "session" cannot be saved in a KeySlot.
             **/
             
-            //void Save (ara::crypto::ConcreteIOInterface& container) const noexcept;
+            void Save (ara::crypto::ConcreteIOInterface& container) const noexcept;
             
             /**
              * SWS_CRYPT_30208
