@@ -56,13 +56,13 @@ namespace ara
                 // A CryptoObject with property "session" cannot be saved in a KeySlot.
                 if(!(this->session))
                 {
-                 container->payloadSize = this->payloadSize;
-                 container->objectType = this->CO_ID.mCOType;
-                 container->objectId.mGeneratorUid.mQwordLs = this->CO_ID.mCouid.mGeneratorUid.mQwordLs;
-                 container->objectId.mGeneratorUid.mQwordMs = this->CO_ID.mCouid.mGeneratorUid.mQwordMs;
-                 container->objectId.mVersionStamp = this->CO_ID.mCouid.mVersionStamp;
-                 container->AllowedUsage =this->Allow_U;
-                 container->session =this->session;
+                 container.payloadSize = this->payloadSize;
+                 container.objectType = this->CO_ID.mCOType;
+                 container.objectId.mGeneratorUid.mQwordLs = this->CO_ID.mCouid.mGeneratorUid.mQwordLs;
+                 container.objectId.mGeneratorUid.mQwordMs = this->CO_ID.mCouid.mGeneratorUid.mQwordMs;
+                 container.objectId.mVersionStamp = this->CO_ID.mCouid.mVersionStamp;
+                 container.AllowedUsage =this->Allow_U;
+                 container.session =this->session;
                 }
              }            
        
