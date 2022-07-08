@@ -61,7 +61,7 @@ namespace ara
               
             
             
-            template <class ConcreteObject> static typename ConcreteObject::Uptrc Downcast(CryptoObject::Uptrc &&object) noexcept;                
+            // template <class ConcreteObject> static typename ConcreteObject::Uptrc Downcast(CryptoObject::Uptrc &&object) noexcept;                
             /**
              * SWS_CRYPT_20505
              * @file crypto_object.hpp
@@ -113,7 +113,7 @@ namespace ara
              * @brief Save itself to provided IOInterface A CryptoObject with property "session" cannot be saved in a KeySlot.
             **/
             
-            //virtual void Save (ara::crypto::ConcreteIOInterface& container) const noexcept=0;
+            virtual void Save (ara::crypto::ConcreteIOInterface& container) const noexcept=0;
             
             /**
              * SWS_CRYPT_30208
