@@ -13,7 +13,7 @@
 uart_linux::uart_linux(/* args */)
 {
     // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
-    this->serial_port = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_SYNC);
+    this->serial_port = open("/dev/ttyACM1", O_RDWR | O_NOCTTY | O_SYNC);
 
     // Create new termios struct, we call it 'tty' for convention
     struct termios tty;

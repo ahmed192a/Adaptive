@@ -46,6 +46,8 @@ add_subdirectory(App)
 
 # set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
 
+file(COPY App/Manifests DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App)
+
 
 
 

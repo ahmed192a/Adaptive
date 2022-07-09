@@ -213,7 +213,6 @@ void *pthread0(void *v_var){
         else if (SM_State == State::STATE_RUNNING && OTA_triggerin_skeleton_ptr->trigger.get_event() == ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED){
             // used for OTA
             cout<<"[SM] OTA_STATE_INITIALIZED"<<endl;
-            // comment the next code to use the full system bassant
             SM_State = State::STATE_UPDATE;
             FunctionGroupState::CtorToken token;
             token.fg_name = "MachineFG";
