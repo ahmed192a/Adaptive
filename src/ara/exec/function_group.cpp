@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2022
  *
  */
+#include <iostream>
 #include "ara/exec/function_group.hpp"
 #include "ara/exec/parser/manifest_parser.hpp"
 #include <filesystem>
@@ -36,8 +37,6 @@ namespace ara
 
             json manifest_json_content{};
             read_value(manifest_json_full, kMachineManifest, manifest_json_content);
-
-            // read_value(manifest_json_content, kMachineManifestId, man.manifest_id);
 
             json mode_declaration_groups{};
             if (read_value(manifest_json_content, kModeDeclarationGroup, mode_declaration_groups))

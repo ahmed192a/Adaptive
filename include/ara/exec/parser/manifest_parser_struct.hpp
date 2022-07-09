@@ -60,14 +60,14 @@ namespace ara
                          * @brief Class Machine Instance Reference to store the reference 
                          *          to the Funcion groups state which this process depends on
                          * @param function_group name of the functiongroup
-                         * @param modes          all modes that the process depend on FG to be in them(csv form)
+                         * @param modes          all modes that the process depend on FG to be in them
                          * 
                          */
                         class MachineInstanceRef
                         {
                             public:
                             std::string function_group{};
-                            std::string modes{};
+                            std::vector<std::string> modes{};
                             bool operator==(const MachineInstanceRef &) const noexcept;
                             bool operator!=(const MachineInstanceRef &) const noexcept;
                         };
@@ -115,7 +115,7 @@ namespace ara
             {
                 public:
                 std::string manifest_id{};
-                std::vector<std::shared_ptr<FunctionGroup>> mode_declaration_groups{};
+                bool parsed = false;
                 bool operator==(const MachineManifest &) const noexcept;
                 bool operator!=(const MachineManifest &) const noexcept;
             };

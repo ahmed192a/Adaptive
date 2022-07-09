@@ -47,13 +47,10 @@ bool Process::operator!=(const Process &other) const noexcept
 }
 bool Process::start(){
     if (_pid != 0) {
-        //TRACE_ERROR("EM: Invalid call for Start(): the process is already running");
         cout<<"EM: Invalid call for Start(): the process is already running"<<endl;
         return false;
     }
-    //TRACE_INFO("EM: Starting executable " << executable_);
-    cout<<"EM: Starting executable "+name<<endl;
-
+    cout<<"EM: Starting executable \""+name<<"\", Path: \""<<get_current_dir_name()<<"\""<<endl;
     if (mkfifo(("processes/"+name+"/execution_client_fifo").c_str(), 0666) == -1)
     {
         if (errno != EEXIST)
@@ -68,18 +65,15 @@ bool Process::start(){
     }
     int pid = fork();
     if (pid < 0) {
-        //TRACE_ERROR("EM: fork() failed" << ", errno: " << errno);
         cout<<"EM: fork() failed" << ", errno: " << errno<<endl;
         return false;
     }
-    if (pid == 0) {
-        // The child process
-
+    if (pid == 0) {//child
         // Change working directory to application root
         if (chdir((W_DIR+name).c_str()) != 0) {
-            //TRACE_FATAL("EM: chdir() failed for dir " << childWorkDir << ",errno: " << errno);
-            cout<<"EM(child): chdir() failed for dir " << W_DIR+name << ",errno: " << errno<<endl;
-        } else {
+            cout<<name<<": chdir() failed for dir " << W_DIR+name << ",errno: " << errno<<endl;
+        } 
+        else {
             // Set environment variables
             //for (const auto& variable : environment_) {
             //    ::putenv(const_cast<char*>(variable.c_str()));  
@@ -95,7 +89,7 @@ bool Process::start(){
                 &name[0],
                 NULL
             };
-            cout<<"[EM] child: executing "<<name<<endl;
+            cout<<name<<": Executing... "<<endl;
             execve(args[0], &args[0],NULL);
 
             // When execv() is successful, the current process is replaced by the child.
@@ -103,16 +97,11 @@ bool Process::start(){
             cout<<"EM(child): execv() failed for executable " << name << ", errno: " << errno<<endl;
         }
 
-
         // Terminate the failed child process
         std::abort();
         return false;
 
-    } else if (pid > 0) {
-        // The parent process
-
-        // print current directory
-        cout<<"EM(parent): in dir "<<get_current_dir_name()<<endl;
+    } else if (pid > 0) {//parent
         // get file discreptor
         exec_clinet_fd = open(("processes/"+name+"/execution_client_fifo").c_str(), O_RDONLY);
         if(exec_clinet_fd == -1) {
@@ -127,24 +116,12 @@ bool Process::start(){
             }
             //close(fd);
             if(current_state == ara::exec::ExecutionState::kRunning) 
-            cout<<"EM: report succeed "<<(int) current_state<<endl;
+            cout<<"EM: report succeed executing \""<<name<<"\". [code:"<<(int) current_state<<", pid:"<<pid<<"]"<<endl;
         }
-
-
-
-
-
-        //  int status = 11;
-        //  waitpid(pid, &status, 0);
-
         //state_ = ProcessState::kStarting;
         _pid = pid;
         prun = true;
-        //TRACE_INFO("EM: Forked child ’" << executable_ << "’ with PID " <<_pid);
-        cout<<"EM: Forked child ’" << name << "’ with PID " <<_pid<<endl;
-        // The only successfull return
         return true;
-
     }
     return false;
 }
@@ -161,9 +138,9 @@ void Process::terminate(){
     close(exec_clinet_fd);      // close the execution client fifo
 
     if(current_state == ara::exec::ExecutionState::kTerminating) 
-        cout<<"EM: report succeed terminatting "<<(int) current_state<<endl;
+        cout<<"EM: report succeed terminatting "<<name<<" with code ("<<(int) current_state<<")"<<endl;
     else
-        cout<<"EM: ERROR: coundn't Terminate the process"<<endl;
+        cout<<"EM: ERROR: coundn't Terminate the process "<<name<<endl;
     
     wait(NULL);                 // wait for the process to be terminated
     // delete the unused execution client fifo
@@ -198,7 +175,7 @@ bool Process::StartupConfig::MachineInstanceRef::operator!=( const MachineInstan
 }
 
 bool MachineManifest::operator==(const MachineManifest &other) const noexcept{
-    return (manifest_id == other.manifest_id) && (mode_declaration_groups == other.mode_declaration_groups);
+    return (manifest_id == other.manifest_id);
 }
 
 bool MachineManifest::operator!=(const MachineManifest &other) const noexcept{

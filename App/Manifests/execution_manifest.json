@@ -1,0 +1,95 @@
+{
+    "Execution_manifest": {
+        "Execution_manifest_id": "exec_id",
+        "Process": [
+            {
+                "Process_name": "ota_process",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "EM_test_process",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "FG_1",
+                                "Modes": "on" 
+                            },
+                            {
+                                "Function_group": "MachineFG",
+                                "Modes":  "Running" 
+                            }
+                        ]
+                    }
+                ]
+                
+            },
+            {
+                "Process_name": "UCM_SERVER",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "EM_test_process",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "MachineFG",
+                                "Modes": "Running" 
+                            }
+                        ]
+                    }
+                ]
+                
+            },
+            {
+                "Process_name": "SD",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "filename",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "MachineFG",
+                                "Modes": "Pre-Starting-up,Starting-up,Running" 
+                            }
+                        ]
+                    }
+                ]
+                
+            },
+            {
+                "Process_name": "sm_process",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "filename",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "MachineFG",
+                                "Modes": "Starting-up,Running" 
+                            }
+                        ]
+                    }
+                ]
+                
+            }
+        ]
+    }
+}

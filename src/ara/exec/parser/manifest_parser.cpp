@@ -112,8 +112,14 @@ namespace ara
                                             mach_inst_ref{};
                                         read_value(machine_instance_ref, kFunctionGroup,
                                                    mach_inst_ref.function_group);
-                                        read_value(machine_instance_ref, kModes,
-                                                   mach_inst_ref.modes);
+                                        string csv;
+                                        read_value(machine_instance_ref, kModes, csv);
+                                        int start=0, end=0;
+                                        while(end!=string::npos){
+                                            end = csv.find(',',start);
+                                            mach_inst_ref.modes.push_back(csv.substr(start,end-start));
+                                            start = end+1;
+                                        }
                                         config.machine_instance_refs.push_back(mach_inst_ref);
                                     }
                                 }
@@ -136,20 +142,23 @@ namespace ara
             {
                 using namespace MMJsonKeys;
                 auto manifest_json_full = read_manifest_file(path);
+
                 MachineManifest man{};
                 validate_content(manifest_json_full, kAsVector);
 
                 json manifest_json_content{};
                 read_value(manifest_json_full, kMachineManifest, manifest_json_content);
-
+               
                 read_value(manifest_json_content, kMachineManifestId, man.manifest_id);
 
                 while(1)
                 {
                     boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(path);
-                    if(_functionGroup.index()==0)
+                    if(_functionGroup.index()==0)   
+                    {
+                        man.parsed=true;
                         break;
-                    //cout<<"finish FG : " <<u++<<endl;
+                    }
                     std::shared_ptr<FunctionGroup> fg =std::make_shared<FunctionGroup>(std::move(get<1>(_functionGroup)));
                     sys_FG[fg->get_FGname()].c_FG = fg;
                     FunctionGroupState::CtorToken token={fg->get_FGname(),fg->get_states()[0]};
@@ -171,7 +180,7 @@ namespace ara
                 if (not manifest_content.is_open())
                 {
                     throw std::runtime_error(
-                        "ara::com::exec::parser::parse_manifest -> cannot open manifest: " + path + "\n");
+                        "ManifestParser::read_manifest_file -> Cannot Open Manifest: " + path + "\n");
                 }
 
                 json manifest_json{};
@@ -184,7 +193,7 @@ namespace ara
                 {
                     manifest_content.close();
                     throw std::runtime_error(
-                        "ManifestParser::read_manifest_file -> cannot read manifest file. " +
+                        "ManifestParser::read_manifest_file -> Cannot Read Nanifest:" +
                         std::string(e.what()));
                 }
 
@@ -208,7 +217,6 @@ namespace ara
                 }
                 catch (json::exception &e)
                 {
-                    // std::cerr << e.what() << '\n';
                     throw std::runtime_error(std::string(e.what()));
                 }
             }

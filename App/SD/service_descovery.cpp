@@ -78,7 +78,7 @@ int main()
  */
 void handle_sigterm(int sig){
     sigval = 1;                                 // set signal value will be used as flag
-    cout<<"{SM} terminating"<<endl;            
+    cout<<"{SD} terminating"<<endl;            
     client.ReportExecutionState(ExecutionState::kTerminating);
     exit(0);
 }
