@@ -70,6 +70,16 @@ namespace ara
                      * 
                      */
                     virtual ~ServiceProxy();
+
+                    /**
+                     * @brief Get the Service Id object
+                     * 
+                     * @return const ara::com::proxy_skeleton::ServiceId 
+                     */
+                    const ara::com::proxy_skeleton::ServiceId GetServiceId()
+                    {
+                        return m_proxy_handle.m_server_com.service_id;
+                    }
                     /**
                      * @brief FindService 
                      * 

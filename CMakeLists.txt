@@ -44,8 +44,9 @@ add_subdirectory(App)
 # add_subdirectory(test_partial_processes/SomeIP/some_server)
 
 
-# set (CMAKE_RUNTIME_OUTPUT_DIRECTORY src/processes)
 
+
+# copy manifest files to the build directory
 file(COPY App/Manifests DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App)
 
 

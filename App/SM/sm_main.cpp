@@ -1,3 +1,12 @@
+/**
+ * @file sm_main.cpp
+ * @brief 
+ * @version 0.1
+ * @date 2022-07-09
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <iostream>
 #include <memory>
 #include <unistd.h>
@@ -26,7 +35,6 @@ using namespace ara::sm::triggerin;
 ///// Functions declarations
 void  handle_sigterm(int sig);  
 void *pthread0(void *v_var);
-void *pthread1(void *v_var);
 
 ////// global variables
 int sigval = 0;        // signal value
@@ -230,103 +238,3 @@ void *pthread0(void *v_var){
     UCM_triggerin_skeleton_ptr->StopOfferService();    // stop offering service
     server_main_socket.CloseSocket();           // close server socket
 }
-
-/*
-int main0()
-{
-    cout<<endl<<"[SM]"<<std::string(get_current_dir_name())<<endl;
-    signal(SIGTERM, handle_sigterm);
-    // struct sigaction sa;
-    // sa.sa_handler = &handle_sigterm;    // handle SIGTERM
-    // sa.sa_flags= SA_RESTART;            // restart system calls
-    // sigaction(SIGTERM, &sa, NULL);      // register signal handler
-    
-    cout<<"\n\n\t\t[SM]you are in the second file"<<endl;
-    cout<<"\t\t[SM]SM for testing"<<endl;
-    cout<<"\t\t[SM]creating execution client "<<endl;
-    ExecutionClient client;
-    client.ReportExecutionState(ExecutionState::kRunning);
-
-    StateClient sm_client;
-
-
-    FunctionGroupState::CtorToken token;
-    token.fg_name = "FG_1";
-    token.c_state = "on";
-    FunctionGroupState FGS(std::move(token));
-    std::cout<<"[SM] FGS created "<<endl;
-    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = sm_client.SetState(FGS);
-    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
-    std::cout<<"[SM] state changed"<<endl;
-    cout<<"\t\t[SM] result "<<var.index()<<endl;
-    // get<1>(var).get();
-    while (1)
-    {
-        cout<<"\t\t[SM] running"<<endl;
-        usleep(3000);
-        if(sigval) break;
-    }
-    cout<<"\t[SM]finish reporting running to EM\n"<<endl;
-    return 0;
-}
-*/
-
-
-/**
- * @brief No Notifier in SM so this thread isn't used but i will leave just in case
- * 
- * @param v_var 
- * @return void* 
- */
-void *pthread1(void *v_var){
-    cout<<"{SM} pthread1"<<endl;
-    /// used for field sub or unsubscription
-
-    while (1)
-    {
-        sockaddr_in echoClntAddr;                       // Address of datagram source 
-        unsigned int clntLen = sizeof(echoClntAddr);    // Address length 
-        std::vector<uint8_t> msg;                       // Payload message from client
-        uint32_t msg_size;                              // Size of message
-
-        server_main_socket_DG.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
-        msg.resize(msg_size);
-        server_main_socket_DG.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
-
-
-        if (msg[14] == 0x02) // make sure it's SOMEIP/SD message
-        {
-            ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
-            ara::com::proxy_skeleton::Client_udp_Info cudp;
-
-
-            sd_msg.Deserialize(msg);
-            auto entry = (ara::com::entry::EventgroupEntry *)sd_msg.Entries()[0];
-
-            cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
-
-            printf("\n[SERVER]  ->> Handling client %s   with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), msg_size);
-
-            switch (entry->ServiceId())
-            {
-            case T_IN_UCM_INSTANCE_ID:
-                switch (entry->EventgroupId())
-                {
-                case 0:
-                    
-                    break;
-
-                default: // error invalid eventgroup id
-                    break;
-                }
-                break;
-            default:    // reply with error invalid service id
-            break;
-
-            }
-
-        }
-    }
-
-}
-

@@ -1,3 +1,12 @@
+/**
+ * @file service_descovery.cpp
+ * @brief 
+ * @version 0.1
+ * @date 2022-07-09
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
@@ -16,7 +25,6 @@
 
 #include "ara/com/ServiceDiscovery/csv.hpp"
 #include "ara/com/ipc/server/socket_Server.hpp"
-#include "color/color.hpp"
 #include "ara/com/SOMEIP/SomeipSDMessage.hpp"
 #include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
 #include "ara/exec/execution_client.hpp"
@@ -38,6 +46,11 @@ SD_data receive; // global variable to store the data received from the server
 CSV   csv;
 ExecutionClient client;
 
+/**
+ * @brief main function of service discovery
+ * 
+ * @return int 
+ */
 int main()
 {
     cout<<endl<<"[SD]"<<std::string(get_current_dir_name())<<endl;
