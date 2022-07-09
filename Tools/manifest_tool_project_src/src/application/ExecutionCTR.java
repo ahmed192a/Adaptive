@@ -329,7 +329,7 @@ public class ExecutionCTR {
 			FC.setTitle("Export Execution Manifest JSON");
 			FC.setInitialFileName(JSONTree.getChilds().get(0).getChilds().get(0).getVal());
 			FC.getExtensionFilters().clear();
-			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File","*.JSON"));			
+			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("json File","*.json"));			
 			File myObj = FC.showSaveDialog(Main.getPrimaryStage());
 			if(myObj!=null) {
 				PrintWriter myWriter = new PrintWriter(myObj);

@@ -62,9 +62,9 @@ public class Controller {
 		else if (choice.resultProperty().getValue().equals("Modify Manifest")) {
 			Node JSONTree;
 			String Data = new String();
-			FC.setTitle("Load JSON File");
+			FC.setTitle("Load .json File");
 			FC.getExtensionFilters().clear();
-			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File","*.JSON"));	
+			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("json File","*.json"));	
 			File myObj = FC.showOpenDialog(Main.getPrimaryStage());
 			if(myObj!=null) {
 			    Scanner myReader = new Scanner(myObj);
@@ -134,9 +134,9 @@ public class Controller {
 		else if (choice.resultProperty().getValue().equals("Modify Manifest")) {
 			Node JSONTree;
 			String Data = new String();
-			FC.setTitle("Load JSON File");
+			FC.setTitle("Load .json File");
 			FC.getExtensionFilters().clear();
-			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File","*.JSON"));	
+			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("json File","*.json"));	
 			File myObj = FC.showOpenDialog(Main.getPrimaryStage());
 			if(myObj!=null) {
 			    Scanner myReader = new Scanner(myObj);
