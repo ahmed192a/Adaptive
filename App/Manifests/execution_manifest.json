@@ -49,27 +49,6 @@
                 
             },
             {
-                "Process_name": "SD",
-                "Mode_dependent_startup_configs": [
-                    {
-                        "Startup_options": [
-                            {
-                                "Option_kind": "commandLineShortForm",
-                                "Option_name": "filename",
-                                "Option_arg": "inputfile_1"
-                            }
-                        ],
-                        "FunctionGroupDependencies": [
-                            {
-                                "Function_group": "MachineFG",
-                                "Modes": "Pre-Starting-up,Starting-up,Running" 
-                            }
-                        ]
-                    }
-                ]
-                
-            },
-            {
                 "Process_name": "sm_process",
                 "Mode_dependent_startup_configs": [
                     {
@@ -89,7 +68,29 @@
                     }
                 ]
                 
+            },
+            {
+                "Process_name": "SD",
+                "Mode_dependent_startup_configs": [
+                    {
+                        "Startup_options": [
+                            {
+                                "Option_kind": "commandLineShortForm",
+                                "Option_name": "filename",
+                                "Option_arg": "inputfile_1"
+                            }
+                        ],
+                        "FunctionGroupDependencies": [
+                            {
+                                "Function_group": "MachineFG",
+                                "Modes": "Pre-Starting-up,Starting-up,Running" 
+                            }
+                        ]
+                    }
+                ]
+                
             }
+            
         ]
     }
 }
