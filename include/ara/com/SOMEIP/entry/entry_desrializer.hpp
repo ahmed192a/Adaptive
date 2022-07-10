@@ -1,6 +1,6 @@
 /**
  * @file entry_deserializer.hpp
- * @author your name (you@domain.com)
+ * @author Flashing Adapter Graduation Project Team
  * @brief 
  * @version 0.1
  * @date 2022-04-15

@@ -1,6 +1,6 @@
 /**
  * @file ucm_return_types.h
- * @author your name (you@domain.com)
+ * @author Flashing Adapter Graduation Project Team
  * @brief UCM Return Types Definitions
  * @version 0.1
  * @date 2022-03-07

@@ -1,6 +1,6 @@
 /**
  * @file payload_helper.cpp
- * @author your name (you@domain.com)
+ * @author Flashing Adapter Graduation Project Team
  * @brief 
  * @version 0.1
  * @date 2022-02-25
