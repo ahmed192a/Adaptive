@@ -31,6 +31,7 @@
 *.out
 *.app
 
+# CMake files
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -42,10 +43,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-
-
-
-  
+# Visual Studio Code files 
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -65,6 +63,24 @@ build
 .metadata
 .setting*
 Debug
+
+# Eclipse files
+.project
+.cproject
+*.launch
+.loadpath
+.recommenders
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.buildpath                            
+.settings/org.eclipse.cdt.core.prefs
+.settings/org.eclipse.cdt.codan.core.prefs  
+.settings/org.eclipse.cdt.debug.core.prefs  
+.settings/org.eclipse.core.resources.prefs  
+.settings/org.eclipse.core.runtime.prefs    
 
 
 
