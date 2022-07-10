@@ -15,7 +15,7 @@
 #include "ara/exec/exec_error_domain.hpp"
 #include <nlohmann/json.hpp>
 #include <boost/variant2/variant.hpp>
-// #include <variant>
+
 namespace ara
 {
     namespace exec
@@ -30,8 +30,7 @@ namespace ara
             std::string mFunction_group_name;
             std::vector<std::string> mstates;
         public:
-
-            using CtorToken = nlohmann::json; //std::string;
+            using CtorToken = nlohmann::json;
             void set_FGname(std::string fg_name) ;
             void set_states(std::vector<std::string> states);
             std::string get_FGname() const noexcept;
