@@ -231,60 +231,60 @@ namespace ara
 
 
 
-            InhKeySlot& InhKeySlot ::operator= (const InhKeySlot &other)
-            {
-               if(this != &other)
-               {
-                   this->KSCP.mAlgId = other.KSCP.mAlgId;
-                   this->KSCP.mContentAllowedUsage = other.KSCP.mContentAllowedUsage;
-                   this->KSCP.mObjectSize = other.KSCP.mObjectSize;
-                   this->KSCP.mObjectUid.mGeneratorUid.mQwordLs=other.KSCP.mObjectUid.mGeneratorUid.mQwordLs;
-                   this->KSCP.mObjectUid.mGeneratorUid.mQwordMs=other.KSCP.mObjectUid.mGeneratorUid.mQwordMs;
-                   this->KSCP.mObjectUid.mVersionStamp=other.KSCP.mObjectUid.mVersionStamp;
-                   this->KSCP.mObjectType =other.KSCP.mObjectType;
-                   this->Myprov ;
+            //InhKeySlot& InhKeySlot ::operator= (const InhKeySlot &other)
+            //{
+            //   if(this != &other)
+            //   {
+            //       this->KSCP.mAlgId = other.KSCP.mAlgId;
+            //       this->KSCP.mContentAllowedUsage = other.KSCP.mContentAllowedUsage;
+            //       this->KSCP.mObjectSize = other.KSCP.mObjectSize;
+            //       this->KSCP.mObjectUid.mGeneratorUid.mQwordLs=other.KSCP.mObjectUid.mGeneratorUid.mQwordLs;
+            //       this->KSCP.mObjectUid.mGeneratorUid.mQwordMs=other.KSCP.mObjectUid.mGeneratorUid.mQwordMs;
+            //       this->KSCP.mObjectUid.mVersionStamp=other.KSCP.mObjectUid.mVersionStamp;
+            //       this->KSCP.mObjectType =other.KSCP.mObjectType;
+            //       this->Myprov ;
 
-                   this->KSPP.mAlgId = other.KSPP.mAlgId ;
-                   this->KSPP.mAllocateSpareSlot = other.KSPP.mAllocateSpareSlot ;
-                   this->KSPP.mAllowContentTypeChange = other.KSPP.mAllowContentTypeChange ;
-                   this->KSPP.mContentAllowedUsage = other.KSPP.mContentAllowedUsage ;
-                   this->KSPP.mExportAllowed = other.KSPP.mExportAllowed ;
-                   this->KSPP.mMaxUpdateAllowed = other.KSPP.mMaxUpdateAllowed ;
-                   this->KSPP.mObjectType = other.KSPP.mObjectType ;
-                   this->KSPP.mSlotCapacity = other.KSPP.mSlotCapacity ;
-                   this->KSPP.mSlotType = other.KSPP.mSlotType;
-                   
-               }
-               return *this;
-            }
+            //       this->KSPP.mAlgId = other.KSPP.mAlgId ;
+            //       this->KSPP.mAllocateSpareSlot = other.KSPP.mAllocateSpareSlot ;
+            //       this->KSPP.mAllowContentTypeChange = other.KSPP.mAllowContentTypeChange ;
+            //       this->KSPP.mContentAllowedUsage = other.KSPP.mContentAllowedUsage ;
+            //       this->KSPP.mExportAllowed = other.KSPP.mExportAllowed ;
+            //       this->KSPP.mMaxUpdateAllowed = other.KSPP.mMaxUpdateAllowed ;
+            //       this->KSPP.mObjectType = other.KSPP.mObjectType ;
+            //       this->KSPP.mSlotCapacity = other.KSPP.mSlotCapacity ;
+            //       this->KSPP.mSlotType = other.KSPP.mSlotType;
+            //       
+            //   }
+            //   return *this;
+            //}
 
 
-            InhKeySlot& InhKeySlot ::operator= (InhKeySlot &&other)
-            {
-               if(this != &other)
-               {
-                   this->KSCP.mAlgId = other.KSCP.mAlgId;
-                   this->KSCP.mContentAllowedUsage = other.KSCP.mContentAllowedUsage;
-                   this->KSCP.mObjectSize = other.KSCP.mObjectSize;
-                   this->KSCP.mObjectUid.mGeneratorUid.mQwordLs=other.KSCP.mObjectUid.mGeneratorUid.mQwordLs;
-                   this->KSCP.mObjectUid.mGeneratorUid.mQwordMs=other.KSCP.mObjectUid.mGeneratorUid.mQwordMs;
-                   this->KSCP.mObjectUid.mVersionStamp=other.KSCP.mObjectUid.mVersionStamp;
-                   this->KSCP.mObjectType =other.KSCP.mObjectType;
-                   this->Myprov ;
+            //InhKeySlot& InhKeySlot ::operator= (InhKeySlot &&other)
+            //{
+            //   if(this != &other)
+            //   {
+            //       this->KSCP.mAlgId = other.KSCP.mAlgId;
+            //       this->KSCP.mContentAllowedUsage = other.KSCP.mContentAllowedUsage;
+            //       this->KSCP.mObjectSize = other.KSCP.mObjectSize;
+            //       this->KSCP.mObjectUid.mGeneratorUid.mQwordLs=other.KSCP.mObjectUid.mGeneratorUid.mQwordLs;
+            //       this->KSCP.mObjectUid.mGeneratorUid.mQwordMs=other.KSCP.mObjectUid.mGeneratorUid.mQwordMs;
+            //       this->KSCP.mObjectUid.mVersionStamp=other.KSCP.mObjectUid.mVersionStamp;
+            //       this->KSCP.mObjectType =other.KSCP.mObjectType;
+            //       this->Myprov ;
 
-                   this->KSPP.mAlgId = other.KSPP.mAlgId ;
-                   this->KSPP.mAllocateSpareSlot = other.KSPP.mAllocateSpareSlot ;
-                   this->KSPP.mAllowContentTypeChange = other.KSPP.mAllowContentTypeChange ;
-                   this->KSPP.mContentAllowedUsage = other.KSPP.mContentAllowedUsage ;
-                   this->KSPP.mExportAllowed = other.KSPP.mExportAllowed ;
-                   this->KSPP.mMaxUpdateAllowed = other.KSPP.mMaxUpdateAllowed ;
-                   this->KSPP.mObjectType = other.KSPP.mObjectType ;
-                   this->KSPP.mSlotCapacity = other.KSPP.mSlotCapacity ;
-                   this->KSPP.mSlotType = other.KSPP.mSlotType;
-                   
-               }
-               return *this;
-            }
+            //       this->KSPP.mAlgId = other.KSPP.mAlgId ;
+            //       this->KSPP.mAllocateSpareSlot = other.KSPP.mAllocateSpareSlot ;
+            //       this->KSPP.mAllowContentTypeChange = other.KSPP.mAllowContentTypeChange ;
+            //       this->KSPP.mContentAllowedUsage = other.KSPP.mContentAllowedUsage ;
+            //       this->KSPP.mExportAllowed = other.KSPP.mExportAllowed ;
+            //       this->KSPP.mMaxUpdateAllowed = other.KSPP.mMaxUpdateAllowed ;
+            //       this->KSPP.mObjectType = other.KSPP.mObjectType ;
+            //       this->KSPP.mSlotCapacity = other.KSPP.mSlotCapacity ;
+            //       this->KSPP.mSlotType = other.KSPP.mSlotType;
+            //       
+            //   }
+            //   return *this;
+            //}
            
          }
      }

@@ -173,6 +173,7 @@ void *pthread0(void *v_var) {
                 
                 // downloading the package from the cloud
                 std::vector<uint8_t> package;
+                std::vector<uint8_t> signature;
                 cloud.requestPackage(package, signature);
 
                 std::cout << "\t[OTA] sending the package to the flashing adapter ..." << std::endl;
