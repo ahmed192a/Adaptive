@@ -1,7 +1,7 @@
 /**
  * @file execution_error_event.hpp
  * @author Flashing Adapter Graduation Project Team
- * @brief 
+ * @brief Definition of execution error event struct
  * @version 0.1
  * @date 2022-03-07
  * 

@@ -1,7 +1,7 @@
 /**
  * @file deterministic_client.cpp
  * @author Flashing Adapter Graduation Project Team
- * @brief 
+ * @brief Implementation of the DeterministicClient class
  * @version 0.1
  * @date 2022-03-07
  * 

@@ -1,7 +1,7 @@
 /**
  * @file execution_client.cpp
  * @author Flashing Adapter Graduation Project Team
- * @brief 
+ * @brief Implementation of the execution client class
  * @version 0.1
  * @date 2022-03-07
  * 

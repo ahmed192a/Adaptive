@@ -1,7 +1,7 @@
 /**
  * @file function_group.hpp
  * @author Flashing Adapter Graduation Project Team
- * @brief 
+ * @brief Definition of FunctionGroup class
  * @version 0.1
  * @date 2021-12-14
  * 

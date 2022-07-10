@@ -1,7 +1,7 @@
 /**
  * @file exec_error_domain.cpp
  * @author Flashing Adapter Graduation Project Team
- * @brief 
+ * @brief Implementation of the ExecErrorDomain class which is responsible for handling all Excuation Management exceptions
  * @version 0.1
  * @date 2022-03-07
  * 
