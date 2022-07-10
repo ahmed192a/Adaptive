@@ -1,7 +1,6 @@
 /**
  * @file Log.hpp
  * @author Flashing Adapter Graduation Project Team
- * @brief 
  * @version 0.1
  * @date 2022-03-07
  * 

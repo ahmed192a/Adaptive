@@ -1,6 +1,5 @@
 /**
  * @file sm_main.cpp
- * @brief 
  * @version 0.1
  * @date 2022-07-09
  * 

@@ -1,6 +1,5 @@
 /**
  * @file service_descovery.cpp
- * @brief 
  * @version 0.1
  * @date 2022-07-09
  * 

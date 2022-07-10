@@ -1,7 +1,6 @@
 /**
  * @file utility.hpp
  * @author 
- * @brief 
  * @version 0.1
  * @date 2022-03-14
  * 
