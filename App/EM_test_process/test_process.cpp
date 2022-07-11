@@ -23,7 +23,6 @@ void handle_sigterm(int sig){
     sigval = sig;
     lg.Insert("terminating");
     client.ReportExecutionState(ExecutionState::kTerminating);
-
 }
 
 int main(){

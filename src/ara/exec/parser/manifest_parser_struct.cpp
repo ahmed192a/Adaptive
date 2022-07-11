@@ -81,6 +81,9 @@ bool Process::start(){
             // Redirect terminal output for application to /var/redirected/<application_name_>
             // utility::RedirectProcessOutput(("/var/redirected/"+name).c_str());
             freopen (("../redirected/"+name+".txt").c_str(), "w", stdout);
+            
+            // system(("gnome-terminal -- sh -c 'tail -f -n 100 ../redirected/"+name+".txt'").c_str());
+
 
             //cout<<"EM(child): in dir "<<get_current_dir_name()<<endl;
             // Execute the executable with the specified arguments

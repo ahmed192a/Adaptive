@@ -53,7 +53,12 @@ void change_state(std::string n_FG, std::string n_state);
 void view_out();
 void p_operate();
 void p_terminate();
-
+void handle_sigterm(int sig){
+    cout<<"EM: SIGTERM received"<<endl;
+    change_state("MachineFG", "Shuttingdown");
+    cout<<"EM: Shutting down"<<endl;
+    exit(0);
+}
 /***************************************************************************
  *                      Global Variable Section                            *
  ***************************************************************************/
@@ -77,21 +82,43 @@ streambuf* stream_buffer_cin = cin.rdbuf();     // backup cin stream buffer
  * @return  0 if success or 1 if failed 
  */
 int main(int argc, char ** argv){
+    signal(SIGTERM, handle_sigterm);    // handle SIGTERM signal used for terminating the system
+
+    // check if there are files the the directory "processes/redirected"
+    // if there are files, then delete them
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir("processes/redirected")) != NULL) {
+        while ((ent = readdir (dir)) != NULL) {
+            if (ent->d_name[0] != '.') {
+                remove((string("processes/redirected/") + ent->d_name).c_str());
+            }
+        }
+        closedir (dir);
+    }
+
+
 
     //Create redirected folder for cout of all processes,check if the folder exists
-    if(filesystem::exists("processes/redirected")) filesystem::remove_all("processes/redirected");
-    filesystem::create_directories("processes/redirected");    
+    // if(filesystem::exists("processes/redirected")) filesystem::remove_all("processes/redirected");
+    // filesystem::create_directories("processes/redirected");    
 
     // file stream to write the output of EM to a EM.txt file
     fstream file;   
     file.open("processes/redirected/EM.txt", ios::out); 
-    cout.rdbuf(file.rdbuf());                        
+    cout.rdbuf(file.rdbuf()); 
+    // open the file EM.txt to visualize it in real time in another genome terminal
+    //system("gnome-terminal -- sh -c 'tail -f -n 100 processes/redirected/EM.txt'");
+
+
 
 /***************************************************************************
  *                      Start Of Execution Manager                          *
  ***************************************************************************/
-
-    cout << "\n-    EM Initialization..."<<endl<<endl;
+    // Initialize the system
+    cout << "\n-    EM Initialization..."<<endl;
+    // print the pid of EM
+    cout << "-    EM: PID: " << getpid() << endl << endl;
     exec_init();                            // initialize the system and parse the manifest files
 
     mkfifo(SM_FIFO, 0666);                  // create the fifo to communicate with State Management process

@@ -219,16 +219,16 @@ void *pthread0(void *v_var){
         }
         else if (SM_State == State::STATE_RUNNING && OTA_triggerin_skeleton_ptr->trigger.get_event() == ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED){
             // used for OTA
-            cout<<"[SM] OTA_STATE_INITIALIZED"<<endl;
-            SM_State = State::STATE_UPDATE;
-            FunctionGroupState::CtorToken token;
-            token.fg_name = "MachineFG";
-            token.c_state = "off";
-            FunctionGroupState FGS(std::move(token));
-            std::cout<<"[SM] FGS created "<<endl;
-            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
-            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
-            std::cout<<"[SM] state changed"<<endl;
+            // cout<<"[SM] OTA_STATE_INITIALIZED"<<endl;
+            // SM_State = State::STATE_UPDATE;
+            // FunctionGroupState::CtorToken token;
+            // token.fg_name = "MachineFG";
+            // token.c_state = "off";
+            // FunctionGroupState FGS(std::move(token));
+            // std::cout<<"[SM] FGS created "<<endl;
+            // std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+            // boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+            // std::cout<<"[SM] state changed"<<endl;
         }
 
         /*******************************        END OF FSM      **************************************/
