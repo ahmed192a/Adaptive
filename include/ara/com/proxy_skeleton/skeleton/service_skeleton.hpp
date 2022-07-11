@@ -90,7 +90,9 @@ namespace ara
                      */
                     void OfferService()
                     {
-                        cout<<"ser < " <<m_service_id<<endl;
+                        cout << "---------------------------------------------" << endl;
+                        cout<<"serialization :  " <<m_service_id<<endl;
+                        cout << "---------------------------------------------" << endl;
                         this->m_skeleton_udp.OpenSocket();
                         const uint32_t minorV = 0;
                         const uint8_t majorV = 1;

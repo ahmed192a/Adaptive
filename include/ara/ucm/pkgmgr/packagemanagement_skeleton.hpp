@@ -1,6 +1,6 @@
 /**
  * @file PackageManagement_skeleton.h
- * @author Sarah Mohamed
+ * @author Flashing Adapter Graduation Project Team
  * @brief Skeleton(service provider) file for ucm::pkgmgr
  * @version 0.1
  * @date 2022-02-19

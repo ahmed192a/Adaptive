@@ -1,6 +1,6 @@
 /**
- * @file ucm_server.cpp
- * @author
+ * @file    ucm_server.cpp
+ * @author  Flashing Adapter Graduation Project Team
  * @brief
  * @version 0.1
  * @date
@@ -74,8 +74,11 @@ ExecutionClient client;
  */
 int main()
 {
+    cout << "\t\t [UCM] Intialization ......" << endl;
     signal(SIGTERM, handle_sigterm);
+    cout << "---------------------------------------------" << endl;
     cout << "\t\t[UCM]creating execution client " << endl;
+    cout << "---------------------------------------------" << endl;
     client.ReportExecutionState(ExecutionState::kRunning);
 
     /*     UDP Server sockets for events      */
@@ -119,7 +122,9 @@ int main()
 void handle_sigterm(int sig)
 {
     sigval = 1;
-    cout << "{UCM} terminating" << endl;
+    cout << "---------------------------------------------" << endl;
+    cout << "[UCM] terminating" << endl;
+    cout << "---------------------------------------------" << endl;
     client.ReportExecutionState(ExecutionState::kTerminating); // report execution state to the execution server
 
     // server_skeleton_ptr->StopOfferService();    /* stop offering service */
@@ -138,7 +143,9 @@ void handle_sigterm(int sig)
 void *pthread0(void *v_var)
 {
     /* TCP with client */
+    cout << "---------------------------------------------" << endl;
     cout << "[UCM SERVER] OPEN SOCKET ON " << endl;
+    
     server_main_socket.OpenSocket(SERVER_PORT);
     server_main_socket.BindServer();
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
@@ -148,12 +155,16 @@ void *pthread0(void *v_var)
     ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_INITIALIZED; // set ucm state to initialized
     triggerin_proxy_ptr->trigger.Set(ucm_state_g);                      // set triggerin proxy state to initialized to inform SM
 
+    cout << "---------------------------------------------" << endl;
     cout << "\t[SERVER]  Ready" << endl;
+    cout << "---------------------------------------------" << endl;
 
     while (1)
     {
         Socket Sclient = server_main_socket.AcceptServer();
+        cout << "---------------------------------------------" << endl;
         cout << "\t[SERVER]  accepted" << endl;
+        cout << "---------------------------------------------" << endl;
 
         std::vector<uint8_t> msg; /* Payload message from client */
         uint32_t msg_size;        /* Size of message  */
@@ -162,8 +173,10 @@ void *pthread0(void *v_var)
         Sclient.Receive((void *)&msg_size, sizeof(msg_size)); /*  recieve message size   */
         msg.resize(msg_size);                                 /*  resize the vector to allocate size of the coming message  */
         Sclient.Receive((void *)&msg[0], msg_size);           /*  recieve the message  */
-
+        
+        cout << "---------------------------------------------" << endl;
         cout << "\t[SERVER]  received" << endl;
+        cout << "---------------------------------------------" << endl;
         /*         SOMEIP_MESSAGE Deserialize    */
         ara::com::SOMEIP_MESSAGE::Message someip_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
         if (someip_msg.MessageId().serivce_id == server_skeleton_ptr->GetServiceId())

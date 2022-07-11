@@ -1,5 +1,6 @@
 /**
  * @file package_management.cpp
+ * @author Flashing Adapter Graduation Project Team
  * @brief Definition of Provided Port(PackageManagement) methods
  * @version 0.1
  *
@@ -122,8 +123,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         std::cout<<"packet_num "<<packet_num<<std::endl;
         std::cout<<"extra_bytes "<< extra_bytes<<std::endl;
         
-
-              //UART_receiveBlock((uint8 *)&current_state, CMD_SIZE);
     while (1) /* stay in this loop until the update is finished or canceled */
     {
         switch (current_state)
@@ -138,7 +137,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                 u_linux.UART_sendBlock(start.data(),st);
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
                 std::cout<<"receive seq"<<endl;
-                printf("COMAAND2 : %x", current_state);
                 cout<<endl;
                 // if(current_state == 1) current_state = trigger_seq;
                 break;
@@ -244,15 +242,13 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> ara::ucm::p
         
         if (TransferInfoData.id == id)
         {
-            
-
             if (blockCounter == TransferInfoData.localBlockCounter)
             {
             /* Check if the received block size is equal the block size returned by TransferStart for the same TransferId */
 
                 if (data.size() == TransferInfoData.BlockSize)
                 {
-                    if(blockCounter == TransferInfoData.lastBlockCounter )
+                    if(blockCounter == TransferInfoData.lastBlockCounter)
                     {
                         TransferInfoData.BlockSize = TransferInfoData.size % TransferInfoData.BlockSize;
                     }
@@ -266,21 +262,21 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> ara::ucm::p
                 }
                 else
                 {
-                    // ApplicationError IncorrectBlockSize -> Too big block size received by UCM
-                    // In case the received block size with TransferData
-                    // exceeds the block size returned by TransferStart for the same TransferId
+                    /* ApplicationError IncorrectBlockSize -> Too big block size received by UCM */
+                    /* In case the received block size with TransferData */
+                    /* exceeds the block size returned by TransferStart for the same TransferId */
                 }
             }
             else
             {
-                // ApplicationError BlockInconsistent
-                // ApplicationError IncorrectBlock
+                /* ApplicationError BlockInconsistent */
+                /* ApplicationError IncorrectBlock    */
             }
             TransferInfoData.localBlockCounter++;
         }
         else
         {
-            // ApplicationError InvalidTransferId
+            /* ApplicationError InvalidTransferId   */
         }
         return result; });
 
@@ -293,7 +289,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
                                                                                         {
         ara::ucm::pkgmgr::PackageManagement::TransferExitOutput result;
         std::string str;
-        //convert std::array<uint8_t, 16> to string
+        /*   convert std::array<uint8_t, 16> to string    */
         for(int i =0 ; i<16;i++){
             str += " ";
             snprintf(&str[i], 4, "%d", id[i]);
@@ -345,11 +341,11 @@ void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::field_method_dispatc
     uint16_t event_id = message.MessageId().method_id & 0x7FFF;
     switch (event_id)
     {
-    case 0:                                                                  // Id of CurrentStatus Field
-        if (message.Length() > ara::com::SOMEIP_MESSAGE::Header::HeaderSize) // if Message has payload So it's Set request with the new data
+    case 0:                                                                  /* Id of CurrentStatus Field   */
+        if (message.Length() > ara::com::SOMEIP_MESSAGE::Header::HeaderSize) /* if Message has payload So it's Set request with the new data  */
         {
-            // CurrentStatus does't have setter
-            NoMethodHandler(event_id, cserver); // Send Error Message unknown event_id
+            /*    CurrentStatus does't have setter   */
+            NoMethodHandler(event_id, cserver); /* Send Error Message unknown event_id  */
         }
         else // if Message doesn't have payload So it's Get request with just the header 16 Bytes
         {
@@ -367,6 +363,8 @@ void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::method_dispatch(ara:
     ara::com::Deserializer dser;
 
     uint16_t methodID = message.MessageId().method_id;
+
+    cout << "\t --------------------------------------------------------------------------- " << endl;
 
     cout << "\t[SERVER] Dispatch " << methodID << endl;
 

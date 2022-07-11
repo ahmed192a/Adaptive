@@ -1,6 +1,6 @@
 /**
  * @file proxy_methods.hpp
- * @author Sarah Mohamed
+ * @author Flashing Adapter Graduation Project Team
  * @brief proxy methods namespace
  * @version 0.1
  * @date 2022-03-07

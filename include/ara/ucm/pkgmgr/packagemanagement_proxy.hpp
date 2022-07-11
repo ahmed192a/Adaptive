@@ -1,6 +1,6 @@
 /**
  * @file packagemanagement_proxy.h
- * @author Sarah Mohamed
+ * @author Flashing Adapter Graduation Project Team
  * @brief Proxy(service requester) file for ucm::pkgmgr service interface
  * @version 0.1
  * @date 2022-02-19
