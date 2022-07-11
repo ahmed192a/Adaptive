@@ -3,11 +3,12 @@
 
 #include "symmetric_block_cipher_ctx.hpp"
 //#include <cryptlib.h>
-#include <aes.h> //crypto++
-#include <modes.h> //crypto++
-#include <rijndael.h> //crypto++
-#include <files.h> //crypto++
-#include <hex.h> //crypto++
+#include "../build/_deps/cryptopp-src/aes.h" // crypto++
+#include"../build/_deps/cryptopp-src/modes.h" // crypto++
+// #include "../build/_deps/cryptopp-src/cryptlib.h" // crypto++
+#include "../build/_deps/cryptopp-src/rijndael.h" // crypto++
+#include "../build/_deps/cryptopp-src/files.h" // crypto++
+#include "../build/_deps/cryptopp-src/hex.h" // crypto++
 #include <iostream>
 #include <string>
 
