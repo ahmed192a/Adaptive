@@ -160,7 +160,7 @@ class Window(QMainWindow):
 
         
     def Terminate_APP(self):
-        pid,ok = QInputDialog.getInt(self,"integer input dualog","enter a number")
+        pid,ok = QInputDialog.getInt(self,"Terminate process","enter pid:")
 		
         if ok:
             print(pid)
