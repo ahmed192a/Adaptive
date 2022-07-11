@@ -7,11 +7,11 @@
 	 sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
 */
 #include "../build/_deps/cryptopp-src/aes.h" // crypto++
-#include <modes.h> // crypto++
-#include <cryptlib.h> // crypto++
-#include <rijndael.h> // crypto++
-#include <files.h> // crypto++
-#include <hex.h> // crypto++
+#include"../build/_deps/cryptopp-src/modes.h" // crypto++
+#include "../build/_deps/cryptopp-src/cryptlib.h" // crypto++
+#include "../build/_deps/cryptopp-src/rijndael.h" // crypto++
+#include "../build/_deps/cryptopp-src/files.h" // crypto++
+#include "../build/_deps/cryptopp-src/hex.h" // crypto++
 
 #include <vector>
 #include <string>
