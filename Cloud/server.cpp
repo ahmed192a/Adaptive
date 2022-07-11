@@ -36,6 +36,7 @@ int main(int argc, char const *argv[])
     cout << endl;
     cout<<"\tcloud Intialization ..."<<endl;
     cout <<"\tcloud pid : " << getpid()<< endl<<endl;
+    cout<<"------------------------------------------------------"<<endl;
 	int server_fd, new_socket;
 	struct sockaddr_in address;
 	int opt = 1;
@@ -47,7 +48,7 @@ int main(int argc, char const *argv[])
 		cout<<"\t[CLOUD] open socket failed"<<endl;
 		exit(EXIT_FAILURE);
 	}
-    cout<<"\t[CLOUD] socket created"<<endl;
+    cout<<"[CLOUD] socket created"<<endl;
 	
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY;
@@ -60,13 +61,13 @@ int main(int argc, char const *argv[])
 		cout<<"\t[CLOUD] bind failed"<<endl;
 		exit(EXIT_FAILURE);
 	}
-    cout<<"\t[CLOUD] bind done"<<endl;
+    cout<<"[CLOUD] bind done"<<endl;
 	if (listen(server_fd, 3) < 0)
 	{
 		cout<<"\t[Cloud] listen fiald ... "<<endl;
 		exit(EXIT_FAILURE);
 	}
-    cout << "\t[CLOUD] Waiting for client ...." << endl;
+    cout << "[CLOUD] Waiting for client ...." << endl;
     while(1){
 
         if ((new_socket = accept(server_fd, (struct sockaddr *)&address,(socklen_t*)&addrlen))<0)
@@ -74,15 +75,17 @@ int main(int argc, char const *argv[])
             cout<<"\t[CLOUD] accept failed"<<endl;
             exit(EXIT_FAILURE);
         }
-        cout << "------------------------------------" << endl;
-        cout<<"\t\t [CLOUD] accept new client"<<endl;
+        cout<<"------------------------------------------------------"<<endl;
+        cout<<"\t[CLOUD] accept new client"<<endl;
 
         while(1){
             char buffer[50] = {0};
+
             string temp;
+            temp.reserve(50);
             read( new_socket , buffer, 50);
             temp=buffer;
-            cout<<"\t\t [CLOUD] client sent request => "<<temp<<endl; 
+            cout<<"\t[CLOUD] client sent request => "<<temp<<endl; 
             int i=0;
             if(temp=="Requesting Metadata"){
                 // ifstream metadataFile;
@@ -104,7 +107,7 @@ int main(int argc, char const *argv[])
                 {
                     cout<<"\t[CLOUD] Error sending metadata"<<endl;
                 }
-                cout<<"\t [Cloud] send Metadata to client "<<endl;
+                cout<<"\t\t [Cloud] send Metadata to client "<<endl;
 
             }
             else if (temp=="Requesting Package")
@@ -128,16 +131,18 @@ int main(int argc, char const *argv[])
                 {
                     cout<<"\t Error sending package"<<endl;
                 }
-                cout<<"\t [Cloud] send Package to client "<<endl;
+                cout<<"\t\t [Cloud] send Package to client "<<endl;
 
             }
             else if (temp=="End Connection")
             {
-                cout<<"\t [Cloud] Connection ended"<<endl;
+                cout<<"\t[Cloud] Connection ended"<<endl;
                 close(new_socket);
                 break;
             }else{
-                cout<<"\t [Cloud] Invalid request or Client disconnected "<<endl;
+                cout<<"\t[Cloud] Invalid request or Client disconnected "<<endl;
+                close(new_socket);
+                break;
             }
             
         }

@@ -65,7 +65,7 @@ int sigval = 0;
 int main(void)
 {
         cout << endl;
-    cout << "\t\t [UCM] Intialization ......" << endl;
+    cout << "\t\t [OTA] Intialization ......" << endl;
     cout << "********     OTA Client started  ********" << endl;
     signal(SIGTERM, handle_sigterm); // register signal handler
     cout << "\t\t[OTA] send  execution state running to EM" << endl;
@@ -89,8 +89,7 @@ int main(void)
     cout << "[OTA] Starting OTA process" << endl;
     cout << "handle pkg : " << handle_pkg.m_server_com.port_number << " " << handle_pkg.m_server_com.service_id << endl;
     cout << "handle ota : " << handle_ota.m_server_com.port_number << " " << handle_ota.m_server_com.service_id << endl;
-    cout << "\t\t\t[CLIENT] starting" << endl;
-
+    cout << "-----------------------------------------------------------------" << endl;
     ota_state_g = ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED;
     ota_triggerin_proxy_ptr->trigger.Set(ota_state_g);
 
@@ -142,12 +141,12 @@ void handle_sigterm(int sig)
 void *pthread0(void *v_var)
 {
 
-    std::cout << std::endl
-              << "[OTA] started ..." << std::endl;
+    std::cout << std::endl;
 
     while (true)
     {
         // creating the cloud client and connecting to the server
+        cout<<"-----------------------------------------------------------------"<<endl;
         std::cout << "[OTA] connecting to the cloud server ..." << std::endl;
         Client cloud;
 
