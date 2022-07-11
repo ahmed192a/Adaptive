@@ -5,18 +5,25 @@ from PyQt5 import QtGui, QtCore
 from PyQt5.uic import loadUi
 import sys
 
-from os import getpid, getppid, listdir, system, kill
+from os import getpid, getppid, listdir, system, kill, getcwd
 # import signals SIGKILL
 import signal
 
-from os.path import isfile, join
+from os.path import isfile, join 
 import threading
 # import QThread
 from PyQt5.QtCore import QThread, pyqtSignal
+
+import sys
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog
+from PyQt5.uic import loadUi
+
 import qdarktheme
 
 
-dir_path = "/home/ahmed/Documents/GitHub/Adaptive/build/App/processes/redirected"
+
+
 
 class MyThread(QThread):
     new_signal = pyqtSignal(list)
@@ -40,6 +47,8 @@ class MyThread(QThread):
             k = self.detect_new_file(self.path)
             if k is not None:
                 self.new_signal.emit(k)
+                
+
 
 class fileThread(QThread):
     #create signal of type string and int
@@ -91,7 +100,6 @@ class MyProcess(QThread):
         # self.new_signal.emit(self.process)
             
 
-
 class Window(QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
@@ -111,10 +119,13 @@ class Window(QMainWindow):
 
         # self.configure_menuBar()
         self.configure_toolbar()
+        # get the path of dir and browse from the current dir
+        self.dir_path_scripts = QFileDialog.getExistingDirectory(self, 'choose the directry of scripts folder', getcwd())
+        self.dir_path_redirected = QFileDialog.getExistingDirectory(self, 'choose the directry of redirected folder', getcwd())
+        
         self.opened_files = []
-        self.new_files = []
         self.threads_f = []
-        self.thread = MyThread(dir_path, self.opened_files)
+        self.thread = MyThread(self.dir_path_redirected, self.opened_files)
         self.thread.new_signal.connect(self.printdata)
         self.thread.start()
         
@@ -125,7 +136,7 @@ class Window(QMainWindow):
             index  = self.editors.index(self.current_editor)
             
             
-            self.threads_f.append(fileThread(join(dir_path,f),self.current_editor))
+            self.threads_f.append(fileThread(join(self.dir_path_redirected,f),self.current_editor))
             self.threads_f[-1].new_signal.connect(self.handle_file_newdata)
             self.threads_f[-1].delete_signal.connect(self.delete_editor)
             
@@ -151,12 +162,11 @@ class Window(QMainWindow):
         self.process = process
 
     def Start_APP(self):
-        self.thread_app = MyProcess("/home/ahmed/Documents/GitHub/Adaptive/quick_test")
+        self.thread_app = MyProcess(self.dir_path_scripts)
         self.thread_app.new_signal.connect(self.handle_app_newdata)
         self.thread_app.start()
         
-        # run terminal command in another threed 
-        # self.ter = system("/home/ahmed/Documents/GitHub/Adaptive/quick_test/run.sh")
+
 
         
     def Terminate_APP(self):
@@ -165,11 +175,17 @@ class Window(QMainWindow):
         if ok:
             print(pid)
             kill(pid, signal.SIGTERM)
+            
+    def Clear_outputs(self):
+        system("cd "+self.dir_path_scripts +" && ./clear_Stuck.sh;")
+        
+        
 
         
     def configure_toolbar(self):
         items = (('icons/start.png', 'Start', self.Start_APP),
-            ('icons/stop.png', 'Open', self.Terminate_APP),
+            ('icons/stop.png', 'Stop', self.Terminate_APP),
+            ('icons/stop.png', 'Clear', self.Clear_outputs),
             None,
             ('icons/exit.png', 'Quit', self.quit),
         )
@@ -213,13 +229,18 @@ class Window(QMainWindow):
 
 def run():
     app = QApplication(sys.argv)
+    app.setStyleSheet(qdarktheme.load_stylesheet())
+
+    # GUI = DialogWindow()
+    
     GUI = Window()
 
-    app.setStyleSheet(qdarktheme.load_stylesheet())
 
     sys.exit(app.exec_())
 
 
 
 if __name__ == '__main__':
+    
+    
     run()

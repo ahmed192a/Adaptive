@@ -64,11 +64,10 @@ int sigval = 0;
 
 int main(void)
 {
-        cout << endl;
-    cout << "\t\t [OTA] Intialization ......" << endl;
-    cout << "********     OTA Client started  ********" << endl;
+    cout << endl;
+    cout << "\t\t[OTA] Intialization ......" << endl;
     signal(SIGTERM, handle_sigterm); // register signal handler
-    cout << "\t\t[OTA] send  execution state running to EM" << endl;
+    cout << "\t\t[OTA] send  execution state running to EM" << endl<<endl;
     client.ReportExecutionState(ExecutionState::kRunning); // report execution state to the execution server
 
     server_udp_socket.OpenSocket(UDP_PORT_EVENTS);

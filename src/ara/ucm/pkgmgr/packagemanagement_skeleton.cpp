@@ -317,8 +317,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
 std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferStart(uint64_t size)
 {
 
-    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> f = std::async([&, size]()
-                                                                                         {
+    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> f = std::async([&, size]() {
         ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result;
         TransferInfoData.localBlockCounter = 0;
         TransferInfoData.TransferExitFlag = false;
@@ -339,7 +338,8 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::
         
         TransferInfoData.lastBlockCounter = ceil((double)TransferInfoData.size / TransferInfoData.BlockSize) - 1;
 
-        return result; });
+        return result; 
+        });
     return f;
 }
 

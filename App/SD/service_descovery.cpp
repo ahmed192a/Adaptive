@@ -52,13 +52,13 @@ ExecutionClient client;
  */
 int main()
 {
-    cout << endl << "   SD Initilization..." << endl;
+    cout << endl << "   [SD] Initilization..." << endl;
 //     cout<<endl<<"[SD]"<<std::string(get_current_dir_name())<<endl;
     signal(SIGTERM, handle_sigterm);
     client.ReportExecutionState(ExecutionState::kRunning);
    
-    cout << "   SD Reported Runnig to EM..." << endl <<endl;
-    cout << "   SD Waiting for incoming connections..." << endl;
+    cout << "   [SD] Reported Runnig to EM..." << endl <<endl;
+    cout << "   [SD] Waiting for incoming connections..." << endl;
     cout << "--------------------------" << endl;
 
     pthread_t threads[2]; // create two threads
@@ -69,14 +69,14 @@ int main()
     int th1 = pthread_create(&threads[0], NULL, pthread0, (void *)&i); // create thread 0 to receive data from the server
     if (th1)
     {
-        cout << "ERROR" << th1 << endl;
+        cout << "[SD] ERROR creating thread" << th1 << endl;
         exit(-1);
     }
     i = 1;
     int th2 = pthread_create(&threads[1], NULL, pthread1, (void *)&i); // create thread 1 to listen to the clients
     if (th2)
     {
-        cout << "ERROR" << th2 << endl;
+        cout << "[SD] ERROR creating thread" << th2 << endl;
         exit(-1);
     }
 
@@ -94,7 +94,7 @@ int main()
  */
 void handle_sigterm(int sig){
     sigval = 1;                                 // set signal value will be used as flag
-    cout << "   SD Reported Terminating to EM..."<<endl;            
+    cout << "   [SD] Reported Terminating to EM..."<<endl;            
     client.ReportExecutionState(ExecutionState::kTerminating);
     exit(0);
 }
@@ -190,11 +190,7 @@ void *pthread0(void *)
         {
             switch (entry->Type())
             {
-            case ara::com::entry::EntryType::Finding:
-            {
-//                 cout << "EntryType: Finding" << endl;
-            }
-            break;
+
             case ara::com::entry::EntryType::Offering:
             {
                 auto first_option = entry->FirstOptions()[0]; // get the first entry option
@@ -219,7 +215,6 @@ void *pthread0(void *)
                 }
                 else
                 {
-                    cout << "TTL is 0" << endl;
                     csv.delete_record(CSV_FILE, receive.service_id, receive.instance_id); // delete the service record from the csv file
                 }
             }

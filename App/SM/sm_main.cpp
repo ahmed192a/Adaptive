@@ -210,7 +210,6 @@ void *pthread0(void *v_var){
         }else{
             cout << "Unknown service id" << endl;
             ara::com::proxy_skeleton::skeleton::ServiceSkeleton::NoServiceHandler(someip_msg, Sclient);
-
         }
 
         // cout<<"[SM] Client socket closed"<<endl;
