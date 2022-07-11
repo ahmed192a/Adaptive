@@ -35,6 +35,7 @@ int main(int argc, char const *argv[])
 {
     cout << endl;
     cout<<"cloud Intialization ...";
+    cout << "cloud pid : " << getpid()<< endl;
 	int server_fd, new_socket;
 	struct sockaddr_in address;
 	int opt = 1;
