@@ -1,3 +1,13 @@
+/**
+ * @file server.cpp
+ * @author Flashing Adapter Graduation Project Team
+ * @brief 
+ * @version 0.1
+ * @date 2022-07-11
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <unistd.h>// close socket
 #include <sys/socket.h>//socket
 #include <arpa/inet.h> //inet_addr
@@ -23,6 +33,9 @@ std::vector<char> ReadAllBytes(char const *filename)
 }
 int main(int argc, char const *argv[])
 {
+    cout << endl;
+    cout<<"cloud Intialization ...";
+    cout << "cloud pid : " << getpid()<< endl;
 	int server_fd, new_socket;
 	struct sockaddr_in address;
 	int opt = 1;
@@ -31,7 +44,7 @@ int main(int argc, char const *argv[])
 	// Creating socket file descriptor
 	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
 	{
-		cout<<"socket failed";
+		cout<<"\t socket failed";
 		exit(EXIT_FAILURE);
 	}
 	
@@ -42,18 +55,20 @@ int main(int argc, char const *argv[])
 	// Forcefully attaching socket to the port 
 	if (bind(server_fd, (struct sockaddr *)&address,sizeof(address))<0)
 	{
-		cout<<"bind failed";
+		cout<<"\t bind failed";
 		exit(EXIT_FAILURE);
 	}
 	if (listen(server_fd, 3) < 0)
 	{
-		cout<<"listen";
+		cout<<"\t [Cloud] listen ... ";
 		exit(EXIT_FAILURE);
 	}
+    cout << "[cloud] Waiting for client ...." << endl;
     while(1){
         if ((new_socket = accept(server_fd, (struct sockaddr *)&address,(socklen_t*)&addrlen))<0)
         {
-            cout<<"accept";
+            cout << "------------------------------------" << endl;
+            cout<<"\t [cloud] accept new client";
             exit(EXIT_FAILURE);
         }
         while(1){
@@ -61,9 +76,9 @@ int main(int argc, char const *argv[])
                 string temp;
                 read( new_socket , buffer, 50);
                 temp=buffer;
-                cout<<"Client sent: "<<temp<<endl; 
+                cout<<"\t [cloud] sent: "<<temp<<endl; 
                 int i=0;
-                if(temp=="Requesting Metadata"){
+                if(temp=="\t [cloud] Requesting Metadata"){
                     // ifstream metadataFile;
                     // metadataFile.open(METADATA_FILE,ios::in);
                                       
@@ -81,9 +96,9 @@ int main(int argc, char const *argv[])
                     send(new_socket ,  &metaDataSize , sizeof(metaDataSize) , 0);
 					if( send(new_socket ,  metadata.data() , metaDataSize, 0) < 0) 
                     {
-                        cout<<"Send Error";
+                        cout<<"\t Send Error";
                     }
-                    cout<<"Metadata sent\n";
+                    cout<<"\t [Cloud] send Metadata \n";
 
                 }
                 else if (temp=="Requesting Package")
@@ -105,14 +120,14 @@ int main(int argc, char const *argv[])
 
 					if( send(new_socket ,  packageData.data() , packageDataSize , 0) < 0) 
                     {
-                        cout<<"Send Error";
+                        cout<<"\t Send Error";
                     }
-                    cout<<"Package sent\n";
+                    cout<<"\t [Cloud] send Package \n";
 
                 }
-                else if (temp=="End Connection")
+                else if (temp=="\t End Connection")
                 {
-                    cout<<"Connection ended\n";
+                    cout<<"\t [Cloud] Connection ended\n";
                     break;
                 }
                 

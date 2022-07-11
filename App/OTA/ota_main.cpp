@@ -64,6 +64,8 @@ int sigval = 0;
 
 int main(void)
 {
+        cout << endl;
+    cout << "\t\t [UCM] Intialization ......" << endl;
     cout << "********     OTA Client started  ********" << endl;
     signal(SIGTERM, handle_sigterm); // register signal handler
     cout << "\t\t[OTA] send  execution state running to EM" << endl;
@@ -73,17 +75,19 @@ int main(void)
     server_udp_socket.BindServer();
 
     /** create package management proxy **/
+    cout << "-----------------------------------------------------------------" << endl;
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle handle_pkg = (ara::ucm::pkgmgr::proxy::PackageManagementProxy::FindService(findhandle_pkg)[0]);
     handle_pkg.UDP_port = UDP_PORT_EVENTS;
     pkg_proxy_ptr = std::make_shared<ara::ucm::pkgmgr::proxy::PackageManagementProxy>(handle_pkg);
 
     /** create OTA Trigger in proxy **/
     ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle handle_ota = ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy::FindService(findhandle_ota_triggerin)[0];
+    cout << "-----------------------------------------------------------------" << endl;
     handle_ota.UDP_port = UDP_PORT_EVENTS;
     ota_triggerin_proxy_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_OTA_Proxy>(handle_ota);
 
     cout << "[OTA] Starting OTA process" << endl;
-    cout << "handle pkp : " << handle_pkg.m_server_com.port_number << " " << handle_pkg.m_server_com.service_id << endl;
+    cout << "handle pkg : " << handle_pkg.m_server_com.port_number << " " << handle_pkg.m_server_com.service_id << endl;
     cout << "handle ota : " << handle_ota.m_server_com.port_number << " " << handle_ota.m_server_com.service_id << endl;
     cout << "\t\t\t[CLIENT] starting" << endl;
 
@@ -124,7 +128,7 @@ int main(void)
 void handle_sigterm(int sig)
 {
     sigval = 1; // set signal value will be used as flag
-    cout << "{OTA} terminating" << endl;
+    cout << "[OTA] terminating" << endl;
     client.ReportExecutionState(ExecutionState::kTerminating);
     exit(0);
 }
