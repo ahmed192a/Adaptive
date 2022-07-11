@@ -146,8 +146,15 @@ void *pthread0(void *v_var){
     cout<<endl;
     cout<<"[SM] Offering services to the SD"<<endl;  
     cout<<endl;    
+
     UCM_triggerin_skeleton_ptr->OfferService();         // offering service to the SD
+    std::cout << "Offering Service:\t UCM_triggerin" << endl;
+    cout << "---------------------------------------------" << endl;
+    cout << endl;
     OTA_triggerin_skeleton_ptr->OfferService();         // offering service to the SD
+    std::cout << "Offering Service:\t OTA_triggerin" << endl;
+    cout << "---------------------------------------------" << endl;
+    cout << endl;
     cout<<"[SM] Offered services to the SD"<<endl;  
     cout << "---------------------------------------------" << endl;
     cout << "---------------------------------------------" << endl;
@@ -196,14 +203,14 @@ void *pthread0(void *v_var){
         // check if message is a method call or field methods (SET, GET)
         if(someip_msg.MessageId().serivce_id == UCM_triggerin_skeleton_ptr->GetServiceId()){
             if (someip_msg.check_Methode_ID() == true){ // No methods in SM Services
-                cout << "This is method request from UCM_triggerin " << endl;
+                cout << "[SD] Method request from UCM_triggerin " << endl;
             }else{
                 
                 UCM_triggerin_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
             }
         }else if(someip_msg.MessageId().serivce_id == OTA_triggerin_skeleton_ptr->GetServiceId()){
             if (someip_msg.check_Methode_ID() == true){ // No methods in SM Services
-                cout << "This is method request from OTA_triggerin " << endl;
+                cout << "[SD] Method request from OTA_triggerin " << endl;
             }else{
                 OTA_triggerin_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
             }
