@@ -81,4 +81,5 @@ target_link_libraries(
     ota_process
     PUBLIC
     ara_lib  
+    -lcryptopp
 )
