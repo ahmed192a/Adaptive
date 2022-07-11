@@ -332,7 +332,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::
         }
         std::cout << std::endl;
         // don't change 64 (ucm_client.cpp)
-        TransferInfoData.BlockSize = 64;
+        TransferInfoData.BlockSize = 1024;
         TransferInfoData.size = size;
         buffer.clear();
         result.BlockSize = TransferInfoData.BlockSize;
