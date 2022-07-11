@@ -1,6 +1,7 @@
 /**
  * @file manifest_parser.hpp
  * @author Flashing Adapter Graduation Project Team
+ * @brief definition of manifest parser classes and keys
  * @version 0.1
  * @date 2022-03-06
  * 
@@ -16,6 +17,10 @@ using namespace ara::exec;
 using namespace ara::exec::parser;
 using namespace std;
 
+/**
+ * @brief stucture used to store the current function group name and the current function group state
+ * 
+ */
 struct GLOB{
     std::shared_ptr<FunctionGroup>c_FG;
     std::shared_ptr<FunctionGroupState> current_FGS;
@@ -94,7 +99,12 @@ namespace ara
 
 
             /****************************************************************************/
-            namespace EMJsonKeys // All Keys which should be in the Execution manifiests
+
+            /**
+             * @brief All Keys which should be in the Execution manifiests
+             * 
+             */
+            namespace EMJsonKeys
             {
                 const std::string kApplicationManifest = "Execution_manifest";
                 const std::string kApplicationManifestId = "Execution_manifest_id";
@@ -126,7 +136,11 @@ namespace ara
             } // namespace EMJsonKeys
             /****************************************************************************/
 
-            namespace MMJsonKeys    // All Keys which should be in the Machine manifiests
+            /**
+             * @brief All Keys which should be in the Machine manifiests
+             * 
+             */
+            namespace MMJsonKeys    
             {
                 const std::string kMachineManifest = "Machine_manifest";
                 const std::string kMachineManifestId = "Machine_manifest_id";
