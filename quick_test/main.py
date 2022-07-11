@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog , QInputDialog
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui, QtCore
 
@@ -24,13 +24,14 @@ class MyThread(QThread):
     def __init__(self, path=None, opend=None, parent=None):
         super(QThread, self).__init__(parent)
         self.path = path
-        self.opened=opend
+        self.opened = opend
         
     def detect_new_file(self,dir_path):
-        files = [f for f in listdir(dir_path) if isfile(join(dir_path, f)) and f not in self.opened]
+        files = [f for f in listdir(dir_path) if isfile(join(dir_path, f))]
+        newf = [f for f in files if f not in self.opened]
+        self.opened = files
         if len(files) > 0:
-            self.opened+=files
-            return files
+            return newf
         else:
             return None
         
@@ -42,7 +43,8 @@ class MyThread(QThread):
 
 class fileThread(QThread):
     #create signal of type string and int
-    new_signal = pyqtSignal(str, int)
+    new_signal = pyqtSignal(str, QtWidgets.QTextEdit)
+    delete_signal = pyqtSignal(QtWidgets.QTextEdit)
     def __init__(self, path=None,index =0, parent=None):
         super(QThread, self).__init__(parent)
         self.path = path
@@ -50,6 +52,11 @@ class fileThread(QThread):
     def run(self):
         file = open(self.path, "rt")
         while True:
+            # check if the file is still exist
+            if not isfile(self.path):
+                print("file is not exist")
+                self.delete_signal.emit(self.index)
+                break
             where = file.tell()
             data = file.read()
             if not data:
@@ -80,7 +87,7 @@ class MyProcess(QThread):
         self.path = path
     def run(self):
         # run the process in another terminal and save the handle of the terminal
-        self.process = system("gnome-terminal -e 'bash -c \"cd "+self.path+" && ./run.sh; exec bash\"'")
+        self.process = system("cd "+self.path+" && ./run.sh")
         # self.new_signal.emit(self.process)
             
 
@@ -90,7 +97,7 @@ class Window(QMainWindow):
         super(Window, self).__init__()
         self.showMaximized()
         self.setWindowTitle("Editory")
-        self.setWindowIcon(QtGui.QIcon('favicon.png'))
+        self.setWindowIcon(QtGui.QIcon('icons/logo.png'))
 
         self.current_editor = self.create_editor()
         self.editors = []
@@ -118,14 +125,25 @@ class Window(QMainWindow):
             index  = self.editors.index(self.current_editor)
             
             
-            self.threads_f.append(fileThread(join(dir_path,f),index))
+            self.threads_f.append(fileThread(join(dir_path,f),self.current_editor))
             self.threads_f[-1].new_signal.connect(self.handle_file_newdata)
+            self.threads_f[-1].delete_signal.connect(self.delete_editor)
+            
             self.threads_f[-1].start()
             print(f)
+    
+    def delete_editor(self, index):
+        ind = self.editors.index(index)
+        # print("ind", ind)
+        # self.threads_f[ind].terminate()
+        # self.threads_f[ind].wait()
+        self.threads_f.remove(self.threads_f[ind])
+        self.editors.remove(self.editors[ind])
+        self.tab_widget.removeTab(ind)
             
     def handle_file_newdata(self, data, index):
-        self.editors[index].moveCursor(QtGui.QTextCursor.End)
-        self.editors[index].insertPlainText(data)
+        self.editors[self.editors.index(index)].moveCursor(QtGui.QTextCursor.End)
+        self.editors[self.editors.index(index)].insertPlainText(data)
         
 
     def handle_app_newdata(self, process):
@@ -142,11 +160,12 @@ class Window(QMainWindow):
 
         
     def Terminate_APP(self):
-        # send kill signal to the process
-        kill(self.process, signal.SIGKILL)
-        
-        # send kill signal to process
-        # kill(self.ter, signal.SIGKILL)
+        pid,ok = QInputDialog.getInt(self,"integer input dualog","enter a number")
+		
+        if ok:
+            print(pid)
+            kill(pid, signal.SIGTERM)
+
         
     def configure_toolbar(self):
         items = (('icons/start.png', 'Start', self.Start_APP),
@@ -175,14 +194,17 @@ class Window(QMainWindow):
         return text_editor
 
     def change_text_editor(self, index):
-        if index < len(self.editors):
+        if index < len(self.editors) and len(self.editors) != 0:
             self.current_editor = self.editors[index]
+        else:
+            self.current_editor = None
+
 
     # Input Functions
     def new_document(self, checked = False, title = "Untitled"):
         self.current_editor = self.create_editor()
         self.editors.append(self.current_editor)
-        self.tab_widget.addTab(self.current_editor, title + str(len(self.editors)))
+        self.tab_widget.addTab(self.current_editor, title )
         self.tab_widget.setCurrentWidget(self.current_editor)
 
 

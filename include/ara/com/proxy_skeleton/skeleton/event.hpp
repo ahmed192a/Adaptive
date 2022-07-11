@@ -188,10 +188,11 @@ namespace ara
 
                         if (TTL == 0)
                         {
+                            cout << "\t\t Unsubscribe from " << m_name << " event\n";
                             Del_subscriber(client);
                             print_subscribers();
                         }else{
-
+                            cout << "\t\t Subscribe to " << m_name << " event\n";
                             set_subscriber(client);
                             print_subscribers();
                         }

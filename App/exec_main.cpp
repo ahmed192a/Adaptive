@@ -83,6 +83,7 @@ streambuf* stream_buffer_cin = cin.rdbuf();     // backup cin stream buffer
  */
 int main(int argc, char ** argv){
     signal(SIGTERM, handle_sigterm);    // handle SIGTERM signal used for terminating the system
+    signal(SIGKILL, handle_sigterm);    // handle SIGKILL signal used for terminating the system
 
     // check if there are files the the directory "processes/redirected"
     // if there are files, then delete them
@@ -147,7 +148,7 @@ int main(int argc, char ** argv){
 
     cout.rdbuf(stream_buffer_cout);     // restore the cout stream buffer
     file.close();                       // close the file stream
-    view_out();                         // view the output of all processe
+    // view_out();                         // view the output of all processe
     return 0;
 }
 /**

@@ -104,7 +104,6 @@ void *pthread0(void *v_var)
             // handling GET or SET field request
             server_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
         }
-        cout<< "finish request \n";
 
     }
     server_skeleton_ptr->StopOfferService();    // stop offering service

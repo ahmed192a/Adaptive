@@ -62,7 +62,7 @@ CServer server_main_socket_DG(SOCK_DGRAM);
 /*       main server TCP socket for methods handle  */
 CServer server_main_socket(SOCK_STREAM);
 
-ara::com::FindServiceHandle findhandle{SM_TRIGGERIN_SERVICE_ID, 0, SD_PORT};
+ara::com::FindServiceHandle triggerin_proxy_findhandle{SM_TRIGGERIN_SERVICE_ID, 0, SD_PORT};
 ara::sm::triggerin::UCM_State ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_UNKNOWN;
 std::shared_ptr<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy> triggerin_proxy_ptr;
 ExecutionClient client;
@@ -74,19 +74,19 @@ ExecutionClient client;
  */
 int main()
 {
-    cout << "\t\t [UCM] Intialization ......" << endl;
     signal(SIGTERM, handle_sigterm);
-    cout << "---------------------------------------------" << endl;
-    cout << "\t\t[UCM]creating execution client " << endl;
-    cout << "---------------------------------------------" << endl;
+
+    cout << "\t\t[UCM] Intialization ......" << endl ;
+    cout << "\t\t[UCM]Reporting running to EM" << endl <<endl;
     client.ReportExecutionState(ExecutionState::kRunning);
+    cout << "---------------------------------------------" << endl;
 
     /*     UDP Server sockets for events      */
     server_main_socket_DG.OpenSocket(SERVER_PORT);
     server_main_socket_DG.BindServer();
-    ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle hand = (ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy::FindService(findhandle)[0]);
-    hand.UDP_port = SERVER_PORT;
-    triggerin_proxy_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy>(hand);
+    ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle triggerin_proxy_handle = (ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy::FindService(triggerin_proxy_findhandle)[0]);
+    triggerin_proxy_handle.UDP_port = SERVER_PORT;
+    triggerin_proxy_ptr = std::make_shared<ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy>(triggerin_proxy_handle);
 
     pthread_t threads[NUM_THREADS];
 
@@ -123,7 +123,7 @@ void handle_sigterm(int sig)
 {
     sigval = 1;
     cout << "---------------------------------------------" << endl;
-    cout << "[UCM] terminating" << endl;
+    cout << "[UCM] Reporting terminating to EM" << endl;
     cout << "---------------------------------------------" << endl;
     client.ReportExecutionState(ExecutionState::kTerminating); // report execution state to the execution server
 
@@ -144,27 +144,24 @@ void *pthread0(void *v_var)
 {
     /* TCP with client */
     cout << "---------------------------------------------" << endl;
-    cout << "[UCM SERVER] OPEN SOCKET ON " << endl;
+    cout << "[UCM SERVER] OPEN MAIN SOCKET ON " << endl;
     
     server_main_socket.OpenSocket(SERVER_PORT);
     server_main_socket.BindServer();
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS);
 
-    cout << "[UCM SERVER] OFFER SERVER " << endl;
+    cout << "[UCM SERVER] OFFER Services " << endl;
     server_skeleton_ptr->OfferService();
     ucm_state_g = ara::sm::triggerin::UCM_State::UCM_STATE_INITIALIZED; // set ucm state to initialized
     triggerin_proxy_ptr->trigger.Set(ucm_state_g);                      // set triggerin proxy state to initialized to inform SM
 
-    cout << "---------------------------------------------" << endl;
-    cout << "\t[SERVER]  Ready" << endl;
-    cout << "---------------------------------------------" << endl;
+    cout << "[SERVER]  Ready to Accept clients " << endl;
 
     while (1)
     {
+        cout << "---------------------------------------------" << endl;
         Socket Sclient = server_main_socket.AcceptServer();
-        cout << "---------------------------------------------" << endl;
-        cout << "\t[SERVER]  accepted" << endl;
-        cout << "---------------------------------------------" << endl;
+        cout << "\t[SERVER]  Accepted to new Client request " << endl;
 
         std::vector<uint8_t> msg; /* Payload message from client */
         uint32_t msg_size;        /* Size of message  */
@@ -174,32 +171,28 @@ void *pthread0(void *v_var)
         msg.resize(msg_size);                                 /*  resize the vector to allocate size of the coming message  */
         Sclient.Receive((void *)&msg[0], msg_size);           /*  recieve the message  */
         
-        cout << "---------------------------------------------" << endl;
-        cout << "\t[SERVER]  received" << endl;
-        cout << "---------------------------------------------" << endl;
         /*         SOMEIP_MESSAGE Deserialize    */
         ara::com::SOMEIP_MESSAGE::Message someip_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg);
         if (someip_msg.MessageId().serivce_id == server_skeleton_ptr->GetServiceId())
         {
             if (someip_msg.check_Methode_ID() == true)
             {
-                cout << "This is method request " << endl;
+                cout << "\t\t[UCM SERVER] This is method request " << endl;
                 // hendling method request
                 server_skeleton_ptr->method_dispatch(someip_msg, Sclient);
             }
             else
             {
-                cout << "This is SET OR GET request" << endl;
+                cout << "\t\t[UCM SERVER] This is SET OR GET request " << endl;
                 // handling GET or SET field request
                 server_skeleton_ptr->field_method_dispatch(someip_msg, Sclient);
             }
         }
         else
         {
-            cout << "[SERVER] received message from client but not from server" << endl;
+            cout << "[UCM SERVER] received message from client but not from server" << endl;
             ara::com::proxy_skeleton::skeleton::ServiceSkeleton::NoServiceHandler(someip_msg, Sclient);
         }
-        cout << "finish request \n";
     }
     server_skeleton_ptr->StopOfferService(); /* stop offering service  */
     server_main_socket.CloseSocket();        /* close server socket     */
@@ -212,19 +205,26 @@ void *pthread0(void *v_var)
  */
 void *pthread1(void *v_var)
 {
+
     while (1)
     {
         sockaddr_in echoClntAddr;                    /* Address of datagram source  */
         unsigned int clntLen = sizeof(echoClntAddr); /* Address length */
         std::vector<uint8_t> msg;                    /* Payload message from client */
         uint32_t msg_size;                           /* Size of message  */
-
         server_main_socket_DG.UDPRecFrom((void *)&msg_size, sizeof(msg_size), (struct sockaddr *)&echoClntAddr, &clntLen);
+
         msg.resize(msg_size);
         server_main_socket_DG.UDPRecFrom((void *)&msg[0], msg_size, (struct sockaddr *)&echoClntAddr, &clntLen);
+        cout << "---------------------------------------------" << endl;
+        cout<<"[UCM SERVER] UDP EVENT RECEIVED"<<endl;
+        cout<<"[UCM SERVER] UDP recieved message size"<<endl;
+        cout<<"[UCM SERVER] UDP recieved message Content"<<endl;
+
 
         if (msg[14] == 0x02) /* make sure it's SOMEIP/SD message */
         {
+            cout << "[UCM SERVER] SOMEIP/SD message received" << endl;
             ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage sd_msg;
             ara::com::proxy_skeleton::Client_udp_Info cudp;
 
@@ -233,13 +233,13 @@ void *pthread1(void *v_var)
 
             cudp.addr = std::string(inet_ntoa(echoClntAddr.sin_addr));
 
-            printf("\n[SERVER]  ->> Handling client %s   with msg size %d\n", inet_ntoa(echoClntAddr.sin_addr), msg_size);
+            cout<<"[UCM SERVER] Handling client "<<inet_ntoa(echoClntAddr.sin_addr)<<" with msg size "<< msg_size<<endl;
 
             if (entry->ServiceId() == server_skeleton_ptr->GetServiceId())
             {
                 if (entry->EventgroupId() == server_skeleton_ptr->CurrentStatus.Get_event_id())
                 {
-                    std::cout << "[server] sub field1 start\n";
+                    std::cout << "\t[server] subscribe event handle \n";
                     server_skeleton_ptr->CurrentStatus.subhandlecall(sd_msg, cudp);
                 }
                 else
@@ -249,7 +249,7 @@ void *pthread1(void *v_var)
             }
             else
             {
-                cout << "[SERVER] received message from client but not from server" << endl;
+                cout << "[UCM SERVER] received message from client but not from server" << endl;
                 ///@todo unknown service id
             }
         }

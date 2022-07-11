@@ -57,7 +57,9 @@ int main()
     signal(SIGTERM, handle_sigterm);
     client.ReportExecutionState(ExecutionState::kRunning);
    
-    cout << "   SD Reported Runnig to EM..." << endl;
+    cout << "   SD Reported Runnig to EM..." << endl <<endl;
+    cout << "   SD Waiting for incoming connections..." << endl;
+    cout << "--------------------------" << endl;
 
     pthread_t threads[2]; // create two threads
     int i = 0;            // thread number
