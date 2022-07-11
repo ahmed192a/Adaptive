@@ -165,6 +165,7 @@ class Window(QMainWindow):
         self.thread_app = MyProcess(self.dir_path_scripts)
         self.thread_app.new_signal.connect(self.handle_app_newdata)
         self.thread_app.start()
+        self.actions[0].setEnabled(False)
         
 
 
@@ -177,6 +178,7 @@ class Window(QMainWindow):
             kill(pid, signal.SIGTERM)
             
     def Clear_outputs(self):
+        self.actions[0].setEnabled(True)
         system("cd "+self.dir_path_scripts +" && ./clear_Stuck.sh;")
         
         
@@ -185,7 +187,8 @@ class Window(QMainWindow):
     def configure_toolbar(self):
         items = (('icons/start.png', 'Start', self.Start_APP),
             ('icons/stop.png', 'Stop', self.Terminate_APP),
-            ('icons/stop.png', 'Clear', self.Clear_outputs),
+            None,
+            ('icons/clear.png', 'Clear', self.Clear_outputs),
             None,
             ('icons/exit.png', 'Quit', self.quit),
         )
@@ -193,13 +196,16 @@ class Window(QMainWindow):
         
 
         self.toolbar = self.addToolBar("Toolbar")
-
+        self.actions = []
         for item in items:
             if item:
                 icon, text, callback = item
                 action = QtWidgets.QAction(QtGui.QIcon(icon), text, self)
+                self.actions.append(action)
+                # action.setEnabled(False)
                 action.triggered.connect(callback)
                 self.toolbar.addAction(action)
+                
             else :
                 self.toolbar.addSeparator()
 
