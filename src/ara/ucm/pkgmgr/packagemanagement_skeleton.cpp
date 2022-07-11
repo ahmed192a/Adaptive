@@ -145,12 +145,11 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
             {
                 // sleep(1);
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-                printf("COMAAND : %x\n", current_state);
+                printf("Received command : %x\n", current_state);
                 break;
             }
             case RECEIVE_REQUEST_FREAME_INFO:
             {
-                cout << " recieveeeee " << endl;
                 int FRAME_SIZE = 4;
                 uint8_t Frame [4];
 
@@ -177,34 +176,34 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                         break;
                 }
                 u_linux.UART_sendBlock(small_data.data(), small_data.size());
-                        
 
                 
-                std::cout<<"SEND Packet : "<< block_counter <<" Packet size "<< small_data.size()<<std::endl;
+                std::cout<<"\t->SEND Packet : "<< block_counter <<" Packet size "<< small_data.size()<<std::endl;
                 packet_num -=1;
                 block_counter++;
 
                 small_data.clear();
                 current_state = 2;
-                std::cout<<"SEND Packet CMD : "<< current_state<<std::endl;
                 break;
             }
             case END_OF_UPDATE:
             {
-                std::cout<<"END_OF_UPDATE ";
+                std::cout<<"END_OF_UPDATE "<<endl;
                 printf("%x\n", current_state);
                 current_state = Activate_s;
                 u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
-                std::cout<<"Activate_s ";
-                printf("%x\n", current_state);     
-                
+                std::cout<<"Activate ";
+                printf("%x", current_state);     
+                cout<<endl;
                 break;
             }
             case Activate_s:
             {   
                 u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-                std::cout<<"Activate_s ";
-                printf("%x\n", current_state);
+                std::cout<<"Recieved UPDATE_SUCCESS : ";
+                printf("%x", current_state);
+                cout<<endl;
+
             break;
             }
 

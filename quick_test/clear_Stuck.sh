@@ -1,7 +1,7 @@
 #! /bin/sh
 
 cd ../build/App/processes;
-rm -r redirected;
+rm -rf redirected/*;
 rm -r UCM_SERVER/SWP;
 rm sm_process/trigger560;
 rm sm_process/trigger550;

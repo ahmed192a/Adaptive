@@ -71,14 +71,14 @@
  * @brief update ended successfully
  * 
  */
-#define UPDATE_SUCCESS							0x3535
+#define UPDATE_SUCCESS							0xAAAA
 /**
  * @brief Activate
  * @todo check commands apdate and activate in classic
  *
  * 
  */
-#define Activate_s							    0x1212
+#define Activate_s							    0xBBBB
 /**
  * @brief trigger_seq
  * 

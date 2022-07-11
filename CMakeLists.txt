@@ -50,6 +50,7 @@ add_subdirectory(App)
 
 # copy manifest files to the build directory
 file(COPY App/Manifests DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/App/processes/redirected)
 
 
 
