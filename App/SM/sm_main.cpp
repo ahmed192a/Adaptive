@@ -79,7 +79,7 @@ std::shared_ptr<ara::exec::StateClient> state_client_ptr;
  */
 int main(){
     // Print the current directory will be used later to load the configuration files
-    cout<<endl<<"[SM]"<<std::string(get_current_dir_name())<<endl;
+    cout<<"[SM]"<<std::string(get_current_dir_name())<<endl;
     
     signal(SIGTERM, handle_sigterm);                        // register signal handler
     client.ReportExecutionState(ExecutionState::kRunning);  // report execution state to the execution server
@@ -87,8 +87,8 @@ int main(){
     state_client_ptr = std::make_shared<ara::exec::StateClient>();
 
     
-
-    cout<<"\t\t[SM]creating execution client "<<endl;
+    cout<<endl;
+    cout<<"[SM]creating execution client "<<endl;
 
 
     server_main_socket_DG.OpenSocket(SERVER_PORT);          // open socket for events (UDP)
@@ -120,7 +120,7 @@ int main(){
  */
 void handle_sigterm(int sig){
     sigval = 1;                                 // set signal value will be used as flag
-    cout<<"{SM} terminating"<<endl;            
+    cout<<"[SM] terminating"<<endl;            
     client.ReportExecutionState(ExecutionState::kTerminating);  // report execution state to the execution server         
     // UCM_triggerin_skeleton_ptr->StopOfferService();     // stop offering service
     server_main_socket.CloseSocket();                   // close server socket
@@ -137,16 +137,20 @@ void handle_sigterm(int sig){
 void *pthread0(void *v_var){
     
 
-    cout<<"{SM} pthread0"<<endl;
+    // cout<<"[SM] pthread0"<<endl;
+    cout<<endl;
     cout<<"[SM SERVER] OPEN SOCKET ON "<<endl;
     server_main_socket.OpenSocket(SERVER_PORT);         // open socket for methods handle (TCP)
     server_main_socket.BindServer();                    // bind socket for methods handle (TCP)
     server_main_socket.ListenServer(MAX_QUEUE_CLIENTS); // listen to server socket (TCP)
-
-    cout<<"[SM] Offering service to the SD"<<endl;      
+    cout<<endl;
+    cout<<"[SM] Offering services to the SD"<<endl;  
+    cout<<endl;    
     UCM_triggerin_skeleton_ptr->OfferService();         // offering service to the SD
     OTA_triggerin_skeleton_ptr->OfferService();         // offering service to the SD
-    cout<<"[SM] Offered service to the SD"<<endl;  
+    cout<<"[SM] Offered services to the SD"<<endl;  
+    cout << "---------------------------------------------" << endl;
+    cout << "---------------------------------------------" << endl;
 
 
     // Create Function group state for MachineFG to Running state
@@ -154,18 +158,26 @@ void *pthread0(void *v_var){
     token.fg_name = "MachineFG";
     token.c_state = "Running";
     FunctionGroupState FGS(std::move(token));
+    cout<<endl;
+    std::cout << "[SM] Create Function group state for MachineFG to Running state" << std::endl;
     std::cout<<"[SM] FGS created "<<endl;
     std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
     boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
-    std::cout<<"[SM] state changed"<<endl;
-    cout<<"\t\t[SM] result "<<var.index()<<endl;
+    if(var.index() == 0)
+        std::cout<<"[SM] state changed successfully"<<std::endl;
+    else
+        std::cout<<"[SM] state change failed"<<std::endl;
+    cout<<endl;
+    cout << "---------------------------------------------" << endl;
+    cout << "---------------------------------------------" << endl;
     SM_State = State::STATE_INITIAL;
 
 
 
     while(1){
         Socket Sclient = server_main_socket.AcceptServer(); // accept client socket (TCP)
-        cout << "\t[SM]  accepted" << endl; 
+        cout<<"[SM] Accepted client socket"<<endl;
+        // cout << "\t[SM]  accepted" << endl; 
 
         std::vector<uint8_t> msg;                           // Payload message from client              
         uint32_t msg_size;                                  // Size of message 
@@ -174,8 +186,9 @@ void *pthread0(void *v_var){
         Sclient.Receive((void *)&msg_size, sizeof(msg_size));   // recieve message size 
         msg.resize(msg_size);           //  resize the vector to allocate size of the coming message
         Sclient.Receive((void *)&msg[0], msg_size);             //  recieve the message
+        cout<<"[SM] Received message from client"<<endl;
 
-        cout << "\t[SM]  received" << endl;
+        // cout << "\t[SM]  received" << endl;
 
         // deserialize message to SOMEIP_MESSAGE::Message object
         ara::com::SOMEIP_MESSAGE::Message someip_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg); 
@@ -200,8 +213,10 @@ void *pthread0(void *v_var){
 
         }
 
-        
-        cout<< "finish request \n";
+        // cout<<"[SM] Client socket closed"<<endl;
+        cout<<"[SM] Request finished"<<endl;
+        cout << "---------------------------------------------" << endl;
+        cout << "---------------------------------------------" << endl;    
 
 
         /*******************************          FSM           **************************************/
@@ -211,10 +226,15 @@ void *pthread0(void *v_var){
             token.fg_name = "FG_1";
             token.c_state = "on";
             FunctionGroupState FGS(std::move(token));
-            std::cout<<"[SM] FGS created "<<endl;
+            // std::cout<<"[SM] FGS created "<<endl;
+            cout<<endl;
+            std::cout << "[SM] Create Function group state for MachineFG to ON state" << std::endl;
+            std::cout<<"[SM] FGS created "<<endl;       
             std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
             boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
             std::cout<<"[SM] state changed"<<endl;
+            cout << "---------------------------------------------" << endl;
+            cout << "---------------------------------------------" << endl;
             SM_State = State::STATE_RUNNING;
         }
         else if (SM_State == State::STATE_RUNNING && OTA_triggerin_skeleton_ptr->trigger.get_event() == ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED){
