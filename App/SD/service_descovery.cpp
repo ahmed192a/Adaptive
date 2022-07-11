@@ -52,10 +52,13 @@ ExecutionClient client;
  */
 int main()
 {
-    cout<<endl<<"[SD]"<<std::string(get_current_dir_name())<<endl;
-    cout << "SD"<<endl;
+    cout << "   SD Initilization..." << endl;
+//     cout<<endl<<"[SD]"<<std::string(get_current_dir_name())<<endl;
+//     cout << "SD"<<endl;
     signal(SIGTERM, handle_sigterm);
     client.ReportExecutionState(ExecutionState::kRunning);
+    
+    cout << "   SD Reported Runnig to SM..." << endl;
 
     pthread_t threads[2]; // create two threads
     int i = 0;            // thread number
@@ -102,7 +105,7 @@ void handle_sigterm(int sig){
  */
 void *pthread1(void *)
 {
-    cout<<"[SD] thread 1 is running"<<endl;
+    cout<<"     SD: Thread 1 is running"<<endl;
     CServer s1(SOCK_STREAM);   // create a server object
     int service_id;            // service id
     s1.OpenSocket(portNumber); // open a socket on port 1690
@@ -129,14 +132,16 @@ void *pthread1(void *)
         uint32_t serviceid = entry->ServiceId(); // get the service id
         ara::com::entry::ServiceEntry eventgroup_entry = ara::com::entry::ServiceEntry::CreateFindServiceEntry(serviceid); // get the service entry
 
-        std::cout << "[SD] client requested service id  : " << serviceid << std::endl; // print the service id
+        std::cout << "  SD(Thread 1): Client requested service id  : " << serviceid << std::endl; // print the service id
+        cout << "--------------------------" << endl;
+
 
         csv.FindRow(CSV_FILE, serviceid, data); // search the file for the service id
         // for (auto i : data)
         // {
-            cout << "instance id : " << data[0].instance_id << endl; // print the instance id
-            cout << "service id : " << data[0].service_id << endl;   // print the service id
-            cout << "port number : " << data[0].port_number << endl; // print the port number
+//             cout << "instance id : " << data[0].instance_id << endl; // print the instance id
+//             cout << "service id : " << data[0].service_id << endl;   // print the service id
+//             cout << "port number : " << data[0].port_number << endl; // print the port number
 
             // create dynamic Ipv4EndpointOption object from static function
             ara::com::option::Ipv4EndpointOption ipv4_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false, ara::com::helper::Ipv4Address(127, 0, 0, 1), ara::com::option::Layer4ProtocolType::Udp, data[0].port_number);
@@ -164,7 +169,7 @@ void *pthread1(void *)
  */
 void *pthread0(void *)
 {
-    cout<<"[SD] thread 0 is running"<<endl;
+    cout<<"     SD: Thread 0 is running"<<endl;
     CServer s1(SOCK_DGRAM);    // create a server object
     s1.OpenSocket(portNumber); // open a socket on port 1690
     s1.BindServer();           // bind the server to the port
@@ -182,8 +187,8 @@ void *pthread0(void *)
         _msg.reserve(_size);                                                     // reserve memory for the message
         s1.UDPRecFrom(&_msg[0], _size, (struct sockaddr *)&cliaddr, &len);       // receive the message
 
-        cout << "[SD] : receiving offers" << endl; 
-        cout << "size is " << _size << endl; // print the size of the message
+        cout << "   SD(Thread 0) : Receiving Offers" << endl; 
+//         cout << "size is " << _size << endl; // print the size of the message
         sd_msg.Deserialize(_msg);            // deserialize the message
 
         // Loop on entries
@@ -199,7 +204,7 @@ void *pthread0(void *)
             break;
             case ara::com::entry::EntryType::Offering:
             {
-                cout << "EntryType: Offering" << endl;
+//                 cout << "EntryType: Offering" << endl;
 
                 auto first_option = entry->FirstOptions()[0]; // get the first entry option
 
@@ -209,6 +214,7 @@ void *pthread0(void *)
                 cout << "IPv4: " << int(ipv4_option->IpAddress().Octets[0]) << "." << int(ipv4_option->IpAddress().Octets[1]) << "." << int(ipv4_option->IpAddress().Octets[2]) << "." << int(ipv4_option->IpAddress().Octets[3]) << endl;
                 cout << "Port: " << ipv4_option->Port() << endl;     // print the port number
                 cout << "ServiceId: " << entry->ServiceId() << endl; // print the service id
+                cout << "--------------------------" << endl;
 
                 // place info into recvieve object
                 receive.instance_id = entry->InstanceId(); // store the instance id
