@@ -28,6 +28,8 @@
 
 # Executables
 *.exe
+!Manifest_Builder.exe
+!Service_Generator.exe
 *.out
 *.app
 
