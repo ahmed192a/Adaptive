@@ -198,6 +198,53 @@ namespace ara
                     /**
                      * @brief SendRequest
                      * 
+                     * @param method_id 
+                     * @return std::vector<uint8_t>
+                     */
+                    std::vector<uint8_t> SendRequest(uint32_t method_id)
+                    {
+                        SOMEIP_MESSAGE::Message R_msg(
+                            SOMEIP_MESSAGE::Message_ID{(uint16_t)this->m_proxy_handle.m_server_com.service_id, (uint16_t)method_id},
+                            SOMEIP_MESSAGE::Request_ID{5, 6},
+                            2, // protocol version
+                            7, // Interface Version
+                            SOMEIP_MESSAGE::MessageType::REQUEST);
+
+                        ara::com::Serializer ser;
+                        ara::com::Deserializer deser;
+
+                        ser.serialize(method_id);
+
+                        service_proxy_tcp.OpenSocket();
+                        service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
+                        service_proxy_tcp.ClientConnect();
+
+                        // get payload of argumnets
+                        std::vector<uint8_t> msgser = ser.Payload();
+                        // push the payload to the message
+                        R_msg.SetPayload(msgser);
+                        // get the serialized message
+                        msgser = R_msg.Serializer();
+
+                        int msg_size = msgser.size();
+                        service_proxy_tcp.ClientWrite((void *)&msg_size, sizeof(msg_size));
+                        service_proxy_tcp.ClientWrite(&msgser[0], msg_size);
+                        msgser.clear();
+                        service_proxy_tcp.ClientRead((void *)&msg_size, sizeof(msg_size));
+                        msgser.resize(msg_size);
+                        service_proxy_tcp.ClientRead((void *)&msgser[0], msg_size);
+                        service_proxy_tcp.CloseSocket();
+
+                        // deserialize the result
+                        SOMEIP_MESSAGE::Message Res_msg = SOMEIP_MESSAGE::Message::Deserialize(msgser);
+                        // get the payload
+                        std::vector<uint8_t> _data_payload = Res_msg.GetPayload();
+
+                        return _data_payload;
+                    }
+                    /**
+                     * @brief SendRequest
+                     * 
                      * @tparam R 
                      * @param method_id 
                      * @param data 

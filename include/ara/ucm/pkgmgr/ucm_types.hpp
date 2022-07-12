@@ -75,7 +75,7 @@ namespace ara
                              * kProcessed           0x03        Software package processing finished.
                              * kProcessingStream    0x04        Software package is being processed from a stream.
                              */
-                            using SwPackageStateType = uint8_t &;
+                            using SwPackageStateType = uint8_t ;
                             /**
                             * @brief Represents the information of a Software Package.
                             *   Name                       SwNameType  
@@ -106,12 +106,12 @@ namespace ara
                              */
                             struct SwDescType
                             {
-                            SwNameType Name;
-                            StrongRevisionLabelString Version;
-                            std::string TypeApproval;
-                            std::string License;
-                            std::string ReleaseNotes;
-                            uint64_t Size;
+                                   SwNameType Name;
+                                   StrongRevisionLabelString Version;
+                                   std::string TypeApproval;
+                                   std::string License;
+                                   std::string ReleaseNotes;
+                                   uint64_t Size;
                             };
                             /**
                              * @brief Represents a dynamic size array of SoftwareCluster description
@@ -121,21 +121,21 @@ namespace ara
                             /**
                              * @brief Represents the state of a SoftwareCluster on the adaptive platform.
                              * Range/Symbol     Limit   Description
-                             * kPresent         0x00    State of a SoftwareCluster that is installed on the adaptive platformand installation has finished.
+                             * kPresent         0x00    State of a SoftwareCluster that is installed on the adaptive platform and installation has finished.
                              * kAdded           0x01    State of a SoftwareCluster that has been newly installed.
                              * kUpdated         0x02    State of a SoftwareCluster that has been updated.
                              * kRemoved         0x03    State of a SoftwareCluster that has been removed.
                              */
-                             using SwClusterStateType = uint8_t &;
+                             using SwClusterStateType = uint8_t ;
                             /**
                              * @brief Represents the information of a SoftwareCluster.
                              * 
                              */
                             struct SwClusterInfoType
                             {
-                            SwNameType Name;
-                            StrongRevisionLabelString Version;
-                            SwClusterStateType State;
+                                   SwNameType Name;
+                                   StrongRevisionLabelString Version;
+                                   SwClusterStateType State;
                             };
                             /**
                              * @brief Represents a dynamic size array of SoftwareClusters

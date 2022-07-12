@@ -209,6 +209,13 @@ namespace ara
                 noexcept(false)
             {
                 // If validation will end with failure, this method will throw std::runtime_error
+                // if (json_obj.empty())
+                // {
+                //     throw std::runtime_error(
+                //         "ManifestParser::validate_content -> Manifest is Empty");
+                // }
+
+
                 json tmp;
                 try
                 {

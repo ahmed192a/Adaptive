@@ -418,6 +418,15 @@ namespace ara
                 /// method id
                 const int methodid = 13;
 
+                uint8_t stringToUint8_t(string str)
+                {
+                    uint8_t result;
+                    stringstream ss;
+                    ss << std::hex << str;
+                    ss >> result;
+                    return result;
+                }
+
             public:
                 /**
                  * @brief Get the Sw Cluster Info object
@@ -438,6 +447,7 @@ namespace ara
                 {
                     return methodName_;
                 }
+
                 /**
                  * @brief PackageManagement GetSwClusterInfoOutput operator
                  * 
@@ -445,7 +455,36 @@ namespace ara
                  */
                 ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput operator()()
                 {
-                   ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput result = service_proxy->SendRequest<ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput>(methodid);
+                    ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput result ;
+                    std::vector<uint8_t> payload = service_proxy->SendRequest(methodid);
+                    int first =0;
+
+                    while(true)
+                    {
+                        ara::ucm::pkgmgr::PackageManagement::SwClusterInfoType swinfo;
+                        //  fin the first 0x00 in the payload
+                        int index1 = std::find(payload.begin() + first, payload.end(), 0x00) - payload.begin();
+                        // get the data from the first index to index1 -1 in the swinfo.name
+                        swinfo.Name = std::string(payload.begin() + first, payload.begin() + index1);
+                        //  find the second 0x00 in the payload
+                        int index2 = std::find(payload.begin() + index1 + 1, payload.end(), 0x00) - payload.begin();
+                        swinfo.Version = std::string(payload.begin() + index1 + 1, payload.begin() + index2);
+                        //  find the third 0x00 in the payload
+                        int index3 = std::find(payload.begin() + index2 + 1, payload.end(), 0x00) - payload.begin();
+                        swinfo.State = stringToUint8_t(std::string(payload.begin() + index2 + 1, payload.begin() + index3));
+
+                        result.SwInfo.push_back(swinfo);
+
+                        if(index3 == payload.size() - 1)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            first = index3 + 1;
+                        }
+                    }
+
                     return result;
                 }
             };

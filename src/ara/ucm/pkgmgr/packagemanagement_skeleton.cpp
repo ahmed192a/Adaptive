@@ -10,8 +10,11 @@
 
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
 #include "ara/ucm/pkgmgr/uart_linux.hpp"
+#include "nlohmann/json.hpp"
 #include <cmath>
 #include <filesystem>
+#include <string>
+using namespace std;
 
 static uint16_t current_state; /*!< variable to store the state of the bootloader updating sequence */
 
@@ -31,11 +34,50 @@ std::vector<char> ReadAllBytes2(char const *filename)
     ifs.read(&result[0], pos);
     return result;
 }
+// function converts hex number string "0x01" to unint16_t 1
+uint8_t stringToUint8_t(string str)
+{
+    uint8_t result;
+    stringstream ss;
+    ss << std::hex << str;
+    ss >> result;
+    return result;
+}
+
+// function converts string to unint64_t
+uint64_t stringToUint64_t(string str)
+{
+    uint64_t result = 0;
+    for (int i = 0; i < str.length(); i++)
+    {
+        result = result * 10 + (str[i] - '0');
+    }
+    return result;
+}
+
 
 ara::ucm::pkgmgr::PackageManagement::ActivateOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Activate()
 {
     ara::ucm::pkgmgr::PackageManagement::ActivateOutput output;
-    output.error = 0;
+    uart_linux u_linux;
+    uint16_t current_state = Activate_s;
+    u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
+    std::cout<<"\t\t\t\tActivate ";
+    printf("%x", current_state);     
+    cout<<endl;
+                 
+
+    u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
+    if (current_state == UPDATE_SUCCESS)
+    {
+        cout<<"\t\t\t\tActivate Success"<<endl;
+        output.error = 0;
+    }
+    else
+    {
+        cout<<"\t\t\t\tActivate Failed"<<endl;
+        output.error = 1;
+    }
     return output;
 }
 
@@ -86,20 +128,74 @@ ara::ucm::pkgmgr::PackageManagement::GetSwClusterDescriptionOutput ara::ucm::pkg
 
 ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwClusterInfo()
 {
+// open sw_packages.json and read all the packages
+    std::ifstream sw_packages("sw_packages.json", std::ifstream::binary);
+    if (!sw_packages.is_open())
+    {
+        std::cout << "Error opening sw_packages.json" << std::endl;
+        return ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput();
+    }
     ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput output;
+
+    nlohmann::json sw_packages_json;
+    sw_packages >> sw_packages_json;
+    sw_packages.close();
+
+    sw_packages_json = sw_packages_json["sw_packages"];
+    // loop through the json and fill ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType in the output
+    for (auto &sw_package : sw_packages_json)
+    {
+        if (sw_package["Type"]=="cluster")
+        {
+            ara::ucm::pkgmgr::PackageManagement::SwClusterInfoType sw_cluster_info={.Name = sw_package["Name"],\
+                                                            .Version = sw_package["Version"],\
+                                                            .State = stringToUint8_t(sw_package["State"])};
+            output.SwInfo.push_back(sw_cluster_info);
+        }
+    }
+    return output;
+
     return output;
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages)
 {
-    ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput output;
-    return output;
+    // open sw_packages.json and read all the packages
+    std::ifstream sw_packages("sw_packages.json", std::ifstream::binary);
+    if (!sw_packages.is_open())
+    {
+        std::cout << "Error opening sw_packages.json" << std::endl;
+        return ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput();
+    }
+    nlohmann::json sw_packages_json;
+    sw_packages >> sw_packages_json;
+    sw_packages.close();
+
+    sw_packages_json = sw_packages_json["sw_packages"];
+    // loop through the json and fill ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType in the output
+    for (auto &sw_package : sw_packages_json)
+    {
+        ara::ucm::pkgmgr::PackageManagement::SwPackageInfoType sw_package_info={\
+                                                        .Name = sw_package["Name"], .Version = sw_package["Version"],\
+                                                        .TransferID = sw_package["TransferID"],\
+                                                        .ConsecutiveBytesReceived = stringToUint64_t(sw_package["ConsecutiveBytesReceived"]), \
+                                                        .ConsecutiveBlocksReceived =stringToUint64_t(sw_package["ConsecutiveBlocksReceived"]), \
+                                                        .State = stringToUint8_t(sw_package["State"])};
+
+        Packages.push_back(sw_package_info);
+    }
+    return ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput();
 }
 
-ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
-{
-    ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput output;
-    return output;
+std::future<ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
+{   
+    std::future<ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput> future_output=std::async(std::launch::async, [&,id]() {
+        ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput output;
+        output = currentSwProcessProgress;
+        return output;
+    });
+
+    return future_output;
 }
 
 std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
@@ -181,9 +277,9 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                     u_linux.UART_sendBlock(small_data.data(), small_data.size());
 
                     // print the percentage of the update process
-                    float percentage = (float)block_counter/(float)const_packet_num;
+                    currentSwProcessProgress.progress = (uint8_t)((float)block_counter*100/(float)const_packet_num);
                     // print the percentage of the update process with three digits after the decimal point
-                    printf("\t\t\t\t->Percentage of the update process : [%.3f%%]", percentage*100);
+                    printf("\t\t\t\t->Percentage of the update process : [%d%%]",currentSwProcessProgress.progress);
                     std::cout<<"\tPacket num : "<< block_counter <<", size : "<< small_data.size()<<std::endl<<std::endl;
 
                     packet_num -=1;
@@ -436,6 +532,80 @@ void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::method_dispatch(ara:
         cout<<" ProcessSwPackage"<<endl;
         HandleCall(*this, &PackageManagementSkeleton::ProcessSwPackage, message, cserver);
         break;
+    case 11:
+        cout<<" GetSwProcessProgress"<<endl;
+        HandleCall(*this, &PackageManagementSkeleton::GetSwProcessProgress, message, cserver);
+        break;
+    
+    case 12:
+        {
+            cout<<" GetSwPackage"<<endl;
+            ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput  result;
+            GetSwPackages(result.Packages);
+            // create message and send it
+            ara::com::SOMEIP_MESSAGE::Message response_m(
+                ara::com::SOMEIP_MESSAGE::Message_ID{(uint16_t)this->UCM_Service_id, (uint16_t)(message.MessageId().method_id & 0x7fff)},
+                ara::com::SOMEIP_MESSAGE::Request_ID{5, 6},
+                2, // protocol version
+                7, // Interface Version
+                ara::com::SOMEIP_MESSAGE::MessageType::RESPONSE);
+            // create data vector
+            vector<uint8_t> data;
+            // loop over all packages and serialize them
+            for (auto &package : result.Packages)
+            {
+                ara::com::Serializer s1;
+                data.insert(data.end(), package.Name.begin(), package.Name.end());
+                data.push_back(0);
+                data.insert(data.end(), package.Version.begin(), package.Version.end());
+                data.push_back(0);
+            }
+            // set payload
+            response_m.SetPayload(data);
+            // send message
+            data.clear();
+            data = response_m.Serializer();
+            uint32_t msg_size = data.size();
+            cserver.Send(&msg_size, sizeof(msg_size));
+            cserver.Send(data.data(), msg_size);
+            cserver.CloseSocket();
+        }
+        break;
+    case 13:
+    {
+        cout<<" GetSwClusterInfo"<<endl;
+            ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput  result;
+            result =GetSwClusterInfo();
+            // create message and send it
+            ara::com::SOMEIP_MESSAGE::Message response_m(
+                ara::com::SOMEIP_MESSAGE::Message_ID{(uint16_t)this->UCM_Service_id, (uint16_t)(message.MessageId().method_id & 0x7fff)},
+                ara::com::SOMEIP_MESSAGE::Request_ID{5, 6},
+                2, // protocol version
+                7, // Interface Version
+                ara::com::SOMEIP_MESSAGE::MessageType::RESPONSE);
+            // create data vector
+            vector<uint8_t> data;
+            // loop over all packages and serialize them
+            for (auto &package : result.SwInfo)
+            {
+                ara::com::Serializer s1;
+                data.insert(data.end(), package.Name.begin(), package.Name.end());
+                data.push_back(0);
+                data.insert(data.end(), package.Version.begin(), package.Version.end());
+                data.push_back(0);
+                data.push_back(package.State);
+                data.push_back(0);
+            }
+            // set payload
+            response_m.SetPayload(data);
+            // send message
+            data.clear();
+            data = response_m.Serializer();
+            uint32_t msg_size = data.size();
+            cserver.Send(&msg_size, sizeof(msg_size));
+            cserver.Send(data.data(), msg_size);
+            cserver.CloseSocket();
+    }
     default:
         cout<<" Unknown Method"<<endl;
         NoMethodHandler(methodID, cserver); // Send Error Message unknown method

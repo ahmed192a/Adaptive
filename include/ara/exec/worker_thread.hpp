@@ -11,6 +11,8 @@
 #ifndef ARA_EXEC_WORKER_THREAD_H_
 #define ARA_EXEC_WORKER_THREAD_H_
 #include <cstdint>
+#include <chrono>
+#include <thread>
 namespace ara
 {
     namespace exec
@@ -21,25 +23,39 @@ namespace ara
          */
         class WorkerThread
         {
+        private:
+            std::thread thread_;
         public:
             /**
              * @brief Construct a new Worker Thread instance
              * 
              */
-            WorkerThread(){}
+            WorkerThread()
+            {
+                thread_ = std::thread();
+            }
+
+
 
             /**
              * @brief Returns a deterministic pseudo-random number which is unique for each container element.
              * 
              * @return uint64_t 
              */
-            uint64_t GetRandom() noexcept{ return 0;}
+            uint64_t GetRandom() noexcept{
+                //generate and returns a deterministic pseudo-random number which is unique for each container element.
+                return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            }
 
             /**
              * @brief Destroy the Worker Thread object
              * 
              */
-            virtual ~WorkerThread(){}
+            virtual ~WorkerThread()
+            {
+                //destroy the worker thread
+                thread_.join();
+            }
         };
     } // namespace exec
 

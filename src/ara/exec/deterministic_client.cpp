@@ -70,10 +70,10 @@ namespace ara
         {
             // Blocks and returns with a process control value when the next activation is triggered by the Runtime
             ara::exec::ActivationReturnType state;
-
-            // read(fd, &state, sizeof(state));
-            // if (state == ActivationReturnType::kRun)
-            //     DeterministicClient::Activated = std::chrono::system_clock::now();
+            // read from the fifo
+            read(fd, &state, sizeof(state));
+            if (state == ActivationReturnType::kRun)
+                DeterministicClient::Activated = std::chrono::system_clock::now();
             return state;
         }
         uint64_t DeterministicClient::GetRandom() noexcept
@@ -92,9 +92,7 @@ namespace ara
 
         DeterministicClient::TimeStamp DeterministicClient::GetNextActivationTime() noexcept
         {
-
-            // TO DO: This is wrong it need to return the next activation time
-            return Activated;
+            return Activated + std::chrono::milliseconds(1);
         }
 
     } // namespace exec

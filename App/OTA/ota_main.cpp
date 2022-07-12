@@ -142,6 +142,20 @@ void *pthread0(void *v_var)
 
     std::cout << std::endl;
 
+    ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput sw_cluster_info = pkg_proxy_ptr->GetSwClusterInfo();
+    cout << "------------------- Software Clusters information -------------------------" << endl;
+    // loop on sw_cluster_info and print them in formated way
+    for (auto &sw_cluster : sw_cluster_info.SwInfo)
+    {
+        cout << "\tSw Cluster Name    : " << sw_cluster.Name << endl;
+        cout << "\tSw Cluster Version : " << sw_cluster.Version << endl;
+        cout << "\tSw Cluster State   : " << sw_cluster.State << endl;  
+        cout << "-----------------------------------------------------------------" << endl;
+    }
+
+
+    std::cout << std::endl;
+
     while (true)
     {
         // creating the cloud client and connecting to the server

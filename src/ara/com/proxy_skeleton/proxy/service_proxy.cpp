@@ -34,60 +34,70 @@ namespace ara
                 ServiceHandleContainer<ServiceProxy::SP_Handle> ServiceProxy::FindService(FindServiceHandle FSH)
                 {
                     ServiceHandleContainer<ServiceProxy::SP_Handle> vhandler;
-                    // vhandler.resize(1);
-                    // Send a service id to the service discovery
-                    // receive a struct
-                    //m_service_id = service_id;
-                    char buffer[256];
-                    char hostbuffer[256];
-                    CClient Client_SD(SOCK_STREAM);
-                    Client_SD.OpenSocket();
-                    memset(hostbuffer,'\0', 256);
-                    int hostnameRet = gethostname(hostbuffer, sizeof(hostbuffer));
+                    // try to open socket with SD periodically until it is successful
+                    do{
+                        CClient Client_SD(SOCK_STREAM);
 
-                    if (hostnameRet < 0)
-                    {
-                        std::cout << ("[SERVICE PROXY] ERROR : Unable to local machine get Host Name\n");
-                    }
+                        while(Client_SD.OpenSocket() != SUCCEEDED)
+                        {
+                            std::cout << "Openning socket with SD failed, retrying in 1 second" << std::endl;
+                            std::this_thread::sleep_for(std::chrono::seconds(1));
+                        }
+                        // vhandler.resize(1);
+                        // Send a service id to the service discovery
+                        // receive a struct
+                        //m_service_id = service_id;
+                        char buffer[256];
+                        char hostbuffer[256];
+                        
+                        
+                        memset(hostbuffer,'\0', 256);
+                        int hostnameRet = gethostname(hostbuffer, sizeof(hostbuffer));
 
-                    SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
-                    SOMEIP_MESSAGE::sd::SomeIpSDMessage msg_info;
-                    entry::ServiceEntry event_gr_entry = entry::ServiceEntry::CreateFindServiceEntry (static_cast<uint16_t>(FSH.service_id));
-                    
-                    m_info.AddEntry(&event_gr_entry);
-                    std::vector<uint8_t> _payload = m_info.Serializer();
-                    uint32_t _payload_size = _payload.size();
+                        if (hostnameRet < 0)
+                        {
+                            std::cout << ("[SERVICE PROXY] ERROR : Unable to local machine get Host Name\n");
+                        }
 
-                    Client_SD.GetHost("127.0.0.1", FSH.portnum);
-                    Client_SD.ClientConnect();
+                        SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
+                        SOMEIP_MESSAGE::sd::SomeIpSDMessage msg_info;
+                        entry::ServiceEntry event_gr_entry = entry::ServiceEntry::CreateFindServiceEntry (static_cast<uint16_t>(FSH.service_id));
+                        
+                        m_info.AddEntry(&event_gr_entry);
+                        std::vector<uint8_t> _payload = m_info.Serializer();
+                        uint32_t _payload_size = _payload.size();
 
-                    // send the service id
-                    Client_SD.ClientWrite(&_payload_size, sizeof(_payload_size));
-                    Client_SD.ClientWrite(_payload.data(), _payload_size);
-                    _payload.clear();
-                    // receive a struct
-                    Client_SD.ClientRead(&_payload_size, sizeof(_payload_size));
-                    _payload.resize(_payload_size);
-                    Client_SD.ClientRead(_payload.data(), _payload_size);
-                    msg_info.Deserialize(_payload);
-                    
-                    Client_SD.CloseSocket();
+                        Client_SD.GetHost("127.0.0.1", FSH.portnum);
+                        Client_SD.ClientConnect();
 
-                    auto entry = msg_info.Entries()[0];  
-                    auto options = entry->FirstOptions();
-                    
-                    for (auto option : options)
-                    {
-                        ServiceProxy::SP_Handle handle;
-                        //service_id in  haandle
-                        //sp_handle -> service_id, instance_id<->process_id, port_id,  
-                        option::Ipv4EndpointOption *ipv4_endpoint = dynamic_cast<option::Ipv4EndpointOption *>(option);
+                        // send the service id
+                        Client_SD.ClientWrite(&_payload_size, sizeof(_payload_size));
+                        Client_SD.ClientWrite(_payload.data(), _payload_size);
+                        _payload.clear();
+                        // receive a struct
+                        Client_SD.ClientRead(&_payload_size, sizeof(_payload_size));
+                        _payload.resize(_payload_size);
+                        Client_SD.ClientRead(_payload.data(), _payload_size);
+                        msg_info.Deserialize(_payload);
+                        
+                        Client_SD.CloseSocket();
 
-                        handle.m_server_com.port_number = ipv4_endpoint->Port();
-                        handle.m_server_com.service_id = FSH.service_id;
-                        handle.m_server_com.instance_id = FSH.instance_id;
-                        vhandler.push_back(handle);
-                    }
+                        auto entry = msg_info.Entries()[0];  
+                        auto options = entry->FirstOptions();
+                        
+                        for (auto option : options)
+                        {
+                            ServiceProxy::SP_Handle handle;
+                            //service_id in  haandle
+                            //sp_handle -> service_id, instance_id<->process_id, port_id,  
+                            option::Ipv4EndpointOption *ipv4_endpoint = dynamic_cast<option::Ipv4EndpointOption *>(option);
+
+                            handle.m_server_com.port_number = ipv4_endpoint->Port();
+                            handle.m_server_com.service_id = FSH.service_id;
+                            handle.m_server_com.instance_id = FSH.instance_id;
+                            vhandler.push_back(handle);
+                        }
+                    }while(vhandler.size() == 0);
                     return vhandler;
                 }
 

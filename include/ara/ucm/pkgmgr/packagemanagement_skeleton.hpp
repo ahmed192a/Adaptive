@@ -75,6 +75,8 @@ namespace ara
                     std::vector<uint8_t> buffer;  
                     // Service ID of UCM Package management service  
                     ara::com::proxy_skeleton::ServiceId UCM_Service_id ;
+                    // current software process progress
+                    ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput currentSwProcessProgress ={0};
 
                 public:
                     /**
@@ -170,7 +172,7 @@ namespace ara
                      * @param id 
                      * @return ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput 
                      */
-                    ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
+                    std::future<ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput> GetSwProcessProgress(ara::ucm::pkgmgr::PackageManagement::TransferIdType id);
                     /**
                      * @brief Get the Sw Process Progress 
                      * 

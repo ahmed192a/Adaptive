@@ -33,7 +33,11 @@ error_kind CClient::OpenSocket()
 {
 	error_kind Error = SUCCEEDED;
 	
-	this->sockfd = socket(AF_INET,type,0);
+	if((this->sockfd = socket(AF_INET, this->type, 0)) < 0)
+	{
+		Error = FAILEDSOCETOPEN;
+		std::cout << "[CLIENT] ERROR : Unable to open socket" << std::endl;
+	}
 	// std::cout<<"socket opened\n";
 	// sleep(1);
 
@@ -41,11 +45,7 @@ error_kind CClient::OpenSocket()
 	// {
 	// 	inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
 	// }
-	if(this->sockfd < 0)
-	{
-		Error = FAILEDSOCETOPEN;
-		std::cout<<"Error Code :"<<errno<<std::endl;
-	}
+
 	return Error;
 }
 
