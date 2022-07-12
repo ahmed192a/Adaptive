@@ -110,13 +110,14 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput result;
         uart_linux u_linux;
         current_state = trigger_seq;
-        uint16_t packet_num;
+        uint16_t packet_num, const_packet_num;
         uint16_t extra_bytes;
         int block_counter = 0;
         std::vector<uint8_t> data_block(buffer.begin()+52, buffer.end());
         cout<<"*************************"<<endl;
         printf("\t\t\t\tfirst address %x\n", *((uint32_t *)data_block.data()));
         packet_num = (uint32_t)(data_block.size() /0x400) ;
+        const_packet_num = packet_num;
         extra_bytes = (data_block.size()% 0x400);
 
         std::cout<<"\t\t\t\tbuffer size " << buffer.size()<< std::endl;
@@ -180,9 +181,10 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                     u_linux.UART_sendBlock(small_data.data(), small_data.size());
 
                     // print the percentage of the update process
-                    float percentage = (float)block_counter/(float)packet_num;
-                    std::cout<<"\t\t\t\t->Percentage : ["<< percentage*100 <<"%]";
-                    std::cout<<"\tPacket num : "<< block_counter <<", size : "<< small_data.size()<<std::endl;
+                    float percentage = (float)block_counter/(float)const_packet_num;
+                    // print the percentage of the update process with three digits after the decimal point
+                    printf("\t\t\t\t->Percentage of the update process : [%.3f%%]", percentage*100);
+                    std::cout<<"\tPacket num : "<< block_counter <<", size : "<< small_data.size()<<std::endl<<std::endl;
 
                     packet_num -=1;
                     block_counter++;
@@ -193,8 +195,9 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                 }
                 case END_OF_UPDATE:
                 {
-                    std::cout<<"\t\t\t\tEND_OF_UPDATE"<<endl;
-                    printf("%x\n", current_state);
+                    std::cout<<"\t\t\t\tEND_OF_UPDATE ";
+                    printf("%x", current_state);
+                    cout<<endl;
                     current_state = Activate_s;
                     u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
                     std::cout<<"\t\t\t\tActivate ";

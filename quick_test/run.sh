@@ -11,6 +11,11 @@ g++ server.cpp -o output.exe
 # running the cloud server application
 gnome-terminal -- './output.exe';
 
+
+# use putty for uart configuration
+# gnome-terminal -- 'putty -serial /dev/ttyACM1';
+
+# start adaptive platform
 cd ../build/App ; 
 ./Adaptive_Platform
 
