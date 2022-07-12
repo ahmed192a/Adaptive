@@ -12,7 +12,7 @@ from os import getpid, getppid, listdir, system, kill, getcwd
 # import signals SIGKILL
 import signal
 
-from os.path import isfile, join ,abspath
+from os.path import isfile, join ,abspath, isdir
 import threading
 # import QThread
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -130,10 +130,25 @@ class Window(QMainWindow):
 
         self.configure_toolbar()
         # get the path of dir and browse from the current dir
-        self.dir_path_scripts = QFileDialog.getExistingDirectory(self, 'choose the directry of scripts folder', '~/home') 
-        self.dir_path_redirected = QFileDialog.getExistingDirectory(self, 'choose the directry of redirected folder', '~/home')
-        if(self.dir_path_scripts == "" or self.dir_path_redirected == ""):
+        self.dir_path_project = QFileDialog.getExistingDirectory(self, 'Choose Project Directory', '/home')
+
+        if(self.dir_path_project == "" ):
             # terminate the program if the user didn't choose the dir
+            print("you didn't choose the dir")
+            sys.exit()
+
+            
+            
+        self.dir_path_redirected = self.dir_path_project +  "/build/App/processes/redirected"
+                                                            
+        self.dir_path_scripts = self.dir_path_project + "/quick_test"
+        
+        #check if redirected folder is exist and scripts folder is exist
+        if not isdir(self.dir_path_redirected) or not isdir(self.dir_path_scripts):
+            # terminate the program if the user didn't choose the dir
+            print("dir is not exist")
+            print(self.dir_path_redirected)
+            print(self.dir_path_scripts)
             sys.exit()
         
         self.opened_files = []
