@@ -1,0 +1,2 @@
+#!/bin/sh
+java --module-path "../lib/linux_lib" --add-modules javafx.controls,javafx.fxml -jar service_generator.jar
