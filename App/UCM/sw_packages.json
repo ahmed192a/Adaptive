@@ -1,0 +1,59 @@
+{
+    "sw_packages": [
+        {
+            "Name": "EM",
+            "Description": "Execution Management",
+            "Version": "v0.1.0",
+            "Date": "2022-07-10",
+            "Type": "cluster",
+            "TransferID": "0000000000000000",
+            "ConsecutiveBytesReceived": "5120",
+            "ConsecutiveBlocksReceived": "5",
+            "State": "0x04"
+        },
+        {
+            "Name": "SM",
+            "Description": "State Management",
+            "Version": "v0.1.0",
+            "Date": "2022-07-10",
+            "Type": "cluster",
+            "TransferID": "0000000000000000",
+            "ConsecutiveBytesReceived": "5120",
+            "ConsecutiveBlocksReceived": "5",
+            "State": "0x04"
+        },
+        {
+            "Name": "SD",
+            "Description": "Service Discovery",
+            "Version": "v0.1.0",
+            "Date": "2022-07-10",
+            "Type": "cluster",
+            "TransferID": "0000000000000000",
+            "ConsecutiveBytesReceived": "5120",
+            "ConsecutiveBlocksReceived": "5",
+            "State": "0x04"
+        },
+        {
+            "Name": "OTA",
+            "Description": "Over The Air",
+            "Version": "v0.1.0",
+            "Date": "2022-07-10",
+            "Type": "cluster",
+            "TransferID": "0000000000000000",
+            "ConsecutiveBytesReceived": "5120",
+            "ConsecutiveBlocksReceived": "5",
+            "State": "0x04"
+        },
+        {
+            "Name": "FA",
+            "Description": "Flashing Adapter",
+            "Version": "v0.1.0",
+            "Date": "2022-07-10",
+            "Type": "cluster",
+            "TransferID": "0000000000000000",
+            "ConsecutiveBytesReceived": "5120",
+            "ConsecutiveBlocksReceived": "5",
+            "State": "0x04"
+        }
+    ]
+}

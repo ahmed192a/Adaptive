@@ -50,6 +50,9 @@ add_subdirectory(App)
 
 # copy manifest files to the build directory
 file(COPY App/Manifests DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App)
+file(COPY App/UCM/sw_packages.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App/processes/UCM_SERVER)
+file(COPY App/UCM/config.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App/processes/UCM_SERVER)
+
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/App/processes/redirected)
 
 
