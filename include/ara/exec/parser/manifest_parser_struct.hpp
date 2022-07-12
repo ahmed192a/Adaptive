@@ -1,6 +1,7 @@
 /**
  * @file manifest_parser_struct.hpp
  * @author Flashing Adapter Graduation Project Team
+ * @brief mainfest parser structures, configurations and classes
  * @version 0.1
  * @date 2022-03-06
  * 
@@ -52,7 +53,21 @@ namespace ara
                             std::string kind{};
                             std::string name{};
                             std::string arg{};
+
+                            /**
+                             * @brief eq operator to compare with other StartupOption instance
+                             * 
+                             * @return true 
+                             * @return false 
+                             */
                             bool operator==(const StartupOption &) const noexcept;
+
+                            /**
+                             * @brief uneq operator to compare with other StartupOption instance
+                             * 
+                             * @return true 
+                             * @return false 
+                             */
                             bool operator!=(const StartupOption &) const noexcept;
                         };
                         /**
@@ -67,13 +82,41 @@ namespace ara
                             public:
                             std::string function_group{};
                             std::vector<std::string> modes{};
+
+                            /**
+                             * @brief eq operator to compare with other MachineInstanceRef instance
+                             * 
+                             * @return true 
+                             * @return false 
+                             */
                             bool operator==(const MachineInstanceRef &) const noexcept;
+
+                            /**
+                             * @brief uneq operator to compare with other MachineInstanceRef instance
+                             * 
+                             * @return true 
+                             * @return false 
+                             */
                             bool operator!=(const MachineInstanceRef &) const noexcept;
                         };
 
                         std::vector<StartupOption> startup_options{};
                         std::vector<MachineInstanceRef> machine_instance_refs{};
+
+                        /**
+                         * @brief eq operator to compare with other StartupConfig instance
+                         * 
+                         * @return true 
+                         * @return false 
+                         */
                         bool operator==(const StartupConfig &) const noexcept;
+
+                        /**
+                         * @brief uneq operator to compare with other StartupConfig instance
+                         * 
+                         * @return true 
+                         * @return false 
+                         */
                         bool operator!=(const StartupConfig &) const noexcept;
                     };
                     std::vector<Process *> dep_process; // pointer to all dependent processes
@@ -85,14 +128,39 @@ namespace ara
                     bool prun = false;                  // flag to indicate if the process is running or not
                     int exec_clinet_fd= 0;              // file discriptor for execution client fifo
 
-                    bool operator==(const Process &) const noexcept;    // equality operator
-                    bool operator!=(const Process &) const noexcept;    // inequality operator
-                    bool start();                       // starting the process
-                    void terminate();                   // terminating the process
+                    /**
+                     * @brief eq operator to compare with other Process instances
+                     * 
+                     * @return true 
+                     * @return false 
+                     */
+                    bool operator==(const Process &) const noexcept;   
+
+                    /**
+                     * @brief uneq operator to compare with other Process instances
+                     * 
+                     * @return true 
+                     * @return false 
+                     */
+                    bool operator!=(const Process &) const noexcept;
+
+                    /**
+                     * @brief starting the process
+                     * 
+                     * @return true 
+                     * @return false 
+                     */
+                    bool start();      
+
+                    /**
+                     * @brief terminating the process
+                     * 
+                     */
+                    void terminate();                   
             };
 
             /**
-             * @brief 
+             * @brief Definition of the ExecutionManifest class
              * 
              */
             class ExecutionManifest
@@ -101,12 +169,25 @@ namespace ara
                 std::string manifest_id{};
                 std::vector<Process> processes{};
 
+                /**
+                 * @brief eq operator to compare with other ExecutionManifest instance
+                 * 
+                 * @return true 
+                 * @return false 
+                 */
                 bool operator==(const ExecutionManifest &) const noexcept;
+
+                /**
+                 * @brief uneq operator to compare with other ExecutionManifest instance
+                 * 
+                 * @return true 
+                 * @return false 
+                 */
                 bool operator!=(const ExecutionManifest &) const noexcept;
             };
 
             /**
-             * @brief class for machine manifiest
+             * @brief definition of the machine manifest class
              * 
              */
 
@@ -115,7 +196,21 @@ namespace ara
                 public:
                 std::string manifest_id{};
                 bool parsed = false;
+
+                /**
+                 * @brief eq operator to compare with other MachineManifest instance
+                 * 
+                 * @return true 
+                 * @return false 
+                 */
                 bool operator==(const MachineManifest &) const noexcept;
+
+                /**
+                 * @brief uneq operator to compare with other MachineManifest instance
+                 * 
+                 * @return true 
+                 * @return false 
+                 */
                 bool operator!=(const MachineManifest &) const noexcept;
             };
 
