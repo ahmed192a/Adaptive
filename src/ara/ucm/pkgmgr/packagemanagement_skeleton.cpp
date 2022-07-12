@@ -56,29 +56,33 @@ uint64_t stringToUint64_t(string str)
 }
 
 
-ara::ucm::pkgmgr::PackageManagement::ActivateOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Activate()
+std::future<ara::ucm::pkgmgr::PackageManagement::ActivateOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Activate()
 {
-    ara::ucm::pkgmgr::PackageManagement::ActivateOutput output;
-    uart_linux u_linux;
-    uint16_t current_state = Activate_s;
-    u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
-    std::cout<<"\t\t\t\tActivate ";
-    printf("%x", current_state);     
-    cout<<endl;
-                 
+    std::future<ara::ucm::pkgmgr::PackageManagement::ActivateOutput> future_output = std::async( [&]() {
+        ara::ucm::pkgmgr::PackageManagement::ActivateOutput output;
+            uart_linux u_linux;
+            uint16_t current_state = Activate_s;
+            u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
+            std::cout<<"\t\t\t\tSend Activate CMD : ";
+            printf("%x", current_state);     
+            cout<<endl;
+                        
 
-    u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
-    if (current_state == UPDATE_SUCCESS)
-    {
-        cout<<"\t\t\t\tActivate Success"<<endl;
-        output.error = 0;
-    }
-    else
-    {
-        cout<<"\t\t\t\tActivate Failed"<<endl;
-        output.error = 1;
-    }
-    return output;
+            u_linux.UART_receiveBlock((uint8_t *)&current_state, CMD_SIZE);
+            if (current_state == UPDATE_SUCCESS)
+            {
+                cout<<"\t\t\t\tActivate Success"<<endl;
+                output.error = 0;
+            }
+            else
+            {
+                cout<<"\t\t\t\tActivate Failed"<<endl;
+                output.error = 1;
+            }
+            return output;
+    });
+    return future_output;
+   
 }
 
 ara::ucm::pkgmgr::PackageManagement::CancelOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Cancel(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
@@ -294,11 +298,12 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                     std::cout<<"\t\t\t\tEND_OF_UPDATE ";
                     printf("%x", current_state);
                     cout<<endl;
-                    current_state = Activate_s;
-                    u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
-                    std::cout<<"\t\t\t\tActivate ";
-                    printf("%x", current_state);     
-                    cout<<endl;
+
+                    // current_state = Activate_s;
+                    // u_linux.UART_sendBlock((uint8_t *)&current_state, CMD_SIZE);
+                    // std::cout<<"\t\t\t\tActivate ";
+                    // printf("%x", current_state);     
+                    // cout<<endl;
                     break;
                 }
                 case Activate_s:
@@ -317,7 +322,8 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
                     break;
                 }
             }
-            if(current_state == UPDATE_SUCCESS) break;
+            // if(current_state == UPDATE_SUCCESS) break;
+            if(current_state == END_OF_UPDATE) break;
         }
         cout<<"-------------- ProcessSwPackage End --------------"<<endl;
 
@@ -606,6 +612,10 @@ void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::method_dispatch(ara:
             cserver.Send(data.data(), msg_size);
             cserver.CloseSocket();
     }
+    case 21:
+        cout<<" Activate"<<endl;
+        HandleCall(*this, &PackageManagementSkeleton::Activate, message, cserver);
+        break;
     default:
         cout<<" Unknown Method"<<endl;
         NoMethodHandler(methodID, cserver); // Send Error Message unknown method

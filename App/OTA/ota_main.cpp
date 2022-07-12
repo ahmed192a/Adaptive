@@ -246,10 +246,17 @@ void *pthread0(void *v_var)
 
                 /* process sw package */
                 pkg_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
+                std::cout << "\t[OTA] package processed ..." << std::endl;
+                // Activate the new package
+                ara::ucm::pkgmgr::PackageManagement::ActivateOutput activate_result = pkg_proxy_ptr->Activate();
+                std::cout << "\t[OTA] package activated ..." << std::endl;
+                // update the meta-data in the file system
 
-                bool acknowlege = true; // this acknowle
 
-                if (acknowlege)
+                
+
+
+                if (activate_result.error == 0)
                 {
                     // updating the stored meta-data
                     std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;

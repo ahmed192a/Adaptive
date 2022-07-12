@@ -106,7 +106,7 @@ namespace ara
                      * 
                      * @return ara::ucm::pkgmgr::PackageManagement::ActivateOutput 
                      */
-                    ara::ucm::pkgmgr::PackageManagement::ActivateOutput Activate();
+                    std::future<ara::ucm::pkgmgr::PackageManagement::ActivateOutput> Activate();
                     /**
                      * @brief Cancel
                      * 

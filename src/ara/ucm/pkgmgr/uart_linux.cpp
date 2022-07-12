@@ -49,9 +49,9 @@ uart_linux::uart_linux(/* args */)
         exit(1);
         return ;
     }
-    printf("\n\n");
-    printf("cc %x, ci %x, co %x, cl %x\n",tty.c_cflag, tty.c_iflag,tty.c_oflag, tty.c_lflag  );
-    printf("c_line %x\n", tty.c_line);
+    // printf("\n\n");
+    // printf("cc %x, ci %x, co %x, cl %x\n",tty.c_cflag, tty.c_iflag,tty.c_oflag, tty.c_lflag  );
+    // printf("c_line %x\n", tty.c_line);
 
     // configure uart port to communicate with uart in tiva C 
     // set baud rate to 9600
