@@ -31,9 +31,33 @@ namespace ara
             std::vector<std::string> mstates;
         public:
             using CtorToken = nlohmann::json;
+
+            /**
+             * @brief Set the function group name
+             * 
+             * @param fg_name 
+             */
             void set_FGname(std::string fg_name) ;
+
+            /**
+             * @brief Set the function group states
+             * 
+             * @param states 
+             */
             void set_states(std::vector<std::string> states);
+
+            /**
+             * @brief Get the function group name
+             * 
+             * @return std::string 
+             */
             std::string get_FGname() const noexcept;
+
+            /**
+             * @brief Get the function group states
+             * 
+             * @return std::vector<std::string> 
+             */
             std::vector<std::string> get_states() const noexcept;
 
 
@@ -106,7 +130,12 @@ namespace ara
              */
             bool operator!=(FunctionGroup const &other) const noexcept;
 
-
+            /**
+             * @brief eq operator to compare with other FunctionGroup instance.
+             * 
+             * @param other 
+             * @return FunctionGroup& 
+             */
             FunctionGroup &operator=(FunctionGroup &&other);
 
         };
