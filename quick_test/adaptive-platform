@@ -204,7 +204,8 @@ class Window(QMainWindow):
 		
         if ok:
             print(pid)
-            kill(pid, signal.SIGTERM)
+            # send SIGUSER1 signal to pid
+            kill(pid, signal.SIGUSR1)
             
     def Clear_outputs(self):
         self.actions[0].setEnabled(True)

@@ -271,25 +271,33 @@ void *pthread0(void *v_var)
 
                         /** end of sending the package to the ucm **/
 
-                        // /* process sw package */
-                        // pkg_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
-                        // std::cout << "\t[OTA] package processed ..." << std::endl;
-                        // // Activate the new package
-                        // ara::ucm::pkgmgr::PackageManagement::ActivateOutput activate_result = pkg_proxy_ptr->Activate();
-                        // std::cout << "\t[OTA] package activated ..." << std::endl;
-                        
-                        // // update the meta-data in the file system
-                        if (1)//(activate_result.error == 0)
+                        /* process sw package */
+                        ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput processSw_result = pkg_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
+                        if (processSw_result.error == 0)
                         {
-                            // updating the stored meta-data
-                            std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;
-                            fileSystem.save_MetaData(metaData);
+                            std::cout << "[OTA] package successfully processed" << std::endl;
+                            // Activate the new package
+                            ara::ucm::pkgmgr::PackageManagement::ActivateOutput activate_result = pkg_proxy_ptr->Activate();
+                            
+                            // // update the meta-data in the file system
+                            if (activate_result.error == 0)
+                            {
+                                // updating the stored meta-data
+                                std::cout << "\t[OTA] package activated ..." << std::endl;
+                                std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;
+                                fileSystem.save_MetaData(metaData);
+                            }
+                            else
+                            {
+                                // the package failed to be fetched
+                                std::cout << "\t[OTA] (rollback) package failed to be flashed ..." << std::endl;
+                            }
                         }
                         else
                         {
-                            // the package failed to be fetched
-                            std::cout << "\t[OTA] (rollback) package failed to be flashed ..." << std::endl;
+                            std::cout << "[OTA] package processing failed" << std::endl;
                         }
+                        
                     }
                     else if (metaData.get_platformName()=="adaptive")
                     {

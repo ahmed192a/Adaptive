@@ -214,13 +214,14 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         int block_counter = 0;
         // convert std::array<int,16> id to string str_id
         std::string str_id;
-        for (int i = 0; i < 16; i++)
-        {
-            str_id += std::to_string(id[i]);
-        }
+        for(int i =0 ; i<16;i++){
+            str_id += " ";
+            snprintf(&str_id[i], 4, "%d", id[i]);
+        }  
         
         // unzip the SWP/id.zip
         std::string zip_file_name = "SWP/" +str_id+ ".zip";
+        
         std::string unzip_file_name = "SWP/" + str_id + "/";
         std::string unzip_command = "unzip " + zip_file_name + " -d " + unzip_file_name;
         // system command to unzip the SWP/id.zip
@@ -230,6 +231,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         if (!sw_conf.is_open())
         {
             std::cout << "Error opening sw.conf" << std::endl;
+            result.error = 1;
             return result;
         }
         nlohmann::json sw_conf_json;
@@ -244,6 +246,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         if (!binary_file.is_open())
         {
             std::cout << "Error opening binary file" << std::endl;
+            result.error = 1;
             return result;
         }
         // get the size of the binary file
@@ -368,7 +371,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
             if(current_state == END_OF_UPDATE) break;
         }
         cout<<"-------------- ProcessSwPackage End --------------"<<endl;
-
+        result.error = 0;
         return result; });
     return f;
 }
