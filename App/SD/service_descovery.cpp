@@ -29,6 +29,7 @@
 #include "ara/exec/execution_client.hpp"
 
 #define CSV_FILE "data.csv"
+#define portNumber 1690
 
 using namespace std;
 using namespace ara::exec;
@@ -40,7 +41,6 @@ void *pthread1(void *);
 
 //// Globale variables
 int sigval = 0;
-int portNumber = 1690;
 SD_data receive; // global variable to store the data received from the server
 CSV   csv;
 ExecutionClient client;

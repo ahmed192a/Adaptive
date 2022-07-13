@@ -1,7 +1,6 @@
 /**
  * @file updaterequest_skeleton.h
- * @author basmala
- * @brief
+ * @author  Flashing Adapter Graduation Project Team
  * @version 0.1
  * @date 2022-02-23
  *

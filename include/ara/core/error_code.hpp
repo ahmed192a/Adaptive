@@ -1,4 +1,12 @@
-
+/**
+ * @file error_code.hpp
+ * @brief  Error code class
+ * @version 0.1
+ * @date 2022-07-13
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef ARA_CORE_ERROR_CODE_H_
 #define ARA_CORE_ERROR_CODE_H_
 

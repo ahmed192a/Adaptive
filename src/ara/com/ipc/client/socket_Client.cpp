@@ -58,7 +58,8 @@ error_kind CClient::GetHost(std::string hostname,int hostno)
 	if(this->server == NULL)
 	{
 		Error = GETTINGHOST_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"Error Code :"<<errno<<" , Error Message : "<<strerror(errno)<<std::endl;
+
 	}
 	return Error;
 }
@@ -70,7 +71,7 @@ error_kind CClient::UDPSendTo( void * buffer,size_t n, sockaddr * address)
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<" , Error Message : "<<strerror(errno)<<std::endl;
 	}
 
 
@@ -85,7 +86,7 @@ error_kind CClient::UDPRecFrom(void * buffer,size_t n, sockaddr * address, sockl
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<" , Error Message : "<<strerror(errno)<<std::endl;
 	}
 
 
@@ -104,7 +105,7 @@ error_kind CClient::ClientConnect()
 	if(conRet < 0)
 	{
 		Error = CONNECTION_FAILED;
-		std::cout << "Error Code: " << errno << std::endl;
+		std::cout << "Error Code: " << errno << " , Error Message: " << strerror(errno) << std::endl;
 	}
 	return Error;
 }
@@ -119,6 +120,7 @@ error_kind CClient::EnableInterrupt(void (*SIGIOHandler)(int) )
     /* Create mask that mask all signals */
     if (sigfillset(&hand.sa_mask) < 0) {
 		Error = FAILED;
+		std::cout << "Error Code: " << errno << " , Error Message: " << strerror(errno) << std::endl;
 		return Error;
 	}
     /* No flags */
@@ -126,14 +128,16 @@ error_kind CClient::EnableInterrupt(void (*SIGIOHandler)(int) )
 
     if (sigaction(SIGIO, &hand, 0) < 0)
 	{
-				Error = FAILED;
+		Error = FAILED;
+		std::cout << "Error Code: " << errno << " , Error Message: " << strerror(errno) << std::endl;
 		return Error;
 	}
 
     /* We must own the socket to receive the SIGIO message */
     if (fcntl(sockfd, F_SETOWN, getpid()) < 0)
 	{
-				Error = FAILED;
+		Error = FAILED;
+		std::cout << "Error Code: " << errno << " , Error Message: " << strerror(errno) << std::endl;
 		return Error;
 	}
 
@@ -141,6 +145,7 @@ error_kind CClient::EnableInterrupt(void (*SIGIOHandler)(int) )
     if (fcntl(sockfd, F_SETFL, FASYNC) < 0)
 	{
 		Error = FAILED;
+		std::cout << "Error Code: " << errno << " , Error Message: " << strerror(errno) << std::endl;
 		return Error;
 	}
 	return Error;
@@ -154,7 +159,7 @@ error_kind CClient::ClientWrite(void* data, int size)
 	if(WrtRet < 0)
 	{
 		Error = WRITING_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"Error Code :"<<errno<<" , Error Message : "<<strerror(errno)<<std::endl;
 	}
 	
 	return Error;
@@ -168,7 +173,7 @@ error_kind CClient::ClientRead(void* data, int size)
 	if(RdRet < 0)
 	{
 		Error = READING_FAILED;
-		std::cout<<"Error Code :"<<errno<<std::endl;
+		std::cout<<"Error Code :"<<errno<<" , Error Message : "<<strerror(errno)<<std::endl;
 	}
 	return Error;
 }

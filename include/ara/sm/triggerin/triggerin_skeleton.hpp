@@ -24,10 +24,6 @@ namespace ara
             {
                 namespace fields
                 {
-                    /**
-                     * @todo type: project specific
-                     *
-                     */
                     using UCM_Trigger = ara::com::proxy_skeleton::skeleton::FieldType<ara::sm::triggerin::UCM_State, true, true, true>::type;
                     using OTA_Trigger = ara::com::proxy_skeleton::skeleton::FieldType<ara::sm::triggerin::OTA_State, true, true, true>::type;
                 }

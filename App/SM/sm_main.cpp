@@ -195,7 +195,6 @@ void *pthread0(void *v_var){
         Sclient.Receive((void *)&msg[0], msg_size);             //  recieve the message
         cout<<"[SM] Received message from client"<<endl;
 
-        // cout << "\t[SM]  received" << endl;
 
         // deserialize message to SOMEIP_MESSAGE::Message object
         ara::com::SOMEIP_MESSAGE::Message someip_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(msg); 

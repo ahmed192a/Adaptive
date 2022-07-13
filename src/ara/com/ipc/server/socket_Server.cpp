@@ -38,7 +38,7 @@ error_kind CServer::OpenSocket(int portno)
 	if (this->sockfd < 0)
 	{
 		Error = FAILEDSOCETOPEN;
-		std::cout << "[SERVER SOCKET] Error Code :" << errno << std::endl;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		return Error;
 	}
 	// clear address structure
@@ -59,7 +59,7 @@ error_kind CServer::BindServer()
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR,
 				   (void *)&yes, sizeof(yes)) < 0)
 	{
-		// fprintf(stderr, "setsockopt() failed. Error: %d\n", GETSOCKETERRNO());
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		cout << "[SERVER SOCKET] ERROR BIND---------\n";
 	}
 
@@ -68,6 +68,7 @@ error_kind CServer::BindServer()
 	if (bindRet < 0)
 	{
 		Error = BIND_FAILED;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		std::cout << "[SERVER SOCKET] Error Code :" << errno << std::endl;
 	}
 	return Error;
@@ -85,6 +86,7 @@ error_kind CServer::EnableInterrupt(void (*SIGIOHandler)(int))
 	if (sigfillset(&hand.sa_mask) < 0)
 	{
 		Error = FAILED;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		return Error;
 	}
 	/* No flags */
@@ -93,6 +95,7 @@ error_kind CServer::EnableInterrupt(void (*SIGIOHandler)(int))
 	if (sigaction(SIGIO, &hand, 0) < 0)
 	{
 		Error = FAILED;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		return Error;
 	}
 
@@ -100,6 +103,7 @@ error_kind CServer::EnableInterrupt(void (*SIGIOHandler)(int))
 	if (fcntl(sockfd, F_SETOWN, getpid()) < 0)
 	{
 		Error = FAILED;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		return Error;
 	}
 
@@ -107,6 +111,7 @@ error_kind CServer::EnableInterrupt(void (*SIGIOHandler)(int))
 	if (fcntl(sockfd, F_SETFL,  FASYNC) < 0)
 	{
 		Error = FAILED;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		return Error;
 	}
 	return Error;
@@ -119,7 +124,7 @@ error_kind CServer::ListenServer(int no)
 	if (lisret < 0)
 	{
 		Error = LISTEN_FAILED;
-		std::cout << "[SERVER SOCKET] Error Code :" << errno << std::endl;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno <<", Error Message :" << strerror(errno) << std::endl;
 	}
 	return Error;
 }
@@ -133,7 +138,7 @@ Socket CServer::AcceptServer()
 	if (this->newsockfd < 0)
 	{
 		Error = ACCEPT_FAILED;
-		std::cout << "[SERVER SOCKET] Error Code :" << errno << std::endl;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno <<", Error Message :" << strerror(errno) << std::endl;
 		// return Error;
 	}
 	Socket soc(this->newsockfd, this->cli_addr);
@@ -162,12 +167,16 @@ error_kind CServer::UDPSendTo(void *buffer, size_t n, sockaddr *address)
 		if (sndRet < 0)
 		{
 			Error = SEND_FAILED;
-			std::cout << "[SERVER SOCKET] Error Code :" << errno << std::endl;
+			std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
 		}
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cout << "[SERVER SOCKET] Error Code :" << errno << ", Error Message :" << strerror(errno) << std::endl;
+	
+		std::cerr << e.what() << std::endl;
+
+
 	}
  
 
@@ -182,7 +191,7 @@ error_kind CServer::UDPRecFrom(void *buffer, size_t n, sockaddr *address, sockle
 	if (sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout << "[SERVER SOCKET] Error Code :" << errno << std::endl;
+		std::cout << "[SERVER SOCKET] Error Code :" << errno <<", Error Message :" << strerror(errno) << std::endl;
 	}
 
 	return Error;

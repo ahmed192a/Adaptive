@@ -14,7 +14,7 @@ uart_linux::uart_linux(/* args */)
 {
     // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
     // open config file to get the device path
-    std::ifstream config_file("./config.txt");
+    std::ifstream config_file("./config.conf");
     std::string line;
     std::string device_path;
     if (config_file.is_open())

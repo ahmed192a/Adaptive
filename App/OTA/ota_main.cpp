@@ -204,68 +204,77 @@ void *pthread0(void *v_var)
                 std::vector<uint8_t> package;
                 cloud.requestPackage(package);
 
-                std::cout << "\t[OTA] sending the package to the flashing adapter ..." << std::endl;
-
-                /** start sending the package to the ucm **/
-
-                std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */
-                std::vector<uint8_t> small_data;
-
-                uint64_t package_size = package.size();
-                result = pkg_proxy_ptr->TransferStart(package_size);
-                ara::ucm::pkgmgr::PackageManagement::TransferStartOutput transfer_start_output = result.get();
-
-                int block_counter = 0;
-                for (int i = 0; i < package.size(); i++)
+                // if the package is directed for the classic platform use flashing adapter proxy
+                if (new_metaData.get_platformName()=="classic")
                 {
-                    for (int j = 0; j < transfer_start_output.BlockSize; j++)
+                    std::cout << "\t[OTA] sending the package to the flashing adapter ..." << std::endl;
+
+                    /** start sending the package to the ucm **/
+                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */
+                    std::vector<uint8_t> small_data;
+
+                    uint64_t package_size = package.size();
+                    result = pkg_proxy_ptr->TransferStart(package_size);
+                    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput transfer_start_output = result.get();
+
+                    int block_counter = 0;
+                    for (int i = 0; i < package.size(); i++)
                     {
-                        if (i * transfer_start_output.BlockSize + j >= package.size())
+                        for (int j = 0; j < transfer_start_output.BlockSize; j++)
                         {
-                            small_data.resize(transfer_start_output.BlockSize);
-                            break;
+                            if (i * transfer_start_output.BlockSize + j >= package.size())
+                            {
+                                small_data.resize(transfer_start_output.BlockSize);
+                                break;
+                            }
+                            else
+                                small_data.push_back(package[i * transfer_start_output.BlockSize + j]);
                         }
-                        else
-                            small_data.push_back(package[i * transfer_start_output.BlockSize + j]);
+
+                        // don't change 64 (packagemanagementskeleton.cpp)
+                        std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> result2 =
+                            pkg_proxy_ptr->TransferData(transfer_start_output.id, small_data, block_counter); /* Saves TransferDataOutput */
+
+                        ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result3;
+                        result3 = result2.get();
+                        block_counter++;
+                        small_data.clear();
+                        if (block_counter * transfer_start_output.BlockSize > package.size())
+                            break;
                     }
 
-                    // don't change 64 (packagemanagementskeleton.cpp)
-                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> result2 =
-                        pkg_proxy_ptr->TransferData(transfer_start_output.id, small_data, block_counter); /* Saves TransferDataOutput */
+                    pkg_proxy_ptr->TransferExit(transfer_start_output.id);
 
-                    ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result3;
-                    result3 = result2.get();
-                    block_counter++;
-                    small_data.clear();
-                    if (block_counter * transfer_start_output.BlockSize > package.size())
-                        break;
+                    /** end of sending the package to the ucm **/
+
+                    /* process sw package */
+                    pkg_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
+                    std::cout << "\t[OTA] package processed ..." << std::endl;
+                    // Activate the new package
+                    ara::ucm::pkgmgr::PackageManagement::ActivateOutput activate_result = pkg_proxy_ptr->Activate();
+                    std::cout << "\t[OTA] package activated ..." << std::endl;
+                    
+                    // update the meta-data in the file system
+                    if (activate_result.error == 0)
+                    {
+                        // updating the stored meta-data
+                        std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;
+                        fileSystem.save_MetaData(new_metaData);
+                    }
+                    else
+                    {
+                        // the package failed to be fetched
+                        std::cout << "\t[OTA] (rollback) package failed to be flashed ..." << std::endl;
+                    }
                 }
-                pkg_proxy_ptr->TransferExit(transfer_start_output.id);
-
-                /** end of sending the package to the ucm **/
-
-                /* process sw package */
-                pkg_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
-                std::cout << "\t[OTA] package processed ..." << std::endl;
-                // Activate the new package
-                ara::ucm::pkgmgr::PackageManagement::ActivateOutput activate_result = pkg_proxy_ptr->Activate();
-                std::cout << "\t[OTA] package activated ..." << std::endl;
-                // update the meta-data in the file system
-
-
-                
-
-
-                if (activate_result.error == 0)
+                else if (new_metaData.get_platformName()=="adaptive")
                 {
-                    // updating the stored meta-data
-                    std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;
-                    fileSystem.save_MetaData(new_metaData);
+                    // TO DO: use the adaptive ucm proxy
+                    cout<<"\t[OTA] Adaptive platform not yet implemented"<<endl;
                 }
                 else
                 {
-                    // the package failed to be fetched
-                    std::cout << "\t[OTA] (rollback) package failed to be flashed ..." << std::endl;
+                    std::cout << "\t[OTA] unsupported platform ..." << std::endl;
                 }
             }
             else

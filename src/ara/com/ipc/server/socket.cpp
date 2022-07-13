@@ -20,7 +20,7 @@ error_kind Socket::Send( void* buffer, size_t n)
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<", Error Message :"<<strerror(errno)<<std::endl;
 	}
 	return Error;
 }
@@ -32,7 +32,7 @@ error_kind Socket::UDPSendTo( void * buffer,size_t n, sockaddr * address)
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<", Error Message :"<<strerror(errno)<<std::endl;
 	}
 
 
@@ -48,7 +48,7 @@ error_kind Socket::Receive(void* buffer, size_t n)
 	if(rdRet < 0) 
 	{
 		Error = RECEIVE_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<", Error Message :"<<strerror(errno)<<std::endl;
 	}
 	return Error;
 }
@@ -60,7 +60,7 @@ error_kind Socket::UDPRecFrom(void * buffer,size_t n, sockaddr * address, sockle
 	if(sndRet < 0)
 	{
 		Error = SEND_FAILED;
-		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<std::endl;
+		std::cout<<"[SERVER SOCKET] Error Code :"<<errno<<", Error Message :"<<strerror(errno)<<std::endl;
 	}
 
 

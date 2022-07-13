@@ -10,14 +10,14 @@
 /***************************************************************************
  *                          Include Section                                *
  ***************************************************************************/
-#include <iostream>
-#include <vector>
-#include <map>
-#include <string>
-#include <sys/stat.h>
-#include <dirent.h>
+#include <iostream> // std::cout std::cin
+#include <vector>   // std::vector
+#include <map>      // std::map
+#include <string>   // std::string
+#include <sys/stat.h>   // mkdir
+#include <dirent.h>    // opendir
 #include <filesystem> // to get all files in certain dir
-#include "errno.h"
+#include "errno.h"      // errno
 #include "unistd.h"
 #include <fcntl.h>
 #include <utility>
@@ -251,17 +251,15 @@ void change_state(std::string n_FG, std::string n_state)
  * @return void 
  */
 void view_out(){
-    namespace fs = std::filesystem;
     std::string root = std::string(get_current_dir_name())+"/processes/redirected/", ext = ".txt";
-    if (fs::exists(root) && fs::is_directory(root))
+    if (filesystem::exists(root) && filesystem::is_directory(root))
     {
-        for (auto const & entry : fs::recursive_directory_iterator(root))
+        for (auto const & entry : filesystem::recursive_directory_iterator(root))
         {
-            if (fs::is_regular_file(entry) && entry.path().extension() == ext){
+            if (filesystem::is_regular_file(entry) && entry.path().extension() == ext){
                 cout<<entry.path().filename().c_str()<<endl;
                 system(("cd processes/redirected;cat "+ std::string(entry.path().filename().c_str())+";").c_str());
             }
         }
     }
-    
 }
