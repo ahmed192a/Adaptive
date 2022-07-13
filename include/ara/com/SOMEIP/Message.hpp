@@ -63,10 +63,7 @@ namespace ara
 			};
 			struct Request_ID
 			{
-				// Request_ID(uint16_t x, uint16_t y){
-				// 	client_id = x;
-				// 	session_id = y;
-				// }
+				
 				uint16_t client_id;
 				uint16_t session_id=1;
 			};
@@ -190,7 +187,7 @@ namespace ara
 				static Message Deserialize(const std::vector<uint8_t> &msg);
 
 
-				// operator =(Message &msg);
+				
 				Message& operator=(Message &msg);
 
 				std::vector<uint8_t> getload();
