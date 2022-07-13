@@ -10,6 +10,7 @@
 
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
 #include "ara/ucm/pkgmgr/uart_linux.hpp"
+
 #include "nlohmann/json.hpp"
 #include <cmath>
 #include <filesystem>
@@ -203,8 +204,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::GetSwProcessProgressOutput> ara
 
 std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage(ara::ucm::pkgmgr::PackageManagement::TransferIdType id)
 {
-    std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> f = std::async([&, id]()
-                                                                                            {
+    std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> f = std::async([&, id]() {
                                                                                                 
         ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput result;
         uart_linux u_linux;
@@ -212,14 +212,57 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         uint16_t packet_num, const_packet_num;
         uint16_t extra_bytes;
         int block_counter = 0;
-        std::vector<uint8_t> data_block(buffer.begin()+52, buffer.end());
+        // convert std::array<int,16> id to string str_id
+        std::string str_id;
+        for (int i = 0; i < 16; i++)
+        {
+            str_id += std::to_string(id[i]);
+        }
+        
+        // unzip the SWP/id.zip
+        std::string zip_file_name = "SWP/" +str_id+ ".zip";
+        std::string unzip_file_name = "SWP/" + str_id + "/";
+        std::string unzip_command = "unzip " + zip_file_name + " -d " + unzip_file_name;
+        // system command to unzip the SWP/id.zip
+        int unzip_result = system(unzip_command.c_str());
+        // open sw.conf in the unziped folder to get the app name and version
+        std::ifstream sw_conf(unzip_file_name + "sw.conf");
+        if (!sw_conf.is_open())
+        {
+            std::cout << "Error opening sw.conf" << std::endl;
+            return result;
+        }
+        nlohmann::json sw_conf_json;
+        sw_conf >> sw_conf_json;
+        sw_conf.close();
+        // get the app name and version from sw.conf
+        std::string app_name = sw_conf_json["app_name"];
+        std::string app_version = sw_conf_json["app_version"];
+
+        // read the binary file from the unziped folder
+        std::ifstream binary_file(unzip_file_name + app_name, std::ifstream::binary);
+        if (!binary_file.is_open())
+        {
+            std::cout << "Error opening binary file" << std::endl;
+            return result;
+        }
+        // get the size of the binary file
+        binary_file.seekg(0, binary_file.end);
+        uint64_t binary_file_size = binary_file.tellg();
+        binary_file.seekg(0, binary_file.beg);
+        // create a buffer to read the binary file
+        std::vector<uint8_t> binary_file_buffer(binary_file_size);
+        binary_file.read((char *)binary_file_buffer.data(), binary_file_size);
+        binary_file.close();
+
+        std::vector<uint8_t> data_block(binary_file_buffer.begin()+52, binary_file_buffer.end());
         cout<<"*************************"<<endl;
         printf("\t\t\t\tfirst address %x\n", *((uint32_t *)data_block.data()));
         packet_num = (uint32_t)(data_block.size() /0x400) ;
         const_packet_num = packet_num;
         extra_bytes = (data_block.size()% 0x400);
 
-        std::cout<<"\t\t\t\tbuffer size " << buffer.size()<< std::endl;
+        std::cout<<"\t\t\t\tbuffer size " << binary_file_buffer.size()<< std::endl;
         std::cout<<"\t\t\t\tbuffer size " << data_block.size()<< std::endl;
         std::cout<<"\t\t\t\tpacket_num "<<packet_num<<std::endl;
         std::cout<<"\t\t\t\textra_bytes "<< extra_bytes<<std::endl;

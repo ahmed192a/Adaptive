@@ -6,7 +6,7 @@ echo "Current PID: $$";
 
 #./build.sh ; 
 cd ../Cloud
-g++ server.cpp metadata.hpp -o output.exe
+# g++ server.cpp metadata.hpp -o output.exe
 
 # running the cloud server application
 gnome-terminal -- './output.exe';

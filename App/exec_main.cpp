@@ -127,7 +127,7 @@ int main(int argc, char ** argv){
     msg.resize(MAX_BUF);                    // resize the message to MAX_BUF bytes
 
     //change the state of MachineFG to Starting-up to start the state management process
-    change_state("MachineFG" , "Pre-Starting-up"); 
+    // change_state("MachineFG" , "Pre-Starting-up"); 
     change_state("MachineFG" , "Starting-up"); 
 
     int fd = open(SM_FIFO, O_RDONLY);   // open the fifo to read the state from SM
@@ -136,6 +136,7 @@ int main(int argc, char ** argv){
     // get FG name and new state from SM an change the state
     while(sys_FG["MachineFG"].current_FGS->get_states() != "off"){
         int n= read(fd, &msg[0], MAX_BUF); // read the state from SM
+        cout << "-    EM: New State from SM " <<endl;
         std::string FG_name = msg.substr(0, msg.find("/")); // get the FG name
         std::string new_state = msg.substr(msg.find("/")+1, n-(msg.find('/')+1)); // get the new state
         change_state(FG_name, new_state); // change the state of FG

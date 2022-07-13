@@ -38,10 +38,6 @@
                             {
                                 "Function_group": "FG_1",
                                 "Modes": "on" 
-                            },
-                            {
-                                "Function_group": "MachineFG",
-                                "Modes":  "Running" 
                             }
                         ]
                     }

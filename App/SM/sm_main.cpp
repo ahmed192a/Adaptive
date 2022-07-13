@@ -33,6 +33,8 @@ using namespace ara::sm::triggerin;
 
 ///// Functions declarations
 void  handle_sigterm(int sig);  
+void handle_siguser1(int sig);
+
 void *pthread0(void *v_var);
 
 ////// global variables
@@ -72,16 +74,50 @@ CServer server_main_socket(SOCK_STREAM);    // socket for methods handle (TCP)
 ExecutionClient client;
 std::shared_ptr<ara::exec::StateClient> state_client_ptr;
 
+void handle_siguser1(int sig)
+{
+    cout << "\nSIGUSER1 received" << endl;
+    FunctionGroupState::CtorToken token;
+    token.fg_name = "FG_1";
+    token.c_state = "off";
+    FunctionGroupState FGS(std::move(token));
+    std::cout << "[SM] Create Function group state for FG1 to off state" << std::endl;
+    
+    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+    if(var.index() == 0)
+        std::cout<<"[SM] state changed successfully"<<std::endl;
+    else
+        std::cout<<"[SM] state change failed"<<std::endl;
 
+    //--------------------------------------------------------------------------------------------------
+    token.fg_name = "MachineFG";
+    token.c_state = "off";
+    FunctionGroupState FGS1(std::move(token));
+    std::cout << "[SM] Create Function group state for MachineFG to off state" << std::endl;
+    
+    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future1 = state_client_ptr->SetState(FGS1);
+    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var1 = _future1.get();
+    if(var1.index() == 0)
+        std::cout<<"[SM] state changed successfully"<<std::endl;
+    else
+        std::cout<<"[SM] state change failed"<<std::endl;
+
+
+}
 /**
  * @brief Main code for State management
  * @return 0 if successful
  */
 int main(){
-    // Print the current directory will be used later to load the configuration files
-    cout<<"[SM]"<<std::string(get_current_dir_name())<<endl;
-    
+    cout<<"\n[SM] State Management intitializing..."<<endl;
+    // print SM PID
+    cout<<"\t[SM] PID: "<<getpid()<<endl;
     signal(SIGTERM, handle_sigterm);                        // register signal handler
+    // set hamdle function for user signal
+    signal(SIGUSR1, handle_siguser1);
+
+
     client.ReportExecutionState(ExecutionState::kRunning);  // report execution state to the execution server
 
     state_client_ptr = std::make_shared<ara::exec::StateClient>();
@@ -167,7 +203,6 @@ void *pthread0(void *v_var){
     FunctionGroupState FGS(std::move(token));
     cout<<endl;
     std::cout << "[SM] Create Function group state for MachineFG to Running state" << std::endl;
-    std::cout<<"[SM] FGS created "<<endl;
     std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
     boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
     if(var.index() == 0)
