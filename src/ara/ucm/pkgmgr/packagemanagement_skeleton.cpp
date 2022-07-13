@@ -159,7 +159,6 @@ ara::ucm::pkgmgr::PackageManagement::GetSwClusterInfoOutput ara::ucm::pkgmgr::sk
     }
     return output;
 
-    return output;
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetSwPackagesOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetSwPackages(ara::ucm::pkgmgr::PackageManagement::SwPackageInfoVectorType &Packages)
@@ -412,7 +411,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
         {
             std::filesystem::create_directory("./SWP");
         } 
-        str = "SWP/" + str + ".out";
+        str = "SWP/" + str + ".zip";
         SaveBlock(str.data() , this->buffer); 
         return result; });
 
@@ -611,6 +610,7 @@ void ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::method_dispatch(ara:
             cserver.Send(&msg_size, sizeof(msg_size));
             cserver.Send(data.data(), msg_size);
             cserver.CloseSocket();
+            break;
     }
     case 21:
         cout<<" Activate"<<endl;

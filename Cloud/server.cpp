@@ -14,11 +14,17 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "./metadata.hpp"
+// include header for DIR
+#include <dirent.h>
+#include <map>
 
 #define PORT 8888
 #define PACKAGE_FILE "flash_tiva.out"
 #define METADATA_FILE "metadata.dat"
+#define PAKAGES_DIR "packages"
 #define BUFFER_SIZE 100000
+
 
 
 using namespace std;
@@ -31,12 +37,76 @@ std::vector<char> ReadAllBytes(char const *filename)
     ifs.read(&result[0], pos);
     return result;
 }
+
+map<string, string> metadata_parser()
+{
+    // get all metadata.dat files from subfolders of packages folder
+    vector<string> files;
+    string path = PAKAGES_DIR;
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir (path.c_str())) != NULL) {
+        while ((ent = readdir (dir)) != NULL) {
+            if(ent->d_type == DT_DIR && ent->d_name[0] != '.'){
+                string subpath = path+"/"+ent->d_name;
+                DIR *subdir;
+                struct dirent *subent;
+                if ((subdir = opendir (subpath.c_str())) != NULL) {
+                    // search for metadata.dat file in subfolder
+                    while ((subent = readdir (subdir)) != NULL) {
+                        if(subent->d_type == DT_REG){
+                            std::string filename = subent->d_name;
+                            if(filename == METADATA_FILE){
+                                files.push_back(subpath+"/"+filename);
+                            }
+                        }
+                    }
+                    closedir (subdir);
+                }
+            }
+        }
+        closedir (dir);
+    }
+    // read each file and parse the metadata into vector<MetaData>
+    map<string, string> metadata_map;
+    for(int i=0;i<files.size();i++){
+        //read the string from the file
+        string file = files[i];
+        std::vector<char> buffer = ReadAllBytes(file.c_str());
+        std::string str(buffer.begin(), buffer.end());
+        // parse the string into MetaData
+        MetaData md(str);
+        metadata_map[md.serializeToJson()] = file;
+        string dir = file.substr(0, file.find_last_of('/'));
+        // get the app name from the dir
+        string app = dir.substr(dir.find_last_of('/')+1);
+
+    }
+
+    return metadata_map;
+}
+
+// Backup streambuffers of  cout
+streambuf* stream_buffer_cout = cout.rdbuf();   // backup cout stream buffer
+streambuf* stream_buffer_cin = cin.rdbuf();     // backup cin stream buffer
+
+
+/**
+ * @brief main
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main(int argc, char const *argv[])
 {
+
+
     cout << endl;
     cout<<"\tcloud Intialization ..."<<endl;
     cout <<"\tcloud pid : " << getpid()<< endl<<endl;
     cout<<"------------------------------------------------------"<<endl;
+   
 	int server_fd, new_socket;
 	struct sockaddr_in address;
 	int opt = 1;
@@ -79,55 +149,80 @@ int main(int argc, char const *argv[])
         cout<<"\t[CLOUD] accept new client"<<endl;
 
         while(1){
+            map<string, string > maping= metadata_parser();
+
             char buffer[50] = {0};
 
             string temp;
             temp.reserve(50);
-            read( new_socket , buffer, 50);
-            temp=buffer;
-            cout<<"\t[CLOUD] client sent request => "<<temp<<endl; 
+            // recieve the size of the string
+            int size;
+            if (recv(new_socket, &size, sizeof(size), 0) < 0)
+            {
+                cout<<"\t[CLOUD] recieve failed"<<endl;
+                exit(EXIT_FAILURE);
+            }
+            temp.resize(size);
+            if(recv(new_socket, &temp[0], size, 0) < 0){
+                cout<<"\t[CLOUD] recieve failed"<<endl;
+                exit(EXIT_FAILURE);
+            }
+
+            // read( new_socket , buffer, 50);
+            // temp=buffer;
             int i=0;
             if(temp=="Requesting Metadata"){
-                // ifstream metadataFile;
-                // metadataFile.open(METADATA_FILE,ios::in);
-                                    
-                // char metadata[BUFFER_SIZE];
-                // while(!metadataFile.eof()){
-                    
-                //     metadataFile.read((char*) &metadata[i],1);
-                //     i++;
-                // }
-                // metadataFile.close();
+                cout<<"\t[CLOUD] client sent request => "<<temp<<endl; 
 
-                std::vector<char> metadata = ReadAllBytes(METADATA_FILE);
+                std::vector<uint8_t> metadata;
+                for(auto md:maping){
+                    metadata.insert(metadata.end(), (uint8_t*)md.first.c_str(), (uint8_t*)md.first.c_str() + md.first.length());
+                    metadata.push_back(0);
+                }
 
                 int metaDataSize = metadata.size() ;
-                send(new_socket ,  &metaDataSize , sizeof(metaDataSize) , 0);
-                if( send(new_socket ,  metadata.data() , metaDataSize, 0) < 0) 
+                if (send(new_socket ,  &metaDataSize , sizeof(metaDataSize) , 0) < 0)
+                {
+                    cout<<"\t[CLOUD] send metadata size failed"<<endl;
+                    exit(EXIT_FAILURE);
+                }
+
+                if( send(new_socket ,  &metadata[0] , metaDataSize, 0) < 0) 
                 {
                     cout<<"\t[CLOUD] Error sending metadata"<<endl;
                 }
-                cout<<"\t\t [Cloud] send Metadata to client "<<endl;
 
+                cout<<"\t\t [Cloud] send Metadata to client "<<endl;
             }
             else if (temp=="Requesting Package")
             {
-                // ifstream packageFile;
-                // packageFile.open(PACKAGE_FILE,ios::in);
-                                    
-                // char packageData[BUFFER_SIZE];
-                // while(!packageFile.eof()){
-                    
-                //     packageFile.read((char*) &packageData[i],1);
-                //     i++;
-                // }
-                // packageFile.close();
-                std::vector<char> packageData = ReadAllBytes(PACKAGE_FILE);
+                cout<<"\t[CLOUD] client sent request => "<<temp;
 
+                int metaDataSize;
+                vector<uint8_t> metadata;
+                read( new_socket , &metaDataSize , sizeof(metaDataSize) );
+                metadata.resize(metaDataSize);
+                read( new_socket , metadata.data() , metaDataSize);
+                MetaData md(string(metadata.begin(), metadata.end()));  
+                cout<<" => "<<md.get_appName()<<endl;
+                // get the file name from the metadata
+                string file = maping[md.serializeToJson()];
+                // get the dirctory of the file
+                string dir = file.substr(0, file.find_last_of('/'));
+                // get the app name from the dir
+                string app = md.get_appName();
+                // read the file ReadAllBytes(file)
+                vector<char> packageData = ReadAllBytes((dir+"/"+app+".zip").c_str());
+
+                // search for the metadata in the vector<MetaData>
                 int packageDataSize = packageData.size() ;
-                send(new_socket ,  &packageDataSize , sizeof(packageDataSize) , 0);
+                if (send(new_socket ,  &packageDataSize , sizeof(packageDataSize) , 0) < 0)
+                {
+                    cout<<"\t[CLOUD] send package size failed"<<endl;
+                    exit(EXIT_FAILURE);
+                }
 
-                if( send(new_socket ,  packageData.data() , packageDataSize , 0) < 0) 
+                if(send(new_socket ,  packageData.data() , packageDataSize , 0) < 0) 
                 {
                     cout<<"\t Error sending package"<<endl;
                 }
@@ -147,5 +242,5 @@ int main(int argc, char const *argv[])
             
         }
     }
-	return 0;
+    return 0;
 }

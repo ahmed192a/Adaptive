@@ -170,116 +170,140 @@ void *pthread0(void *v_var)
 
             // requesting the new metaData from the cloud server
             std::string json;
-            cloud.requestMetadata(json);
+            std::vector<MetaData> metaData_v;
+            cloud.requestMetadata(metaData_v);
+            cout << "-----------------------------------------------------------------" << endl;
+            cout << "[OTA] received metaData from cloud server : " << endl;
+            for (auto &metaData : metaData_v)
+            {
 
-            MetaData new_metaData(json);
+                cout << metaData.serializeToJson() << endl;
+            }
+            cout << "-----------------------------------------------------------------" << endl;
+
+            // MetaData new_metaData(json);
 
             // retrieve the old meta-data stored in the file
             MetaDataStorage fileSystem(META_DATA_FILE_PATH);
             std::vector<MetaData> metaDataList = fileSystem.load_MetaData();
             std::size_t listSize = metaDataList.size();
-            MetaData old_metaData;
+            vector<MetaData> new_metaData_v;
 
-            if (metaDataList.size() != 0)
+
+            // check if the new meta-data is different from the old one or if there are new meta-data
+            if (listSize == 0)
             {
-
-                // getting the meta data of the same applicaton
-                for (std::size_t i = (listSize - 1); i >= 0; i--)
-                {
-                    if (new_metaData == metaDataList[i])
-                    {
-                        old_metaData = metaDataList[i];
-                        break;
-                    }
-                }
-            }
-
-            // comparing the application meta-data with old one stored in the file system
-            if (new_metaData.get_version() > old_metaData.get_version())
-            {
-
-                std::cout << "\t[OTA] downloading the new package ..." << std::endl;
-
-                // downloading the package from the cloud
-                std::vector<uint8_t> package;
-                cloud.requestPackage(package);
-
-                // if the package is directed for the classic platform use flashing adapter proxy
-                if (new_metaData.get_platformName()=="classic")
-                {
-                    std::cout << "\t[OTA] sending the package to the flashing adapter ..." << std::endl;
-
-                    /** start sending the package to the ucm **/
-                    std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */
-                    std::vector<uint8_t> small_data;
-
-                    uint64_t package_size = package.size();
-                    result = pkg_proxy_ptr->TransferStart(package_size);
-                    ara::ucm::pkgmgr::PackageManagement::TransferStartOutput transfer_start_output = result.get();
-
-                    int block_counter = 0;
-                    for (int i = 0; i < package.size(); i++)
-                    {
-                        for (int j = 0; j < transfer_start_output.BlockSize; j++)
-                        {
-                            if (i * transfer_start_output.BlockSize + j >= package.size())
-                            {
-                                small_data.resize(transfer_start_output.BlockSize);
-                                break;
-                            }
-                            else
-                                small_data.push_back(package[i * transfer_start_output.BlockSize + j]);
-                        }
-
-                        // don't change 64 (packagemanagementskeleton.cpp)
-                        std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> result2 =
-                            pkg_proxy_ptr->TransferData(transfer_start_output.id, small_data, block_counter); /* Saves TransferDataOutput */
-
-                        ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result3;
-                        result3 = result2.get();
-                        block_counter++;
-                        small_data.clear();
-                        if (block_counter * transfer_start_output.BlockSize > package.size())
-                            break;
-                    }
-
-                    pkg_proxy_ptr->TransferExit(transfer_start_output.id);
-
-                    /** end of sending the package to the ucm **/
-
-                    /* process sw package */
-                    pkg_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
-                    std::cout << "\t[OTA] package processed ..." << std::endl;
-                    // Activate the new package
-                    ara::ucm::pkgmgr::PackageManagement::ActivateOutput activate_result = pkg_proxy_ptr->Activate();
-                    std::cout << "\t[OTA] package activated ..." << std::endl;
-                    
-                    // update the meta-data in the file system
-                    if (activate_result.error == 0)
-                    {
-                        // updating the stored meta-data
-                        std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;
-                        fileSystem.save_MetaData(new_metaData);
-                    }
-                    else
-                    {
-                        // the package failed to be fetched
-                        std::cout << "\t[OTA] (rollback) package failed to be flashed ..." << std::endl;
-                    }
-                }
-                else if (new_metaData.get_platformName()=="adaptive")
-                {
-                    // TO DO: use the adaptive ucm proxy
-                    cout<<"\t[OTA] Adaptive platform not yet implemented"<<endl;
-                }
-                else
-                {
-                    std::cout << "\t[OTA] unsupported platform ..." << std::endl;
-                }
+                std::cout << "[OTA] no meta-data found in the file system" << std::endl;
+                std::cout << "[OTA] creating new meta-data" << std::endl;
+                new_metaData_v = metaData_v;
             }
             else
             {
-                std::cout << "\t[OTA] no new versions in the cloud ..." << std::endl;
+                std::cout << "[OTA] meta-data found in the file system" << std::endl;
+                std::cout << "[OTA] checking if the meta-data is different from the old one" << std::endl;
+                // loop on the new meta-data and check if it is different from the old one
+                for (auto &metaData : metaData_v)
+                {
+                    bool isDifferent = false;
+                    for (auto &oldMetaData : metaDataList)
+                    {
+                        if (metaData == oldMetaData && metaData > oldMetaData)
+                        {
+                            isDifferent = true;
+                        }
+                    }
+                    if (isDifferent)
+                    {
+                        std::cout << "[OTA] new meta-data found" << std::endl;
+                        new_metaData_v.push_back(metaData);
+                    }
+                }
+            }
+            std::cout << "[OTA] new meta-data found : " << new_metaData_v.size() << std::endl;
+            if(new_metaData_v.size() > 0){
+                // loop on the new meta-data and download the packages
+                for (auto &metaData : new_metaData_v)
+                {
+                    std::cout << "[OTA] downloading package " << metaData.get_appName() << std::endl;
+                    std::vector<uint8_t> package;
+                    cloud.requestPackage(metaData, package);
+
+                    // if the package is directed for the classic platform use flashing adapter proxy
+                    if (metaData.get_platformName()=="classic")
+                    {
+                        std::cout << "\t[OTA] sending the package to the flashing adapter ..." << std::endl;
+
+                        /** start sending the package to the ucm **/
+                        std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */
+                        std::vector<uint8_t> small_data;
+
+                        uint64_t package_size = package.size();
+                        result = pkg_proxy_ptr->TransferStart(package_size);
+                        ara::ucm::pkgmgr::PackageManagement::TransferStartOutput transfer_start_output = result.get();
+
+                        int block_counter = 0;
+                        for (int i = 0; i < package.size(); i++)
+                        {
+                            for (int j = 0; j < transfer_start_output.BlockSize; j++)
+                            {
+                                if (i * transfer_start_output.BlockSize + j >= package.size())
+                                {
+                                    small_data.resize(transfer_start_output.BlockSize);
+                                    break;
+                                }
+                                else
+                                    small_data.push_back(package[i * transfer_start_output.BlockSize + j]);
+                            }
+
+                            // don't change 64 (packagemanagementskeleton.cpp)
+                            std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> result2 =
+                                pkg_proxy_ptr->TransferData(transfer_start_output.id, small_data, block_counter); /* Saves TransferDataOutput */
+
+                            ara::ucm::pkgmgr::PackageManagement::TransferDataOutput result3;
+                            result3 = result2.get();
+                            block_counter++;
+                            small_data.clear();
+                            if (block_counter * transfer_start_output.BlockSize > package.size())
+                                break;
+                        }
+
+                        pkg_proxy_ptr->TransferExit(transfer_start_output.id);
+
+                        /** end of sending the package to the ucm **/
+
+                        // /* process sw package */
+                        // pkg_proxy_ptr->ProcessSwPackage(transfer_start_output.id);
+                        // std::cout << "\t[OTA] package processed ..." << std::endl;
+                        // // Activate the new package
+                        // ara::ucm::pkgmgr::PackageManagement::ActivateOutput activate_result = pkg_proxy_ptr->Activate();
+                        // std::cout << "\t[OTA] package activated ..." << std::endl;
+                        
+                        // // update the meta-data in the file system
+                        if (1)//(activate_result.error == 0)
+                        {
+                            // updating the stored meta-data
+                            std::cout << "\t[OTA] updating the stored meta-data ..." << std::endl;
+                            fileSystem.save_MetaData(metaData);
+                        }
+                        else
+                        {
+                            // the package failed to be fetched
+                            std::cout << "\t[OTA] (rollback) package failed to be flashed ..." << std::endl;
+                        }
+                    }
+                    else if (metaData.get_platformName()=="adaptive")
+                    {
+                        // TO DO: use the adaptive ucm proxy
+                        cout<<"\t[OTA] Adaptive platform not yet implemented"<<endl;
+                    }
+                    else
+                    {
+                        std::cout << "\t[OTA] unsupported platform ..." << std::endl;
+                    }
+                }
+            }
+            else{
+                std::cout << "[OTA] no new versions in the cloud ..." << std::endl;
             }
 
             // disconnecting from the cloud connection

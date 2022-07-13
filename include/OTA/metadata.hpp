@@ -44,6 +44,19 @@ public:
     friend std::istream & operator >> (std::istream &in,  MetaData &c);
     friend std::ostream & operator << (std::ostream &out, const MetaData &c);
 
+    //serialize the object to json string
+    std::string serializeToJson(){
+
+        std::string jsonStr = "{";
+        jsonStr += "\"platformName\":\"" + this->platformName + "\",";
+        jsonStr += "\"appName\":\"" + this->appName + "\",";
+        jsonStr += "\"appID\":\"" + this->appID + "\",";
+        jsonStr += "\"sizeInBytes\":\"" + std::to_string(this->sizeInBytes) + "\",";
+        jsonStr += "\"version\":\"" + this->v.get_versionNo()+"\"";
+        jsonStr += "}";
+        return jsonStr;
+    }
+
 
 };
 

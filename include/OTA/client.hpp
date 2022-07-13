@@ -4,6 +4,7 @@
 #include <iostream> //string
 #include <arpa/inet.h> //inet_addr
 #include <vector>
+#include "./metadata.hpp"
 
 // #define OTA_IP_CLOUD "104.211.5.19"
 #define OTA_IP_CLOUD "127.0.0.1"
@@ -56,7 +57,7 @@ private:
 
      */
 
-        bool requestMetadata(std::string &data);
+        bool requestMetadata(std::vector<MetaData> &metadata_v);
 
     
     
@@ -73,7 +74,7 @@ private:
 
      */
 
-        bool requestPackage(std::vector<uint8_t> &data);
+        bool requestPackage(MetaData metadata, std::vector<uint8_t> &data);
 
 
 

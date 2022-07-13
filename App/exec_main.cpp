@@ -208,19 +208,23 @@ void p_operator(){
  * @return void
  */
 void p_terminator(){
-    for(auto &process : process_pool){
-        if(!process.prun)continue;      //if not running continue
-        //check if the current state doesnt violate the configuration,otherwise terminate
-        for(auto &mref:process.current_config->machine_instance_refs){
+    // loop on process_pool from back to front
+    for(int i = process_pool.size()-1; i >= 0; i--){
+        // if the process is not running continue
+        if(!process_pool[i].prun)continue;
+        // for each machine instance(FG) reference in the current configuration
+        for(auto &mref: process_pool[i].current_config->machine_instance_refs){
             //Get the current state of the FG
-            string fg_statue = sys_FG[mref.function_group].current_FGS->get_states();
-            //Terminate Process if fg_state is not process_config_states
+            string fg_statue = sys_FG[mref.function_group].current_FGS->get_states(); 
+            //Process wont terminate if fg_state is not process_config_states
             if (!count(mref.modes.begin(), mref.modes.end(), fg_statue)){
-                process.terminate();
+                process_pool[i].terminate();
                 break;
             }
         }
     }
+
+
 }
 /**
  * @brief change_state Change the state of a function group and terminate the process if it's 

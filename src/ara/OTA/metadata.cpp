@@ -31,7 +31,7 @@ MetaData::MetaData(string jsonStr)
       set_platformName(root["platformName"].asString());
       set_appName(root["appName"].asString());
       set_appID(root["appID"].asString());
-      set_sizeInBytes(root["sizeInBytes"].asUInt());
+      set_sizeInBytes(std::stoul(root["sizeInBytes"].asString()));
       UpdateVersion ver2(root["version"].asString());
       this->v = ver2;
     }
@@ -40,12 +40,13 @@ MetaData::MetaData(string jsonStr)
 
 bool MetaData::operator >(MetaData Meta2)
 {
-    if(this->get_sizeInBytes() > Meta2.get_sizeInBytes()){
-        return true;
-    }
-    else{
-        return false;
-    }
+    // if(this->get_sizeInBytes() > Meta2.get_sizeInBytes()){
+    //     return true;
+    // }
+    // else{
+    //     return false;
+    // }
+    return this->v > Meta2.v;
 }
 
 bool MetaData::operator == (MetaData Meta2) {

@@ -3,6 +3,7 @@
 #include <string.h> //strlen
 #include <sys/socket.h> //socket
 #include <unistd.h>// close socket
+
 using namespace std;
 using namespace OTA;
 
@@ -64,7 +65,7 @@ bool Client::sendData(string data)
     // cout<<"\n";
     
     // Send some data
-    if( send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0)
+    if( send(sock , &data[0] , data.length() , 0) < 0)
     {
         // cout<<"Send failed";
         return false;
@@ -78,47 +79,125 @@ bool Client::sendData(string data)
 
 
 
-bool Client::requestMetadata(std::string &data){
+bool Client::requestMetadata(std::vector<MetaData> &metadata_v){
 
-    if(this->sendData("Requesting Metadata")==0){
+    // send request to the server
+    string request = "Requesting Metadata";
+    int size = request.length();
+
+    if(send(sock , &size , sizeof(size) , 0) < 0)
+    {
+        cout<<"Send size failed"<<endl;
         return false;
-    };
+    }
+    if(send(sock , &request[0] , request.length() , 0) < 0)
+    {
+        cout << "Send request failed" << endl;
+        return false;
+    }
+
+    // if(this->sendData("Requesting Metadata")==0){
+    //     return false;
+    // };
     
     //Receive a reply from the server
     
     int metaDataSize;
-    recv(sock, &metaDataSize, sizeof(metaDataSize), 0);
-    data.resize(metaDataSize);
-    if( recv(sock ,&data[0] , metaDataSize, 0) < 0)
+    if (recv(sock, &metaDataSize, sizeof(metaDataSize), 0) < 0)
     {
-        // cout<<"recv failed";
+        cout<<"\t[CLOUD] recv metadata size failed"<<endl;
         return false;
     }
-    // cout<<"Received Metadata: " << data <<endl;
+    std::vector<uint8_t> metadata;
+    metadata.resize(metaDataSize);
+    if( recv(sock ,&metadata[0] , metaDataSize, 0) < 0)
+    {
+        cout<<"\t[CLOUD] Error receiving metadata"<<endl;
+        return false;
+    }
+    // deserialize metadata
+    string metadata_str;
+    for(int i=0;i<metadata.size();i++){
+        if(metadata[i] == 0){
+            MetaData md(metadata_str);
+            metadata_v.push_back(md);
+            metadata_str = "";
+            continue;
+        }
+        metadata_str += metadata[i];
+    }
     return true;
     
 }
 
-bool Client::requestPackage(std::vector<uint8_t> &data){
+bool Client::requestPackage(MetaData metadata, std::vector<uint8_t> &data){
+    //serialize metadata
+    std::string metadata_str = metadata.serializeToJson();
+    cout<<"\t[CLOUD] request the package of metadata: "<<metadata_str<<endl;
+    string data_str = "Requesting Package";
+    int data_str_size = data_str.length();
 
-
-    if(this->sendData("Requesting Package")==0){
+    if (send(sock, &data_str_size, sizeof(data_str_size), 0) < 0)
+    {
+        cout<<"\t[CLOUD] send data size failed"<<endl;
         return false;
-    };
+    }
+    if (send(sock, &data_str[0], data_str_size, 0) < 0)
+    {
+        cout<<"\t[CLOUD] send data failed"<<endl;
+        return false;
+    }
+
+    // if(this->sendData()==0){
+    //     return false;
+    // };
+
+
+    // Send metadata
+    int metaDataSize = metadata_str.size();
+    if( send(sock , &metaDataSize , sizeof(metaDataSize), 0) < 0)
+    {
+        cout<<"\t[CLOUD] send metadata size failed"<<endl;
+        return false;
+    }
+
+    if( send(sock , &metadata_str[0] , metaDataSize, 0) < 0)
+    {
+        cout<<"\t[CLOUD] send metadata failed"<<endl;
+        return false;
+    }
+
     //Receive a reply from the server
     int packageDataSize;
-    recv(sock, &packageDataSize, sizeof(packageDataSize), 0);
+    if (recv(sock, &packageDataSize, sizeof(packageDataSize), 0) < 0)
+    {
+        cout<<"\t[CLOUD] recv package size failed"<<endl;
+        return false;
+    }
+    data.clear();
     data.resize(packageDataSize);
     if(recv(sock ,data.data() ,packageDataSize , 0) < 0)
     {
+        cout<<"\t[CLOUD] recv package failed"<<endl;
         return false;
     }
    return true;
-    
 }
 
 void Client::cloudDisconnect(){
-    this->sendData("End Connection");
+    string data = "End Connection";
+    int size = data.length();
+    if(send(sock , &size , sizeof(size) , 0) < 0)
+    {
+        cout<<"Send size failed"<<endl;
+        return;
+    }
+    if(send(sock , &data[0] , data.length() , 0) < 0)
+    {
+        cout << "Send request failed" << endl;
+        return;
+    }
+    // this->sendData("End Connection");
     close(sock);
 }
 
