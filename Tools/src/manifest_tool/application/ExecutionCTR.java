@@ -39,6 +39,7 @@ public class ExecutionCTR {
 	public FileChooser FC = new FileChooser();
 	public static ArrayList<Accordion> process_list = new ArrayList<>();
 	public static ArrayList<String> process_name = new ArrayList<>();
+	public static ArrayList<String[]> fgs;
 	public static String manifest_id;
 	public static int mode = 0;
 	public static String path;
@@ -107,7 +108,7 @@ public class ExecutionCTR {
 		else {
 			process_list = new ArrayList<>();
 			process_name = new ArrayList<>();
-			manifest_id = "new_manifest";
+			manifest_id = "EM_ID";
 			exec_id.setText(manifest_id);
 			process_list.add(process_acc);
 			Del_Proc_Btn.setDisable(true);
@@ -216,14 +217,35 @@ public class ExecutionCTR {
 		dep.setGraphicTextGap(25);
 		dep.setAnimated(true);
 		dep.setAlignment(Pos.TOP_CENTER);
-		dep.setContentDisplay(ContentDisplay.RIGHT);
-		
+		dep.setContentDisplay(ContentDisplay.RIGHT);	
 		VBox options = new VBox();
 		HBox o1 = new HBox();
 		HBox o2 = new HBox();
-		o1.getChildren().addAll(new Label("fg_name"),new TextField());
+		ComboBox<String> names = new ComboBox<>();
+		for(String[]fg:fgs) {
+			names.getItems().add(fg[0]);
+		}
+		MenuButton modes = new MenuButton();
+		for(String mode:fgs.get(0)) {
+			if(fgs.get(0)[0].equals(mode))continue;
+			CheckMenuItem item = new CheckMenuItem(mode);  		
+			modes.getItems().add(item);
+		}
+		names.getSelectionModel().selectFirst();
+		names.getSelectionModel().selectedItemProperty().addListener((ops, oldValue, newValue) -> {
+			if(!oldValue.equals(newValue)) {
+				modes.getItems().clear();
+				int no = names.getItems().indexOf(newValue);
+				for(String mode:fgs.get(no)) {
+					if(fgs.get(no)[0].equals(mode))continue;
+					CheckMenuItem item = new CheckMenuItem(mode);  		
+					modes.getItems().add(item);
+				}
+			}
+		}); 
+		o1.getChildren().addAll(new Label("fg_name"),names);
 		o1.setSpacing(20);
-		o2.getChildren().addAll(new Label("modes"),new TextField());
+		o2.getChildren().addAll(new Label("modes"),modes);
 		o2.setSpacing(30);
 		options.getChildren().addAll(o1,o2);
 		dep.setContent(options);

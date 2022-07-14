@@ -78,7 +78,7 @@ public class MachineCTR {
 		else {
 			fg_list = new ArrayList<>();
 			fg_names = new ArrayList<>();
-			manifest_id = "new_manifest";
+			manifest_id = "MM_ID";
 			mac_id.setText(manifest_id);
 			fg_list.add(fg_acc);
 			Del_FG_Btn.setDisable(true);

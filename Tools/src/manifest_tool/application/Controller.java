@@ -2,8 +2,8 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +34,7 @@ public class Controller {
     	iv.setScaleY(0.6);
 	}
 	public void EM(ActionEvent e) throws IOException  {
-		ChoiceDialog<String> choice = new ChoiceDialog<String>("Generate Manifest","Generate Manifest","Modify Manifest");
+		ChoiceDialog<String> choice = new ChoiceDialog<String>("Generation","Generation","Modification");
 		choice.setTitle("Execution Manifest");
 		choice.setContentText("Operation: ");
 		choice.setHeaderText("Select Operation");
@@ -42,7 +42,49 @@ public class Controller {
 		stage.getIcons().add(new Image("icon.png"));
 		choice.showAndWait();
 		if(choice.resultProperty().getValue()==null)return;
-		if(choice.resultProperty().getValue().equals("Generate Manifest")) {
+		if(choice.resultProperty().getValue().equals("Generation")) {	
+			Node JSONTree;
+			String Data = new String();
+			FC.setTitle("Load Machine Manifest (.json) File");
+			FC.getExtensionFilters().clear();
+			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("json File","*.json"));	
+			File myObj = FC.showOpenDialog(Main.getPrimaryStage());
+			if(myObj==null) return;
+		    Scanner myReader = new Scanner(myObj);
+		    while (myReader.hasNextLine()) Data += myReader.nextLine()+'\n';
+		    myReader.close();
+	    	JSONTree = Node.JSONToTree(Data);
+		    if(JSONTree==null) {
+				Alert alert = new Alert(AlertType.ERROR,"Please Load Consistent JSON File",ButtonType.CLOSE);
+				alert.setHeaderText("JSON FILE INCONSISTENT!");
+				Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage2.getIcons().add(new Image("err.png"));
+				alert.showAndWait();
+				return;
+			}
+			GUI res = Node.MM_TreeToGUI(JSONTree);
+			if(res==null) {
+				Alert alert = new Alert(AlertType.ERROR,"JSON Loaded Is Not Machine Manifest!",ButtonType.CLOSE);
+				alert.setHeaderText("FILE NOT MACHINE MANIFEST!");
+				Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage2.getIcons().add(new Image("err.png"));
+				alert.showAndWait();
+				return;
+			}
+			ExecutionCTR.fgs = new ArrayList<>();
+			ArrayList<Accordion> fg_list =res.acc_list;
+			ArrayList<String> fg_names =res.acc_names;
+			for(Accordion i:fg_list) {
+				String[] fg = new String[1+i.getPanes().size()];
+				fg[0]=fg_names.get(fg_list.indexOf(i));
+				int counter = 1;
+				for(TitledPane ii:i.getPanes()) {
+					Button del = (Button) ii.getGraphic();
+					fg[counter]=(((TextField)del.getGraphic()).getText());
+					counter++;
+				}
+				ExecutionCTR.fgs.add(fg);
+			}
 			Image icon = new Image("icon.png");
 			secondaryStage.getIcons().add(icon);
 			secondaryStage.setResizable(false);
@@ -56,10 +98,53 @@ public class Controller {
 			secondaryStage.showAndWait();
 			Main.getPrimaryStage().show();
 		}
-		else if (choice.resultProperty().getValue().equals("Modify Manifest")) {
+		else if (choice.resultProperty().getValue().equals("Modification")) {
+			Node JSONTree0;
+			String Data0 = new String();
+			FC.setTitle("Load Machine Manifest (.json) File");
+			FC.getExtensionFilters().clear();
+			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("json File","*.json"));	
+			File myObj0 = FC.showOpenDialog(Main.getPrimaryStage());
+			if(myObj0==null) return;
+		    Scanner myReader0 = new Scanner(myObj0);
+		    while (myReader0.hasNextLine()) Data0 += myReader0.nextLine()+'\n';
+		    myReader0.close();
+		    JSONTree0 = Node.JSONToTree(Data0);
+		    if(JSONTree0==null) {
+				Alert alert = new Alert(AlertType.ERROR,"Please Load Consistent JSON File",ButtonType.CLOSE);
+				alert.setHeaderText("JSON FILE INCONSISTENT!");
+				Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage2.getIcons().add(new Image("err.png"));
+				alert.showAndWait();
+				return;
+			}
+			GUI res0 = Node.MM_TreeToGUI(JSONTree0);
+			if(res0==null) {
+				Alert alert = new Alert(AlertType.ERROR,"JSON Loaded Is Not Machine Manifest!",ButtonType.CLOSE);
+				alert.setHeaderText("FILE NOT MACHINE MANIFEST!");
+				Stage stage2 = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage2.getIcons().add(new Image("err.png"));
+				alert.showAndWait();
+				return;
+			}
+			ExecutionCTR.fgs = new ArrayList<>();
+			ArrayList<Accordion> fg_list =res0.acc_list;
+			ArrayList<String> fg_names =res0.acc_names;
+			for(Accordion i:fg_list) {
+				String[] fg = new String[1+i.getPanes().size()];
+				fg[0]=fg_names.get(fg_list.indexOf(i));
+				int counter = 1;
+				for(TitledPane ii:i.getPanes()) {
+					Button del = (Button) ii.getGraphic();
+					fg[counter]=(((TextField)del.getGraphic()).getText());
+					counter++;
+				}
+				ExecutionCTR.fgs.add(fg);
+			}
+			//////////////////////////////////////////
 			Node JSONTree;
 			String Data = new String();
-			FC.setTitle("Load .json File");
+			FC.setTitle("Load Execution Manifest (.json) File");
 			FC.getExtensionFilters().clear();
 			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("json File","*.json"));	
 			File myObj = FC.showOpenDialog(Main.getPrimaryStage());
@@ -81,7 +166,7 @@ public class Controller {
 				secondaryStage.setResizable(false);
 				ExecutionCTR.mode=1;
 				ExecutionCTR.path=myObj.getPath();
-				GUI res = Node.EM_TreeToGUI(JSONTree);
+				GUI res = Node.EM_TreeToGUI(JSONTree,ExecutionCTR.fgs);
 				if(res==null) {
 					Alert alert = new Alert(AlertType.ERROR,"JSON Loaded Is Not Execution Manifest!",ButtonType.CLOSE);
 					alert.setHeaderText("FILE NOT EXECUTION MANIFEST!");
@@ -106,7 +191,7 @@ public class Controller {
 		}
 	}
 	public void MM(ActionEvent e) throws IOException  {
-		ChoiceDialog<String> choice = new ChoiceDialog<String>("Generate Manifest","Generate Manifest","Modify Manifest");
+		ChoiceDialog<String> choice = new ChoiceDialog<String>("Generation","Generation","Modification");
 		choice.setTitle("Machine Manifest");
 		choice.setContentText("Operation: ");
 		choice.setHeaderText("Select Operation");
@@ -114,7 +199,7 @@ public class Controller {
 		stage.getIcons().add(new Image("icon.png"));
 		choice.showAndWait();
 		if(choice.resultProperty().getValue()==null)return;
-		if(choice.resultProperty().getValue().equals("Generate Manifest")) {
+		if(choice.resultProperty().getValue().equals("Generation")) {
 			Image icon = new Image("icon.png");
 			secondaryStage.getIcons().add(icon);
 			secondaryStage.setResizable(false);
@@ -128,10 +213,10 @@ public class Controller {
 			secondaryStage.showAndWait();
 			Main.getPrimaryStage().show();
 		}
-		else if (choice.resultProperty().getValue().equals("Modify Manifest")) {
+		else if (choice.resultProperty().getValue().equals("Modification")) {
 			Node JSONTree;
 			String Data = new String();
-			FC.setTitle("Load .json File");
+			FC.setTitle("Load Machine Manifest (.json) File");
 			FC.getExtensionFilters().clear();
 			FC.getExtensionFilters().add(new FileChooser.ExtensionFilter("json File","*.json"));	
 			File myObj = FC.showOpenDialog(Main.getPrimaryStage());

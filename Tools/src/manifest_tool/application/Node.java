@@ -1,13 +1,21 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
@@ -103,8 +111,17 @@ public class Node {
 					if(!current.getTag().equals("FunctionGroupDependencies"))current = current.addNode(new Node(current,"FunctionGroupDependencies",1));
 					current = current.addNode(new Node(current,"",0));		
 					VBox vb = (VBox)all.get(iii).getContent();
-					String s1 = ((TextField)((HBox)vb.getChildren().get(0)).getChildren().get(1)).getText();
-					String s2 = ((TextField)((HBox)vb.getChildren().get(1)).getChildren().get(1)).getText();
+					@SuppressWarnings("unchecked")
+					String s1 = ((ComboBox<String>)((HBox)vb.getChildren().get(0)).getChildren().get(1)).getSelectionModel().getSelectedItem();
+					String s2 = new String();
+
+					MenuButton modes = (MenuButton)((HBox)vb.getChildren().get(1)).getChildren().get(1);
+				    List<String> selectedItems = modes.getItems().stream()
+				            .filter(item -> CheckMenuItem.class.isInstance(item) && CheckMenuItem.class.cast(item).isSelected())
+				            .map(MenuItem::getText)
+				            .collect(Collectors.toList());
+				    for(String mode:selectedItems) s2 =  s2 + mode + ",";
+				    s2 = s2.substring(0,s2.length()-1);
 					if(s1.equals("")||s2.equals("")) {
 						Error.append("Process Name \""+ process_name.get(i) +"\" FG Dependency Data is Empty!");
 						return null;
@@ -245,7 +262,7 @@ public class Node {
 		}
 		return (JSONTree==Current && JSONTree.getChilds().size()!=0)?JSONTree.getChilds().get(0):null;
 	}
-	public static GUI EM_TreeToGUI(Node Tree) {
+	public static GUI EM_TreeToGUI(Node Tree,ArrayList<String[]> fgs) {
 		if(!Tree.getTag().equalsIgnoreCase("")||!Tree.getType().equals("element"))return null;
 		Node Current = Tree;
 		ArrayList<Node> Search;
@@ -363,7 +380,6 @@ public class Node {
 							dtp.setContentDisplay(ContentDisplay.RIGHT);
 							
 							String Function_group,Modes;
-							
 							if(dep.Search("Function_group").size()==0
 									||dep.Search("Function_group").get(0).getVal()==null)Function_group="";
 							else Function_group = dep.Search("Function_group").get(0).getVal();
@@ -372,13 +388,48 @@ public class Node {
 									||dep.Search("Modes").get(0).getVal()==null)Modes="";
 							else Modes = dep.Search("Modes").get(0).getVal();
 							
-							
+							ArrayList<String> modex = new ArrayList<>();
+							int start = 0;
+							Modes = Modes + ',';
+							for(int i=0;i<Modes.length();i++) {
+								if(Modes.charAt(i)==',') {
+									modex.add(Modes.substring(start,i));
+									start = i+1;
+								}
+							}
 							VBox options = new VBox();
 							HBox o1 = new HBox();
 							HBox o2 = new HBox();
-							o1.getChildren().addAll(new Label("fg_name"),new TextField(Function_group));
+							ComboBox<String> names = new ComboBox<>();
+							for(String[]fg:fgs) {
+								names.getItems().add(fg[0]);
+							}
+							MenuButton modes = new MenuButton();
+							int ind = names.getItems().indexOf(Function_group);
+							if(ind==-1)ind = 0;
+							names.getSelectionModel().select(ind);
+							for(String mode:fgs.get(ind)) {
+								if(fgs.get(ind)[0].equals(mode))continue;
+								CheckMenuItem item = new CheckMenuItem(mode); 
+								if(modex.contains(mode))item.setSelected(true);
+								modes.getItems().add(item);
+							}
+							names.getSelectionModel().selectedItemProperty().addListener((ops, oldValue, newValue) -> {
+								if(!oldValue.equals(newValue)) {
+									modes.getItems().clear();
+									int no = names.getItems().indexOf(newValue);
+									for(String mode:fgs.get(no)) {
+										if(fgs.get(no)[0].equals(mode))continue;
+										CheckBox box = new CheckBox(mode); 
+										CustomMenuItem item = new CustomMenuItem(box);  		
+										item.setHideOnClick(false);  
+										modes.getItems().add(item);
+									}
+								}
+							}); 
+							o1.getChildren().addAll(new Label("fg_name"),names);
 							o1.setSpacing(20);
-							o2.getChildren().addAll(new Label("modes"),new TextField(Modes));
+							o2.getChildren().addAll(new Label("modes"),modes);
 							o2.setSpacing(30);
 							options.getChildren().addAll(o1,o2);
 							dtp.setContent(options);
