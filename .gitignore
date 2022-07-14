@@ -78,11 +78,7 @@ Debug
 *~.nib
 local.properties
 .buildpath                            
-.settings/org.eclipse.cdt.core.prefs
-.settings/org.eclipse.cdt.codan.core.prefs  
-.settings/org.eclipse.cdt.debug.core.prefs  
-.settings/org.eclipse.core.resources.prefs  
-.settings/org.eclipse.core.runtime.prefs    
+.settings/ 
 
 
 
