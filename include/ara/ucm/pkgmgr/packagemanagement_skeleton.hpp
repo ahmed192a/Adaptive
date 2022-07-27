@@ -94,6 +94,7 @@ namespace ara
                         ara::com::proxy_skeleton::skeleton::ServiceSkeleton(UCM_Service_id, instance, skeleton_handle),
                         CurrentStatus(this, "CurrentStatus", 0)
                     {
+                        TransferInfoData.TransferExitFlag = 1;
                     }
 
                     // ara::ucm::pkgmgr::PackageManagement::PackageManagerStatusType CurrentStatus_Get()

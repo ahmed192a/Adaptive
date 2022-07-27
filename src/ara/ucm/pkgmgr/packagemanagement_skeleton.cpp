@@ -100,11 +100,44 @@ ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput ara::ucm::pkgmgr::skel
     return output;
 }
 
-ara::ucm::pkgmgr::PackageManagement::FinishOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Finish()
+std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Finish()
 {
-    ara::ucm::pkgmgr::PackageManagement::FinishOutput output;
-    output.error = 0;
-    return output;
+    std::promise<ara::ucm::pkgmgr::PackageManagement::FinishOutput> promise;
+    std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> future_output = promise.get_future();
+    std::async( [&]() {
+        ara::ucm::pkgmgr::PackageManagement::FinishOutput output;
+        //  delete the package with id  =  TransferInfoData.id package id the id.zip nad id folder
+        std::string id_str;
+        for (auto byte : TransferInfoData.id)
+        {
+            id_str += std::to_string(byte);
+        }
+        // remove the file and check if it is deleletion is successfull
+        if (std::filesystem::remove("./SWP/"+id_str+".zip"))
+        {
+            cout<<"\t\t\t\tDeleting Package Success"<<endl;
+            if (std::filesystem::remove("./SWP/"+id_str))
+            {
+                cout<<"\t\t\t\tDeleting Package Success"<<endl;
+                output.error = 0;
+            }
+            else
+            {
+                cout<<"\t\t\t\tDeleting Package folder Failed"<<endl;
+                output.error = 1;
+            }
+        }
+        else
+        {
+            cout<<"\t\t\t\tDeleting Package zipped Failed"<<endl;
+            output.error = 1;
+        }
+        return output;
+    }).then( [&](ara::ucm::pkgmgr::PackageManagement::FinishOutput output) {
+        promise.set_value(output);
+    });
+    return future_output;
+    
 }
 
 ara::ucm::pkgmgr::PackageManagement::GetHistoryOutput ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::GetHistory(uint64_t timestampGE, uint64_t timestampLT)
@@ -242,21 +275,28 @@ std::future<ara::ucm::pkgmgr::PackageManagement::ProcessSwPackageOutput> ara::uc
         std::string app_version = sw_conf_json["app_version"];
 
         // read the binary file from the unziped folder
-        std::ifstream binary_file(unzip_file_name + app_name, std::ifstream::binary);
-        if (!binary_file.is_open())
-        {
-            std::cout << "Error opening binary file" << std::endl;
-            result.error = 1;
-            return result;
-        }
+        // std::ifstream binary_file(unzip_file_name + app_name, std::ifstream::binary);
+        // if (!binary_file.is_open())
+        // {
+        //     std::cout << "Error opening binary file" << std::endl;
+        //     result.error = 1;
+        //     return result;
+        // }
+
         // get the size of the binary file
-        binary_file.seekg(0, binary_file.end);
-        uint64_t binary_file_size = binary_file.tellg();
-        binary_file.seekg(0, binary_file.beg);
-        // create a buffer to read the binary file
-        std::vector<uint8_t> binary_file_buffer(binary_file_size);
-        binary_file.read((char *)binary_file_buffer.data(), binary_file_size);
-        binary_file.close();
+        // binary_file.seekg(0, binary_file.end);
+        // uint64_t binary_file_size = binary_file.tellg();
+        // binary_file.seekg(0, binary_file.beg);
+        // // create a buffer to read the binary file
+        // std::vector<uint8_t> binary_file_buffer(binary_file_size);
+        // binary_file.read((char *)binary_file_buffer.data(), binary_file_size);
+        // binary_file.close();
+
+        ifstream ifs(unzip_file_name + app_name, ios::binary | ios::ate);
+        ifstream::pos_type pos = ifs.tellg();
+        std::vector<uint8_t> binary_file_buffer(pos);
+        ifs.seekg(0, ios::beg);
+        ifs.read((char *)&binary_file_buffer[0], pos);
 
         std::vector<uint8_t> data_block(binary_file_buffer.begin()+52, binary_file_buffer.end());
         cout<<"*************************"<<endl;
@@ -394,7 +434,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferDataOutput> ara::ucm::p
         ara::ucm::pkgmgr::PackageManagement::TransferDataOutput  result;
         
         
-        if (TransferInfoData.id == id)
+        if (TransferInfoData.id == id && TransferInfoData.TransferExitFlag==0)
         {
             if (blockCounter == TransferInfoData.localBlockCounter)
             {
@@ -459,6 +499,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferExitOutput> ara::ucm::p
         } 
         str = "SWP/" + str + ".zip";
         SaveBlock(str.data() , this->buffer); 
+        TransferInfoData.TransferExitFlag = 1;
         return result; });
 
     return f;
@@ -469,6 +510,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::
 
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> f = std::async([&, size]() {
         ara::ucm::pkgmgr::PackageManagement::TransferStartOutput result;
+        TransferInfoData.TransferExitFlag = 0;
         TransferInfoData.localBlockCounter = 0;
         TransferInfoData.TransferExitFlag = false;
         uuid u;
@@ -480,6 +522,7 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::
 
         }
         std::cout << std::endl;
+
         // don't change 64 (ucm_client.cpp)
         TransferInfoData.BlockSize = 1024;
         TransferInfoData.size = size;
