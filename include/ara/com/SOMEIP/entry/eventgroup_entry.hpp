@@ -22,18 +22,40 @@ namespace ara
             class EventgroupEntry : public Entry
             {
             private:
-                static const uint32_t NackTTL = 0x000000;
-                uint16_t GBEventgroupId;
+                static const uint32_t NackTTL = 0x000000;   //!< Nack TTL is 0x000000 (no nack)
+                uint16_t GBEventgroupId;                    //!< Eventgroup ID          
 
                 
-
+                /**
+                 * @brief isAcknowledged checks if the entry is acknowledged
+                 * 
+                 * @return true 
+                 * @return false 
+                 */
                 bool isAcknowledge() const noexcept;
 
             protected:
+                /**
+                 * @brief ValidateOption checks if the entry is valid
+                 * 
+                 * @param option    option to be validated
+                 * @return true 
+                 * @return false 
+                 */
                 bool ValidateOption(
                     const option::Option *option) const noexcept override;
 
             public:
+                /**
+                 * @brief Construct a new Eventgroup Entry object
+                 * 
+                 * @param type          EntryType::Subscription or EntryType::Unsubscription
+                 * @param serviceId     service id of the entry
+                 * @param instanceId    instance id of the entry
+                 * @param ttl           ttl of the entry
+                 * @param majorVersion  major version of the entry
+                 * @param eventgroupId  eventgroup id of the entry
+                 */
                 EventgroupEntry(EntryType type,
                                              uint16_t serviceId,
                                              uint16_t instanceId,

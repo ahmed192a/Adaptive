@@ -24,8 +24,7 @@ namespace ara
             class Ipv4Address
             {
                 public:
-                /// @brief IPv4 address octets
-                std::array<uint8_t, 4> Octets;
+                std::array<uint8_t, 4> Octets;      //!< IPv4 address octets
 
                 Ipv4Address() = delete;
 

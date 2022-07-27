@@ -16,9 +16,20 @@
 namespace ara{
     namespace com{
         namespace option{
+            /**
+             * @brief Class for Option deserialization
+             * 
+             */
             class OptionDeserializer
             {
             public:
+                /**
+                 * @brief Deserialize Option from byte array
+                 * 
+                 * @param payload   byte array containing Option payload
+                 * @param offset    offset in byte array
+                 * @return Option*  pointer to deserialized Option
+                 */
                 static Option* Deserialize(
                     const std::vector<uint8_t> &payload,
                     std::size_t offset) noexcept

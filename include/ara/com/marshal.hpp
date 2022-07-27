@@ -1,7 +1,6 @@
 /**
  * @file marshal.hpp
  * @author Flashing Adapter Graduation Project Team
- * @brief
  * @version 0.1
  * @date 2022-02-25
  *
@@ -24,33 +23,45 @@ namespace ara
          *         then decrement the argument counter I and send the Tail which is the rest of the arguments.
          *          until it's  I = 0. then return The Head which is the type of the Argument.
          * 
-         * @tparam I 
-         * @tparam Head 
-         * @tparam Tail 
+         * @tparam I          number remaining of the arguments  
+         * @tparam Head       type of the argument to be sent to the function (the first argument)
+         * @tparam Tail       type of the rest of the arguments to be sent to the function (the rest of the arguments)
          */
         template <std::size_t I, typename Head, typename... Tail>
         struct ArgumentTypeImpl
         {
-            using type = typename ArgumentTypeImpl<I - 1, Tail...>::type;
+            using type = typename ArgumentTypeImpl<I - 1, Tail...>::type;   // get the type of the the argument
         };
         /**
          * @brief if it's the last argument of the function, then return the head which is the type of the argument.
          * 
-         * @tparam Head 
-         * @tparam Tail 
+         * @tparam Head     type of the argument to be sent to the function (the first argument)
+         * @tparam Tail     type of the rest of the arguments to be sent to the function (the rest of the arguments)
          */
         template <typename Head, typename... Tail>
         struct ArgumentTypeImpl<0, Head, Tail...>
         {
-            using type = Head;
+            using type = Head;                                // get the type of the the argument
         };
 
         template <std::size_t I, typename... Args>
-        using ArgumentType = typename ArgumentTypeImpl<I, Args...>::type;
+        using ArgumentType = typename ArgumentTypeImpl<I, Args...>::type;   // get the type of the the argument
 
+        /**
+         * @struct MessageIndexerImpl
+         * @brief MessageIndexerImpl is a helper struct for the Marshal class to get the index of each argument in the vector of bytes.
+         * 
+         * @tparam I        number remaining of the arguments
+         * @tparam Args     type of the rest of the arguments to be sent to the function (the rest of the arguments)
+         */
         template <std::size_t I, typename... Args>
         struct MessageIndexerImpl
         {
+            /**
+             * @brief operator() is a function that calculates the index of each argument in the vector of bytes.
+             * 
+             * @param v 
+             */
             void operator()(std::vector<uint32_t> &v)
             {
 
@@ -62,9 +73,20 @@ namespace ara
             }
         };
 
+        /**
+         * @struct MessageIndexerImpl
+         * @brief MessageIndexerImpl An overload of the MessageIndexerImpl struct for the last argument of the function.
+         * 
+         * @tparam Args     type of the rest of the arguments to be sent to the function (the rest of the arguments)
+         */
         template <typename... Args>
         struct MessageIndexerImpl<0, Args...>
         {
+            /**
+             * @brief operator() is a function that calculates the index of each argument in the vector of bytes.
+             * 
+             * @param v 
+             */
             void operator()(std::vector<uint32_t> &v)
             {
                 typename std::decay<ArgumentType<0, Args...>>::type k;
@@ -91,7 +113,7 @@ namespace ara
             /**
              * @brief Construct a new Marshal object
              * 
-             * @param v 
+             * @param v  vector of data bytes
              */
             Marshal(std::vector<uint8_t> v) : mv{v}
             {

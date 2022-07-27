@@ -24,12 +24,12 @@ namespace ara
             class Ipv4EndpointOption : public Option
             {
             private:
-                static const Layer4ProtocolType DefaultSdProtocol = Layer4ProtocolType::Udp;
-                static const uint16_t DefaultSdPort = 30490;
+                static const Layer4ProtocolType DefaultSdProtocol = Layer4ProtocolType::Udp;    //!< default protocol for service discovery messages is UDP
+                static const uint16_t DefaultSdPort = 30490;                            //!< default port for service discovery messages is 30490
 
-                helper::Ipv4Address GBIpAddress;
-                Layer4ProtocolType GBL4Proto;
-                uint16_t GBPort;
+                helper::Ipv4Address GBIpAddress;                        //!< IPv4 address of the gateway
+                Layer4ProtocolType GBL4Proto;                           //!< Layer 4 protocol of the gateway
+                uint16_t GBPort;                                        //!< port of the gateway
 
                 // constexpr Ipv4EndpointOption(
                 //     OptionType type,
@@ -44,6 +44,15 @@ namespace ara
                 // }
 
             public:
+            /**
+             * @brief constructor for IPv4 endpoint option
+             * 
+             * @param type option type
+             * @param discardable option discardable flag
+             * @param ipAddress IPv4 address of the gateway
+             * @param protocol Layer 4 protocol of the gateway
+             * @param port port of the gateway
+             */
             constexpr Ipv4EndpointOption(
                     OptionType type,
                     bool discardable,
@@ -57,7 +66,16 @@ namespace ara
                 }
 
                 Ipv4EndpointOption() = delete;
+                /**
+                 * @brief Destroy the Ipv 4 Endpoint Option object
+                 * 
+                 */
                 ~Ipv4EndpointOption(){}
+                /**
+                 * @brief Get Length of the IPv4 endpoint option
+                 * 
+                 * @return uint16_t 
+                 */
                 uint16_t Length() const noexcept override;
 
                 /// @brief Get IP address

@@ -40,6 +40,15 @@ namespace ara
             /// @param vector2 Second vector
             void Concat(std::vector<uint8_t> &vector1, std::vector<uint8_t> &&vector2);
 
+
+            /**
+             * @brief Extract a variable of type T from a byte vector
+             * 
+             * @tparam T        Type of the variable to be extracted
+             * @param vector    Byte vector
+             * @param offset    Offset of the variable in the byte vector
+             * @return T        Extracted variable
+             */
             template <typename T>
             T Extract (const std::vector<uint8_t> &vector, size_t offset)
             {
@@ -48,6 +57,14 @@ namespace ara
                 return result;
             }
 
+            /**
+             * @brief Extract a short vector of bytes from alarge vector of bytes
+             * 
+             * @param vector        Byte vector
+             * @param offset        Offset of the short value in the byte vector
+             * @param length        Length of the short vector of bytes
+             * @return std::vector<uint8_t>     Short vector of bytes
+             */
             std::vector<uint8_t> Extracts(const std::vector<uint8_t> &vector, size_t offset, size_t length);
             
         }

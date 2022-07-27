@@ -22,8 +22,8 @@ namespace ara
             class LoadBalancingOption : public Option
             {
             private:
-                uint16_t GBPriority;
-                uint16_t GBWeight;
+                uint16_t GBPriority;            //!< Priority of the gateway
+                uint16_t GBWeight;              //!< Weight of the gateway
 
             public:
                 LoadBalancingOption() = delete;
@@ -41,6 +41,11 @@ namespace ara
                 {
                 }
 
+                /**
+                 * @brief Get LoadBalancingOption Length
+                 * 
+                 * @return uint16_t 
+                 */
                 uint16_t Length() const noexcept override;
 
                 /// @brief Get priority
@@ -51,6 +56,11 @@ namespace ara
                 /// @returns Servince instance random selection weight
                 uint16_t Weight() const noexcept;
 
+                /**
+                 * @brief Get LoadBalancingOption payload as byte array
+                 * 
+                 * @return std::vector<uint8_t> 
+                 */
                 std::vector<uint8_t> Payload()  override;
             };
         }
