@@ -127,7 +127,7 @@ namespace ara
                      * 
                      * @return ara::ucm::pkgmgr::PackageManagement::FinishOutput 
                      */
-                    ara::ucm::pkgmgr::PackageManagement::FinishOutput Finish();
+                    std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> Finish();
                     /**
                      * @brief Get the History 
                      * 
