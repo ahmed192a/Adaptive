@@ -58,9 +58,6 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/App/processes/redirected)
 
 
 
-# option for unit 0testing
-option(build_tests "Build all the tests.")
-set(build_tests ON)
-message(STATUS "print_all_variables------------------------------------------${build_tests}")
-add_subdirectory(Testing)
+# option for unit testing
+# add_subdirectory(Testing)
 

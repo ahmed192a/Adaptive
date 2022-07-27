@@ -149,7 +149,7 @@ int main(int argc, char ** argv){
 
     cout.rdbuf(stream_buffer_cout);     // restore the cout stream buffer
     file.close();                       // close the file stream
-    // view_out();                         // view the output of all processe
+    view_out();                         // view the output of all processe
     return 0;
 }
 /**
