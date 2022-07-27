@@ -278,17 +278,35 @@ void *pthread0(void *v_var){
             SM_State = State::STATE_RUNNING;
         }
         else if (SM_State == State::STATE_RUNNING && OTA_triggerin_skeleton_ptr->trigger.get_event() == ara::sm::triggerin::OTA_State::OTA_STATE_INITIALIZED){
-            // used for OTA
-            // cout<<"[SM] OTA_STATE_INITIALIZED"<<endl;
-            // SM_State = State::STATE_UPDATE;
-            // FunctionGroupState::CtorToken token;
-            // token.fg_name = "MachineFG";
-            // token.c_state = "off";
-            // FunctionGroupState FGS(std::move(token));
-            // std::cout<<"[SM] FGS created "<<endl;
-            // std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
-            // boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
-            // std::cout<<"[SM] state changed"<<endl;
+            //used for OTA  
+            // Comment the next code in this if condition to disable system shutdown and to run the system normally
+            cout<<"[SM] OTA_STATE_INITIALIZED"<<endl;
+            SM_State = State::STATE_UPDATE;
+            FunctionGroupState::CtorToken token;
+            token.fg_name = "FG_1";
+            token.c_state = "off";
+            FunctionGroupState FGS(std::move(token));
+            std::cout << "[SM] Create Function group state for FG1 to off state" << std::endl;
+            
+            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+            if(var.index() == 0)
+                std::cout<<"[SM] state changed successfully"<<std::endl;
+            else
+                std::cout<<"[SM] state change failed"<<std::endl;
+
+            //--------------------------------------------------------------------------------------------------
+            token.fg_name = "MachineFG";
+            token.c_state = "off";
+            FunctionGroupState FGS1(std::move(token));
+            std::cout << "[SM] Create Function group state for MachineFG to off state" << std::endl;
+            
+            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future1 = state_client_ptr->SetState(FGS1);
+            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var1 = _future1.get();
+            if(var1.index() == 0)
+                std::cout<<"[SM] state changed successfully"<<std::endl;
+            else
+                std::cout<<"[SM] state change failed"<<std::endl;
         }
 
         /*******************************        END OF FSM      **************************************/
