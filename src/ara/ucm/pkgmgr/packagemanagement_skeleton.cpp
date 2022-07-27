@@ -102,9 +102,7 @@ ara::ucm::pkgmgr::PackageManagement::DeleteTransferOutput ara::ucm::pkgmgr::skel
 
 std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::Finish()
 {
-    std::promise<ara::ucm::pkgmgr::PackageManagement::FinishOutput> promise;
-    std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> future_output = promise.get_future();
-    std::async( [&]() {
+    std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> future_output = std::async(std::launch::async, [&]() {
         ara::ucm::pkgmgr::PackageManagement::FinishOutput output;
         //  delete the package with id  =  TransferInfoData.id package id the id.zip nad id folder
         std::string id_str;
@@ -133,8 +131,6 @@ std::future<ara::ucm::pkgmgr::PackageManagement::FinishOutput> ara::ucm::pkgmgr:
             output.error = 1;
         }
         return output;
-    }).then( [&](ara::ucm::pkgmgr::PackageManagement::FinishOutput output) {
-        promise.set_value(output);
     });
     return future_output;
     
