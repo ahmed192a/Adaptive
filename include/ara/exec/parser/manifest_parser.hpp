@@ -36,7 +36,7 @@ namespace ara
 
             /**
              * @brief Class Manifest Parser used to parse Execution and Machine manifiests of the system
-             * 
+             * @class ManifestParser
              */
             class ManifestParser 
             {
@@ -72,27 +72,29 @@ namespace ara
             /**
              * @brief read the value of the passed key from the json object
              * 
-             * @tparam T 
-             * @param json_obj 
-             * @param key 
-             * @param output_value 
-             * @return true 
-             * @return false 
+             * @tparam T            Type of the value to be returned
+             * @param [in] json_obj         json object to be parsed
+             * @param [in] key              key to be searched in the json object
+             * @param [out] output_value    value to be returned
+             * @return true                 if the key is found and the value is successfully read
+             * @return false                if the key is not found or the value is not successfully read
              */
             template <typename T>
             bool read_value(const json &json_obj, const std::string &key, T &output_value) noexcept;
             /**
              * @brief read the data from the passed file and return json object filled with this data
              * 
-             * @param path 
-             * @return json 
+             * @param [in] path      path to the file to be read
+             * @return json    json object filled with the data from the file
              */
             json read_manifest_file(const std::string &path) noexcept(false);
             /**
              * @brief  checks if the json object violate the passed vector of keys
              * 
-             * @param json_obj 
-             * @param json_keys 
+             * @param [in] json_obj     json object to be parsed
+             * @param [in] json_keys    vector of keys to be checked
+             * 
+             * @throw runtime_error if the json object violate the passed vector of keys
              */
             void validate_content(const json &json_obj, const std::vector<std::string> &json_keys) noexcept(false);
 

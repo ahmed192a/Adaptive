@@ -67,7 +67,7 @@ namespace ara {
                 //             expectedTag => pointer to read only mem region
                 virtual std::vector<byte>  ProcessConfidentialData(ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag) noexcept = 0;
 
-                ///@breif:The input buffer will be overwritten by the processed message After this method is called 
+                ///@brief:The input buffer will be overwritten by the processed message After this method is called 
                 //no additional associated data may be updated
                 //@param[in]:inOut=> the input buffer containing the full message
                 //          expectedTag => pointer to read only mem region

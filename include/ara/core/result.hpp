@@ -387,7 +387,7 @@ namespace ara
              * 
              * \return T&&  an rvalue reference to the contained value
              * 
-             * \exceptions <TYPE>   the exception type associated with the contained error
+             * \exception T   the exception type associated with the contained error
              */
             T&& ValueOrThrow() && noexcept(false);
 

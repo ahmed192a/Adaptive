@@ -19,20 +19,20 @@ namespace ara
     {
         // SWS_EM_02269
         /**
-         * \brief Class representing Function Group State defined in meta-model (ARXML).
-         *
-         * \note Once created based on ARXML path, it’s proxy_skeleton value stay bounded to it for entire lifetime of
+         * @brief Class representing Function Group State defined in meta-model (ARXML).
+         * @class FunctionGroupState
+         * @note Once created based on ARXML path, it’s proxy_skeleton value stay bounded to it for entire lifetime of
          *       an object.
          */
         class FunctionGroupState
         {
             private:
-            std::string mc_state;
-            std::string mFunction_group_name ;
+            std::string mc_state;                           //!< Function group state name
+            std::string mFunction_group_name ;              //!< Function group name
             public:
 
-            // FunctionGroup f ; 
-            using CtorToken = struct{std::string fg_name; std::string c_state;};
+            using CtorToken = struct{std::string fg_name; std::string c_state;};    //!< CtorToken type
+            
             /**
              * @brief Set the FG name
              * 
@@ -46,46 +46,46 @@ namespace ara
              * @param state 
              */
             void set_states(std::string state);
+            
             /**
              * @brief Get the FG name
              * 
              * @return std::string 
              */
             std::string get_FGname() const noexcept;
+            
             /**
              * @brief Get the FG state
              * 
              * @return std::string 
              */
             std::string get_states() const noexcept;
-            // SWS_EM_02270
+            
             /**
-             * \brief Pre construction method for FunctionGroupState.
+             * @brief Pre construction method for FunctionGroupState.
              *
              * This method shall validate/verify meta-model path passed and perform any operation that could
              * fail and are expected to be performed in constructor.
              *
-             * \param[in] functionGroup         the Function Group instance the state shall be
+             * @param [in] functionGroup         the Function Group instance the state shall be
              *                                  connected with.
-             * \param[in] metaModelIdentifier   stringified meta model identifier (short name path)
+             * @param [in] metaModelIdentifier   stringified meta model identifier (short name path)
              *                                  where path separator is ’/’.
              *
-             * \return ara::core::Result<FunctionGroupState::CtorToken>     a construction token from which an instance of
+             * @return boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>     
+             *                                                              a construction token from which an instance of
              *                                                              FunctionGroupState can be constructed, or Exec
              *                                                              ErrorDomain error.
              *
-             * Thread-safe
              */
-            // ara::core::StringView ---> std::string
             static boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>  Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
 
             // SWS_EM_02271
             /**
-             * \brief Constructor that creates FunctionGroupState instance
+             * @brief Constructor that creates FunctionGroupState instance
              *
-             * \param[in] token     representing pre-constructed object.
+             * @param [in] token     representing pre-constructed object.
              *
-             * \note Please note that token is destructed during object construction!
              */
             FunctionGroupState(FunctionGroupState::CtorToken &&token) noexcept;
 
@@ -98,26 +98,25 @@ namespace ara
 
             // SWS_EM_02273
             /**
-             * \brief eq operator to compare with other FunctionGroupState instance.
+             * @brief eq operator to compare with other FunctionGroupState instance.
              *
-             * \param[in] other     FunctionGroupState instance to compare this one with.
+             * @param [in] other     FunctionGroupState instance to compare this one with.
              *
-             * \return true         in case both FunctionGroupStates are
+             * @return true         in case both FunctionGroupStates are
              *                      representing exactly the same meta-model element
-             * \return false        otherwise
+             * @return false        otherwise
              *
-             * Thread-safe
              */
             bool operator==(FunctionGroupState const &other) const noexcept;
 
             // SWS_EM_02274
             /**
-             * \brief uneq operator to compare with other FunctionGroupState instance.
+             * @brief uneq operator to compare with other FunctionGroupState instance.
              *
-             * \param[in] other     FunctionGroupState instance to compare this one with.
+             * @param [in] other     FunctionGroupState instance to compare this one with.
              *
-             * \return true         otherwise
-             * \return false        in case both FunctionGroupStates are
+             * @return true         otherwise
+             * @return false        in case both FunctionGroupStates are
              *                      representing exactly the same meta-model element
              *
              * Thread-safe

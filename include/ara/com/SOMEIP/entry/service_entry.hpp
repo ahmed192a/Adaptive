@@ -60,6 +60,7 @@ namespace ara
                     uint32_t ttl,
                     uint8_t majorVersion,
                     uint32_t minorVersion) noexcept;
+
                 ServiceEntry() = delete;
                 // ~ServiceEntry(){};
 
@@ -88,6 +89,7 @@ namespace ara
                 /// @param instanceId Service in interest instance ID
                 /// @param majorVersion Service in interest major version
                 /// @param minorVersion Service in interest minor version
+                /// @param ttl Entry time to live
                 /// @returns Offer service entry
                 static ServiceEntry CreateOfferServiceEntry(
                     uint16_t serviceId,

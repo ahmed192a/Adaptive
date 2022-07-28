@@ -22,13 +22,13 @@ namespace ara {
                 ///@brief a pointer stores the instance of the crypto provider of the authentication context
                 ConcreteCryptoProvider *myProvider;
 
-                ///@breif: the transformation to be implemented in the Algorithm (encryption/decryption)
+                ///@brief: the transformation to be implemented in the Algorithm (encryption/decryption)
                 CryptoTransform Alg_transformation;
                 
-                ///@breif: the key to be used in the Algorithm to encrypt/decrypt the provided data
+                ///@brief: the key to be used in the Algorithm to encrypt/decrypt the provided data
                 SymmetricKey::Uptr Alg_key=std::make_unique<SymmetricKey>();
 
-                ///@breif: a flag to indicate whether Set_Key has been called or not yet
+                ///@brief: a flag to indicate whether Set_Key has been called or not yet
                 bool Key_is_Set;
             
             public:

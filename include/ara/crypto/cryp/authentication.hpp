@@ -21,10 +21,10 @@ ara::crypto::cryp::SymmetricCipher::Uptr blockCipherPtr;
                 ///@brief: pointer refetences the used symmetric block cipher context to encrypt the data
                 //SymmetricCipher* blockCipherPtr;
 
-                ///@breif: a flag to state whether ara::crypto::cryp::AuthCipherCtx::SetKey has been called before or not
+                ///@brief: a flag to state whether ara::crypto::cryp::AuthCipherCtx::SetKey has been called before or not
                 int Key_is_Set=0;
 
-                //@breif: configured transformation direction of AuthCipherCtx
+                //@brief: configured transformation direction of AuthCipherCtx
                 
 
 			public:
@@ -80,7 +80,7 @@ ara::crypto::cryp::SymmetricCipher::Uptr blockCipherPtr;
                 //             expectedTag => pointer to read only mem region
                 std::vector<byte>  ProcessConfidentialData (ReadOnlyMemRegion in, ReadOnlyMemRegion expectedTag) noexcept;
 
-                ///@breif:The input buffer will be overwritten by the processed message After this method is called 
+                ///@brief:The input buffer will be overwritten by the processed message After this method is called 
                 //no additional associated data may be updated
                 //@param[in]:inOut=> the input buffer containing the full message
                 //          expectedTag => pointer to read only mem region

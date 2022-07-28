@@ -41,15 +41,13 @@ namespace ara
 
                 ~Ipv4Address() noexcept = default;
 
-                /// @brief Inject an IP address into a byte vector
+                /// @brief Inject The IP4 address into The byte vector
                 /// @param vector Byte vector
-                /// @param ipAddress IP address to be injected
                 void Inject(
                     std::vector<uint8_t> &vector);
 
                 
                 /// @brief Ipv4Address equality operator override
-                /// @param address1 First address to compare
                 /// @param address2 Second address to compare
                 /// @returns True if both addresses are equal; otherwise false
                 bool operator==(Ipv4Address address2)
@@ -64,7 +62,6 @@ namespace ara
                 }
 
                 /// @brief Ipv4Address inequality operator override
-                /// @param address1 First address to compare
                 /// @param address2 Second address to compare
                 /// @returns True if both addresses are not equal; otherwise false
                 bool operator!=(Ipv4Address address2)

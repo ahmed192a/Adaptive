@@ -11,11 +11,11 @@
 // 		namespace keys
 // 		{
 
-// 			//@breif: Definition of a transaction identifier type. 
+// 			//@brief: Definition of a transaction identifier type. 
 // 			// The zero value should be reserved for especial cases.
 // 			using TransactionId = std::uint64_t;
 
-// 			//@breif: The "transaction scope" is a list of key slots that are target for update in a transaction
+// 			//@brief: The "transaction scope" is a list of key slots that are target for update in a transaction
 // 			using TransactionScope = std::vector<KeySlot>;
 
 // 			/************************************************************************************/
@@ -29,7 +29,7 @@
 // 				rolledback
 // 			};
 
-// 			//@breif: a pair to keep track of opened TransactionScopes which are ready to be commited with changes 
+// 			//@brief: a pair to keep track of opened TransactionScopes which are ready to be commited with changes 
 // 			//        combined with their TransactionId s
 // 			struct OpenedTransactionScopeWithIdPair
 // 			{

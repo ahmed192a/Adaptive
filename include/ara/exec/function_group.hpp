@@ -20,15 +20,14 @@ namespace ara
 {
     namespace exec
     {
-         // SWS_EM_02263
         /**
-         * Class representing Function Group defined in meta-model (ARXML).
+         * @class representing Function Group defined in meta-model (ARXML).
          */
         class FunctionGroup final
         {
         private:
-            std::string mFunction_group_name;
-            std::vector<std::string> mstates;
+            std::string mFunction_group_name;                          //!< Function group name
+            std::vector<std::string> mstates;                          //!< Function group states
         public:
             using CtorToken = nlohmann::json;
 
@@ -61,7 +60,6 @@ namespace ara
             std::vector<std::string> get_states() const noexcept;
 
 
-            // SWS_EM_02264
             /**
              * \brief Pre construction method for FunctionGroup.
              *
@@ -71,21 +69,17 @@ namespace ara
              * \param[in] metaModelIdentifier   stringified meta model identifier (short name path)
              *                                  where path separator is ’/’.
              *
-             * \return Result<FunctionGroup::CtorToken>     a construction token from which an instance of
-             *                                              FunctionGroup can be constructed, or ExecErrc
-             *                                              error.
-             *
-             * Thread-safe
-             *
-             * \errors      ara::exec::ExecErrc::kMetaModelError    if metaModelIdentifier passed is incorrect (e.g.
-             *                                                      FunctionGroupState identifier has been passed).
-             *              ara::exec::ExecErrc::kGeneralError      if any other error occurs
+             * \return boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>     
+             *                              a construction token from which an instance of
+             *                               FunctionGroup can be constructed, or ExecErrc error.
+             *                          Errors:
+             *                          -  ara::exec::ExecErrc::kMetaModelError    
+             *                              if metaModelIdentifier passed is incorrect (e.g. FunctionGroupState identifier has been passed).
+             *                          -  ara::exec::ExecErrc::kGeneralError      
+             *                              if any other error occurs
              */
-            // ara::core::StringView ---> std::string
-            // 
             static boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>  Preconstruct(std::string metaModelIdentifier) noexcept;
 
-            // SWS_EM_02265
             /**
              * \brief Constructor that creates FunctionGroup instance.
              *
@@ -96,14 +90,12 @@ namespace ara
             FunctionGroup(FunctionGroup::CtorToken &&token) noexcept; 
 
 
-            // SWS_EM_02266
             /**
              * \brief Destructor of the FunctionGroup instance.
              *
              */
             ~FunctionGroup() noexcept;
 
-            // SWS_EM_02267
             /**
              * \brief eq operator to compare with other FunctionGroup instance.
              *
@@ -113,11 +105,9 @@ namespace ara
              *                      exactly the same meta-model element,
              * \return false        otherwise.
              *
-             * Thread-safe
              */
             bool operator==(FunctionGroup const &other) const noexcept;
 
-            // SWS_EM_02268
             /**
              * \brief uneq operator to compare with other FunctionGroup instance.
              *
@@ -126,15 +116,14 @@ namespace ara
              * \return false        in case both FunctionGroups are representing
              *                      exactly the same meta-model element
              *
-             * Thread-safe
              */
             bool operator!=(FunctionGroup const &other) const noexcept;
 
             /**
              * @brief eq operator to compare with other FunctionGroup instance.
              * 
-             * @param other 
-             * @return FunctionGroup& 
+             * @param other                 FunctionGroup instance to compare this one with.
+             * @return FunctionGroup&      this instance.
              */
             FunctionGroup &operator=(FunctionGroup &&other);
 

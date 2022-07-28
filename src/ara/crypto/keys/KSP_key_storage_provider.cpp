@@ -3,7 +3,7 @@
 // using namespace ara::crypto;
 // using namespace ara::crypto::keys;
 
-// //@breif: Begin new transaction for key slots update
+// //@brief: Begin new transaction for key slots update
 // TransactionId KSPKeyStorageProvider::BeginTransaction(const TransactionScope& targetSlots) noexcept
 // {
 // 	//define a counter to use it in the foor loop
@@ -37,7 +37,7 @@
 // 	return TransId;
 // }
 
-// //@breif: Commit changes of the transaction to Key Storage
+// //@brief: Commit changes of the transaction to Key Storage
 // void KSPKeyStorageProvider:: CommitTransaction(TransactionId id) noexcept
 // {
 // 	//define a counter to use it in the foor loop
@@ -70,7 +70,7 @@
 // }
 
 
-// //@breif: Load a key slot
+// //@brief: Load a key slot
 // // The function loads the information associated with a KeySlot into a KeySlot object
 // KeySlot::Uptr LoadKeySlot(ara::core::InstanceSpecifier& iSpecify) noexcept
 // {
@@ -78,7 +78,7 @@
 // }
 
 
-// //@breif: Rollback all changes executed during the transaction in Key Storage.
+// //@brief: Rollback all changes executed during the transaction in Key Storage.
 // // The rollback command permanently cancels all changes made during the transaction in Key Storage.
 // // A rolled back transaction is completely invisible for all applications.
 // void RollbackTransaction(TransactionId id) noexcept
@@ -123,7 +123,7 @@
 // }
 
 
-// //@breif: Get a vector of IOInterface from a Transaction id.
+// //@brief: Get a vector of IOInterface from a Transaction id.
 // vector<IOInterface::Uptr> GetIOInterfaceFromid(TransactionId id) noexcept
 // {
 // 	//counters for the loops

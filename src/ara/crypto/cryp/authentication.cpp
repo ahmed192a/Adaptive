@@ -267,7 +267,7 @@ std::vector<byte> Authentication::ProcessConfidentialData(ReadOnlyMemRegion in, 
 	}
 }
 //
-/////@breif:The input buffer will be overwritten by the processed message After this method is called 
+/////@brief:The input buffer will be overwritten by the processed message After this method is called 
 //				//no additional associated data may be updated
 //void Authentication::ProcessConfidentialData(ReadWriteMemRegion inOut, ReadOnlyMemRegion expectedTag = nullptr) noexcept
 //{
