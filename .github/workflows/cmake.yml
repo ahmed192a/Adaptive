@@ -88,11 +88,13 @@ jobs:
         # copy the data from doc/html and overwrite the root of the gh-pages branch
         publish_dir: ${{github.workspace}}/doc/html
         publish_branch: gh-pages
+        # clear all files on the gh-pages branch and push only the files in the publish_dir
         force_orphan: true
-        keep_files: true
-        user_name: ${{ github.actor }}
-        user_email: ${{ github.actor }}@users.noreply.github.com
+        # commit the changes to gh-pages branch
         commit_message: 'update the documentation'
+        user_name: ahmed192a
+        user_email: ah1326996@gmail.com
+
         
 
 
