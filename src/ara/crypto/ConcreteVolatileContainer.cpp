@@ -1,7 +1,7 @@
 
 
 
-#include "../../../../include/ara/crypto/common/concrete_volatile_container.hpp"
+#include "ara/crypto/common/concrete_volatile_container.hpp"
 
 using namespace ara::crypto;
 

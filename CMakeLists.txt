@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.20)
 project(
   Adaptive_Platform 
   VERSION 0.1.0
@@ -25,6 +25,8 @@ include(FetchContent)
 if(${CMAKE_VERSION} VERSION_LESS 3.14)
   include(cmake/add_FetchContent_MakeAvailable.cmake)
 endif()
+
+add_subdirectory(cmake)
 
 
 # The compiled library code is here

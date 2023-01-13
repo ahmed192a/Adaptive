@@ -13,7 +13,7 @@
 
 #include <cstdint>
 #include <string>
-#include <boost/variant2/variant.hpp>
+#include "variant2.hpp"
 #include "ara/exec/exec_error_domain.hpp"
 
 namespace ara

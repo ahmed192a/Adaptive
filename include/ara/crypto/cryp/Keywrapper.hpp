@@ -6,7 +6,7 @@
 	sudo apt-get update 
 	 sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
 */
-#include "../build/_deps/cryptopp-src/aes.h" // crypto++
+#include "cryptopp/aes.h"
 #include <modes.h> // crypto++
 #include <cryptlib.h> // crypto++
 #include <rijndael.h> // crypto++
