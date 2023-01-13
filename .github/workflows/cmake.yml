@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Checkout the Repository Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -36,6 +36,22 @@ jobs:
     - name: Run
       working-directory: ${{github.workspace}}/build/App 
       run: ./Adaptive_Platform
+    
+    - name: upload data
+      uses: actions/upload-artifact@v3
+      with:
+        name: project after build
+        path: ${{github.workspace}}/
+    
+    # commit the changes to build branch
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v7
+      with:
+        author_name: ${{ github.actor }}
+        author_email: ${{ github.actor }}@users.noreply.github.com
+        message: 'build'
+        add: ${{github.workspace}}/
+        branch: build
 
     # - name: Test
     #   working-directory: ${{github.workspace}}/build/Testing

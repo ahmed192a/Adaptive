@@ -38,7 +38,7 @@ target_link_libraries(
   # Boost::asio
   Boost::uuid
   Boost::variant2
-  ${CMAKE_THREAD_LIBS_INIT}
+  pthread
   cryptopp::cryptopp
 )
 
