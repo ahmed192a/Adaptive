@@ -11,7 +11,7 @@ env:
   BUILD_TYPE: Debug
 
 jobs:
-  build:
+  config:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
@@ -26,16 +26,30 @@ jobs:
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
+    
+    - name: upload data
+      uses: actions/upload-artifact@v3
+      with:
+        name: project after build
+        path: ${{github.workspace}}/
+  build:
+    runs-on: ubuntu-latest
+    needs: [ config ]
+    steps:
+    - name: download data
+      uses: actions/download-artifact@v3
+      with:
+        name: project after build
+        path: ${{github.workspace}}/
 
     - name: Build
       # working-directory: ${{github.workspace}}/build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     
-    - name: Run
-      working-directory: ${{github.workspace}}/build/App 
-      run: ./Adaptive_Platform
+    # - name: Run
+    #   working-directory: ${{github.workspace}}/build/App 
+    #   run: ./Adaptive_Platform
     
     - name: upload data
       uses: actions/upload-artifact@v3
@@ -60,7 +74,7 @@ jobs:
   web_generate:
     name: Generate The dodumentationon the website
     runs-on: ubuntu-latest
-    needs: [ build ]
+    # needs: [ build ]
     steps:
     - name: Checkout the Repository Code
       uses: actions/checkout@v2
