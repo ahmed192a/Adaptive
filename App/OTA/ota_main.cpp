@@ -12,8 +12,8 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
-#include "OTA/meta_data_storage.h"
-#include "OTA/client.h"
+#include "ara/OTA/meta_data_storage.h"
+#include "ara/OTA/client.h"
 
 // ara::com related includes
 #include "ara/ucm/pkgmgr/ucm_return_types.h"

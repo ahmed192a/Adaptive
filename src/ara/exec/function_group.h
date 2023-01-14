@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 #include "ara/exec/exec_error_domain.h"
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 #include <variant>
 
 

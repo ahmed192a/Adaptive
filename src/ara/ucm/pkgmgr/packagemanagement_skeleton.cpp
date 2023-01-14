@@ -11,7 +11,7 @@
 #include "ara/ucm/pkgmgr/packagemanagement_skeleton.h"
 #include "ara/ucm/pkgmgr/uart_linux.h"
 
-#include "nlohmann/json.h"
+#include "nlohmann/json.hpp"
 #include <cmath>
 #include <filesystem>
 #include <string>
