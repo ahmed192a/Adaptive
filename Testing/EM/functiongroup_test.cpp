@@ -13,6 +13,7 @@
 #include <iostream>
 #include <variant>
 extern int fg_num;
+using namespace std;
 namespace ara
 {
     namespace exec

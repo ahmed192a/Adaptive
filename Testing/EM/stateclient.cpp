@@ -20,6 +20,7 @@
 #include <variant>
 extern int fg_num;
 #define FIFO_NAME "state_client_fifo"
+using namespace std;
 namespace ara
 {
     namespace exec

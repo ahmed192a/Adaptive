@@ -28,31 +28,29 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
+    # - name: Build
+    #   # Build your program with the given configuration
+    #   run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+
+    - name: upload data
+      uses: actions/upload-artifact@v3
+      with:
+        name: project after build
+        path: ${{github.workspace}}/
+  build:
+    runs-on: ubuntu-20.04
+    needs: [ config ]
+    steps:
+    - name: download data
+      uses: actions/download-artifact@v3
+      with:
+        name: project after build
+        path: ${{github.workspace}}/
+
     - name: Build
-      # working-directory: ${{github.workspace}}/build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-
-  #   - name: upload data
-  #     uses: actions/upload-artifact@v3
-  #     with:
-  #       name: project after build
-  #       path: ${{github.workspace}}/
-  # build:
-  #   runs-on: ubuntu-20.04
-  #   needs: [ config ]
-  #   steps:
-  #   - name: download data
-  #     uses: actions/download-artifact@v3
-  #     with:
-  #       name: project after build
-  #       path: ${{github.workspace}}/
-
-  #   - name: Build
-  #     # working-directory: ${{github.workspace}}/build
-  #     # Build your program with the given configuration
-  #     run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     
     # - name: Run
     #   working-directory: ${{github.workspace}}/build/App 
@@ -77,6 +75,8 @@ jobs:
     # - name: Test
     #   working-directory: ${{github.workspace}}/build/Testing
     #   run: ./Adaptive_Platform-ut
+
+
 
   web_generate:
     name: Generate The documentationon the website using Doxygen

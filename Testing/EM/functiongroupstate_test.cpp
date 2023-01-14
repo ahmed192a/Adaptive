@@ -13,7 +13,7 @@
 #include <gtest/gtest.h>
 #include <variant>
 extern int fg_num;
-
+using namespace std;
 namespace ara
 {
     namespace exec
