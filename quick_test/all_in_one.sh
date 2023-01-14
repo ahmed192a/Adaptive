@@ -9,15 +9,20 @@ options[3]="test"
 options[4]="clear_stuck"
 options[5]="run ota"
 
+
 #  if a parameter is passed, then it is the option else ask for the option
 if [ -z "$1" ]; then
     # ask for the option
-    echo "Please select an option:"
-    #  print the options
-    for i in "${!options[@]}"; do
-        echo "$i) ${options[$i]}"
+    echo -e "\033[33;5mPlease select an option:\033[0m"
+    #  print the options  from i  = 0 to the number of options -1
+    for i in $(seq 0 $((${#options[@]} - 1))); do
+        # print the option in green
+        echo -e "    \e[2;32m$i)\e[0m ${options[$i]}"
     done
+    
+
     read -p "Enter your choice: " choice
+
 else
     # check if the parameter is a valid option
     if [ -z "${options[$1]}" ]; then
@@ -29,8 +34,9 @@ else
 fi
 
 
-# print the selected option
-echo "You have selected ${options[$choice]}"
+# print the selected option in blue flashing text   
+echo -e "====> \e[5;34mYou have selected \"${options[$choice]}\"\e[0m"
+sleep 1
 echo "Current PID: $$"
 
 
@@ -97,3 +103,4 @@ case $choice in
     ;;
 esac
 
+echo -e "\e[5;34m====> \"${options[$choice]}\" is done <====\e[0m"

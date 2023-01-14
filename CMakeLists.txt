@@ -16,6 +16,12 @@ set(CMAKE_ENABLE_EXPORTS 1)
 # Let's nicely support folders in IDEs
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# set the install prefix folder
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
+set (CMAKE_INSTALL_INCLUDEDIR ${CMAKE_BINARY_DIR}/install/include)
+set (CMAKE_INSTALL_LIBDIR ${CMAKE_BINARY_DIR}/install/lib)
+set (CMAKE_INSTALL_BINDIR ${CMAKE_BINARY_DIR}/install/bin)
+
 ########################################################################
 #
 # Dependencies:

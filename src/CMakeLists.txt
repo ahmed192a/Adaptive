@@ -40,6 +40,7 @@ target_link_libraries(
   # Boost::variant2
   pthread
   cryptopp::cryptopp
+  stduuid
 )
 
 target_compile_features(
@@ -53,3 +54,31 @@ source_group(
   PREFIX "Header Files"
   FILES ${HEADER_LIST}) 
 
+# copy headers to build directory with same structure
+foreach(HEADER ${HEADER_LIST})
+  file(RELATIVE_PATH RELATIVE_HEADER ${PROJECT_SOURCE_DIR}/src ${HEADER})
+  get_filename_component(HEADER_PATH ${RELATIVE_HEADER} DIRECTORY)
+  file(COPY ${HEADER} DESTINATION ${CMAKE_BINARY_DIR}/include/${HEADER_PATH})
+endforeach()
+
+
+# disable install for all dependencies 
+set(CMAKE_INSTALL_DO_STRIP 1)
+set(CMAKE_INSTALL_DO_STRIP_RUNTIME 1)
+set(CMAKE_INSTALL_DO_STRIP_LIBRARY 1)
+set(CMAKE_INSTALL_DO_STRIP_ARCHIVE 1)
+
+# install the library
+install(
+  TARGETS ara_lib
+  EXPORT ara_lib
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+# install the headers
+install(
+  DIRECTORY ${CMAKE_BINARY_DIR}/include/ara/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/
+)

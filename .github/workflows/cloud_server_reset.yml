@@ -1,4 +1,4 @@
-# name: Cloud Server Reset
+name: Cloud Server Reset
 
 # on:
 #   workflow_dispatch:
