@@ -19,9 +19,6 @@
 #include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
 #include "ara/com/SOMEIP/entry/entry.hpp"
 #include <iostream>
-#define _GLIBCXX_USE_NANOSLEEP
-
-
 
 namespace ara
 {

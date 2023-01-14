@@ -41,12 +41,12 @@ namespace ara
             close(fd);
         }
 
-        std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> StateClient::SetState(FunctionGroupState const &state) const noexcept
+        std::future<std::variant<std::monostate, ara::exec::ExecErrc>> StateClient::SetState(FunctionGroupState const &state) const noexcept
         {
-            std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> _future;
+            std::future<std::variant<std::monostate, ara::exec::ExecErrc>> _future;
             _future = std::async([&]()
             {
-                boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc> _variant;                                      
+                std::variant<std::monostate, ara::exec::ExecErrc> _variant;                                      
                 std::string msg = state.get_FGname() + "/" + state.get_states();
                 std::cout<<"StateClient::SetState : "<<msg<<std::endl;
                 if (write(fd, &msg[0], msg.size()) == -1)
@@ -62,9 +62,9 @@ namespace ara
         }
 
         // ara::core::Future<void>
-        std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> StateClient::GetInitialMachineStateTransitionResult() const noexcept
+        std::future<std::variant<std::monostate, ara::exec::ExecErrc>> StateClient::GetInitialMachineStateTransitionResult() const noexcept
         {
-            std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> _future;
+            std::future<std::variant<std::monostate, ara::exec::ExecErrc>> _future;
             return _future;
         }
 

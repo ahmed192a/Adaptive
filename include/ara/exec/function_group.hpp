@@ -14,7 +14,8 @@
 #include <vector>
 #include "ara/exec/exec_error_domain.hpp"
 #include <nlohmann/json.hpp>
-#include <boost/variant2/variant.hpp>
+#include <variant>
+
 
 namespace ara
 {
@@ -69,7 +70,7 @@ namespace ara
              * \param[in] metaModelIdentifier   stringified meta model identifier (short name path)
              *                                  where path separator is ’/’.
              *
-             * \return boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>     
+             * \return std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>     
              *                              a construction token from which an instance of
              *                               FunctionGroup can be constructed, or ExecErrc error.
              *                          Errors:
@@ -78,7 +79,7 @@ namespace ara
              *                          -  ara::exec::ExecErrc::kGeneralError      
              *                              if any other error occurs
              */
-            static boost::variant2::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>  Preconstruct(std::string metaModelIdentifier) noexcept;
+            static std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>  Preconstruct(std::string metaModelIdentifier) noexcept;
 
             /**
              * \brief Constructor that creates FunctionGroup instance.

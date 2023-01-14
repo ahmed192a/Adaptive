@@ -83,8 +83,8 @@ void handle_siguser1(int sig)
     FunctionGroupState FGS(std::move(token));
     std::cout << "[SM] Create Function group state for FG1 to off state" << std::endl;
     
-    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
-    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+    std::future<std::variant<std::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+    std::variant<std::monostate,ara::exec::ExecErrc> var = _future.get();
     if(var.index() == 0)
         std::cout<<"[SM] state changed successfully"<<std::endl;
     else
@@ -96,8 +96,8 @@ void handle_siguser1(int sig)
     FunctionGroupState FGS1(std::move(token));
     std::cout << "[SM] Create Function group state for MachineFG to off state" << std::endl;
     
-    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future1 = state_client_ptr->SetState(FGS1);
-    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var1 = _future1.get();
+    std::future<std::variant<std::monostate,ara::exec::ExecErrc>> _future1 = state_client_ptr->SetState(FGS1);
+    std::variant<std::monostate,ara::exec::ExecErrc> var1 = _future1.get();
     if(var1.index() == 0)
         std::cout<<"[SM] state changed successfully"<<std::endl;
     else
@@ -203,8 +203,8 @@ void *pthread0(void *v_var){
     FunctionGroupState FGS(std::move(token));
     cout<<endl;
     std::cout << "[SM] Create Function group state for MachineFG to Running state" << std::endl;
-    std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
-    boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+    std::future<std::variant<std::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+    std::variant<std::monostate,ara::exec::ExecErrc> var = _future.get();
     if(var.index() == 0)
         std::cout<<"[SM] state changed successfully"<<std::endl;
     else
@@ -270,8 +270,8 @@ void *pthread0(void *v_var){
             cout<<endl;
             std::cout << "[SM] Create Function group state for MachineFG to ON state" << std::endl;
             std::cout<<"[SM] FGS created "<<endl;       
-            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
-            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+            std::future<std::variant<std::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+            std::variant<std::monostate,ara::exec::ExecErrc> var = _future.get();
             std::cout<<"[SM] state changed"<<endl;
             cout << "---------------------------------------------" << endl;
             cout << "---------------------------------------------" << endl;
@@ -288,8 +288,8 @@ void *pthread0(void *v_var){
             FunctionGroupState FGS(std::move(token));
             std::cout << "[SM] Create Function group state for FG1 to off state" << std::endl;
             
-            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
-            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var = _future.get();
+            std::future<std::variant<std::monostate,ara::exec::ExecErrc>> _future = state_client_ptr->SetState(FGS);
+            std::variant<std::monostate,ara::exec::ExecErrc> var = _future.get();
             if(var.index() == 0)
                 std::cout<<"[SM] state changed successfully"<<std::endl;
             else
@@ -301,8 +301,8 @@ void *pthread0(void *v_var){
             FunctionGroupState FGS1(std::move(token));
             std::cout << "[SM] Create Function group state for MachineFG to off state" << std::endl;
             
-            std::future<boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc>> _future1 = state_client_ptr->SetState(FGS1);
-            boost::variant2::variant<boost::variant2::monostate,ara::exec::ExecErrc> var1 = _future1.get();
+            std::future<std::variant<std::monostate,ara::exec::ExecErrc>> _future1 = state_client_ptr->SetState(FGS1);
+            std::variant<std::monostate,ara::exec::ExecErrc> var1 = _future1.get();
             if(var1.index() == 0)
                 std::cout<<"[SM] state changed successfully"<<std::endl;
             else

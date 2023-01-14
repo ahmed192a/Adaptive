@@ -18,19 +18,19 @@ FetchContent_MakeAvailable(json)
 
 
 
-option(BOOST_DISABLE_TESTS "Do not build test targets, even if building standalone" OFF)
-set(BOOST_ENABLE_CMAKE ON)
+# option(BOOST_DISABLE_TESTS "Do not build test targets, even if building standalone" OFF)
+# set(BOOST_ENABLE_CMAKE ON)
 
-# fectch boost uuid lib only
+# # fectch boost uuid lib only
 
 
-FetchContent_Declare(
-        boost
-        GIT_REPOSITORY https://github.com/boostorg/boost.git 
-        GIT_TAG boost-1.78.0
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE)
-FetchContent_MakeAvailable(boost)
+# FetchContent_Declare(
+#         boost
+#         GIT_REPOSITORY https://github.com/boostorg/boost.git 
+#         GIT_TAG boost-1.78.0
+#         GIT_SHALLOW TRUE
+#         GIT_PROGRESS TRUE)
+# FetchContent_MakeAvailable(boost)
 
 # FetchContent_Declare(
 #         boost-varient

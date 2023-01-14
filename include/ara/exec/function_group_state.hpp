@@ -72,13 +72,13 @@ namespace ara
              * @param [in] metaModelIdentifier   stringified meta model identifier (short name path)
              *                                  where path separator is ’/’.
              *
-             * @return boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>     
+             * @return std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>     
              *                                                              a construction token from which an instance of
              *                                                              FunctionGroupState can be constructed, or Exec
              *                                                              ErrorDomain error.
              *
              */
-            static boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>  Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
+            static std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>  Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
 
             // SWS_EM_02271
             /**

@@ -13,7 +13,7 @@
 
 #include <cstdint>
 #include <string>
-#include "variant2.hpp"
+#include <variant>
 #include "ara/exec/exec_error_domain.hpp"
 
 namespace ara
@@ -69,7 +69,7 @@ namespace ara
              *                                                              and Execution Management, e.g. unable to report 
              *                                                              state for Non-reporting Process.
              */
-            boost::variant2::variant<boost::variant2::monostate , ExecErrc> ReportExecutionState(ExecutionState state) const noexcept;
+            std::variant<std::monostate , ExecErrc> ReportExecutionState(ExecutionState state) const noexcept;
         };
     } // namespace exec
 

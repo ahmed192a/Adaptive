@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <vector>
-//#include <boost/variant.hpp>
 
 #include "../common/mem_region.hpp"
 #include "../common/base_id_types.hpp"

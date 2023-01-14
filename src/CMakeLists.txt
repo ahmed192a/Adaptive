@@ -36,8 +36,8 @@ target_link_libraries(
   # -lcrypto++
   # Boost::bind
   # Boost::asio
-  Boost::uuid
-  Boost::variant2
+  # Boost::uuid
+  # Boost::variant2
   pthread
   cryptopp::cryptopp
 )

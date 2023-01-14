@@ -21,11 +21,11 @@ namespace ara
          * 
          * @param functionGroup 
          * @param metaModelIdentifier 
-         * @return boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> 
+         * @return std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> 
          */
-        boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> FunctionGroupState::Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept
+        std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> FunctionGroupState::Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept
         {
-            boost::variant2::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> token;
+            std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> token;
             int sl = metaModelIdentifier.find('/');
             if (functionGroup.get_FGname() != metaModelIdentifier.substr(0, sl))
             {

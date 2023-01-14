@@ -509,15 +509,16 @@ std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> ara::ucm::
         TransferInfoData.TransferExitFlag = 0;
         TransferInfoData.localBlockCounter = 0;
         TransferInfoData.TransferExitFlag = false;
-        uuid u;
-        u = (boost::uuids::random_generator()());
-        for (int i = 0; i < 16; i++)
-        {
-            TransferInfoData.id[i] = u.data[i];
-            result.id[i] = u.data[i];
+        /// @todo implement your logic here for uuid
+        // uuid u;
+        // u = (boost::uuids::random_generator()());
+        // for (int i = 0; i < 16; i++)
+        // {
+        //     TransferInfoData.id[i] = u.data[i];
+        //     result.id[i] = u.data[i];
 
-        }
-        std::cout << std::endl;
+        // }
+        // std::cout << std::endl;
 
         // don't change 64 (ucm_client.cpp)
         TransferInfoData.BlockSize = 1024;

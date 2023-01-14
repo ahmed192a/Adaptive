@@ -11,9 +11,9 @@
 #include "../../include/ara/exec/function_group_state.hpp"
 #include "../../include/ara/exec/exec_error_domain.hpp"
 #include <gtest/gtest.h>
-#include <boost/variant2/variant.hpp>
+#include <variant>
 extern int fg_num;
-using namespace boost::variant2;
+
 namespace ara
 {
     namespace exec

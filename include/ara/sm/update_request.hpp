@@ -4,13 +4,13 @@
 //#include <cstdint>
 #include <string>
 #include <vector>
-#include <boost/variant2/variant.hpp>
+#include <variant>
 #include "ara/sm/sm_error_domain.hpp"
 
 namespace ara {
     namespace sm {
 
-        using Result = boost::variant2::variant<ara::sm::errorDomains, boost::variant2::monostate>;
+        using Result = std::variant<ara::sm::errorDomains, std::monostate>;
         
         enum class UpdateStatus{
             unactive, // initial state or after calling StopUpdateSession()

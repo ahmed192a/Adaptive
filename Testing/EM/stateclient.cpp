@@ -17,9 +17,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <gtest/gtest.h>
-#include <boost/variant2/variant.hpp>
+#include <variant>
 extern int fg_num;
-using namespace boost::variant2;
 #define FIFO_NAME "state_client_fifo"
 namespace ara
 {
@@ -46,8 +45,8 @@ namespace ara
             
             FunctionGroupState functionGroupState(std::move(get<1>(_functionGroupState)));
 
-            std::future<boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc>> var0 =sc.SetState(functionGroupState);
-            boost::variant2::variant<boost::variant2::monostate, ara::exec::ExecErrc> var = var0.get();
+            std::future<std::variant<std::monostate, ara::exec::ExecErrc>> var0 =sc.SetState(functionGroupState);
+            std::variant<std::monostate, ara::exec::ExecErrc> var = var0.get();
             EXPECT_TRUE(var.index()==0);
             // get<1>(var).get();
             int n = read(fd,&msg[0],150);
