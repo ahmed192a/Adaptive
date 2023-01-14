@@ -35,6 +35,7 @@ namespace ara
             // get file discreptor
             fd = open(fifo_l, O_WRONLY);
         }
+
         StateClient::~StateClient() noexcept
         {
             // close file descriptor
@@ -61,7 +62,6 @@ namespace ara
             return _future;
         }
 
-        // ara::core::Future<void>
         std::future<std::variant<std::monostate, ara::exec::ExecErrc>> StateClient::GetInitialMachineStateTransitionResult() const noexcept
         {
             std::future<std::variant<std::monostate, ara::exec::ExecErrc>> _future;

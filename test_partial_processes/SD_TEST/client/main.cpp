@@ -1,7 +1,6 @@
 #include <signal.h>
 #include "ara/SD_c/proxy.h"
 #include <iostream>
-#include "color/color.h"
 #include <arpa/inet.h>
 #include <sys/mman.h>
 #include <sys/ipc.h>
@@ -27,8 +26,7 @@ std::shared_ptr<saam::proxy> server_proxy_ptr ;
 // std::shared_ptr<saam::proxy> server_proxy_ptr1 ;
 
 // static CClient *client_event_ptr;
-Color::Modifier green(Color::FG_GREEN);
-Color::Modifier def(Color::FG_DEFAULT);
+
 
 
 void Event_Handler();
@@ -92,7 +90,6 @@ int main(int argc, char **argv)
 void *pthread0(void *v_var)
 {
     std::string sma = "heloo";
-    std::cout << green;
     pid_t pid = getpid();
     std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
     int result;

@@ -17,21 +17,21 @@ namespace ara
 {
     namespace exec
     {
-        // SWS_EM_02269
         /**
          * @brief Class representing Function Group State defined in meta-model (ARXML).
          * @class FunctionGroupState
+         * @note SWS_EM_02269
          * @note Once created based on ARXML path, it’s proxy_skeleton value stay bounded to it for entire lifetime of
          *       an object.
          */
         class FunctionGroupState
         {
             private:
-            std::string mc_state;                           //!< Function group state name
-            std::string mFunction_group_name ;              //!< Function group name
+            std::string mc_state;                           /*!< Function group state name */
+            std::string mFunction_group_name ;              /*!< Function group name  */
             public:
 
-            using CtorToken = struct{std::string fg_name; std::string c_state;};    //!< CtorToken type
+            using CtorToken = struct{std::string fg_name; std::string c_state;};    /*!< CtorToken type  */
             
             /**
              * @brief Set the FG name
@@ -80,26 +80,25 @@ namespace ara
              */
             static std::variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken>  Preconstruct(FunctionGroup const &functionGroup, std::string metaModelIdentifier) noexcept;
 
-            // SWS_EM_02271
             /**
              * @brief Constructor that creates FunctionGroupState instance
-             *
+             * @note SWS_EM_02271
              * @param [in] token     representing pre-constructed object.
              *
              */
             FunctionGroupState(FunctionGroupState::CtorToken &&token) noexcept;
 
-            // SWS_EM_02272
+            
             /**
-             * \brief Destructor of the FunctionGroupState instance
-             *
+             * @brief Destructor of the FunctionGroupState instance
+             * @note SWS_EM_02272
              */
             ~FunctionGroupState() noexcept;
 
-            // SWS_EM_02273
+            
             /**
              * @brief eq operator to compare with other FunctionGroupState instance.
-             *
+             * @note SWS_EM_02273
              * @param [in] other     FunctionGroupState instance to compare this one with.
              *
              * @return true         in case both FunctionGroupStates are
@@ -109,10 +108,10 @@ namespace ara
              */
             bool operator==(FunctionGroupState const &other) const noexcept;
 
-            // SWS_EM_02274
+        
             /**
              * @brief uneq operator to compare with other FunctionGroupState instance.
-             *
+             * @note SWS_EM_02274
              * @param [in] other     FunctionGroupState instance to compare this one with.
              *
              * @return true         otherwise

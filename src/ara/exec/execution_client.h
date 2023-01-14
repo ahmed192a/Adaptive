@@ -20,56 +20,54 @@ namespace ara
 {
     namespace exec
     {
-        // SWS_EM_02000
+        
         /**
-         * Defines the proxy_skeleton states of a Process (see 7.3.1). Scoped Enumeration of uint8_t .
+         * @brief ExecutionState Defines the proxy_skeleton states of a Process (see 7.3.1). Scoped Enumeration of uint8_t .
+         * @note SWS_EM_02000
          */
         enum class ExecutionState : uint8_t
         {
-            kRunning = 0,     /* After a Process has been started by Execution Management, it reports ExecutionState kRunning. */
-            kTerminating = 1, /* On receipt of SIGTERM, a Reporting Process acknowledges the request (by reporting kTerminating to Execution Management. */
+            kRunning = 0,     /*!< After a Process has been started by Execution Management, it reports ExecutionState kRunning. */
+            kTerminating = 1, /*!< On receipt of SIGTERM, a Reporting Process acknowledges the request (by reporting kTerminating to Execution Management. */
         };
 
-        // SWS_EM_02001
         /**
-         * \brief Class to implement operations on Execution Client.
-         * 
+         * @brief ExecutionClient Class to implement operations on Execution Client.
+         * @note SWS_EM_02001
          */
         class ExecutionClient final
         {
         private:
-            // location of FIFO to communicate between EM & SM
-            char fifo_l[30] = "execution_client_fifo";
-            // index of File descriptor
-            int fd;
+            char fifo_l[30] = "execution_client_fifo"; /*!< location of FIFO to communicate between EM & SM */
+            int fd; /*!< index of File descriptor */
 
         public:
-            // SWS_EM_02030
+            
             /**
-             * Constructor that creates the Execution Client. 
+             * @brief Constructor that creates the Execution Client. 
+             * @note SWS_EM_02030
              */
             ExecutionClient() noexcept;
 
-            // SWS_EM_02002
             /**
-             * Destructor of the Execution Client instance.
+             * @brief Destructor of the Execution Client instance.
+             * @note SWS_EM_02002
              */
             ~ExecutionClient() noexcept;
 
-            // SWS_EM_02003
             /**
-             * Interface for a Process to report its proxy_skeleton state to Execution Management.
+             * @brief Interface for a Process to report its proxy_skeleton state to Execution Management.
+             * @note SWS_EM_02003
+             * @param [in] state     Value of the Execution State
              * 
-             * \param state     Value of the Execution State
-             * 
-             * \return          An instance of Boost::varient2::variant<void, ExecErrc>.
+             * @return          An instance of Boost::varient2::variant<void, ExecErrc>.
              *                  - The instance holds an ExecErrc containing either
              *                      -ara::exec::ExecErrc::kGeneralError     if some unspecified error occurred
              *                      -ara::exec::ExecErrc::kCommunication    Error Communication error between Application 
              *                                                              and Execution Management, e.g. unable to report 
              *                                                              state for Non-reporting Process.
              */
-            std::variant<std::monostate , ExecErrc> ReportExecutionState(ExecutionState state) const noexcept;
+            std::variant< std::monostate , ExecErrc> ReportExecutionState(ExecutionState state) const noexcept;
         };
     } // namespace exec
 

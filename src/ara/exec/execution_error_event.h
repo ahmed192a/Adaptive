@@ -15,12 +15,17 @@ namespace ara
 {
     namespace exec
     {
-        using ExecutionError = std::uint32_t;
-        //Represents an execution error event which happens in a Function Group
+        using ExecutionError = std::uint32_t;    /*!<  typedef for ExecutionError */
+
+        /**
+         * @brief  ExecutionErrorEvent struct to represent an execution error event which happens in a Function Group
+         * 
+         * 
+         */
         struct ExecutionErrorEvent final
         {
-            ExecutionError executionError;
-            FunctionGroup functionGroup;
+            ExecutionError executionError; /*!<  The execution error which happened in the Function Group */
+            FunctionGroup functionGroup;   /*!<  The Function Group in which the execution error happened */
         };
 
     } // namespace exec

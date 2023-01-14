@@ -11,8 +11,7 @@
 #include <variant>
 #include <fstream>
 #include <iostream>
-// #include <stdexcept>
-// #include <memory>
+
 namespace ara
 {
     namespace exec
@@ -111,10 +110,10 @@ namespace ara
                                             mach_inst_ref{};
                                         read_value(machine_instance_ref, kFunctionGroup,
                                                    mach_inst_ref.function_group);
-                                        string csv;
+                                        std::string csv;
                                         read_value(machine_instance_ref, kModes, csv);
                                         int start=0, end=0;
-                                        while(end!=string::npos){
+                                        while(end!=std::string::npos){
                                             end = csv.find(',',start);
                                             mach_inst_ref.modes.push_back(csv.substr(start,end-start));
                                             start = end+1;
@@ -136,7 +135,7 @@ namespace ara
              * @param path
              * @return MachineManifest
              */
-            MachineManifest ManifestParser::parse_machine_manifest(const std::string &path,map<std::string, GLOB> &sys_FG )noexcept(
+            MachineManifest ManifestParser::parse_machine_manifest(const std::string &path,std::map<std::string, ara::exec::parser::GLOB> &sys_FG )noexcept(
                     false)
             {
                 using namespace MMJsonKeys;
@@ -158,7 +157,7 @@ namespace ara
                         man.parsed=true;
                         break;
                     }
-                    std::shared_ptr<FunctionGroup> fg =std::make_shared<FunctionGroup>(std::move(get<1>(_functionGroup)));
+                    std::shared_ptr<FunctionGroup> fg =std::make_shared<FunctionGroup>(std::move(std::get<1>(_functionGroup)));
                     sys_FG[fg->get_FGname()].c_FG = fg;
                     FunctionGroupState::CtorToken token={fg->get_FGname(),fg->get_states()[0]};
                     sys_FG[fg->get_FGname()].current_FGS = std::make_shared<FunctionGroupState>(std::move(token));

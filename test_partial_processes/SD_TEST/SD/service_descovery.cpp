@@ -15,7 +15,6 @@
 
 #include "ara/com/ServiceDiscovery/csv.h"
 #include "ara/com/ipc/server/socket_Server.h"
-#include "color/color.h"
 #include "ara/com/SOMEIP/SomeipSDMessage.h"
 #include "ara/com/SOMEIP/entry/eventgroup_entry.h"
 #include <pthread.h>

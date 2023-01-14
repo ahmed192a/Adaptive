@@ -7,9 +7,9 @@
  * @brief Definition of the ExecErrorDomain class which is responsible for handling all Excuation Management exceptions
  * @version 0.1
  * @date 2022-03-07
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #include "ara/core/error_domain.h"
 #include "ara/core/error_code.h"
@@ -21,115 +21,102 @@ namespace ara
 {
 	namespace exec
 	{
-		// SWS_EM_02281
 		/**
-		 * \brief Defines an enumeration class for the Execution Management error codes.
-		 * 
+		 * @brief ExecErrc enum class Defines an enumeration class for the Execution Management error codes.
+		 * @note  SWS_EM_02281
 		 */
 		enum class ExecErrc : ara::core::ErrorDomain::CodeType
 		{
-			kGeneralError = 1,       /*< Some unspecified error occurred */
-			kInvalidArguments = 2,   /*< Invalid argument was passed */
-			kCommunicationError = 3, /*< Communication error occurred */
-			kMetaModelError = 4,     /*< Wrong meta model identifier passed to a function */
-			kCancelled = 5,          /*< Transition to the requested Function Group state was cancelled by a newer request */
-			kFailed = 6,             /*< Transition to the requested Function Group state failed */
-			kFailedUnexpectedTerminationOnExit = 7, /*Unexpected Termination during transition in Process of previous Function Group State happened*/
-			kFailedUnexpectedTerminationOnEnter = 8, /*Unexpected Termination during transition in Process of target Function Group State happened*/
-			kInvalidTransition = 9, /*Transition invalid (e.g. to Terminating when already in Terminating state)*/
-			kAlreadyInState = 10, /*Transition to the requested Function Group state failed because it is already in requested state*/
-			kInTransitionToSameState = 11, /*Transition to the requested Function Group state failed because transition to requested state is already in progress*/
-			kNoTimeStamp = 12, /*DeterministicClient time stamp information is not available*/
+			kGeneralError = 1,						 /*!< Some unspecified error occurred */
+			kInvalidArguments = 2,					 /*!< Invalid argument was passed */
+			kCommunicationError = 3,				 /*!< Communication error occurred */
+			kMetaModelError = 4,					 /*!< Wrong meta model identifier passed to a function */
+			kCancelled = 5,							 /*!< Transition to the requested Function Group state was cancelled by a newer request */
+			kFailed = 6,							 /*!< Transition to the requested Function Group state failed */
+			kFailedUnexpectedTerminationOnExit = 7,	 /*!< Unexpected Termination during transition in Process of previous Function Group State happened*/
+			kFailedUnexpectedTerminationOnEnter = 8, /*!< Unexpected Termination during transition in Process of target Function Group State happened*/
+			kInvalidTransition = 9,					 /*!< Transition invalid (e.g. to Terminating when already in Terminating state)*/
+			kAlreadyInState = 10,					 /*!< Transition to the requested Function Group state failed because it is already in requested state*/
+			kInTransitionToSameState = 11,			 /*!< Transition to the requested Function Group state failed because transition to requested state is already in progress*/
+			kNoTimeStamp = 12,						 /*!< DeterministicClient time stamp information is not available*/
 		};
 
-		// SWS_EM_02282
 		/**
-		 * \brief Defines a class for exceptions to be thrown by the Execution Management.
-		 * 
+		 * @brief ExecException Defines a class for exceptions to be thrown by the Execution Management.
+		 * @note  SWS_EM_02282
 		 */
 		class ExecException : public ara::core::Exception
 		{
 		public:
-			//ExecException will use ErrorCode Attribute in the Exception class
-			ara::core::ErrorCode errorCode;
+			ara::core::ErrorCode errorCode; /*!< The error code. (ExecException will use ErrorCode Attribute in the Exception class)*/
 
-			// SWS_EM_02283
 			/**
 			 * \brief Constructs a new ExecException object containing an error code.
-			 * 
+			 * @note SWS_EM_02283 
 			 * \param[in] errorCode     The error code.
 			 */
 			explicit ExecException(ara::core::ErrorCode errorCode) noexcept;
-			
-			
 
-			//SWS_EM_02290
-			/*
-			 * \brief Returns a reference to the global ExecErrorDomain object.
-			 *
-			 * \return const ara::core::ErrorDomain&
+			/**
+			 * @brief Get the Exec Error Domain object
+			 * @note SWS_EM_02290
+			 * @return const ara::core::ErrorDomain&  Returns a reference to the global ExecErrorDomain object.
+			 * @exception noexcept
 			 */
-			const ara::core::ErrorDomain& GetExecErrorDomain () noexcept;
+			const ara::core::ErrorDomain &GetExecErrorDomain() noexcept;
 
 
-			//SWS_EM_02291
-			/*
-			 *\brief Creates an instance of ErrorCode.
-			 *
-			 *\param[in] code         Error code number.
-			 *\param[in] data         Vendor defined data associated with the error.
-			 *
-			 *\return ara::core::ErrorCode             An ErrorCode object.
+			/**
+			 * @brief Creates an instance of ErrorCode.
+			 * @note SWS_EM_02291
+			 * 
+			 * @param code 	execution management error code
+			 * @param data 	vendor defined data associated with the error
+			 * @return ara::core::ErrorCode 			An ErrorCode object.
+			 * @exception noexcept
+			 * 
 			 */
-			ara::core::ErrorCode MakeErrorCode (ara::exec::ExecErrc code, ara::core::ErrorDomain::SupportDataType data) noexcept;
+			ara::core::ErrorCode MakeErrorCode(ara::exec::ExecErrc code, ara::core::ErrorDomain::SupportDataType data) noexcept;
+		};
 
-
-			};
-
-
-		// SWS_EM_02284
 		/**
-		 * \brief Defines a class representing the Execution Management error domain.
-		 * 
-		 * 
+		 * @brief ExecErrorDomain Defines a class representing the Execution Management error domain.
+		 * @note SWS_EM_02284
 		 */
 		class ExecErrorDomain final : public ara::core::ErrorDomain
 		{
-			using IdType = ara::core::ErrorDomain::IdType;
-			// SWS_EM_02286
-			/**
-			 * \brief Constructs a new ExecErrorDomain object
-			 * 
-			 */
+			using IdType = ara::core::ErrorDomain::IdType; /*!< The type of the error domain identifier. */
 		public:
+			/**
+			 * @brief Construct a new Exec Error Domain object
+			 * @note SWS_EM_02286
+			 */
 			explicit constexpr ExecErrorDomain(IdType id) noexcept;
 			// ExecErrorDomain(IdType id) noexcept = default;
 
-			// SWS_EM_02287
 			/**
-			 * \brief Returns a string constant associated with ExecErrorDomain.
-			 * 
-			 * \return char const*  The name of the error domain.
+			 * @brief Returns a string constant associated with ExecErrorDomain.
+			 * @note SWS_EM_02287
+			 * @return char const*  The name of the error domain.
 			 */
 			char const *Name() const noexcept override;
 
-			// SWS_EM_02288
 			/**
 			 * \brief Returns the message associated with errorCode.
-			 * 
+			 * @note SWS_EM_02288
 			 * \param[in] errorCode     The error code number.
-			 * 
+			 *
 			 * \return char const*      The message associated with the error code.
 			 */
-			char const * Message(CodeType errorCode) const noexcept override;
+			char const *Message(CodeType errorCode) const noexcept override;
 
-			// SWS_EM_02289
+			
 			/**
 			 * \brief Creates a new instance of ExecException from errorCode and throws it as a C++ exception.
-			 * 
+			 * @note SWS_EM_02289
 			 * \param[in] errorCode     The error to throw.
 			 */
-			void ThrowAsException(ara::core::ErrorCode &errorCode) const noexcept(false) ;
+			void ThrowAsException(ara::core::ErrorCode &errorCode) const noexcept(false);
 		};
 	} // namespace exec
 

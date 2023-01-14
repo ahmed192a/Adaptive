@@ -1,36 +1,36 @@
-name: Cloud Server Reset
+# name: Cloud Server Reset
 
-on:
-  workflow_dispatch:
+# on:
+#   workflow_dispatch:
 
-env:
-  DOCKER_IMG: "cloud-img"
-  TAR_FILE: "cloud.tar"
+# env:
+#   DOCKER_IMG: "cloud-img"
+#   TAR_FILE: "cloud.tar"
 
 
-jobs:
+# jobs:
 
-  deploy:
+#   deploy:
 
-    name: Reset the deployed container
-    runs-on: ubuntu-latest
+#     name: Reset the deployed container
+#     runs-on: ubuntu-latest
 
-    steps:
+#     steps:
       
-      - name: Removing any old running containers
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.AZURE_HOST}}
-          username: ${{ secrets.AZURE_USER}}
-          password: ${{ secrets.AZURE_PASS}}
-          port: 22
-          script: sudo docker rm -vf $(sudo docker ps -aq) || true # to skip error in case no containers
+#       - name: Removing any old running containers
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.AZURE_HOST}}
+#           username: ${{ secrets.AZURE_USER}}
+#           password: ${{ secrets.AZURE_PASS}}
+#           port: 22
+#           script: sudo docker rm -vf $(sudo docker ps -aq) || true # to skip error in case no containers
 
-      - name: Running the new image
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.AZURE_HOST}}
-          username: ${{ secrets.AZURE_USER}}
-          password: ${{ secrets.AZURE_PASS}}
-          port: 22
-          script: sudo docker run -idt -p 8888:8888 ${{ env.DOCKER_IMG }}
+#       - name: Running the new image
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.AZURE_HOST}}
+#           username: ${{ secrets.AZURE_USER}}
+#           password: ${{ secrets.AZURE_PASS}}
+#           port: 22
+#           script: sudo docker run -idt -p 8888:8888 ${{ env.DOCKER_IMG }}

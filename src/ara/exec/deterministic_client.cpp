@@ -45,7 +45,7 @@ namespace ara
         }
 
         template <typename ValueType, typename Container>
-        void RunWorkerPool(WorkerRunnable<ValueType> &runnableObj, Container &container) noexcept
+        void DeterministicClient::RunWorkerPool(WorkerRunnable<ValueType> &runnableObj, Container &container) noexcept
         {
 
             // TO DO : This part is sequential, it needs to be converted to parallel with fork() - exec()

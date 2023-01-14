@@ -9,13 +9,13 @@
  * 
  */
 #include "ara/exec/execution_client.h"
-#include "sys/stat.h"
-#include "sys/types.h"
-#include "errno.h"
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
 #include <fcntl.h>
-#include "unistd.h"
-
+#include <unistd.h>
 #include <iostream>
+
 namespace ara
 {
     namespace exec
@@ -35,13 +35,15 @@ namespace ara
             fd = open(fifo_l, O_WRONLY);
             if(fd == -1) {
                 std::cout<< "[ERROR] => can't open fifo";
-            }
+            } 
         }
+        
         ExecutionClient::~ExecutionClient()
         {
             // close file descriptor
             close(fd);
         }
+
         std::variant<std::monostate , ExecErrc> ExecutionClient::ReportExecutionState(ara::exec::ExecutionState state) const noexcept
         {
             std::variant<std::monostate , ExecErrc> result;

@@ -47,7 +47,7 @@ int main()
 
         /// VARIABLES
         char buffer[256];
-        C_Info x;
+        // C_Info x;
         std::vector<uint8_t> msg;
         int msg_size;
         ara::com::Deserializer dser;

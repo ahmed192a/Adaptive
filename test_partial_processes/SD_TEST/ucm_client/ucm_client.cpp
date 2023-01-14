@@ -3,7 +3,6 @@
 #include <signal.h>
 #include "ara/SD_c/proxy.h"
 #include <iostream>
-#include "color/color.h"
 #include <arpa/inet.h>
 #include <sys/mman.h>
 #include <sys/ipc.h>
@@ -47,8 +46,7 @@ std::vector<char> ReadAllBytes(char const *filename)
 // ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handler;
 
 std::shared_ptr<ara::ucm::pkgmgr::proxy::PackageManagementProxy> server_proxy_ptr ;
-Color::Modifier green(Color::FG_GREEN);
-Color::Modifier def(Color::FG_DEFAULT);
+
 
 
 
@@ -110,7 +108,6 @@ int main(int argc, char **argv)
  */
 void *pthread0(void *v_var)
 {
-    std::cout << green;
     pid_t pid = getpid();
     std::cout << "\t\t\t[CLIENT] receiver: PID is " << pid << std::endl;
     std::future<ara::ucm::pkgmgr::PackageManagement::TransferStartOutput> result; /* Saves TransferStartOutput */

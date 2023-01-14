@@ -18,13 +18,13 @@ namespace ara
     namespace exec
     {
         /**
-         * @brief Class to implement worker thread for Deterministic Client 
+         * @brief WorkerThread Class to implement worker thread for Deterministic Client 
          * 
          */
         class WorkerThread
         {
         private:
-            std::thread thread_;
+            std::thread thread_;  /*!<  thread_ to represent the worker thread */
         public:
             /**
              * @brief Construct a new Worker Thread instance

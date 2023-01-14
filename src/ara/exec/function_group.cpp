@@ -9,114 +9,106 @@
  *
  */
 #include <iostream>
+#include <filesystem>
 #include "ara/exec/function_group.h"
 #include "ara/exec/parser/manifest_parser.h"
-#include <filesystem>
 using namespace ara::exec;
 using namespace nlohmann;
 using namespace parser;
 uint32_t fg_num = 0;
 
-namespace ara
+std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> FunctionGroup::Preconstruct(std::string metaModelIdentifier) noexcept
 {
-    namespace exec
+    std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> token;
+    if (!std::filesystem::exists(metaModelIdentifier))
     {
+        token.emplace<0>(ara::exec::ExecErrc::kMetaModelError);
+        return token;
+    }
+    using namespace MMJsonKeys;
+    auto manifest_json_full = read_manifest_file(metaModelIdentifier);
+    MachineManifest man{};
+    validate_content(manifest_json_full, kAsVector);
 
-        std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> FunctionGroup::Preconstruct(std::string metaModelIdentifier) noexcept
+    json manifest_json_content{};
+    read_value(manifest_json_full, kMachineManifest, manifest_json_content);
+
+    json mode_declaration_groups{};
+    if (read_value(manifest_json_content, kModeDeclarationGroup, mode_declaration_groups))
+    {
+        if (mode_declaration_groups.begin() + fg_num != mode_declaration_groups.end())
         {
-            std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> token;
-            if (!std::filesystem::exists(metaModelIdentifier))
-            {
-                token.emplace<0>(ara::exec::ExecErrc::kMetaModelError);
-                return token;
-            }
-            using namespace MMJsonKeys;
-            auto manifest_json_full = read_manifest_file(metaModelIdentifier);
-            MachineManifest man{};
-            validate_content(manifest_json_full, kAsVector);
-
-            json manifest_json_content{};
-            read_value(manifest_json_full, kMachineManifest, manifest_json_content);
-
-            json mode_declaration_groups{};
-            if (read_value(manifest_json_content, kModeDeclarationGroup, mode_declaration_groups))
-            {
-                if (mode_declaration_groups.begin() + fg_num != mode_declaration_groups.end())
-                {
-                    json mode_declaration_group = *(mode_declaration_groups.begin() + fg_num);
-                    fg_num++;
-                    token.emplace<1>(mode_declaration_group);
-                }
-                else
-                {
-                    token.emplace<0>(ara::exec::ExecErrc::kGeneralError);
-                }
-            }
-            return token;
+            json mode_declaration_group = *(mode_declaration_groups.begin() + fg_num);
+            fg_num++;
+            token.emplace<1>(mode_declaration_group);
         }
-
-        FunctionGroup::FunctionGroup(FunctionGroup::CtorToken &&token) noexcept
+        else
         {
-            using namespace MMJsonKeys;
-            read_value(token, kFunctionGroupName, mFunction_group_name);
+            token.emplace<0>(ara::exec::ExecErrc::kGeneralError);
+        }
+    }
+    return token;
+}
 
-            json mode_declarations{};
-            if (read_value(token, kModeDeclarations, mode_declarations))
-            {
-                for (auto &mode_declaration : mode_declarations)
-                {
-                    std::string mode;
-                    read_value(mode_declaration, kMode, mode);
-                    mstates.push_back(mode);
-                }
-            }
-        }
+FunctionGroup::FunctionGroup(FunctionGroup::CtorToken &&token) noexcept
+{
+    using namespace MMJsonKeys;
+    read_value(token, kFunctionGroupName, mFunction_group_name);
 
-        FunctionGroup::~FunctionGroup() noexcept
+    json mode_declarations{};
+    if (read_value(token, kModeDeclarations, mode_declarations))
+    {
+        for (auto &mode_declaration : mode_declarations)
         {
+            std::string mode;
+            read_value(mode_declaration, kMode, mode);
+            mstates.push_back(mode);
         }
+    }
+}
 
-        void FunctionGroup::set_FGname(std::string fg_name)
-        {
-            mFunction_group_name = fg_name;
-        }
-        void FunctionGroup::set_states(std::vector<std::string> states)
-        {
-            mstates = states;
-        }
-        std::string FunctionGroup::get_FGname() const noexcept
-        {
-            return mFunction_group_name;
-        }
-        std::vector<std::string> FunctionGroup::get_states() const noexcept
-        {
-            return mstates;
-        }
+FunctionGroup::~FunctionGroup() noexcept
+{
+}
 
-        bool FunctionGroup::operator==(FunctionGroup const &other) const noexcept
-        {
-            if (other.mFunction_group_name == this->mFunction_group_name)
-            {
-                return true;
-            }
-            return false;
-        }
+void FunctionGroup::set_FGname(std::string fg_name)
+{
+    mFunction_group_name = fg_name;
+}
+void FunctionGroup::set_states(std::vector<std::string> states)
+{
+    mstates = states;
+}
+std::string FunctionGroup::get_FGname() const noexcept
+{
+    return mFunction_group_name;
+}
+std::vector<std::string> FunctionGroup::get_states() const noexcept
+{
+    return mstates;
+}
 
-        bool FunctionGroup::operator!=(FunctionGroup const &other) const noexcept
-        {
-            if (this->mFunction_group_name == other.mFunction_group_name)
-            {
-                return false;
-            }
-            return true;
-        }
+bool FunctionGroup::operator==(FunctionGroup const &other) const noexcept
+{
+    if (other.mFunction_group_name == this->mFunction_group_name)
+    {
+        return true;
+    }
+    return false;
+}
 
-        FunctionGroup &FunctionGroup::operator=(FunctionGroup &&other)
-        {
-            this->mFunction_group_name = std::move(other.mFunction_group_name);
-            this->mstates = std::move(other.mstates);
-            return *this;
-        }
-    } // namespace exec
+bool FunctionGroup::operator!=(FunctionGroup const &other) const noexcept
+{
+    if (this->mFunction_group_name == other.mFunction_group_name)
+    {
+        return false;
+    }
+    return true;
+}
 
-} // namespace ara
+FunctionGroup &FunctionGroup::operator=(FunctionGroup &&other)
+{
+    this->mFunction_group_name = std::move(other.mFunction_group_name);
+    this->mstates = std::move(other.mstates);
+    return *this;
+}

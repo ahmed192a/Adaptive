@@ -62,7 +62,7 @@ void handle_sigterm(int sig){
 /***************************************************************************
  *                      Global Variable Section                            *
  ***************************************************************************/
-static map<string, GLOB> sys_FG;                // Map of all function groups of the system
+static map<string, ara::exec::parser::GLOB> sys_FG;                // Map of all function groups of the system
 std::vector<Process> process_pool;              // Vector of all processes of the system
 
 // Backup streambuffers of  cout

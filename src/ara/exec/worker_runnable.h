@@ -17,20 +17,21 @@ namespace ara
 {
     namespace exec
     {
-        template <typename ValueType>
+        
 
         /**
-         * @brief Base-class for implementation of worker runnable for Deterministic Client.
-         * 
+         * @brief WorkerRunnable Base-class for implementation of worker runnable for Deterministic Client.
+         * @tparam ValueType type of the element to be processed by the worker thread.
          */
+        template <typename ValueType>
         class WorkerRunnable
         {
         public:
             /**
              * @brief Deterministic client worker runnable.
              * 
-             * @param element 
-             * @param t 
+             * @param element   element to be processed by the worker thread.
+             * @param t         worker thread.
              */
             virtual void Run(ValueType &element, ara::exec::WorkerThread &t) = 0;
 
@@ -38,7 +39,7 @@ namespace ara
              * @brief Destroy the Worker Runnable object
              * 
              */
-            virtual ~WorkerRunnable();
+            virtual ~WorkerRunnable() = default;
         };
     } // namespace exec
 

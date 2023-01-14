@@ -12,9 +12,9 @@
 #define ARA_EXEC_FUNCTION_GROUP_H_
 #include <string>
 #include <vector>
+#include <variant>
 #include "ara/exec/exec_error_domain.h"
 #include "nlohmann/json.hpp"
-#include <variant>
 
 
 namespace ara
@@ -22,15 +22,15 @@ namespace ara
     namespace exec
     {
         /**
-         * @class representing Function Group defined in meta-model (ARXML).
+         * @brief FunctionGroup representing Function Group defined in meta-model (ARXML).
          */
         class FunctionGroup final
         {
         private:
-            std::string mFunction_group_name;                          //!< Function group name
-            std::vector<std::string> mstates;                          //!< Function group states
+            std::string mFunction_group_name;                          /*!< Function group name */
+            std::vector<std::string> mstates;                          /*!< Function group states */
         public:
-            using CtorToken = nlohmann::json;
+            using CtorToken = nlohmann::json;                           /*!< CtorToken type */
 
             /**
              * @brief Set the function group name
@@ -62,15 +62,15 @@ namespace ara
 
 
             /**
-             * \brief Pre construction method for FunctionGroup.
+             * @brief Pre construction method for FunctionGroup.
              *
              * This method shall validate/verify meta-model path passed and perform any operation that could
              * fail and are expected to be performed in constructor.
              *
-             * \param[in] metaModelIdentifier   stringified meta model identifier (short name path)
+             * @param[in] metaModelIdentifier   stringified meta model identifier (short name path)
              *                                  where path separator is ’/’.
              *
-             * \return std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>     
+             * @return std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>     
              *                              a construction token from which an instance of
              *                               FunctionGroup can be constructed, or ExecErrc error.
              *                          Errors:
@@ -82,39 +82,39 @@ namespace ara
             static std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>  Preconstruct(std::string metaModelIdentifier) noexcept;
 
             /**
-             * \brief Constructor that creates FunctionGroup instance.
+             * @brief Constructor that creates FunctionGroup instance.
              *
-             * \param[in] token     representing pre-constructed object.
+             * @param[in] token     representing pre-constructed object.
              *
-             * \note Please note that token is destructed during object construction!
+             * @note Please note that token is destructed during object construction!
              */
             FunctionGroup(FunctionGroup::CtorToken &&token) noexcept; 
 
 
             /**
-             * \brief Destructor of the FunctionGroup instance.
+             * @brief Destructor of the FunctionGroup instance.
              *
              */
             ~FunctionGroup() noexcept;
 
             /**
-             * \brief eq operator to compare with other FunctionGroup instance.
+             * @brief eq operator to compare with other FunctionGroup instance.
              *
-             * \param[in] other     FunctionGroup instance to compare this one with.
+             * @param[in] other     FunctionGroup instance to compare this one with.
              *
-             * \return true         in case both FunctionGroups are representing
+             * @return true         in case both FunctionGroups are representing
              *                      exactly the same meta-model element,
-             * \return false        otherwise.
+             * @return false        otherwise.
              *
              */
             bool operator==(FunctionGroup const &other) const noexcept;
 
             /**
-             * \brief uneq operator to compare with other FunctionGroup instance.
+             * @brief uneq operator to compare with other FunctionGroup instance.
              *
-             * \param[in] other     FunctionGroup instance to compare this one with.
-             * \return true         otherwise
-             * \return false        in case both FunctionGroups are representing
+             * @param[in] other     FunctionGroup instance to compare this one with.
+             * @return true         otherwise
+             * @return false        in case both FunctionGroups are representing
              *                      exactly the same meta-model element
              *
              */
