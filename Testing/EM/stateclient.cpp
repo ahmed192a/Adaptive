@@ -7,10 +7,10 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "../../include/ara/exec/exec_error_domain.hpp"
-#include "../../include/ara/exec/function_group.hpp"
-#include "../../include/ara/exec/function_group_state.hpp"
-#include "../../include/ara/exec/state_client.hpp"
+#include "ara/exec/exec_error_domain.h"
+#include "ara/exec/function_group.h"
+#include "ara/exec/function_group_state.h"
+#include "ara/exec/state_client.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>

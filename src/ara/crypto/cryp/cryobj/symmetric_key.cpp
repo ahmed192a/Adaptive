@@ -1,4 +1,4 @@
-#include "ara/crypto/cryp/cryobj/symmetric_key.hpp"
+#include "ara/crypto/cryp/cryobj/symmetric_key.h"
 #include <iostream>
 namespace ara
 {

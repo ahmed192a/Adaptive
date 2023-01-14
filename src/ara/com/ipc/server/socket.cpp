@@ -1,4 +1,4 @@
-#include "ara/com/ipc/server/socket.hpp"
+#include "ara/com/ipc/server/socket.h"
 #include <iostream>
 #include<unistd.h>
 #include<sys/types.h>

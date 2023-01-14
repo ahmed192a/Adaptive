@@ -1,4 +1,4 @@
-#include<ara/core/StringView.hpp>
+#include "ara/core/StringView.h"
 
 namespace ara
 {

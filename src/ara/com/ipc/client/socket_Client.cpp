@@ -20,7 +20,7 @@
 // #include <netinet/in.h>
 #include <signal.h>
 
-#include "ara/com/ipc/client/socket_Client.hpp"
+#include "ara/com/ipc/client/socket_Client.h"
 using namespace std;
 
 CClient::CClient(int type)

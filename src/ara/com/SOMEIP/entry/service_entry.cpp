@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/com/SOMEIP/entry/service_entry.hpp"
+#include "ara/com/SOMEIP/entry/service_entry.h"
 
 namespace ara
 {

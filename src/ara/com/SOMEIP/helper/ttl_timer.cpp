@@ -9,7 +9,7 @@
  */
 #include <chrono>
 #include <stdexcept>
-#include "ara/com/SOMEIP/helper/ttl_timer.hpp"
+#include "ara/com/SOMEIP/helper/ttl_timer.h"
 
 namespace ara
 {

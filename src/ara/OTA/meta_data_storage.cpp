@@ -1,4 +1,4 @@
-#include "OTA/meta_data_storage.hpp"
+#include "meta_data_storage.h"
 
 using namespace OTA;
 

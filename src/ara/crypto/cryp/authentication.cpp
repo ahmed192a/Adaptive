@@ -1,4 +1,4 @@
-#include "ara/crypto/cryp/authentication.hpp"
+#include "ara/crypto/cryp/authentication.h"
 
 using namespace ara:: crypto;
 using namespace ara::crypto::cryp;

@@ -12,18 +12,18 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
-#include "OTA/meta_data_storage.hpp"
-#include "OTA/client.hpp"
+#include "OTA/meta_data_storage.h"
+#include "OTA/client.h"
 
 // ara::com related includes
-#include "ara/ucm/pkgmgr/ucm_return_types.hpp"
-#include "ara/com/ipc/client/socket_Client.hpp"
-#include "ara/com/ipc/server/socket_Server.hpp"
-#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
-#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
-#include "ara/ucm/pkgmgr/packagemanagement_proxy.hpp"
-#include "ara/exec/execution_client.hpp"
-#include "ara/sm/triggerin/triggerin_proxy.hpp"
+#include "ara/ucm/pkgmgr/ucm_return_types.h"
+#include "ara/com/ipc/client/socket_Client.h"
+#include "ara/com/ipc/server/socket_Server.h"
+#include "ara/com/SOMEIP/SomeipSDMessage.h"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.h"
+#include "ara/ucm/pkgmgr/packagemanagement_proxy.h"
+#include "ara/exec/execution_client.h"
+#include "ara/sm/triggerin/triggerin_proxy.h"
 
 //// Defines
 #define META_DATA_FILE_PATH "./meta-data.dat"

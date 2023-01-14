@@ -13,11 +13,11 @@
 #include <netdb.h>
 #include <iostream>
 
-#include "ara/com/ServiceDiscovery/csv.hpp"
-#include "ara/com/ipc/server/socket_Server.hpp"
-#include "color/color.hpp"
-#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
-#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
+#include "ara/com/ServiceDiscovery/csv.h"
+#include "ara/com/ipc/server/socket_Server.h"
+#include "color/color.h"
+#include "ara/com/SOMEIP/SomeipSDMessage.h"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.h"
 #include <pthread.h>
 
 #define CSV_FILE "data.csv"

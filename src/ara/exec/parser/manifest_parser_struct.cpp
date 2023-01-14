@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/exec/parser/manifest_parser_struct.hpp"
+#include "ara/exec/parser/manifest_parser_struct.h"
 #include <iostream>
 #include "errno.h"
 #include "unistd.h"

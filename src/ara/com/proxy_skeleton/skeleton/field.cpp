@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/com/proxy_skeleton/skeleton/field.hpp"
+#include "ara/com/proxy_skeleton/skeleton/field.h"
 
 #include <unistd.h>
 #include <signal.h>

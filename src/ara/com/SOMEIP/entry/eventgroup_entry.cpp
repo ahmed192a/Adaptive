@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.h"
 
 namespace ara
 {

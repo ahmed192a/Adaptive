@@ -22,11 +22,11 @@
 #include <iostream>
 #include <pthread.h>
 
-#include "ara/com/ServiceDiscovery/csv.hpp"
-#include "ara/com/ipc/server/socket_Server.hpp"
-#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
-#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
-#include "ara/exec/execution_client.hpp"
+#include "ara/com/ServiceDiscovery/csv.h"
+#include "ara/com/ipc/server/socket_Server.h"
+#include "ara/com/SOMEIP/SomeipSDMessage.h"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.h"
+#include "ara/exec/execution_client.h"
 
 #define CSV_FILE "data.csv"
 #define portNumber 1690

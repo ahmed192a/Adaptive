@@ -1,4 +1,4 @@
-#include "ara/crypto/cryp/cryobj/sec_seed.hpp"
+#include "ara/crypto/cryp/cryobj/sec_seed.h"
 #include <iostream>
 namespace ara
 {

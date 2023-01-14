@@ -1,4 +1,4 @@
-#include "ara/crypto/cryp/cryobj/crypto_pr_id.hpp"
+#include "ara/crypto/cryp/cryobj/crypto_pr_id.h"
 #include <iostream>
 
 namespace ara

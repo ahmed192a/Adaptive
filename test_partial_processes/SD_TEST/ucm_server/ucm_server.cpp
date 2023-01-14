@@ -4,10 +4,10 @@
 // #include <unistd.h>
 // #include <signal.h>
 
-#include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
-#include "ara/com/proxy_skeleton/definitions.hpp"
-#include "ara/com/SOMEIP/Message.hpp"
-// #include "ara/ucm/pkgmgr/packet.hpp"
+#include "ara/ucm/pkgmgr/packagemanagement_skeleton.h"
+#include "ara/com/proxy_skeleton/definitions.h"
+#include "ara/com/SOMEIP/Message.h"
+// #include "ara/ucm/pkgmgr/packet.h"
 
 
 

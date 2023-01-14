@@ -1,4 +1,4 @@
-// #include "ara/crypto/keys/key_slot_prototype_props.hpp"
+// #include "ara/crypto/keys/key_slot_prototype_props.h"
 
 
 // #include <iostream>

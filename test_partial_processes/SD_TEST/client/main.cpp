@@ -1,15 +1,15 @@
 #include <signal.h>
-#include "ara/SD_c/proxy.hpp"
+#include "ara/SD_c/proxy.h"
 #include <iostream>
-#include "color/color.hpp"
+#include "color/color.h"
 #include <arpa/inet.h>
 #include <sys/mman.h>
 #include <sys/ipc.h>
 #include <sys/shm.h> 
-#include "ara/com/ipc/client/socket_Client.hpp"
-#include "ara/com/ipc/server/socket_Server.hpp"
-#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
-#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
+#include "ara/com/ipc/client/socket_Client.h"
+#include "ara/com/ipc/server/socket_Server.h"
+#include "ara/com/SOMEIP/SomeipSDMessage.h"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.h"
 
 #define SD_PORT 1690
 #define SERVICE_ID 32

@@ -1,4 +1,4 @@
-#include "ara/crypto/common/concrete_io_interface.hpp"
+#include "ara/crypto/common/concrete_io_interface.h"
 
 using namespace ara::crypto;
 

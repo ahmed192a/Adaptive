@@ -1,6 +1,6 @@
-#include "ara/crypto/cryp/HKDF.hpp"
-#include "ara/crypto/cryp/HMAC.hpp"
-//#include "ara/crypto/cryp/concrete_crypto_provider.hpp"
+#include "ara/crypto/cryp/HKDF.h"
+#include "ara/crypto/cryp/HMAC.h"
+//#include "ara/crypto/cryp/concrete_crypto_provider.h"
 
 
 using namespace ara::crypto;

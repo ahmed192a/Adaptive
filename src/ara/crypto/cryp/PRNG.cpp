@@ -1,4 +1,4 @@
-#include "ara/crypto/cryp/PRNG.hpp"
+#include "ara/crypto/cryp/PRNG.h"
 
 using namespace ara::crypto;
 using namespace ara::crypto::cryp;

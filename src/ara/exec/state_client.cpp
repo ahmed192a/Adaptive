@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  *
  */
-#include "ara/exec/state_client.hpp"
+#include "ara/exec/state_client.h"
 #include "sys/stat.h"
 #include "sys/types.h"
 #include "errno.h"

@@ -73,7 +73,7 @@ license you like.
 
 
 
-#include "OTA/json/json.h"
+#include "json/json.h"
 
 #ifndef JSON_IS_AMALGAMATION
 //#error "Compile with -I PATH_TO_JSON_DIRECTORY"
@@ -93,7 +93,7 @@ license you like.
 #define LIB_JSONCPP_JSON_TOOL_H_INCLUDED
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include <OTA/json/config.h>
+#include "json/config.h"
 #endif
 
 // Also support old flag NO_LOCALE_SUPPORT
@@ -244,9 +244,9 @@ Iter fixZerosInTheEnd(Iter begin, Iter end, unsigned int precision) {
 
 #if !defined(JSON_IS_AMALGAMATION)
 //#include "json_tool.h"
-#include <OTA/json/assertions.h>
-#include <OTA/json/reader.h>
-#include <OTA/json/value.h>
+#include "json/assertions.h"
+#include "json/reader.h"
+#include  "json/value.h"
 #endif // if !defined(JSON_IS_AMALGAMATION)
 #include <algorithm>
 #include <cassert>
@@ -2430,9 +2430,9 @@ ValueIterator& ValueIterator::operator=(const SelfType& other) {
 // See file LICENSE for detail or copy at http://jsoncpp.sourceforge.net/LICENSE
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include <OTA/json/assertions.h>
-#include <OTA/json/value.h>
-#include <OTA/json/writer.h>
+#include "json/assertions.h"
+#include "json/value.h"
+#include "json/writer.h"
 #endif // if !defined(JSON_IS_AMALGAMATION)
 #include <algorithm>
 #include <cassert>
@@ -4079,7 +4079,7 @@ Value& Path::make(Value& root) const {
 
 #if !defined(JSON_IS_AMALGAMATION)
 //#include "json_tool.h"
-#include <OTA/json/writer.h>
+#include "json/writer.h"
 #endif // if !defined(JSON_IS_AMALGAMATION)
 #include <algorithm>
 #include <cassert>

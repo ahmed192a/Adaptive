@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/ucm/pkgmgr/uart_linux.hpp"
+#include "ara/ucm/pkgmgr/uart_linux.h"
 #include <iostream>
 uart_linux::uart_linux(/* args */)
 {

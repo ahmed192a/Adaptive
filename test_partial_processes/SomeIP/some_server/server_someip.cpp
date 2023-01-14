@@ -1,11 +1,11 @@
-#include "ara/com/ipc/server/socket_Server.hpp"
+#include "ara/com/ipc/server/socket_Server.h"
 #include <iostream>
 #include <vector>
-#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
-#include "ara/com/SOMEIP/option/ipv4_endpoint_option.hpp"
-#include "ara/com/SOMEIP/helper/ipv4_address.hpp"
-#include "ara/com/SOMEIP/entry/service_entry.hpp"
-#include "ara/com/SOMEIP/entry/eventgroup_entry.hpp"
+#include "ara/com/SOMEIP/SomeipSDMessage.h"
+#include "ara/com/SOMEIP/option/ipv4_endpoint_option.h"
+#include "ara/com/SOMEIP/helper/ipv4_address.h"
+#include "ara/com/SOMEIP/entry/service_entry.h"
+#include "ara/com/SOMEIP/entry/eventgroup_entry.h"
 #include <unistd.h>
 using namespace std;
 using namespace ara::com::entry;

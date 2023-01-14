@@ -9,8 +9,8 @@
  *
  */
 #include <iostream>
-#include "ara/exec/function_group.hpp"
-#include "ara/exec/parser/manifest_parser.hpp"
+#include "ara/exec/function_group.h"
+#include "ara/exec/parser/manifest_parser.h"
 #include <filesystem>
 using namespace ara::exec;
 using namespace nlohmann;

@@ -17,7 +17,7 @@
 #include <strings.h>
 #include <string.h>
 #include <errno.h>
-#include "ara/com/ipc/server/socket_Server.hpp"
+#include "ara/com/ipc/server/socket_Server.h"
 #include <netinet/in.h>
 #include <arpa/inet.h>
 using namespace std;

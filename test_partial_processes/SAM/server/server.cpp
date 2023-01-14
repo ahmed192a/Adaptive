@@ -9,9 +9,9 @@
 #include <signal.h>
 #include <memory>
 
-#include "ara/SD_s/skeleton.hpp"
-#include "ara/com/proxy_skeleton/definitions.hpp"
-#include "ara/com/deserializer.hpp"
+#include "ara/SD_s/skeleton.h"
+#include "ara/com/proxy_skeleton/definitions.h"
+#include "ara/com/deserializer.h"
 
 #include <sys/mman.h>
 #include <sys/ipc.h>

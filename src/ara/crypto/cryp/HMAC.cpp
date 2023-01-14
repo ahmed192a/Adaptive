@@ -1,6 +1,6 @@
-#include "ara/crypto/cryp/HMAC.hpp"
-#include "ara/crypto/cryp/HMAC_digest_service.hpp"
-#include "ara/crypto/cryp/hash_service.hpp"
+#include "ara/crypto/cryp/HMAC.h"
+#include "ara/crypto/cryp/HMAC_digest_service.h"
+#include "ara/crypto/cryp/hash_service.h"
 
 using namespace ara::crypto::cryp;
 

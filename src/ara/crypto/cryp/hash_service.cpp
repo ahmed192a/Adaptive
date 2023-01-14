@@ -1,5 +1,5 @@
-#include "ara/crypto/cryp/hash_service.hpp"
-#include "ara/crypto/cryp/sha256.hpp"
+#include "ara/crypto/cryp/hash_service.h"
+#include "ara/crypto/cryp/sha256.h"
 
 
 using namespace ara::crypto::cryp;

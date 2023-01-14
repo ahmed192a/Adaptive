@@ -13,12 +13,12 @@
  * **********************************************************************/
 #include <iostream>
 #include <string.h>
-#include "ara/ucm/pkgmgr/packagemanagement_skeleton.hpp"
-#include "ara/com/proxy_skeleton/definitions.hpp"
-#include "ara/com/SOMEIP/Message.hpp"
-#include "ara/sm/triggerin/triggerin_proxy.hpp"
-#include "ara/sm/triggerin/triggerin_types.hpp"
-#include "ara/exec/execution_client.hpp"
+#include "ara/ucm/pkgmgr/packagemanagement_skeleton.h"
+#include "ara/com/proxy_skeleton/definitions.h"
+#include "ara/com/SOMEIP/Message.h"
+#include "ara/sm/triggerin/triggerin_proxy.h"
+#include "ara/sm/triggerin/triggerin_types.h"
+#include "ara/exec/execution_client.h"
 
 /************************************************************************
  *                           Defines                                    *

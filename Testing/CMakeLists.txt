@@ -33,14 +33,14 @@ target_link_libraries(
   gtest
   gmock
   )
-target_include_directories(
-  ${PROJECT_NAME}-ut  
-  PUBLIC 
-  # add path for gtest header files
-  ${gtest_SOURCE_DIR}/include
-  ${gmock_SOURCE_DIR}/include
+# target_include_directories(
+#   ${PROJECT_NAME}-ut  
+#   PUBLIC 
+#   # add path for gtest header files
+#   ${gtest_SOURCE_DIR}/include
+#   ${gmock_SOURCE_DIR}/include
   
-)
+# )
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}-ut)

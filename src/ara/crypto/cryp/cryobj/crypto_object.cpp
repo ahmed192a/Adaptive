@@ -1,5 +1,5 @@
-#include"ara/crypto/common/concrete_io_interface.hpp"
-#include "ara/crypto/cryp/cryobj/crypto_obj.hpp"
+#include"ara/crypto/common/concrete_io_interface.h"
+#include "ara/crypto/cryp/cryobj/crypto_obj.h"
 #include <iostream>
 namespace ara
 {

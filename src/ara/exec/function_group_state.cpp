@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  *
  */
-#include "ara/exec/function_group_state.hpp"
+#include "ara/exec/function_group_state.h"
 #include <string>
 
 using namespace ara::exec;

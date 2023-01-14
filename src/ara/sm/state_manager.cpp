@@ -1,4 +1,4 @@
-#include "ara/sm/state_manager.hpp"
+#include "ara/sm/state_manager.h"
 
 using namespace ara::sm;
 

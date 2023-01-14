@@ -1,4 +1,4 @@
-#include "ara/crypto/cryp/Keywrapper.hpp"
+#include "ara/crypto/cryp/Keywrapper.h"
 
 using namespace ara::crypto::cryp;
 

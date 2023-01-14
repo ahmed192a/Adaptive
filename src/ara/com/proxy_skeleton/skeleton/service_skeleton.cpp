@@ -1,4 +1,4 @@
-// #include "ara/com/proxy_skeleton/skeleton/service_skeleton.hpp"
+// #include "ara/com/proxy_skeleton/skeleton/service_skeleton.h"
 
 // namespace ara
 // {

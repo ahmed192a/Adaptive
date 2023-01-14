@@ -1,5 +1,5 @@
 
-#include "OTA/client.hpp"
+#include "client.h"
 #include <string.h> //strlen
 #include <sys/socket.h> //socket
 #include <unistd.h>// close socket

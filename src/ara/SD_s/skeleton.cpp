@@ -9,9 +9,9 @@
  *
  */
 
-#include "ara/SD_s/skeleton.hpp"
-#include "ara/com/proxy_skeleton/definitions.hpp"
-#include "ara/com/proxy_skeleton/skeleton/data_type.hpp"
+#include "ara/SD_s/skeleton.h"
+#include "ara/com/proxy_skeleton/definitions.h"
+#include "ara/com/proxy_skeleton/skeleton/data_type.h"
 
 #include <future>
 

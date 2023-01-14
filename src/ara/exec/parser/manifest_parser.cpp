@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/exec/parser/manifest_parser.hpp"
+#include "ara/exec/parser/manifest_parser.h"
 #include <variant>
 #include <fstream>
 #include <iostream>

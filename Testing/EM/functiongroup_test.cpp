@@ -7,8 +7,8 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "../../include/ara/exec/function_group.hpp"
-#include "../../include/ara/exec/exec_error_domain.hpp"
+#include "ara/exec/function_group.h"
+#include "ara/exec/exec_error_domain.h"
 #include <gtest/gtest.h>
 #include <iostream>
 #include <variant>

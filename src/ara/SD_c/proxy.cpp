@@ -1,4 +1,4 @@
-#include "ara/SD_c/proxy.hpp"
+#include "proxy.h"
 
 namespace saam{
     proxy::proxy(ara::com::proxy_skeleton::proxy::ServiceProxy::SP_Handle proxy_handle)

@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  *
  */
-#include "ara/com/proxy_skeleton/skeleton/event.hpp"
+#include "ara/com/proxy_skeleton/skeleton/event.h"
 
 void (*g_handler)(int, siginfo_t *, void *);
 

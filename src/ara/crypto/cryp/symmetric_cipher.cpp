@@ -1,5 +1,5 @@
-#include "ara/crypto/cryp/symmetric_cipher.hpp"
-#include "ara/crypto/cryp/PRNG.hpp"
+#include "ara/crypto/cryp/symmetric_cipher.h"
+#include "ara/crypto/cryp/PRNG.h"
 //#include <aes.h> //crypto++
 using namespace ara::crypto;
 using namespace ara::crypto::cryp;

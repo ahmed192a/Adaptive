@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  */
- #include "ara/exec/exec_error_domain.hpp"
+ #include "ara/exec/exec_error_domain.h"
  #include <iostream>
 
  namespace ara

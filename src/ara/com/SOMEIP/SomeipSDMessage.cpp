@@ -7,9 +7,9 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "ara/com/SOMEIP/SomeipSDMessage.hpp"
-#include "ara/com/SOMEIP/option/option_desrializer.hpp"
-#include "ara/com/SOMEIP/entry/entry_desrializer.hpp"
+#include "ara/com/SOMEIP/SomeipSDMessage.h"
+#include "ara/com/SOMEIP/option/option_desrializer.h"
+#include "ara/com/SOMEIP/entry/entry_desrializer.h"
 #include <iostream>
 using namespace std;
 namespace ara

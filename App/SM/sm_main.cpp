@@ -11,12 +11,12 @@
 #include <unistd.h>
 #include <signal.h>
 #include <csignal>
-#include "ara/exec/state_client.hpp"
-#include "ara/exec/function_group_state.hpp"
-#include "ara/exec/execution_client.hpp"
-#include "ara/com/proxy_skeleton/definitions.hpp"
-#include "ara/sm/triggerin/triggerin_skeleton.hpp"
-#include "ara/sm/triggerin/triggerin_types.hpp"
+#include "ara/exec/state_client.h"
+#include "ara/exec/function_group_state.h"
+#include "ara/exec/execution_client.h"
+#include "ara/com/proxy_skeleton/definitions.h"
+#include "ara/sm/triggerin/triggerin_skeleton.h"
+#include "ara/sm/triggerin/triggerin_types.h"
 
 ///// Defines
 #define NUM_THREADS             2       // number of threads

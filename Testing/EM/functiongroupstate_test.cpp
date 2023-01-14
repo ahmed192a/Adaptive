@@ -7,9 +7,9 @@
  * @copyright Copyright (c) 2022
  * 
  */
-#include "../../include/ara/exec/function_group.hpp"
-#include "../../include/ara/exec/function_group_state.hpp"
-#include "../../include/ara/exec/exec_error_domain.hpp"
+#include "ara/exec/function_group.h"
+#include "ara/exec/function_group_state.h"
+#include "ara/exec/exec_error_domain.h"
 #include <gtest/gtest.h>
 #include <variant>
 extern int fg_num;

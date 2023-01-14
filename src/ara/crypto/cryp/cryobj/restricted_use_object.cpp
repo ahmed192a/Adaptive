@@ -1,4 +1,4 @@
-#include "ara/crypto/cryp/cryobj/rest_use_obj.hpp"
+#include "ara/crypto/cryp/cryobj/rest_use_obj.h"
 
 #include <iostream>
 namespace ara

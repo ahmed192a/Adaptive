@@ -5,7 +5,7 @@
  *      Author: aliab
  */
 
-#include "ara/crypto/cryp/concrete_crypto_provider.hpp"
+#include "ara/crypto/cryp/concrete_crypto_provider.h"
 
 using namespace ara::crypto::cryp;
 

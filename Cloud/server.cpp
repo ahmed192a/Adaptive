@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "./metadata.hpp"
+#include "./metadata.h"
 // include header for DIR
 #include <dirent.h>
 #include <map>

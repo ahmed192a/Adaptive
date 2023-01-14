@@ -13,8 +13,8 @@
 #   "${CMAKE_SOURCE_DIR}/src/ara")
 
 
-file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/*.hpp")
-file(GLOB_RECURSE SOURCE_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/ara/*.cpp")
+file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.h")
+file(GLOB_RECURSE SOURCE_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 
 
@@ -26,7 +26,7 @@ add_library(
 target_include_directories(
   ara_lib 
   PUBLIC 
-  ../include
+  "${PROJECT_SOURCE_DIR}/src"
 )
 target_link_libraries(
   ara_lib 
@@ -49,8 +49,7 @@ target_compile_features(
 )
 
 source_group(
-  TREE "${PROJECT_SOURCE_DIR}/include"
+  TREE "${PROJECT_SOURCE_DIR}/src"
   PREFIX "Header Files"
-  FILES ${HEADER_LIST})
-
+  FILES ${HEADER_LIST}) 
 

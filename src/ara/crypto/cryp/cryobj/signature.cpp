@@ -1,6 +1,6 @@
 #include <iostream>
 #include<vector>
-#include "ara/crypto/cryp/cryobj/sign.hpp"
+#include "ara/crypto/cryp/cryobj/sign.h"
 
 namespace ara
 {
