@@ -43,7 +43,7 @@ echo "Current PID: $$"
 case $choice in
 0)  # configure
     cd ..; 
-    cmake -S . -B build
+    cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug;
     ;;
 1)  # build
     cd ../build;

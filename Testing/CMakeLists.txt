@@ -33,14 +33,14 @@ target_link_libraries(
   gtest
   gmock
   )
-# target_include_directories(
-#   ${PROJECT_NAME}-ut  
-#   PUBLIC 
-#   # add path for gtest header files
-#   ${gtest_SOURCE_DIR}/include
-#   ${gmock_SOURCE_DIR}/include
-  
-# )
+
+# #  enable code coverage
+# if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#     target_compile_options(${PROJECT_NAME}-ut PRIVATE -g -O0 -fprofile-arcs -ftest-coverage)
+#     target_link_libraries(${PROJECT_NAME}-ut PRIVATE -fprofile-arcs -ftest-coverage)
+# endif()
+# add test to ctest
+add_test(${PROJECT_NAME}-ut ${PROJECT_NAME}-ut)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}-ut)
