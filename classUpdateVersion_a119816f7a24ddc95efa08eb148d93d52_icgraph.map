@@ -1,0 +1,9 @@
+<map id="UpdateVersion::get_versionNo" name="UpdateVersion::get_versionNo">
+<area shape="rect" id="node1" title="Getting version of the update." alt="" coords="727,23,873,65"/>
+<area shape="rect" id="node2" href="$classMetaData.html#a8821027b6ccc00c56f65084b92c5a950" title=" " alt="" coords="488,31,679,57"/>
+<area shape="rect" id="node3" href="$server_8cpp.html#abf9e6b7e6f15df4b525a2e7705ba3089" title="main" alt="" coords="121,5,175,32"/>
+<area shape="rect" id="node4" href="$server_8cpp.html#aaecf004845e92dd0cc0681bfbde1eb9e" title=" " alt="" coords="271,31,405,57"/>
+<area shape="rect" id="node5" href="$classOTA_1_1Client.html#a972453ec360269d9e30a5f6e0c81d86f" title="Requests the package from the cloud server." alt="" coords="236,81,440,108"/>
+<area shape="rect" id="node6" href="$ota__main_8cpp.html#a04eccab0ffd7d4c3ea148bd1f5b46ddc" title="Thread 0 used for main code of the OTA client." alt="" coords="108,81,188,108"/>
+<area shape="rect" id="node7" href="$ota__main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,81,60,108"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="ara::com::SOMEIP_MESSAGE::Message" name="ara::com::SOMEIP_MESSAGE::Message">
+<area shape="rect" id="node1" title="Class SOME IP Message." alt="" coords="121,200,329,241"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Header.html" title=" " alt="" coords="121,109,329,151"/>
+<area shape="rect" id="node3" href="$structara_1_1com_1_1SOMEIP__MESSAGE_1_1Request__ID.html" title="Request_ID struct is used to identify the client id and session id of the request message." alt="" coords="5,5,213,47"/>
+<area shape="rect" id="node4" href="$structara_1_1com_1_1SOMEIP__MESSAGE_1_1Message__ID.html" title="Message_ID struct is used to identify the service id and method id of the message." alt="" coords="237,5,445,47"/>
+</map>

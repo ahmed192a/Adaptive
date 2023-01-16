@@ -1,0 +1,5 @@
+<map id="OTA::Client::requestPackage" name="OTA::Client::requestPackage">
+<area shape="rect" id="node1" title="Requests the package from the cloud server." alt="" coords="5,13,209,39"/>
+<area shape="rect" id="node2" href="$classMetaData.html#a8821027b6ccc00c56f65084b92c5a950" title=" " alt="" coords="257,13,448,39"/>
+<area shape="rect" id="node3" href="$classUpdateVersion.html#a119816f7a24ddc95efa08eb148d93d52" title="Getting version of the update." alt="" coords="496,5,643,47"/>
+</map>

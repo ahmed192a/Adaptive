@@ -1,0 +1,4 @@
+<map id="ara::ucm::pkgmgr::proxy::PackageManagementProxy" name="ara::ucm::pkgmgr::proxy::PackageManagementProxy">
+<area shape="rect" id="node1" title="implementation of PackageManagementProxy interface" alt="" coords="5,95,212,136"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html" title="ServiceProxy is the main class for the proxy skeleton." alt="" coords="15,5,202,47"/>
+</map>

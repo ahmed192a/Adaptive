@@ -1,0 +1,12 @@
+<map id="ara::com::proxy_skeleton::skeleton::Event&lt; T &gt;" name="ara::com::proxy_skeleton::skeleton::Event&lt; T &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="5,239,192,280"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Field.html" title="class field &#45;&#45;&gt; has getter ,setter , notifier" alt="" coords="341,5,528,47"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoGetter.html" title="class FieldNoGetter to set method" alt="" coords="324,71,545,112"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoGetterAndSetter.html" title="class Field No Getter And Setter &#45;&#45;&gt; update event" alt="" coords="292,136,577,177"/>
+<area shape="rect" id="node6" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoNotifier.html" title="class Field No Notifier &#45;&#45;&gt; update event" alt="" coords="321,201,549,243"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoNotifierAndGetter.html" title="class Field No Notifier And Getter" alt="" coords="327,267,542,323"/>
+<area shape="rect" id="node8" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoNotifierAndSetter.html" title="class Field No Notifier And Setter &#45;&#45;&gt; to handle get then update" alt="" coords="327,347,542,403"/>
+<area shape="rect" id="node9" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoSetter.html" title="class FieldNoSetter has get method" alt="" coords="325,428,544,469"/>
+<area shape="rect" id="node10" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Event.html" title=" " alt="" coords="341,493,528,535"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Field.html" title=" " alt="" coords="677,251,864,292"/>
+</map>

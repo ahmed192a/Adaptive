@@ -1,0 +1,7 @@
+<map id="ara::com::proxy_skeleton::skeleton::Event::notify" name="ara::com::proxy_skeleton::skeleton::Event::notify">
+<area shape="rect" id="node1" title=" " alt="" coords="268,133,455,174"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Field.html#a69d3a433b1979f0ae5ae53a1e38093d0" title="Handle set method." alt="" coords="19,5,206,61"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoGetter.html#a1ddf94d9a7f5d8af740010bdb2dee6be" title="Handle set method." alt="" coords="19,85,206,141"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoNotifierAndGetter.html#a167dd84111b3bd48bc4faa84285a30bf" title="HandleSet method." alt="" coords="5,165,220,221"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Event.html#a2f4887439a0e3d2b6bcc3f81d1a516f1" title="update event and notify" alt="" coords="19,245,206,301"/>
+</map>

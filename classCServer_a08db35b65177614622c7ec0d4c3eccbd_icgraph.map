@@ -1,0 +1,7 @@
+<map id="CServer::OpenSocket" name="CServer::OpenSocket">
+<area shape="rect" id="node1" title="Open the server socket." alt="" coords="236,56,395,83"/>
+<area shape="rect" id="node2" href="$ota__main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="121,5,175,32"/>
+<area shape="rect" id="node3" href="$service__descovery_8cpp.html#acbb3a40a023c47671291ab4d8265a19e" title="listen to all servers and get services information" alt="" coords="108,56,188,83"/>
+<area shape="rect" id="node5" href="$service__descovery_8cpp.html#a297795597828e47530ba574e915f8a48" title="listen to all clients and find the requested service" alt="" coords="108,107,188,133"/>
+<area shape="rect" id="node4" href="$service__descovery_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="main function of service discovery" alt="" coords="5,81,60,108"/>
+</map>

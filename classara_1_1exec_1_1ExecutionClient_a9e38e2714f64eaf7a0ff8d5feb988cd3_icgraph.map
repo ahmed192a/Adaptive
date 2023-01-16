@@ -1,0 +1,5 @@
+<map id="ara::exec::ExecutionClient::ReportExecutionState" name="ara::exec::ExecutionClient::ReportExecutionState">
+<area shape="rect" id="node1" title="Interface for a Process to report its proxy_skeleton state to Execution Management." alt="" coords="279,23,469,65"/>
+<area shape="rect" id="node2" href="$test__process_8cpp.html#a966c032851888758c8a04acd3344cf94" title="Signal handler for SIGTERM." alt="" coords="108,5,231,32"/>
+<area shape="rect" id="node3" href="$test__process_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,31,60,57"/>
+</map>

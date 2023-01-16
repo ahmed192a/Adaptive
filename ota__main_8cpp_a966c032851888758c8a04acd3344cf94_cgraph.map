@@ -1,0 +1,4 @@
+<map id="handle_sigterm" name="handle_sigterm">
+<area shape="rect" id="node1" title="Signal handler for SIGTERM." alt="" coords="5,13,128,39"/>
+<area shape="rect" id="node2" href="$classara_1_1exec_1_1ExecutionClient.html#a9e38e2714f64eaf7a0ff8d5feb988cd3" title="Interface for a Process to report its proxy_skeleton state to Execution Management." alt="" coords="176,5,367,47"/>
+</map>

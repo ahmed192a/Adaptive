@@ -1,0 +1,4 @@
+<map id="handle_sigterm" name="handle_sigterm">
+<area shape="rect" id="node1" title="handle_sigterm &#45;&#45;&gt; stop offering service close server socket close server socket" alt="" coords="108,5,231,32"/>
+<area shape="rect" id="node2" href="$ucm__server_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="Main Function." alt="" coords="5,5,60,32"/>
+</map>

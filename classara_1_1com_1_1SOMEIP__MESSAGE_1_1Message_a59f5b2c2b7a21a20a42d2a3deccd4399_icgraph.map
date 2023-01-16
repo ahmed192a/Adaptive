@@ -1,0 +1,4 @@
+<map id="ara::com::SOMEIP_MESSAGE::Message::SetSessionId" name="ara::com::SOMEIP_MESSAGE::Message::SetSessionId">
+<area shape="rect" id="node1" title="Set a new session ID." alt="" coords="261,13,469,54"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1sd_1_1SomeIpSDMessage.html#a3bf13c493dc2184129f42a8f1058019b" title="Set the Session Id object." alt="" coords="5,5,213,61"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="handle_sigterm" name="handle_sigterm">
+<area shape="rect" id="node1" title="Signal handler for SIGTERM." alt="" coords="5,42,128,69"/>
+<area shape="rect" id="node2" href="$classLog.html#a5c2fa9c7007182c49527ebe54f3e4f54" title="Insert log information to file." alt="" coords="226,13,317,39"/>
+<area shape="rect" id="node4" href="$classara_1_1exec_1_1ExecutionClient.html#a9e38e2714f64eaf7a0ff8d5feb988cd3" title="Interface for a Process to report its proxy_skeleton state to Execution Management." alt="" coords="176,64,367,105"/>
+<area shape="rect" id="node3" href="$Log_8cpp.html#ab1f05732bed7e6362f865091ed8a86c8" title="Get the current time in the string format (YYYY&#45;MM&#45;DD HH:MM:SS)" alt="" coords="415,5,565,47"/>
+</map>

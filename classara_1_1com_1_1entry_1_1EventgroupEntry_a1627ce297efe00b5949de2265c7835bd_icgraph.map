@@ -1,0 +1,5 @@
+<map id="ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry" name="ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry">
+<area shape="rect" id="node1" title="Subscribe to an event&#45;group entry factory." alt="" coords="475,13,715,54"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a430c5da659babb0127370251218c6613" title="EventSubscribe." alt="" coords="240,5,427,61"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Event.html#aaba2a38e3539af13a6cf07ff124e8426" title="Subscribe to event." alt="" coords="5,5,192,61"/>
+</map>

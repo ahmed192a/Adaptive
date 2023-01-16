@@ -1,0 +1,5 @@
+<map id="ara::core::ErrorCode::ThrowAsException" name="ara::core::ErrorCode::ThrowAsException">
+<area shape="rect" id="node1" title=" " alt="" coords="5,39,156,80"/>
+<area shape="rect" id="node2" href="$classara_1_1core_1_1ErrorCode.html#a40f4adb10cda76c41ce5b7b872b31645" title=" " alt="" coords="213,5,364,47"/>
+<area shape="rect" id="node3" href="$classara_1_1core_1_1ErrorDomain.html#af8a994776315af1c0a9fddc9ee88477f" title="Throws the given errorCode as Exception." alt="" coords="204,71,373,112"/>
+</map>

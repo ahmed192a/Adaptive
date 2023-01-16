@@ -1,0 +1,5 @@
+<map id="change_state" name="change_state">
+<area shape="rect" id="node1" title="change_state Change the state of a function group and terminate the process if it&#39;s not in vaild stat..." alt="" coords="5,31,115,57"/>
+<area shape="rect" id="node2" href="$exec__main_8cpp.html#a848c0fc9ebe10a70b8c6d30a6c1b453e" title="operate is the method responsible for starting the processes that is satisfied by the FG state after ..." alt="" coords="170,5,262,32"/>
+<area shape="rect" id="node3" href="$exec__main_8cpp.html#ad57bfe2580ebf93a810aa19203ce7141" title="terminate is the method responsible for terminating the processes that is not satisfied by the FG sta..." alt="" coords="163,56,269,83"/>
+</map>

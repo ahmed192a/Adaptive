@@ -1,0 +1,7 @@
+<map id="ara::com::entry::Entry::Type" name="ara::com::entry::Entry::Type">
+<area shape="rect" id="node1" title="Get entry type." alt="" coords="507,71,669,112"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1entry_1_1Entry.html#ae2fae1dcf9a502ae4cc9383fa940a008" title="Get baseentity payload." alt="" coords="276,37,439,79"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1entry_1_1EventgroupEntry.html#ac3156f7eef109f95ced715fc9d8d8a6b" title="isAcknowledged checks if the entry is acknowledged" alt="" coords="256,103,459,144"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1entry_1_1ServiceEntry.html#a03c31507f41d8e6727f80206fa0c30cf" title="Get entity payload." alt="" coords="19,5,195,47"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1entry_1_1EventgroupEntry.html#a1c31eebdb332494a7c7a598d2ba99a52" title="Get entity payload." alt="" coords="5,71,208,112"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::field_method_dispatch" name="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::field_method_dispatch">
+<area shape="rect" id="node1" title="Dispatch the requested methods from fields of package management server." alt="" coords="5,31,231,87"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a859590b1dade9eb0d19889589aee24c9" title="Get message length." alt="" coords="279,5,487,47"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a90c6210a76dd8551fd4c93cc79cfde0d" title="Get message ID." alt="" coords="279,71,487,112"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SendEvent" name="ara::com::proxy_skeleton::skeleton::ServiceSkeleton::SendEvent">
+<area shape="rect" id="node1" title="SendEvent send an event update to clients." alt="" coords="300,45,497,101"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Event.html#a11870951b3cefd83b6b41b4ee507f572" title=" " alt="" coords="35,5,222,61"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoGetterAndSetter.html#a4ce59d612513b9523795f4219270aa0f" title="update event" alt="" coords="5,85,252,141"/>
+</map>

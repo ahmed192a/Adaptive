@@ -1,0 +1,11 @@
+<map id="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton" name="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton">
+<area shape="rect" id="node1" title="implementation of PackageManagementSkeleton interface" alt="" coords="963,214,1188,255"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html" title="class ServiceSkeleton" alt="" coords="494,117,691,158"/>
+<area shape="rect" id="node3" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton_1_1SK__Handle.html" title=" " alt="" coords="7,5,204,61"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1InstanceIdentifier.html" title=" " alt="" coords="5,124,205,151"/>
+<area shape="rect" id="node5" href="$classCClient.html" title="CClient class for any tcp or udp client sockets." alt="" coords="71,175,140,201"/>
+<area shape="rect" id="node6" href="$structara_1_1ucm_1_1pkgmgr_1_1skeleton_1_1PackageManagementSkeleton_1_1TransferInfo.html" title=" " alt="" coords="480,183,705,239"/>
+<area shape="rect" id="node7" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldType.html" title=" " alt="" coords="447,263,739,348"/>
+<area shape="rect" id="node8" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldType.html" title="Interface for creating field opject ddepending on the input (getter/notifier/setter)" alt="" coords="12,270,199,341"/>
+<area shape="rect" id="node9" href="$structara_1_1ucm_1_1pkgmgr_1_1PackageManagement_1_1GetSwProcessProgressOutput.html" title=" " alt="" coords="461,372,725,428"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="ara::com::proxy_skeleton::skeleton::FieldNoGetterAndSetter::Update" name="ara::com::proxy_skeleton::skeleton::FieldNoGetterAndSetter::Update">
+<area shape="rect" id="node1" title="update event" alt="" coords="5,133,252,189"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a8d524b8d5c798768b4cefb1e9ec02cc9" title="SendEvent send an event update to clients." alt="" coords="300,133,497,189"/>
+<area shape="rect" id="node3" href="$classCClient.html#adbcb2f41e689144cbb6e8cf0b8b2f276" title="Close the socket." alt="" coords="571,5,727,32"/>
+<area shape="rect" id="node4" href="$classCClient.html#aa4c93a772ac973df945ffc9480c95fd1" title="Open the socket." alt="" coords="572,56,727,83"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1Serializer.html#af418d7de20e49a96042db720ed2c9a3a" title="Get the Payload object of the serializer." alt="" coords="575,107,723,149"/>
+<area shape="rect" id="node6" href="$classara_1_1com_1_1Serializer.html#af9f0e3e083c607e2e8a5fb3fae6bf793" title="serialize the data into the vector of bytes" alt="" coords="575,173,723,214"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a33e403159600cdfb3873d5a3fe292c79" title="Set message payload." alt="" coords="545,238,753,279"/>
+<area shape="rect" id="node8" href="$classCClient.html#a6865947408e961e760d9d3989cf3c063" title="Client send data UDP." alt="" coords="574,304,725,331"/>
+</map>

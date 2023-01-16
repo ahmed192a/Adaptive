@@ -1,0 +1,5 @@
+<map id="ara::com::entry::EventgroupEntry::isAcknowledge" name="ara::com::entry::EventgroupEntry::isAcknowledge">
+<area shape="rect" id="node1" title="isAcknowledged checks if the entry is acknowledged" alt="" coords="5,27,208,69"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1entry_1_1Entry.html#a075705f87c458a532adf96d644290c27" title="Get TTL." alt="" coords="256,5,448,32"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1entry_1_1Entry.html#a04cbc058f079ae37e873db0e8aeee376" title="Get entry type." alt="" coords="271,57,433,98"/>
+</map>

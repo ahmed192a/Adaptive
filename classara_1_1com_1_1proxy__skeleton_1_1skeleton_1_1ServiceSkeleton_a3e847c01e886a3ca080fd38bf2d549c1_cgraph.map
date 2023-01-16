@@ -1,0 +1,4 @@
+<map id="ara::com::proxy_skeleton::skeleton::ServiceSkeleton::sHandleCall" name="ara::com::proxy_skeleton::skeleton::ServiceSkeleton::sHandleCall">
+<area shape="rect" id="node1" title="sHandleCall handle return type void" alt="" coords="5,5,203,61"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a835c47cdd04ae418cd379e74c3b5192b" title="Get message data payload." alt="" coords="251,13,459,54"/>
+</map>

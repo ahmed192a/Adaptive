@@ -1,0 +1,9 @@
+<map id="ara::sm::triggerout::skeleton::Trigger_Out_Skeleton" name="ara::sm::triggerout::skeleton::Trigger_Out_Skeleton">
+<area shape="rect" id="node1" title=" " alt="" coords="729,105,872,161"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html" title="class ServiceSkeleton" alt="" coords="416,113,613,154"/>
+<area shape="rect" id="node3" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton_1_1SK__Handle.html" title=" " alt="" coords="7,101,204,157"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1InstanceIdentifier.html" title=" " alt="" coords="5,44,205,71"/>
+<area shape="rect" id="node5" href="$classCClient.html" title="CClient class for any tcp or udp client sockets." alt="" coords="71,181,140,208"/>
+<area shape="rect" id="node6" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldType.html" title=" " alt="" coords="401,203,628,274"/>
+<area shape="rect" id="node7" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldType.html" title="Interface for creating field opject ddepending on the input (getter/notifier/setter)" alt="" coords="12,233,199,303"/>
+</map>

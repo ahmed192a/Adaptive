@@ -1,0 +1,7 @@
+<map id="ara::com::proxy_skeleton::proxy::ServiceProxy::Field_get" name="ara::com::proxy_skeleton::proxy::ServiceProxy::Field_get">
+<area shape="rect" id="node1" title="Field_get." alt="" coords="320,97,507,153"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Field.html#a7f879d55bf5f0d177a34714b930d5cc8" title="Get the value of the field." alt="" coords="45,5,232,47"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoSetter.html#a9565128464eb5133d921139898f73a31" title="Get the value of the field." alt="" coords="42,71,235,112"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifier.html#a44b8ecf1713c7212093f48b5a4666d0a" title="Get the value of the field." alt="" coords="37,136,240,177"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifierAndSetter.html#acfc40ef37bdce4531e1c984dfe0c2937" title="Get the value of the field." alt="" coords="5,201,272,243"/>
+</map>

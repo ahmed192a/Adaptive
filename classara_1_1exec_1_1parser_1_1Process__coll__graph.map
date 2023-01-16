@@ -1,0 +1,4 @@
+<map id="ara::exec::parser::Process" name="ara::exec::parser::Process">
+<area shape="rect" id="node1" title="Process class to hold all prcoess configuration and handles to run and terminate the process." alt="" coords="20,109,159,151"/>
+<area shape="rect" id="node2" href="$classara_1_1exec_1_1parser_1_1Process_1_1StartupConfig.html" title="StartupConfig class to store the configurations on which we will run the process." alt="" coords="5,5,173,47"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="uart_linux::UART_sendBlock" name="uart_linux::UART_sendBlock">
+<area shape="rect" id="node1" title="Send Buffer of bytes on Serial Port." alt="" coords="552,60,756,87"/>
+<area shape="rect" id="node2" href="$classara_1_1ucm_1_1pkgmgr_1_1skeleton_1_1PackageManagementSkeleton.html#aa7babe23f8160b2e88a4334ff28aa978" title="Activate the software package." alt="" coords="279,5,504,61"/>
+<area shape="rect" id="node4" href="$classara_1_1ucm_1_1pkgmgr_1_1skeleton_1_1PackageManagementSkeleton.html#acc49011f1dd2a762d81a07a3b4dfd5f2" title="start processing the Software package" alt="" coords="279,85,504,141"/>
+<area shape="rect" id="node3" href="$classara_1_1ucm_1_1pkgmgr_1_1skeleton_1_1PackageManagementSkeleton.html#a996affe419e30f36887b4f6cef45849e" title="Dispatch the requested methods from package management server." alt="" coords="5,45,231,101"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="ara::com::Marshal&lt; Args &gt;" name="ara::com::Marshal&lt; Args &gt;">
+<area shape="rect" id="node1" title="marshal class for deserializing vector of data bytes to the required parameters from Args" alt="" coords="13,95,163,136"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1Deserializer.html" title="Deserializer class for deserializing data." alt="" coords="5,5,171,32"/>
+</map>

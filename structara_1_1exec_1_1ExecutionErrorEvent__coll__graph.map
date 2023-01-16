@@ -1,0 +1,4 @@
+<map id="ara::exec::ExecutionErrorEvent" name="ara::exec::ExecutionErrorEvent">
+<area shape="rect" id="node1" title="ExecutionErrorEvent struct to represent an execution error event which happens in a Function Group." alt="" coords="5,95,188,136"/>
+<area shape="rect" id="node2" href="$classara_1_1exec_1_1FunctionGroup.html" title="FunctionGroup representing Function Group defined in meta&#45;model (ARXML)." alt="" coords="5,5,188,32"/>
+</map>

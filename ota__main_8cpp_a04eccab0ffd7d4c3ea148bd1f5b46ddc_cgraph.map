@@ -1,0 +1,12 @@
+<map id="pthread0" name="pthread0">
+<area shape="rect" id="node1" title="Thread 0 used for main code of the OTA client." alt="" coords="5,144,85,171"/>
+<area shape="rect" id="node2" href="$classOTA_1_1Client.html#ada9e764ded8b80954cf0eaad29abb40c" title="Connects the OTA application to the cloud server." alt="" coords="145,5,335,32"/>
+<area shape="rect" id="node3" href="$classOTA_1_1Client.html#a9d1018400afd872735c9fa6a9fc399a0" title="Disconnects the OTA application to the cloud server." alt="" coords="135,56,345,83"/>
+<area shape="rect" id="node4" href="$classOTA_1_1MetaDataStorage.html#af28eae455d769970d696095dbbe40007" title="Loads all the stored meta&#45;data objects from the file system." alt="" coords="155,107,325,149"/>
+<area shape="rect" id="node6" href="$classOTA_1_1Client.html#a20aafadc64b2cb3fa11972b69bedf977" title="Requests the package metadata from the cloud server." alt="" coords="133,173,347,200"/>
+<area shape="rect" id="node7" href="$classOTA_1_1Client.html#a972453ec360269d9e30a5f6e0c81d86f" title="Requests the package from the cloud server." alt="" coords="138,224,342,251"/>
+<area shape="rect" id="node10" href="$classOTA_1_1MetaDataStorage.html#a0343f818f5db1c0ac85e664bf5ec7183" title="Saves a single meta&#45;data object in the file system." alt="" coords="155,275,325,317"/>
+<area shape="rect" id="node5" href="$classOTA_1_1MetaDataStorage.html#a4e046beb51905b39b26b2e7d47407d9f" title="gets the number of apps in the file system" alt="" coords="405,107,575,149"/>
+<area shape="rect" id="node8" href="$classMetaData.html#a8821027b6ccc00c56f65084b92c5a950" title=" " alt="" coords="395,224,585,251"/>
+<area shape="rect" id="node9" href="$classUpdateVersion.html#a119816f7a24ddc95efa08eb148d93d52" title="Getting version of the update." alt="" coords="633,217,780,258"/>
+</map>

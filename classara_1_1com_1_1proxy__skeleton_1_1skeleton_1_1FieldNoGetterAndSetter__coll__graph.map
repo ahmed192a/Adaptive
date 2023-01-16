@@ -1,0 +1,9 @@
+<map id="ara::com::proxy_skeleton::skeleton::FieldNoGetterAndSetter&lt; T &gt;" name="ara::com::proxy_skeleton::skeleton::FieldNoGetterAndSetter&lt; T &gt;">
+<area shape="rect" id="node1" title="class Field No Getter And Setter &#45;&#45;&gt; update event" alt="" coords="980,153,1265,194"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Event.html" title=" " alt="" coords="744,153,931,194"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html" title="class ServiceSkeleton" alt="" coords="384,117,581,158"/>
+<area shape="rect" id="node4" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton_1_1SK__Handle.html" title=" " alt="" coords="7,5,204,61"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1InstanceIdentifier.html" title=" " alt="" coords="5,124,205,151"/>
+<area shape="rect" id="node6" href="$classCClient.html" title="CClient class for any tcp or udp client sockets." alt="" coords="71,175,140,201"/>
+<area shape="rect" id="node7" href="$classSubscriber.html" title=" " alt="" coords="437,183,528,209"/>
+</map>

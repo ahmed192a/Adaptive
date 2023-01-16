@@ -1,0 +1,8 @@
+<map id="ara::sm::powermode::proxy::PowerMode" name="ara::sm::powermode::proxy::PowerMode">
+<area shape="rect" id="node1" title=" " alt="" coords="1485,49,1641,90"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html" title="ServiceProxy is the main class for the proxy skeleton." alt="" coords="699,49,885,90"/>
+<area shape="rect" id="node6" href="$classara_1_1sm_1_1powermode_1_1proxy_1_1methods_1_1MessagePowerMode.html" title=" " alt="" coords="1029,78,1303,119"/>
+<area shape="rect" id="node3" href="$structara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy_1_1SP__Handle.html" title="SP_Handle struct for SP_Handle (ServiceProxyHandle)" alt="" coords="341,5,528,61"/>
+<area shape="rect" id="node4" href="$structara_1_1com_1_1proxy__skeleton_1_1SD__data.html" title=" " alt="" coords="5,13,192,54"/>
+<area shape="rect" id="node5" href="$classCClient.html" title="CClient class for any tcp or udp client sockets." alt="" coords="400,85,469,112"/>
+</map>

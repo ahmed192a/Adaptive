@@ -1,0 +1,9 @@
+<map id="ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy" name="ara::sm::triggerin::proxy::Trigger_In_UCM_Proxy">
+<area shape="rect" id="node1" title=" " alt="" coords="1091,108,1228,164"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html" title="ServiceProxy is the main class for the proxy skeleton." alt="" coords="803,75,989,117"/>
+<area shape="rect" id="node3" href="$structara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy_1_1SP__Handle.html" title="SP_Handle struct for SP_Handle (ServiceProxyHandle)" alt="" coords="375,5,562,61"/>
+<area shape="rect" id="node4" href="$structara_1_1com_1_1proxy__skeleton_1_1SD__data.html" title=" " alt="" coords="5,13,192,54"/>
+<area shape="rect" id="node5" href="$classCClient.html" title="CClient class for any tcp or udp client sockets." alt="" coords="434,85,503,112"/>
+<area shape="rect" id="node6" href="$structara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldType.html" title=" " alt="" coords="797,141,995,211"/>
+<area shape="rect" id="node7" href="$structara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldType.html" title="FieldType Class for field." alt="" coords="341,148,596,204"/>
+</map>

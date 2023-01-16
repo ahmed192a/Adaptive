@@ -1,0 +1,52 @@
+<map id="CClient::OpenSocket" name="CClient::OpenSocket">
+<area shape="rect" id="node1" title="Open the socket." alt="" coords="565,660,720,687"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a430c5da659babb0127370251218c6613" title="EventSubscribe." alt="" coords="325,37,512,93"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a953549b1d87ce20a3057081076d95eb8" title="EventUnsubscribe." alt="" coords="325,148,512,204"/>
+<area shape="rect" id="node6" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a0b47ff8a5e3d0f18c23fd37b00332aac" title="Field_get." alt="" coords="325,289,512,345"/>
+<area shape="rect" id="node11" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#ad9070c3d59614bf762af8c9a2d08c1b9" title="Field_set." alt="" coords="325,525,512,581"/>
+<area shape="rect" id="node16" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a66fe1efad4069b8940a7fc6323908d4b" title="FindService." alt="" coords="325,605,512,661"/>
+<area shape="rect" id="node18" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a0a913114d49ea82357872896c02d862c" title="Offer Service." alt="" coords="320,685,517,741"/>
+<area shape="rect" id="node19" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a8d524b8d5c798768b4cefb1e9ec02cc9" title="SendEvent send an event update to clients." alt="" coords="320,765,517,821"/>
+<area shape="rect" id="node22" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#ad5e795aecffca5a39f91a1d64afaaea4" title="SendRequest." alt="" coords="320,845,517,901"/>
+<area shape="rect" id="node23" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#aedc0251ddb173c44bf14c534c8b3b1b6" title="SendRequest." alt="" coords="325,1723,512,1779"/>
+<area shape="rect" id="node50" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a0cdcb2dcb86ff315bda38bb3cc8a6b8a" title="StopOfferService." alt="" coords="320,1803,517,1859"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Event.html#aaba2a38e3539af13a6cf07ff124e8426" title="Subscribe to event." alt="" coords="45,5,232,61"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Event.html#a11f1e9d3b03f243ccedc5c3becaddf1c" title="Unsubscribe from event." alt="" coords="45,85,232,141"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Field.html#a7f879d55bf5f0d177a34714b930d5cc8" title="Get the value of the field." alt="" coords="45,166,232,207"/>
+<area shape="rect" id="node8" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoSetter.html#a9565128464eb5133d921139898f73a31" title="Get the value of the field." alt="" coords="42,231,235,273"/>
+<area shape="rect" id="node9" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifier.html#a44b8ecf1713c7212093f48b5a4666d0a" title="Get the value of the field." alt="" coords="37,297,240,338"/>
+<area shape="rect" id="node10" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifierAndSetter.html#acfc40ef37bdce4531e1c984dfe0c2937" title="Get the value of the field." alt="" coords="5,362,272,403"/>
+<area shape="rect" id="node12" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Field.html#a0f19cf9fb7bbe435a279214cedad93da" title="Set the value of the field." alt="" coords="45,427,232,469"/>
+<area shape="rect" id="node13" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoGetter.html#a410d6d069e6f004f4c7f3345fc21f321" title="Set the value of the field." alt="" coords="42,493,235,534"/>
+<area shape="rect" id="node14" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifier.html#ac9ca4fa4c4751ed51ed8a76cf4fa3a43" title="Set the value of the field." alt="" coords="39,558,239,599"/>
+<area shape="rect" id="node15" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifierAndGetter.html#a5c8cff57e255e31902c4bdc21c531d87" title="Set the value of the field." alt="" coords="5,623,272,665"/>
+<area shape="rect" id="node17" href="$ota__main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="111,689,166,716"/>
+<area shape="rect" id="node20" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Event.html#a11870951b3cefd83b6b41b4ee507f572" title=" " alt="" coords="45,740,232,796"/>
+<area shape="rect" id="node21" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoGetterAndSetter.html#a4ce59d612513b9523795f4219270aa0f" title="update event" alt="" coords="15,820,262,876"/>
+<area shape="rect" id="node24" href="$classara_1_1sm_1_1diagnostic__reset_1_1message__diagnostic.html#a34cbf3dd1841d2bc3f83869b2035ac0c" title=" " alt="" coords="37,900,240,956"/>
+<area shape="rect" id="node25" href="$classara_1_1sm_1_1powermode_1_1proxy_1_1methods_1_1MessagePowerMode.html#a492056f72d7e51c7ca1486191546d4a3" title=" " alt="" coords="20,980,257,1036"/>
+<area shape="rect" id="node26" href="$classsaam_1_1add__output.html#a04fd0e834f1502982c4a43e102b4daa7" title="operator function" alt="" coords="33,1060,245,1087"/>
+<area shape="rect" id="node27" href="$classara_1_1sm_1_1update__request_1_1ResetMachine.html#a64777ba3c6c90af98d087d9e8a5dd482" title=" " alt="" coords="41,1111,236,1153"/>
+<area shape="rect" id="node28" href="$classara_1_1sm_1_1diagnostic__reset_1_1event__diagnostic.html#a8a5d3cee9c40405b68c76c363ae97da1" title=" " alt="" coords="48,1177,229,1233"/>
+<area shape="rect" id="node29" href="$classara_1_1ucm_1_1pkgmgr_1_1Activate.html#a2ca2663718f54a118c0f1a8a0eed6236" title="PackageManagement ActivateOutput operator." alt="" coords="39,1258,238,1299"/>
+<area shape="rect" id="node30" href="$classara_1_1sm_1_1powermode_1_1proxy_1_1methods_1_1EventPowerMode.html#a15da42f8a0313d9fcf2a76713d497931" title=" " alt="" coords="31,1324,247,1380"/>
+<area shape="rect" id="node31" href="$classara_1_1sm_1_1update__request_1_1StopUpdateSession.html#a6cab5ee3783c2413e6e60e32b7eeaecc" title=" " alt="" coords="24,1405,253,1446"/>
+<area shape="rect" id="node32" href="$classara_1_1sm_1_1update__request_1_1StartUpdateSession.html#aff81d2e30595a60e159a128f15514bf7" title=" " alt="" coords="49,1471,229,1527"/>
+<area shape="rect" id="node33" href="$classara_1_1ucm_1_1pkgmgr_1_1Cancel.html#ae50e98a225040e6662b8bb4ba5db72a7" title="PackageManagement CancelOutput operator." alt="" coords="44,1551,233,1593"/>
+<area shape="rect" id="node34" href="$classara_1_1sm_1_1update__request_1_1RequestUpdateSession.html#ad792e45d4e3a1f89f436769374465e02" title=" " alt="" coords="49,1617,229,1673"/>
+<area shape="rect" id="node35" href="$classara_1_1ucm_1_1pkgmgr_1_1DeleteTransfer.html#a34eb30fc29d30ec1d571236f3b8d7e61" title="PackageManagement DeleteTransferOutput operator." alt="" coords="45,1698,233,1739"/>
+<area shape="rect" id="node36" href="$classara_1_1ucm_1_1pkgmgr_1_1Finish.html#a959a97840178f0c43e3fcf73cad1db6c" title="PackageManagement FinishOutput operator." alt="" coords="47,1763,230,1805"/>
+<area shape="rect" id="node37" href="$classara_1_1ucm_1_1pkgmgr_1_1GetHistory.html#ab5c62443134741a3867391fbb3042a51" title="PackageManagement GetHistoryOutput operator." alt="" coords="31,1829,246,1870"/>
+<area shape="rect" id="node38" href="$classara_1_1ucm_1_1pkgmgr_1_1GetId.html#a6cdb805c93a534ba618882d3de631f53" title="PackageManagement GetIdOutput operator." alt="" coords="49,1894,229,1935"/>
+<area shape="rect" id="node39" href="$classara_1_1ucm_1_1pkgmgr_1_1GetSwClusterChangeInfo.html#aa2e6b6727ff3c307daa4b67afce0e369" title="PackageManagement GetSwClusterChangeInfoOutput operator." alt="" coords="22,1959,255,2001"/>
+<area shape="rect" id="node40" href="$classara_1_1ucm_1_1pkgmgr_1_1GetSwClusterDescription.html#a67635317bcbd4946f5e25df819c30775" title="GetSwClusterDescriptionOutput operator." alt="" coords="22,2025,255,2066"/>
+<area shape="rect" id="node41" href="$classara_1_1ucm_1_1pkgmgr_1_1GetSwClusterInfo.html#abe84504b8471d03c2c5f219609827716" title="PackageManagement GetSwClusterInfoOutput operator." alt="" coords="22,2090,255,2131"/>
+<area shape="rect" id="node42" href="$classara_1_1ucm_1_1pkgmgr_1_1GetSwPackages.html#ac80160b74f1f10039be53bfb6f099865" title="PackageManagement GetSwPackagesOutput operator." alt="" coords="15,2155,262,2197"/>
+<area shape="rect" id="node43" href="$classara_1_1ucm_1_1pkgmgr_1_1GetSwProcessProgress.html#afedb07866ed60bc98377aef153219a5e" title="GetSwProcessProgressOutput operator." alt="" coords="20,2221,257,2262"/>
+<area shape="rect" id="node44" href="$classara_1_1ucm_1_1pkgmgr_1_1ProcessSwPackage.html#a5ca402826ca17553e497f5b4b2ce3111" title="PackageManagement ProcessSwPackageOutput operator." alt="" coords="41,2286,236,2327"/>
+<area shape="rect" id="node45" href="$classara_1_1ucm_1_1pkgmgr_1_1RevertProcessedSwPackages.html#a44bd793224e2b13dc17b2907531c07a0" title="RevertProcessedSwPackagesOutput operator." alt="" coords="19,2351,259,2393"/>
+<area shape="rect" id="node46" href="$classara_1_1ucm_1_1pkgmgr_1_1Rollback.html#a910626e45e65c0b828e5990491de123d" title="PackageManagement RollbackOutput operator." alt="" coords="38,2417,239,2458"/>
+<area shape="rect" id="node47" href="$classara_1_1ucm_1_1pkgmgr_1_1TransferData.html#a3cd2512bd3cea1bd1d7d72237bd817a3" title="PackageManagement TransferDataOutput operator." alt="" coords="40,2482,237,2523"/>
+<area shape="rect" id="node48" href="$classara_1_1ucm_1_1pkgmgr_1_1TransferExit.html#aed45724a027a13451613c9148192cfae" title="PackageManagement TransferExitOutput operator." alt="" coords="40,2547,237,2589"/>
+<area shape="rect" id="node49" href="$classara_1_1ucm_1_1pkgmgr_1_1TransferStart.html#a8455a80b4462e4f4a5bd80e8baeabb33" title="PackageManagement::TransferStartOutput operator." alt="" coords="40,2613,237,2654"/>
+</map>

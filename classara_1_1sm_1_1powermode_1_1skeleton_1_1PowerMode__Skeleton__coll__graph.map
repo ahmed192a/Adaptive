@@ -1,0 +1,7 @@
+<map id="ara::sm::powermode::skeleton::PowerMode_Skeleton" name="ara::sm::powermode::skeleton::PowerMode_Skeleton">
+<area shape="rect" id="node1" title=" " alt="" coords="367,215,537,271"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html" title="class ServiceSkeleton" alt="" coords="224,124,421,165"/>
+<area shape="rect" id="node3" href="$structara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton_1_1SK__Handle.html" title=" " alt="" coords="5,5,203,61"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1InstanceIdentifier.html" title=" " alt="" coords="375,20,575,47"/>
+<area shape="rect" id="node5" href="$classCClient.html" title="CClient class for any tcp or udp client sockets." alt="" coords="231,20,300,47"/>
+</map>

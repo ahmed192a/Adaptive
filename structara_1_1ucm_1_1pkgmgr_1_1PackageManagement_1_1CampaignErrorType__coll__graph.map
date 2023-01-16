@@ -1,0 +1,4 @@
+<map id="ara::ucm::pkgmgr::PackageManagement::CampaignErrorType" name="ara::ucm::pkgmgr::PackageManagement::CampaignErrorType">
+<area shape="rect" id="node1" title="Campaign Error." alt="" coords="5,109,248,151"/>
+<area shape="rect" id="node2" href="$structara_1_1ucm_1_1pkgmgr_1_1PackageManagement_1_1UCMStepErrorType.html" title="UCM Error." alt="" coords="8,5,245,47"/>
+</map>

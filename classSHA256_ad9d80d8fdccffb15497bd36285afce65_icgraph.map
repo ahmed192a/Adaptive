@@ -1,0 +1,5 @@
+<map id="SHA256::reset" name="SHA256::reset">
+<area shape="rect" id="node1" title="restart" alt="" coords="200,31,315,57"/>
+<area shape="rect" id="node2" href="$classSHA256.html#a8e89aa2cb5506eb54c43f4397ca3a5d2" title="compute SHA256 of a memory block" alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node3" href="$classSHA256.html#ab672831c542df07ff03ded25760feec2" title="same as reset()" alt="" coords="13,56,145,83"/>
+</map>

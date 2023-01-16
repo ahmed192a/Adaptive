@@ -1,0 +1,12 @@
+<map id="CClient::UDPSendTo" name="CClient::UDPSendTo">
+<area shape="rect" id="node1" title="Client send data UDP." alt="" coords="545,180,696,207"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a430c5da659babb0127370251218c6613" title="EventSubscribe." alt="" coords="305,5,492,61"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a953549b1d87ce20a3057081076d95eb8" title="EventUnsubscribe." alt="" coords="305,85,492,141"/>
+<area shape="rect" id="node6" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a0a913114d49ea82357872896c02d862c" title="Offer Service." alt="" coords="300,165,497,221"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a8d524b8d5c798768b4cefb1e9ec02cc9" title="SendEvent send an event update to clients." alt="" coords="300,245,497,301"/>
+<area shape="rect" id="node10" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a0cdcb2dcb86ff315bda38bb3cc8a6b8a" title="StopOfferService." alt="" coords="300,325,497,381"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Event.html#aaba2a38e3539af13a6cf07ff124e8426" title="Subscribe to event." alt="" coords="35,5,222,61"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Event.html#a11f1e9d3b03f243ccedc5c3becaddf1c" title="Unsubscribe from event." alt="" coords="35,85,222,141"/>
+<area shape="rect" id="node8" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Event.html#a11870951b3cefd83b6b41b4ee507f572" title=" " alt="" coords="35,205,222,261"/>
+<area shape="rect" id="node9" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoGetterAndSetter.html#a4ce59d612513b9523795f4219270aa0f" title="update event" alt="" coords="5,285,252,341"/>
+</map>

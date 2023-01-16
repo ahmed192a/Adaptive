@@ -1,0 +1,12 @@
+<map id="ara::com::proxy_skeleton::proxy::ServiceProxy" name="ara::com::proxy_skeleton::proxy::ServiceProxy">
+<area shape="rect" id="node1" title="ServiceProxy is the main class for the proxy skeleton." alt="" coords="5,297,192,339"/>
+<area shape="rect" id="node2" href="$classara_1_1sm_1_1diagnostic__reset_1_1proxy_1_1DiagnosticReset.html" title=" " alt="" coords="240,5,460,47"/>
+<area shape="rect" id="node3" href="$classara_1_1sm_1_1powermode_1_1proxy_1_1PowerMode.html" title=" " alt="" coords="272,71,428,112"/>
+<area shape="rect" id="node4" href="$classara_1_1sm_1_1triggerin_1_1proxy_1_1Trigger__In__OTA__Proxy.html" title=" " alt="" coords="281,137,419,193"/>
+<area shape="rect" id="node5" href="$classara_1_1sm_1_1triggerin_1_1proxy_1_1Trigger__In__UCM__Proxy.html" title=" " alt="" coords="281,217,419,273"/>
+<area shape="rect" id="node6" href="$classara_1_1sm_1_1triggerinout_1_1proxy_1_1Trigger__InOut__Proxy.html" title=" " alt="" coords="248,297,452,339"/>
+<area shape="rect" id="node7" href="$classara_1_1sm_1_1triggerout_1_1proxy_1_1Trigger__Out__Proxy.html" title=" " alt="" coords="254,363,446,404"/>
+<area shape="rect" id="node8" href="$classara_1_1sm_1_1update__request_1_1proxy_1_1update__request__proxy.html" title=" " alt="" coords="241,428,459,469"/>
+<area shape="rect" id="node9" href="$classara_1_1ucm_1_1pkgmgr_1_1proxy_1_1PackageManagementProxy.html" title="implementation of PackageManagementProxy interface" alt="" coords="247,493,453,535"/>
+<area shape="rect" id="node10" href="$classsaam_1_1proxy.html" title=" " alt="" coords="299,559,401,586"/>
+</map>

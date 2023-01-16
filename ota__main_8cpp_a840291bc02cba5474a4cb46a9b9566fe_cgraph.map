@@ -1,0 +1,48 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,997,60,1024"/>
+<area shape="rect" id="node2" href="$classCServer.html#a7cf49da9921aad34bc023706b234a02d" title="Bind the socket to the port number." alt="" coords="125,344,277,371"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a66fe1efad4069b8940a7fc6323908d4b" title="FindService." alt="" coords="108,395,295,451"/>
+<area shape="rect" id="node29" href="$ota__main_8cpp.html#a966c032851888758c8a04acd3344cf94" title="Signal handler for SIGTERM." alt="" coords="140,1048,263,1075"/>
+<area shape="rect" id="node30" href="$classara_1_1exec_1_1ExecutionClient.html#a9e38e2714f64eaf7a0ff8d5feb988cd3" title="Interface for a Process to report its proxy_skeleton state to Execution Management." alt="" coords="358,1049,549,1090"/>
+<area shape="rect" id="node31" href="$classCServer.html#a08db35b65177614622c7ec0d4c3eccbd" title="Open the server socket." alt="" coords="122,1099,281,1125"/>
+<area shape="rect" id="node32" href="$ota__main_8cpp.html#a04eccab0ffd7d4c3ea148bd1f5b46ddc" title="Thread 0 used for main code of the OTA client." alt="" coords="161,1224,241,1251"/>
+<area shape="rect" id="node42" href="$ota__main_8cpp.html#a26e8b1994c9c29487733204176b80da0" title="Thread 1 used for handling events of OTA client." alt="" coords="161,939,241,965"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1sd_1_1SomeIpSDMessage.html#af5093e1d9d6ddb435fe9b27cd7764daa" title="AddEntry Method that adds an entry to the SD message." alt="" coords="349,5,557,61"/>
+<area shape="rect" id="node5" href="$classCClient.html#a67468dd8b511b9fcfd563523c754e6df" title="Close the socket." alt="" coords="369,85,537,112"/>
+<area shape="rect" id="node6" href="$classCClient.html#ad3c60545478a84a46d3987fb31cd3581" title="Client read data TCP." alt="" coords="379,136,527,163"/>
+<area shape="rect" id="node7" href="$classCClient.html#aea09fc559b59a5afb62cb376031341ae" title="Client send data TCP." alt="" coords="378,187,529,213"/>
+<area shape="rect" id="node8" href="$classCClient.html#adbcb2f41e689144cbb6e8cf0b8b2f276" title="Close the socket." alt="" coords="375,237,531,264"/>
+<area shape="rect" id="node9" href="$classara_1_1com_1_1entry_1_1ServiceEntry.html#a7dd817442f3d6237bb945b2b8e62ba63" title="Find a service entry factory." alt="" coords="346,289,561,330"/>
+<area shape="rect" id="node10" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1sd_1_1SomeIpSDMessage.html#acfea16aa566f005fe42dde9d5caa26a5" title="Deserialize Method that deserializes vector of bytes into the SD message." alt="" coords="349,355,557,411"/>
+<area shape="rect" id="node14" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1sd_1_1SomeIpSDMessage.html#a33bbcfbee77a684b95e7fed6fa5ef7dc" title="Entries Method that returns vector of entries in the SD message." alt="" coords="349,435,557,491"/>
+<area shape="rect" id="node15" href="$classCClient.html#a1c1626a25eebb091ae824646f860d97d" title="Get the Host name and port number." alt="" coords="388,515,519,541"/>
+<area shape="rect" id="node16" href="$classCClient.html#aa4c93a772ac973df945ffc9480c95fd1" title="Open the socket." alt="" coords="376,565,531,592"/>
+<area shape="rect" id="node17" href="$classara_1_1com_1_1option_1_1Ipv4EndpointOption.html#a72da61141ac1867ff8b125b853ba0cca" title="Get port." alt="" coords="343,617,564,658"/>
+<area shape="rect" id="node18" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1sd_1_1SomeIpSDMessage.html#a134f0fc2fd46ab3f3b8161b886cbb0c3" title="Serialize Method that serializes the SD message." alt="" coords="349,683,557,739"/>
+<area shape="rect" id="node11" href="$classara_1_1com_1_1option_1_1OptionDeserializer.html#ab7d45a01043f838fa6e9785a0e387983" title="Deserialize Option from byte array." alt="" coords="625,297,807,338"/>
+<area shape="rect" id="node12" href="$classara_1_1com_1_1entry_1_1Entry__Deserializer.html#a7dacd5811e44a0273df971735a3fbf3b" title="Deserialize payload to ara::com::entry::Entry." alt="" coords="622,362,810,403"/>
+<area shape="rect" id="node13" href="$namespaceara_1_1com_1_1helper.html#a02e03c49ddcb087455a0ceea40b98d80" title="Extract a short vector of bytes from alarge vector of bytes." alt="" coords="621,428,811,455"/>
+<area shape="rect" id="node19" href="$namespaceara_1_1com_1_1helper.html#a044e415426ec167e5745a2d592924838" title="Concat the second vector into the end of the first vector." alt="" coords="625,487,807,513"/>
+<area shape="rect" id="node20" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1sd_1_1SomeIpSDMessage.html#aebead4db291ef06029e38032dae8e926" title="Get the Entries Length object." alt="" coords="612,537,820,593"/>
+<area shape="rect" id="node21" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1sd_1_1SomeIpSDMessage.html#a96f2b3471f1ba15c3420c8dd54477a7b" title="Get the Options Length object." alt="" coords="612,617,820,673"/>
+<area shape="rect" id="node22" href="$namespaceara_1_1com_1_1helper.html#a5a2498fade7c5196c42e3023252eb941" title="Inject a short value into a byte vector." alt="" coords="886,600,1058,627"/>
+<area shape="rect" id="node23" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#add68ba38d899785288237fe71eb399b0" title="Get message payload." alt="" coords="612,749,820,790"/>
+<area shape="rect" id="node24" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a6e2ad76090e204a5df08ab0c033bb5e6" title="Get client ID." alt="" coords="868,651,1076,693"/>
+<area shape="rect" id="node25" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#ad42ad1e8e1c1e949ca781150f4a2683d" title="Get interface version." alt="" coords="868,717,1076,758"/>
+<area shape="rect" id="node26" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a90c6210a76dd8551fd4c93cc79cfde0d" title="Get message ID." alt="" coords="868,913,1076,954"/>
+<area shape="rect" id="node27" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a0030d487209280851877f105e298c232" title="Get protocol version." alt="" coords="868,782,1076,823"/>
+<area shape="rect" id="node28" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a53134d0a809c8fa1f9cd7da369752f8d" title="Get session ID." alt="" coords="868,847,1076,889"/>
+<area shape="rect" id="node33" href="$classOTA_1_1Client.html#ada9e764ded8b80954cf0eaad29abb40c" title="Connects the OTA application to the cloud server." alt="" coords="358,1115,549,1141"/>
+<area shape="rect" id="node34" href="$classOTA_1_1Client.html#a9d1018400afd872735c9fa6a9fc399a0" title="Disconnects the OTA application to the cloud server." alt="" coords="349,1165,558,1192"/>
+<area shape="rect" id="node35" href="$classOTA_1_1MetaDataStorage.html#af28eae455d769970d696095dbbe40007" title="Loads all the stored meta&#45;data objects from the file system." alt="" coords="368,1217,539,1258"/>
+<area shape="rect" id="node37" href="$classOTA_1_1Client.html#a20aafadc64b2cb3fa11972b69bedf977" title="Requests the package metadata from the cloud server." alt="" coords="347,1283,560,1309"/>
+<area shape="rect" id="node38" href="$classOTA_1_1Client.html#a972453ec360269d9e30a5f6e0c81d86f" title="Requests the package from the cloud server." alt="" coords="351,1333,555,1360"/>
+<area shape="rect" id="node41" href="$classOTA_1_1MetaDataStorage.html#a0343f818f5db1c0ac85e664bf5ec7183" title="Saves a single meta&#45;data object in the file system." alt="" coords="368,1385,539,1426"/>
+<area shape="rect" id="node36" href="$classOTA_1_1MetaDataStorage.html#a4e046beb51905b39b26b2e7d47407d9f" title="gets the number of apps in the file system" alt="" coords="631,1217,801,1258"/>
+<area shape="rect" id="node39" href="$classMetaData.html#a8821027b6ccc00c56f65084b92c5a950" title=" " alt="" coords="621,1333,811,1360"/>
+<area shape="rect" id="node40" href="$classUpdateVersion.html#a119816f7a24ddc95efa08eb148d93d52" title="Getting version of the update." alt="" coords="899,1326,1045,1367"/>
+<area shape="rect" id="node43" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a316e71549eb7797f04b86f6819feacb5" title="Deserialize message payload." alt="" coords="349,866,557,907"/>
+<area shape="rect" id="node45" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a835c47cdd04ae418cd379e74c3b5192b" title="Get message data payload." alt="" coords="349,931,557,973"/>
+<area shape="rect" id="node46" href="$classCServer.html#a14b71193a2197b4a700934f264de949e" title="Recieve data from the (UDP) socket." alt="" coords="370,997,537,1024"/>
+<area shape="rect" id="node44" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a33e403159600cdfb3873d5a3fe292c79" title="Set message payload." alt="" coords="612,866,820,907"/>
+</map>

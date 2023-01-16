@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html" title="class ServiceSkeleton" alt="" coords="5,293,203,334"/>
+<area shape="rect" id="node2" href="$classara_1_1sm_1_1powermode_1_1skeleton_1_1PowerMode__Skeleton.html" title=" " alt="" coords="279,5,448,61"/>
+<area shape="rect" id="node3" href="$classara_1_1sm_1_1triggerin_1_1skeleton_1_1Trigger__In__OTA__Skeleton.html" title=" " alt="" coords="295,85,432,141"/>
+<area shape="rect" id="node4" href="$classara_1_1sm_1_1triggerin_1_1skeleton_1_1Trigger__In__UCM__Skeleton.html" title=" " alt="" coords="292,165,435,221"/>
+<area shape="rect" id="node5" href="$classara_1_1sm_1_1triggerinout_1_1proxy__skeleton_1_1skeleton_1_1Trigger__InOut__Skeleton.html" title=" " alt="" coords="267,245,459,301"/>
+<area shape="rect" id="node6" href="$classara_1_1sm_1_1triggerout_1_1skeleton_1_1Trigger__Out__Skeleton.html" title=" " alt="" coords="292,325,435,381"/>
+<area shape="rect" id="node7" href="$classara_1_1sm_1_1update__request_1_1skeleton_1_1update__request__Skeleton.html" title="class update_request_Skeleton" alt="" coords="266,405,461,461"/>
+<area shape="rect" id="node8" href="$classara_1_1ucm_1_1pkgmgr_1_1skeleton_1_1PackageManagementSkeleton.html" title="implementation of PackageManagementSkeleton interface" alt="" coords="251,486,476,527"/>
+<area shape="rect" id="node9" href="$classskeleton.html" title=" " alt="" coords="325,552,402,579"/>
+</map>

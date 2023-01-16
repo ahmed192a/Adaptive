@@ -1,0 +1,4 @@
+<map id="OTA::MetaDataStorage::retrieve_LatestMetaData" name="OTA::MetaDataStorage::retrieve_LatestMetaData">
+<area shape="rect" id="node1" title="Gets a single MetaData instance from the instances stored in the file storage." alt="" coords="5,5,197,47"/>
+<area shape="rect" id="node2" href="$classOTA_1_1MetaDataStorage.html#a4e046beb51905b39b26b2e7d47407d9f" title="gets the number of apps in the file system" alt="" coords="245,5,416,47"/>
+</map>

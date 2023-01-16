@@ -1,0 +1,24 @@
+<map id="Socket::Send" name="Socket::Send">
+<area shape="rect" id="node1" title="Send the data to the client TCP." alt="" coords="777,460,883,487"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a7ca326e1baf954d8ed56545d8972b5f1" title="3&#45; HandleCall R" alt="" coords="518,5,715,61"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Field.html#a175d5df5e0be7adf91f0aad1dec8c093" title="Handle Get method." alt="" coords="523,85,710,141"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoSetter.html#a9d58c3c4338949debbf2ed002bf8f8fd" title="Handle Get method." alt="" coords="523,165,710,221"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoNotifierAndSetter.html#a86aa51d7736e82a765d33d923968f394" title="handle get field value" alt="" coords="509,245,724,301"/>
+<area shape="rect" id="node6" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Field.html#a69d3a433b1979f0ae5ae53a1e38093d0" title="Handle set method." alt="" coords="523,325,710,381"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoGetter.html#a1ddf94d9a7f5d8af740010bdb2dee6be" title="Handle set method." alt="" coords="523,405,710,461"/>
+<area shape="rect" id="node8" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1FieldNoNotifierAndGetter.html#a167dd84111b3bd48bc4faa84285a30bf" title="HandleSet method." alt="" coords="509,485,724,541"/>
+<area shape="rect" id="node9" href="$classara_1_1ucm_1_1pkgmgr_1_1skeleton_1_1PackageManagementSkeleton.html#a996affe419e30f36887b4f6cef45849e" title="Dispatch the requested methods from package management server." alt="" coords="504,565,729,621"/>
+<area shape="rect" id="node10" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a3092b11c8f112c9e7cbea2972f2e2dbd" title="No Handler &#45;&#45;&gt; handle error." alt="" coords="518,645,715,701"/>
+<area shape="rect" id="node13" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a860c04dd925cd0bf1ede941ad81d27cc" title="NoServiceHandler &#45;&#45;&gt; handle error." alt="" coords="518,725,715,781"/>
+<area shape="rect" id="node16" href="$service__descovery_8cpp.html#a297795597828e47530ba574e915f8a48" title="listen to all clients and find the requested service" alt="" coords="577,805,657,832"/>
+<area shape="rect" id="node18" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a1900c3b12159ca1c2e86a4331b1d218d" title="sHandleCall" alt="" coords="518,856,715,912"/>
+<area shape="rect" id="node11" href="$classara_1_1sm_1_1triggerin_1_1skeleton_1_1Trigger__In__UCM__Skeleton.html#a5a70fbde9ccf4211add91e453b311690" title=" " alt="" coords="268,547,447,618"/>
+<area shape="rect" id="node12" href="$classara_1_1sm_1_1triggerin_1_1skeleton_1_1Trigger__In__OTA__Skeleton.html#a2b157408d61fe0cda7402ac998e18bfd" title=" " alt="" coords="271,642,444,713"/>
+<area shape="rect" id="node14" href="$sm__main_8cpp.html#ac3681006042184ce22fbde41ed161982" title="thread0 used to handle methods and FSM of SM" alt="" coords="317,740,397,767"/>
+<area shape="rect" id="node15" href="$sm__main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="Main code for State management." alt="" coords="81,740,135,767"/>
+<area shape="rect" id="node17" href="$service__descovery_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="main function of service discovery" alt="" coords="330,805,385,832"/>
+<area shape="rect" id="node19" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a403d4a6a1998f3db56ac306c3d24d318" title="1&#45; HandleCall R ARGS" alt="" coords="259,856,456,912"/>
+<area shape="rect" id="node20" href="$classara_1_1sm_1_1powermode_1_1skeleton_1_1PowerMode__Skeleton.html#a10ec9aa63aef0b12ebc93d56939f0dd1" title=" " alt="" coords="5,791,211,847"/>
+<area shape="rect" id="node21" href="$classskeleton.html#a917c59464ea1dfa646a29dd652ab9314" title=" " alt="" coords="9,871,207,897"/>
+<area shape="rect" id="node22" href="$classara_1_1sm_1_1update__request_1_1skeleton_1_1update__request__Skeleton.html#a82c39979fe296285a10380f13b2c9f76" title=" " alt="" coords="5,921,211,977"/>
+</map>

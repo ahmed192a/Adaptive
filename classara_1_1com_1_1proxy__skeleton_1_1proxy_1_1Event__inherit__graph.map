@@ -1,0 +1,12 @@
+<map id="ara::com::proxy_skeleton::proxy::Event&lt; T &gt;" name="ara::com::proxy_skeleton::proxy::Event&lt; T &gt;">
+<area shape="rect" id="node1" title="Event Base class for all events." alt="" coords="5,235,192,276"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Field.html" title="Field Base class for all fields." alt="" coords="336,5,523,47"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoGetter.html" title="FieldNoGetter Class for field with no getter." alt="" coords="328,71,531,112"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoGetterAndSetter.html" title="FieldNoGetterAndSetter Class for field with no getter and no setter." alt="" coords="296,136,563,177"/>
+<area shape="rect" id="node6" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifier.html" title="FieldNoNotifier Class for field with no getter and no setter." alt="" coords="325,201,534,243"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifierAndGetter.html" title="FieldNoNotifierAndGetter Class for field with no getter and no setter." alt="" coords="292,267,567,308"/>
+<area shape="rect" id="node8" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifierAndSetter.html" title="FieldNoNotifierAndSetter Class for field with no getter and no setter." alt="" coords="293,332,566,373"/>
+<area shape="rect" id="node9" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoSetter.html" title="FieldNoSetter Class for field with no setter." alt="" coords="329,397,529,439"/>
+<area shape="rect" id="node10" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Event.html" title=" " alt="" coords="336,463,523,504"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Field.html" title=" " alt="" coords="667,235,853,276"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="handle_sigterm" name="handle_sigterm">
+<area shape="rect" id="node1" title="handle_sigterm &#45;&#45;&gt; stop offering service close server socket close server socket" alt="" coords="5,35,128,61"/>
+<area shape="rect" id="node2" href="$classCServer.html#a6f0c61349b89255c1289ed10438d8c35" title="Close the socket." alt="" coords="191,5,351,32"/>
+<area shape="rect" id="node3" href="$classara_1_1exec_1_1ExecutionClient.html#a9e38e2714f64eaf7a0ff8d5feb988cd3" title="Interface for a Process to report its proxy_skeleton state to Execution Management." alt="" coords="176,57,367,98"/>
+</map>

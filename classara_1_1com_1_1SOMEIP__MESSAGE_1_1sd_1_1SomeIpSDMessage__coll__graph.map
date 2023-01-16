@@ -1,0 +1,7 @@
+<map id="ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage" name="ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage">
+<area shape="rect" id="node1" title="Class for SOME/IP SD Message." alt="" coords="903,50,1111,91"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html" title="Class SOME IP Message." alt="" coords="645,50,853,91"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Header.html" title=" " alt="" coords="359,50,567,91"/>
+<area shape="rect" id="node4" href="$structara_1_1com_1_1SOMEIP__MESSAGE_1_1Request__ID.html" title="Request_ID struct is used to identify the client id and session id of the request message." alt="" coords="5,6,213,47"/>
+<area shape="rect" id="node5" href="$structara_1_1com_1_1SOMEIP__MESSAGE_1_1Message__ID.html" title="Message_ID struct is used to identify the service id and method id of the message." alt="" coords="5,83,213,125"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage" name="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::ProcessSwPackage">
+<area shape="rect" id="node1" title="start processing the Software package" alt="" coords="5,27,231,83"/>
+<area shape="rect" id="node2" href="$classuart__linux.html#adcbfa848d227018937a18d9f76a205f5" title="Receive Buffer of bytes on Serial Port." alt="" coords="288,5,473,47"/>
+<area shape="rect" id="node3" href="$classuart__linux.html#a2abd3f6c784310408482583577425ca5" title="Send Buffer of bytes on Serial Port." alt="" coords="279,71,483,98"/>
+</map>

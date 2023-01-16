@@ -1,0 +1,4 @@
+<map id="ara::com::entry::ServiceEntry::CreateStopOfferEntry" name="ara::com::entry::ServiceEntry::CreateStopOfferEntry">
+<area shape="rect" id="node1" title="Stop offer a service entry factory." alt="" coords="251,13,452,54"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a0cdcb2dcb86ff315bda38bb3cc8a6b8a" title="StopOfferService." alt="" coords="5,5,203,61"/>
+</map>

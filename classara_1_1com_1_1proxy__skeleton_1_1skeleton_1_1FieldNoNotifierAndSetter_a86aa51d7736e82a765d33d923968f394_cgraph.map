@@ -1,0 +1,7 @@
+<map id="ara::com::proxy_skeleton::skeleton::FieldNoNotifierAndSetter::HandleGet" name="ara::com::proxy_skeleton::skeleton::FieldNoNotifierAndSetter::HandleGet">
+<area shape="rect" id="node1" title="handle get field value" alt="" coords="5,79,220,135"/>
+<area shape="rect" id="node2" href="$classSocket.html#a5aa350ff51f6db7919316c94643acbf2" title="Close the socket." alt="" coords="296,5,448,32"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a90c6210a76dd8551fd4c93cc79cfde0d" title="Get message ID." alt="" coords="268,57,476,98"/>
+<area shape="rect" id="node4" href="$classSocket.html#a1d18a3588387679df50f18c057adef37" title="Send the data to the client TCP." alt="" coords="319,123,425,149"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1Serializer.html#af9f0e3e083c607e2e8a5fb3fae6bf793" title="serialize the data into the vector of bytes" alt="" coords="298,174,446,215"/>
+</map>

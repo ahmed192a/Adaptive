@@ -1,0 +1,9 @@
+<map id="ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage::Entries" name="ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage::Entries">
+<area shape="rect" id="node1" title="Entries Method that returns vector of entries in the SD message." alt="" coords="343,96,551,152"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html#a66fe1efad4069b8940a7fc6323908d4b" title="FindService." alt="" coords="108,5,295,61"/>
+<area shape="rect" id="node4" href="$service__descovery_8cpp.html#acbb3a40a023c47671291ab4d8265a19e" title="listen to all servers and get services information" alt="" coords="161,85,241,112"/>
+<area shape="rect" id="node6" href="$service__descovery_8cpp.html#a297795597828e47530ba574e915f8a48" title="listen to all clients and find the requested service" alt="" coords="161,136,241,163"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1Event.html#aa07530fe96863554fab00ba10e63f13d" title="subhandlecall to get entry and option of some ip" alt="" coords="108,187,295,243"/>
+<area shape="rect" id="node3" href="$ota__main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,20,60,47"/>
+<area shape="rect" id="node5" href="$service__descovery_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="main function of service discovery" alt="" coords="5,111,60,137"/>
+</map>

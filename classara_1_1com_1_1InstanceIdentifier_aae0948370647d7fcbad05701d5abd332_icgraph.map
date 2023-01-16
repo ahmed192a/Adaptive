@@ -1,0 +1,7 @@
+<map id="ara::com::InstanceIdentifier::GetInstanceId" name="ara::com::InstanceIdentifier::GetInstanceId">
+<area shape="rect" id="node1" title=" " alt="" coords="253,115,453,157"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a0a913114d49ea82357872896c02d862c" title="Offer Service." alt="" coords="7,5,204,61"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1InstanceIdentifier.html#a8ea3cd72f512887c82482777bf32a0e0" title=" " alt="" coords="5,86,205,127"/>
+<area shape="rect" id="node4" href="$classskeleton.html#af8ecf3b1b300f3e46be32f86d9bd9e5f" title=" " alt="" coords="35,152,175,179"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1skeleton_1_1ServiceSkeleton.html#a0cdcb2dcb86ff315bda38bb3cc8a6b8a" title="StopOfferService." alt="" coords="7,203,204,259"/>
+</map>

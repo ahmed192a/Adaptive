@@ -1,0 +1,7 @@
+<map id="ara::com::proxy_skeleton::skeleton::ServiceSkeleton::sHandleCall" name="ara::com::proxy_skeleton::skeleton::ServiceSkeleton::sHandleCall">
+<area shape="rect" id="node1" title="sHandleCall handle return type future void" alt="" coords="5,83,203,139"/>
+<area shape="rect" id="node2" href="$classSocket.html#a5aa350ff51f6db7919316c94643acbf2" title="Close the socket." alt="" coords="279,5,431,32"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a835c47cdd04ae418cd379e74c3b5192b" title="Get message data payload." alt="" coords="251,57,459,98"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1SOMEIP__MESSAGE_1_1Message.html#a90c6210a76dd8551fd4c93cc79cfde0d" title="Get message ID." alt="" coords="251,122,459,163"/>
+<area shape="rect" id="node5" href="$classSocket.html#a1d18a3588387679df50f18c057adef37" title="Send the data to the client TCP." alt="" coords="302,188,407,215"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferExit" name="ara::ucm::pkgmgr::skeleton::PackageManagementSkeleton::TransferExit">
+<area shape="rect" id="node1" title="Request Trasfer Exit." alt="" coords="279,5,504,61"/>
+<area shape="rect" id="node2" href="$classara_1_1ucm_1_1pkgmgr_1_1skeleton_1_1PackageManagementSkeleton.html#a996affe419e30f36887b4f6cef45849e" title="Dispatch the requested methods from package management server." alt="" coords="5,5,231,61"/>
+</map>

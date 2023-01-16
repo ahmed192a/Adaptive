@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classara_1_1com_1_1entry_1_1Entry.html" title="Communication message abstract entry." alt="" coords="5,46,168,73"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1entry_1_1EventgroupEntry.html" title="Entry to subscribe/unsubscribe to/from an event&#45;group." alt="" coords="216,5,419,47"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1entry_1_1ServiceEntry.html" title="Entry to find and offer a service." alt="" coords="229,71,405,112"/>
+</map>

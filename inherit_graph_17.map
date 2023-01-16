@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Event.html" title="Event Base class for all events." alt="" coords="5,201,192,243"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1Field.html" title="Field Base class for all fields." alt="" coords="284,5,471,47"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoGetter.html" title="FieldNoGetter Class for field with no getter." alt="" coords="276,71,479,112"/>
+<area shape="rect" id="node4" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoGetterAndSetter.html" title="FieldNoGetterAndSetter Class for field with no getter and no setter." alt="" coords="244,136,511,177"/>
+<area shape="rect" id="node5" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifier.html" title="FieldNoNotifier Class for field with no getter and no setter." alt="" coords="273,201,482,243"/>
+<area shape="rect" id="node6" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifierAndGetter.html" title="FieldNoNotifierAndGetter Class for field with no getter and no setter." alt="" coords="240,267,515,308"/>
+<area shape="rect" id="node7" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoNotifierAndSetter.html" title="FieldNoNotifierAndSetter Class for field with no getter and no setter." alt="" coords="241,332,514,373"/>
+<area shape="rect" id="node8" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1FieldNoSetter.html" title="FieldNoSetter Class for field with no setter." alt="" coords="277,397,477,439"/>
+</map>

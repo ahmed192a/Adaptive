@@ -1,0 +1,7 @@
+<map id="OTA::MetaDataStorage::get_appsCount" name="OTA::MetaDataStorage::get_appsCount">
+<area shape="rect" id="node1" title="gets the number of apps in the file system" alt="" coords="476,39,647,80"/>
+<area shape="rect" id="node2" href="$classOTA_1_1MetaDataStorage.html#af28eae455d769970d696095dbbe40007" title="Loads all the stored meta&#45;data objects from the file system." alt="" coords="247,5,417,47"/>
+<area shape="rect" id="node5" href="$classOTA_1_1MetaDataStorage.html#af2a03d8d2301d74e3ed73f98b0769eb4" title="Gets a single MetaData instance from the instances stored in the file storage." alt="" coords="236,71,428,112"/>
+<area shape="rect" id="node3" href="$ota__main_8cpp.html#a04eccab0ffd7d4c3ea148bd1f5b46ddc" title="Thread 0 used for main code of the OTA client." alt="" coords="108,13,188,39"/>
+<area shape="rect" id="node4" href="$ota__main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,13,60,39"/>
+</map>

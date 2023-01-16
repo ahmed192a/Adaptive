@@ -1,0 +1,4 @@
+<map id="ara::com::Marshal::unmarshal" name="ara::com::Marshal::unmarshal">
+<area shape="rect" id="node1" title="unmarshal the data bytes into the required parameters" alt="" coords="5,5,152,47"/>
+<area shape="rect" id="node2" href="$classara_1_1com_1_1Deserializer.html#a1057111c68bcc673ee7e14a370a81d60" title="Deserialize the vector of bytes into the required data type." alt="" coords="200,5,365,47"/>
+</map>

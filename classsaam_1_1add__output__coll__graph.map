@@ -1,0 +1,8 @@
+<map id="saam::add_output" name="saam::add_output">
+<area shape="rect" id="node1" title="class add_output" alt="" coords="84,347,223,373"/>
+<area shape="rect" id="node2" href="$structsaam_1_1addReturnType.html" title=" " alt="" coords="5,250,168,277"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy.html" title="ServiceProxy is the main class for the proxy skeleton." alt="" coords="192,243,379,284"/>
+<area shape="rect" id="node4" href="$structara_1_1com_1_1proxy__skeleton_1_1proxy_1_1ServiceProxy_1_1SP__Handle.html" title="SP_Handle struct for SP_Handle (ServiceProxyHandle)" alt="" coords="113,109,300,165"/>
+<area shape="rect" id="node5" href="$structara_1_1com_1_1proxy__skeleton_1_1SD__data.html" title=" " alt="" coords="113,5,300,47"/>
+<area shape="rect" id="node6" href="$classCClient.html" title="CClient class for any tcp or udp client sockets." alt="" coords="324,124,393,151"/>
+</map>

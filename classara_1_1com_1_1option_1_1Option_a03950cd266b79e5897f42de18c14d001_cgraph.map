@@ -1,0 +1,5 @@
+<map id="ara::com::option::Option::BasePayload" name="ara::com::option::Option::BasePayload">
+<area shape="rect" id="node1" title="Get base option payload." alt="" coords="5,27,184,69"/>
+<area shape="rect" id="node2" href="$namespaceara_1_1com_1_1helper.html#a5a2498fade7c5196c42e3023252eb941" title="Inject a short value into a byte vector." alt="" coords="235,5,407,32"/>
+<area shape="rect" id="node3" href="$classara_1_1com_1_1option_1_1Option.html#ae1ececbff397547574ecf1e60cca8c4d" title="Get option length." alt="" coords="232,57,411,98"/>
+</map>
