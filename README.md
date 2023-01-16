@@ -1,4 +1,6 @@
-# Adaptive ![example workflow](https://github.com/ahmed192a/Adaptive/actions/workflows/cmake.yml/badge.svg)
+# Adaptive 
+
+![example workflow](https://github.com/ahmed192a/Adaptive/actions/workflows/master.yml/badge.svg)
 
 _Adaptive Autosar Platform_ enviroment over Linux defined by [AUTOSAR](https://www.autosar.org/standards/adaptive-platform/).<br>
 * For more information about the project refer to [wiki](https://github.com/ahmed192a/Adaptive/wiki)
