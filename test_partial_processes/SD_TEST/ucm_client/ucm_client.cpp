@@ -1,7 +1,7 @@
 #include "iostream"
 #include "ara/ucm/pkgmgr/ucm_return_types.h"
 #include <signal.h>
-#include "ara/SD_c/proxy.h"
+#include "SD_c/proxy.h"
 #include <iostream>
 #include <arpa/inet.h>
 #include <sys/mman.h>

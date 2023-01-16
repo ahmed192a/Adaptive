@@ -13,5 +13,7 @@ target_compile_features(
 target_link_libraries(
     ota_process
     PUBLIC
-    ara_lib  
+    ara_ucm_lib
+    ara_sm_lib
+    ota_lib
 )

@@ -8,11 +8,12 @@
  * 
  */
 #include <iostream>
-#include "ara/exec/execution_client.h"
 #include <unistd.h>
 #include <signal.h>
 #include <csignal>
+#include "ara/exec/execution_client.h"
 #include "ara/Log_trace/Log.h"
+
 using namespace std;
 using namespace ara::exec;
 Log lg("test_process");

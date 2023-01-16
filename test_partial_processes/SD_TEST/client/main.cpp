@@ -1,5 +1,5 @@
 #include <signal.h>
-#include "ara/SD_c/proxy.h"
+#include "SD_c/proxy.h"
 #include <iostream>
 #include <arpa/inet.h>
 #include <sys/mman.h>

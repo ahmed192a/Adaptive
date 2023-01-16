@@ -9,7 +9,7 @@
 #include <signal.h>
 #include <memory>
 
-#include "ara/SD_s/skeleton.h"
+#include "SD_s/skeleton.h"
 #include "ara/com/proxy_skeleton/definitions.h"
 #include "ara/com/deserializer.h"
 

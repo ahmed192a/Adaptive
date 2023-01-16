@@ -10,9 +10,8 @@
 #ifndef ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H
 #define ARA_UCM_PKGMGR_PACKAGEMANAGEMENT_COMMON_H
 
-#include "ara/SD_c/return_types.h"
+#include "SD_c/return_types.h"
 #include "ara/com/proxy_skeleton/proxy/service_proxy.h"
-// #include "ara/SD_c/proxy.h"
 
 
 namespace saam

@@ -10,5 +10,8 @@ target_compile_features(
 target_link_libraries(
     UCM_SERVER
     PUBLIC 
-    ara_lib
+    ara_ucm_lib
+    ara_com_lib
+    ara_sm_lib
+    ara_exec_lib
     )

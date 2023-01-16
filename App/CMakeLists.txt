@@ -14,7 +14,8 @@ target_compile_features(
 target_link_libraries(
     ${PROJECT_NAME} 
     PUBLIC
-    ara_lib
+    ara_exec_lib
+    ara_log_lib
 )
 
 add_subdirectory(EM_test_process)

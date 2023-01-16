@@ -50,8 +50,8 @@ add_subdirectory(App)
 # add_subdirectory(test_partial_processes/SD_TEST/ucm_server)
 # add_subdirectory(test_partial_processes/SD_TEST/Classic)
 
-add_subdirectory(test_partial_processes/SomeIP/some_client)
-add_subdirectory(test_partial_processes/SomeIP/some_server)
+# add_subdirectory(test_partial_processes/SomeIP/some_client)
+# add_subdirectory(test_partial_processes/SomeIP/some_server)
 
 
 

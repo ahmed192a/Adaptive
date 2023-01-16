@@ -27,7 +27,7 @@ target_compile_features(${PROJECT_NAME}-ut  PRIVATE cxx_std_17)
 target_link_libraries(
   ${PROJECT_NAME}-ut  
   PUBLIC 
-  ara_lib
+  ara_exec_lib
   gtest_main
   gmock_main
   gtest

@@ -13,5 +13,6 @@ target_compile_features(
 target_link_libraries(
     process1
     PUBLIC
-    ara_lib  
+    ara_exec_lib
+    ara_log_lib 
 )

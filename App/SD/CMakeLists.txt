@@ -9,4 +9,6 @@ target_compile_features(
 target_link_libraries(
     SD 
     PUBLIC 
-    ara_lib)
+    ara_com_lib
+    ara_exec_lib
+)

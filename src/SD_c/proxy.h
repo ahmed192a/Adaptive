@@ -10,7 +10,7 @@
  */
 #include "ara/com/proxy_skeleton/proxy/service_proxy.h"
 #include "ara/com/proxy_skeleton/proxy/field.h"
-#include "ara/SD_c/common.h"
+#include "SD_c/common.h"
 
 // later this file will be UCM Proxy
 namespace saam
