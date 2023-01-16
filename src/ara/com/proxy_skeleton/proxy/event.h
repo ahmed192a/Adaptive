@@ -1,7 +1,7 @@
 /**
  * @file event.hpp
  * @author Flashing Adapter Graduation Project Team
- * @brief
+ * @brief Base class for all events.
  * @version 0.1
  * @date 2022-03-07
  *
@@ -22,7 +22,7 @@ namespace ara
             namespace proxy
             {
                 /**
-                 * @brief Base class for all events.
+                 * @brief Event Base class for all events.
                  * 
                  * @tparam T 
                  */
@@ -30,18 +30,18 @@ namespace ara
                 class Event
                 {
                 protected:
-                    ServiceProxy *m_service;
-                    std::string m_name;
-                    std::shared_ptr<T> event_data;
-                    uint32_t m_event_id;
+                    ServiceProxy *m_service;        /*!< pointer to service proxy */
+                    std::string m_name;             /*!< name of the event */
+                    std::shared_ptr<T> event_data;  /*!< event data */
+                    uint32_t m_event_id;            /*!< id of the event */
 
                 public:
                     /**
                      * @brief Construct a new Event object
                      * 
-                     * @param service 
-                     * @param name 
-                     * @param event_id 
+                     * @param service   pointer to service proxy 
+                     * @param name      name of the event
+                     * @param event_id  id of the event
                      */
                     Event(
                         ServiceProxy *service,
@@ -89,7 +89,7 @@ namespace ara
                     /**
                      * @brief Get the Event Data object
                      * 
-                     * @param msg 
+                     * @param msg   message to be deserialized
                      */
                     void handlecall(std::vector<uint8_t> &msg)
                     {

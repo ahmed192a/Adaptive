@@ -12,8 +12,7 @@
 #ifndef ARA_COM_proxy_skeleton_SKELETON_SERVICE_SKELETON_H_
 #define ARA_COM_proxy_skeleton_SKELETON_SERVICE_SKELETON_H_
 
-#include "ara/com/proxy_skeleton/skeleton/data_type.h"
-#include "ara/com/proxy_skeleton/skeleton/data_type.h"
+#include "ara/com/proxy_skeleton/data_type.h"
 #include "ara/com/ipc/server/socket_Server.h"
 #include "ara/com/ipc/client/socket_Client.h"
 #include "ara/com/SOMEIP/SomeipSDMessage.h"

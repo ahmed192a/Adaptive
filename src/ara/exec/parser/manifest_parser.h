@@ -76,7 +76,24 @@ namespace ara
              * @return false                if the key is not found or the value is not successfully read
              */
             template <typename T>
-            bool read_value(const json &json_obj, const std::string &key, T &output_value) noexcept;
+            bool read_value(const json &json_obj, const std::string &key, T &output_value) noexcept{
+                T tmp{};
+                try
+                {
+                    tmp = json_obj.at(key);
+                }
+                catch (json::out_of_range &e)
+                {
+                    return false;
+                }
+                catch (json::type_error &e)
+                {
+                    return false;
+                }
+
+                output_value = tmp;
+                return true;
+            }
             /**
              * @brief read the data from the passed file and return json object filled with this data
              *
@@ -91,8 +108,10 @@ namespace ara
              * @param [in] json_keys    vector of keys to be checked
              *
              * @throw runtime_error if the json object violate the passed vector of keys
+             * @return true if the json object does not violate the passed vector of keys
+             * @return false if the json object violate the passed vector of keys
              */
-            void validate_content(const json &json_obj, const std::vector<std::string> &json_keys) noexcept(false);
+            bool validate_content(const json &json_obj, const std::vector<std::string> &json_keys) noexcept(false);
 
             /****************************************************************************/
 

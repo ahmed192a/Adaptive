@@ -3,16 +3,16 @@
  * @author Flashing Adapter Graduation Project Team
  * @version 0.1
  * @date 2022-04-29
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #include "ara/exec/function_group.h"
 #include "ara/exec/function_group_state.h"
 #include "ara/exec/exec_error_domain.h"
 #include <gtest/gtest.h>
 #include <variant>
-extern int fg_num;
+// extern int fg_num;
 using namespace std;
 namespace ara
 {
@@ -20,12 +20,12 @@ namespace ara
     {
         /**
          * @brief Construct a new TEST object
-         * 
+         *
          */
         TEST(FunctionGroupStateTest, Preconstruct)
         {
-            fg_num = 0;
-            const std::string cShortnamePath{"../App/manifest_samples/machine_manifest.json"}; 
+            // fg_num = 0;
+            const std::string cShortnamePath{"../App/Manifests/machine_manifest.json/MachineFG"};
             variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(cShortnamePath);
             bool t;
             switch (_functionGroup.index())
@@ -55,39 +55,41 @@ namespace ara
 
                 break;
             }
-            //EXPECT_TRUE(false);
+            // EXPECT_TRUE(false);
         }
 
         /**
          * @brief Construct a new TEST object
-         * 
+         *
          */
         TEST(FunctionGroupStateTest, Equality)
         {
-            fg_num = 0;
-            const std::string cShortnamePath{"../App/manifest_samples/machine_manifest.json"};
-            
+            // fg_num = 0;
+            const std::string cShortnamePath{"../App/Manifests/machine_manifest.json/MachineFG"};
+
             variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(cShortnamePath);
             FunctionGroup FG(std::move(get<1>(_functionGroup)));
 
             variant<ara::exec::ExecErrc, FunctionGroupState::CtorToken> _functionGroupState = FunctionGroupState::Preconstruct(FG, FG.get_FGname() + "/" + FG.get_states()[0]);
-            
+
             FunctionGroupState functionGroupState(std::move(get<1>(_functionGroupState)));
             FunctionGroupState otherfunctionGroupState(std::move(get<1>(_functionGroupState)));
-            
+
             EXPECT_TRUE(functionGroupState == otherfunctionGroupState);
         }
 
         /**
          * @brief Construct a new TEST object
-         * 
+         *
          */
         TEST(FunctionGroupStateTest, Inequality)
         {
-            fg_num = 0;
-            const std::string cShortnamePath{"../App/manifest_samples/machine_manifest.json"};
+            // fg_num = 0;
+            const std::string cShortnamePath{"../App/Manifests/machine_manifest.json/MachineFG"};
+            const std::string cShortnamePath2{"../App/Manifests/machine_manifest.json/FG_1"};
+
             variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(cShortnamePath);
-            variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _otherfunctionGroup = FunctionGroup::Preconstruct(cShortnamePath);
+            variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _otherfunctionGroup = FunctionGroup::Preconstruct(cShortnamePath2);
 
             FunctionGroup FG(std::move(get<1>(_functionGroup)));
             FunctionGroup OFG(std::move(get<1>(_otherfunctionGroup)));

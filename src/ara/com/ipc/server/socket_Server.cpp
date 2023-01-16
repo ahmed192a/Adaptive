@@ -1,7 +1,7 @@
 /**
  * @file socket_Server.cpp
  * @author Flashing Adapter Graduation Project Team
- * @brief
+ * @brief CServer class for any tcp or udp server sockets
  * @version 0.1
  * @date 2022-03-07
  *
@@ -17,9 +17,10 @@
 #include <strings.h>
 #include <string.h>
 #include <errno.h>
-#include "ara/com/ipc/server/socket_Server.h"
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "ara/com/ipc/server/socket_Server.h"
+
 using namespace std;
 
 CServer::CServer(int type)

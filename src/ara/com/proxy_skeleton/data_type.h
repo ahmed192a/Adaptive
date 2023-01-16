@@ -1,7 +1,7 @@
 /**
  * @file data_type.hpp
  * @author Flashing Adapter Graduation Project Team
- * @brief
+ * @brief Data types used in the proxy skeleton.
  * @version 0.1
  * @date 2022-02-23
  *
@@ -13,65 +13,116 @@
 #define ARA_COM_DATA_TYPES_H_
 
 #include "ara/com/proxy_skeleton/definitions.h"
-
 #include <algorithm>
 #include <sstream>
-// #include <vector>
-// #include <functional>
-// #include <memory>
 #include <iostream>
 
 namespace ara
 {
     namespace com
     {
-
+        /**
+         * @brief ServiceIdentifierType
+         *
+         */
         class ServiceIdentifierType
         {
         public:
+            /**
+             * @brief Construct a new Service Identifier Type object
+             *
+             * @param name
+             */
             explicit ServiceIdentifierType(std::string name)
                 : m_name(name)
             {
             }
 
+            /**
+             * @brief operator == 
+             * 
+             * @param other 
+             * @return true 
+             * @return false 
+             */
             bool operator==(const ServiceIdentifierType &other) const
             {
                 return m_name == other.m_name;
             }
 
+            /**
+             * @brief operator <
+             * 
+             * @param other 
+             * @return true 
+             * @return false 
+             */
             bool operator<(const ServiceIdentifierType &other) const
             {
                 return m_name < other.m_name;
             }
 
+            /**
+             * @brief operator = 
+             * 
+             * @param other 
+             * @return ServiceIdentifierType& 
+             */
             ServiceIdentifierType &operator=(const ServiceIdentifierType &other)
             {
                 m_name = other.m_name;
                 return *this;
             }
 
+            /**
+             * @brief toString Get the Name object
+             *
+             * @return std::string
+             */
             std::string toString() const
             {
                 return m_name;
             }
 
         private:
-            std::string m_name;
+            std::string m_name;   /*!< Service name */
         };
 
+        /**
+         * @brief ServiceVersionType
+         * 
+         * @version 0.1
+         */
         class ServiceVersionType
         {
         public:
+            /**
+             * @brief Construct a new Service Version Type object
+             * @param majorVersion
+             * @param minorVersion
+            */
             constexpr ServiceVersionType(uint8_t majorVersion, uint16_t minorVersion)
                 : m_majorVersion(majorVersion), m_minorVersion(minorVersion)
             {
             }
 
+            /**
+             * @brief Construct a new Service Version Type object
+             * 
+             * @param version 
+             */
             bool operator==(const ServiceVersionType &other) const
             {
                 return m_majorVersion == other.m_majorVersion && m_minorVersion == other.m_minorVersion;
             }
 
+            /**
+             * @brief operator <
+             * 
+             * @param other 
+             * @return true 
+             * @return false 
+             */
             bool operator<(const ServiceVersionType &other) const
             {
                 return ((m_majorVersion << 16) | m_minorVersion) < ((other.m_majorVersion << 16) | other.m_minorVersion);
@@ -229,8 +280,6 @@ namespace ara
         // Pointer to allocated sample on service side.
         template <typename T>
         using SampleAllocateePtr = std::unique_ptr<T>;
-
-
 
         // Handler that gets called in case service availability for services which have been searched for via FindService() has changed.
         template <typename T>

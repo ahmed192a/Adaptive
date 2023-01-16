@@ -15,38 +15,51 @@
 using namespace ara::exec;
 using namespace nlohmann;
 using namespace parser;
-uint32_t fg_num = 0;
+// uint32_t fg_num = 0;
 
 std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> FunctionGroup::Preconstruct(std::string metaModelIdentifier) noexcept
 {
+    // metaModelIdentifier is the path to the manifest file and the last part of the path is the name of the function group
+    // we need to get the function group name from the path and then search for it in the manifest file
+    // if the function group is found, we need to return the function group as a CtorToken
+    // if the function group is not found, we need to return ExecErrc::kMetaModelError
+    std::string fg_name = metaModelIdentifier.substr(metaModelIdentifier.find_last_of("/") + 1);
+    std::string path = metaModelIdentifier.substr(0, metaModelIdentifier.find_last_of("/"));
+    // std::cout << "fg_name: " << fg_name << std::endl;
+    // std::cout << "path: " << path << std::endl;
     std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> token;
-    if (!std::filesystem::exists(metaModelIdentifier))
+    if (!std::filesystem::exists(path))
     {
         token.emplace<0>(ara::exec::ExecErrc::kMetaModelError);
         return token;
     }
     using namespace MMJsonKeys;
-    auto manifest_json_full = read_manifest_file(metaModelIdentifier);
+    auto manifest_json_full = read_manifest_file(path);
     MachineManifest man{};
-    validate_content(manifest_json_full, kAsVector);
+    if (! validate_content(manifest_json_full, kAsVector)){
+        token.emplace<0>(ara::exec::ExecErrc::kMetaModelError);
+        return token;
+    }
 
     json manifest_json_content{};
     read_value(manifest_json_full, kMachineManifest, manifest_json_content);
 
     json mode_declaration_groups{};
+
     if (read_value(manifest_json_content, kModeDeclarationGroup, mode_declaration_groups))
     {
-        if (mode_declaration_groups.begin() + fg_num != mode_declaration_groups.end())
+        // find fg_name in mode_declaration_groups
+        for (auto &mode_declaration_group : mode_declaration_groups)
         {
-            json mode_declaration_group = *(mode_declaration_groups.begin() + fg_num);
-            fg_num++;
-            token.emplace<1>(mode_declaration_group);
-        }
-        else
-        {
-            token.emplace<0>(ara::exec::ExecErrc::kGeneralError);
+            if (mode_declaration_group[kFunctionGroupName] == fg_name)
+            {
+                token.emplace<1>(mode_declaration_group);
+                return token;
+            }
+            
         }
     }
+    token.emplace<0>(ara::exec::ExecErrc::kMetaModelError);
     return token;
 }
 

@@ -33,17 +33,14 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
 
-    # - name: Run
-    #   working-directory: ${{github.workspace}}/build/App 
-    #   run: ./Adaptive_Platform
+    - name: Run
+      working-directory: ${{github.workspace}}/build/App 
+      run: ./Adaptive_Platform
     
 
-    
- 
-
-    # - name: Test
-    #   working-directory: ${{github.workspace}}/build/Testing
-    #   run: ./Adaptive_Platform-ut
+    - name: Test
+      working-directory: ${{github.workspace}}/build/Testing
+      run: ./Adaptive_Platform-ut
 
 
 

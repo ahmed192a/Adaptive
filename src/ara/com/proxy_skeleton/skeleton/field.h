@@ -11,9 +11,7 @@
 
 #ifndef ARA_COM_proxy_skeleton_SKELETON_FIELD_H_
 #define ARA_COM_proxy_skeleton_SKELETON_FIELD_H_
-// #include "ara/com/proxy_skeleton/skeleton/data_type.h"
-// #include <string>
-// #include <future>
+
 #include <bits/stdc++.h>
 
 #include "ara/com/proxy_skeleton/skeleton/event.h"

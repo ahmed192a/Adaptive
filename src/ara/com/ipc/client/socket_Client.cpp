@@ -1,6 +1,7 @@
 /**
  * @file socket_Client.cpp
  * @author Flashing Adapter Graduation Project Team
+ * @brief CClient class for any tcp or udp client sockets
  * @version 0.1
  * @date 2022-03-07
  * 
@@ -14,10 +15,7 @@
 #include<string.h>
 #include <errno.h>
 #include <arpa/inet.h>
-
-#include <fcntl.h>      /* for fcntl() */
-// #include <sys/file.h>   /* for O_NONBLOCK and FASYNC */
-// #include <netinet/in.h>
+#include <fcntl.h>      	/* for fcntl() */
 #include <signal.h>
 
 #include "ara/com/ipc/client/socket_Client.h"

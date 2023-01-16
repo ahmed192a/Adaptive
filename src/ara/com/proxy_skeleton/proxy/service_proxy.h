@@ -24,7 +24,7 @@
 #include "ara/com/ipc/client/socket_Client.h"
 #include "ara/com/ipc/server/socket_Server.h"
 #include "ara/com/proxy_skeleton/definitions.h"
-#include "ara/com/proxy_skeleton/skeleton/data_type.h"
+#include "ara/com/proxy_skeleton/data_type.h"
 #include "ara/com/serializer.h"
 #include "ara/com/SOMEIP/SomeipSDMessage.h"
 #include "ara/com/SOMEIP/entry/eventgroup_entry.h"
@@ -42,18 +42,18 @@ namespace ara
             {
                 /**
                  * @brief ServiceProxy is the main class for the proxy skeleton.
-                 * 
+                 *
                  */
                 class ServiceProxy
                 {
                 private:
-                    CClient service_proxy_tcp;
-                    CClient service_proxy_udp;
+                    CClient service_proxy_tcp; /*!< TCP client */
+                    CClient service_proxy_udp; /*!< UDP client */
 
                 public:
                     /**
-                     * @brief struct for SP_Handle (ServiceProxyHandle)
-                     * 
+                     * @brief SP_Handle struct for SP_Handle (ServiceProxyHandle)
+                     *
                      */
                     struct SP_Handle
                     {
@@ -61,40 +61,45 @@ namespace ara
                         SD_data m_server_com;
                     };
 
-                    SP_Handle m_proxy_handle;
-                    // a struct to receive in it the process id & port number
-                    //  of the server from service discovery
+                    SP_Handle m_proxy_handle; /*!< struct to receive in it the process id & port number of the server from service discovery */
+
+                    /**
+                     * @brief Construct a new Service Proxy object
+                     *
+                     * @param proxy_handle a struct to receive in it the process id & port number
+                     *                      of the server from service discovery
+                     */
                     ServiceProxy(SP_Handle proxy_handle);
                     /**
                      * @brief Destroy the Service Proxy object
-                     * 
+                     *
                      */
-                    virtual ~ServiceProxy();
+                    virtual ~ServiceProxy() = default;
 
                     /**
                      * @brief Get the Service Id object
-                     * 
-                     * @return const ara::com::proxy_skeleton::ServiceId 
+                     *
+                     * @return const ara::com::proxy_skeleton::ServiceId
                      */
                     const ara::com::proxy_skeleton::ServiceId GetServiceId()
                     {
                         return m_proxy_handle.m_server_com.service_id;
                     }
                     /**
-                     * @brief FindService 
-                     * 
-                     * @param FSH 
-                     * @return ServiceHandleContainer<SP_Handle> 
+                     * @brief FindService
+                     *
+                     * @param FSH
+                     * @return ServiceHandleContainer<SP_Handle>
                      */
                     static ServiceHandleContainer<SP_Handle> FindService(FindServiceHandle FSH); // we send to the service discovery a request for a specific service
                     /**
-                     * @brief SendRequest 
-                     * 
-                     * @tparam R 
-                     * @tparam Args 
-                     * @param method_id 
-                     * @param args 
-                     * @return R 
+                     * @brief SendRequest
+                     *
+                     * @tparam R
+                     * @tparam Args
+                     * @param method_id
+                     * @param args
+                     * @return R
                      */
                     template <typename R, typename... Args>
                     R SendRequest(uint32_t method_id, Args &&...args)
@@ -145,10 +150,10 @@ namespace ara
                     }
                     /**
                      * @brief SendRequest
-                     * 
-                     * @tparam R 
-                     * @param method_id 
-                     * @return R 
+                     *
+                     * @tparam R
+                     * @param method_id
+                     * @return R
                      */
                     template <typename R>
                     R SendRequest(uint32_t method_id)
@@ -197,8 +202,8 @@ namespace ara
                     }
                     /**
                      * @brief SendRequest
-                     * 
-                     * @param method_id 
+                     *
+                     * @param method_id
                      * @return std::vector<uint8_t>
                      */
                     std::vector<uint8_t> SendRequest(uint32_t method_id)
@@ -244,11 +249,11 @@ namespace ara
                     }
                     /**
                      * @brief SendRequest
-                     * 
-                     * @tparam R 
-                     * @param method_id 
-                     * @param data 
-                     * @return R 
+                     *
+                     * @tparam R
+                     * @param method_id
+                     * @param data
+                     * @return R
                      */
                     template <typename R>
                     R SendRequest(uint32_t method_id, std::vector<uint8_t> data)
@@ -260,9 +265,9 @@ namespace ara
                             7, // Interface Version
                             SOMEIP_MESSAGE::MessageType::REQUEST);
                         R_msg.SetPayload(data);
-                        
+
                         std::vector<uint8_t> _payload = R_msg.Serializer();
-                       
+
                         uint32_t _payload_size = _payload.size();
                         ara::com::Deserializer deser;
                         R result;
@@ -290,7 +295,7 @@ namespace ara
                     }
                     /**
                      * @brief SendRequest
-                     * 
+                     *
                      */
                     // template <typename R>
                     // R SendRequest(uint32_t method_id, std::vector<uint8_t> data)
@@ -321,11 +326,11 @@ namespace ara
                     //     return result;
                     // }
                     /**
-                     * @brief SendFireAndForgetRequest 
-                     * 
-                     * @tparam Args 
-                     * @param method_id 
-                     * @param args 
+                     * @brief SendFireAndForgetRequest
+                     *
+                     * @tparam Args
+                     * @param method_id
+                     * @param args
                      */
                     template <typename... Args>
                     void SendFireAndForgetRequest(uint32_t method_id, Args &&...args)
@@ -344,8 +349,8 @@ namespace ara
                     }
                     /**
                      * @brief SendFireAndForgetRequest
-                     * 
-                     * @param method_id 
+                     *
+                     * @param method_id
                      */
                     void SendFireAndForgetRequest(uint32_t method_id)
                     {
@@ -369,11 +374,10 @@ namespace ara
                         service_proxy_tcp.CloseSocket();
                     }
                     /**
-                     * @brief EventSubscribe  
-                     * 
-                     * @param event_id 
+                     * @brief EventSubscribe
+                     *
+                     * @param event_id
                      */
-                    // event
                     void EventSubscribe(int event_id)
                     {
                         struct sockaddr_in serv_addr;
@@ -386,15 +390,19 @@ namespace ara
                         int pport = htons(m_proxy_handle.UDP_port);
 
                         ara::com::SOMEIP_MESSAGE::sd::SomeIpSDMessage m_info;
-                        ara::com::entry::EventgroupEntry event_gr_entry = ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry((uint16_t)this->m_proxy_handle.m_server_com.service_id,
-                                                                                                                                      (uint16_t)this->m_proxy_handle.m_server_com.service_id,
-                                                                                                                                      1, // major version
-                                                                                                                                      event_id);
+                        ara::com::entry::EventgroupEntry event_gr_entry =
+                            ara::com::entry::EventgroupEntry::CreateSubscribeEventEntry(
+                                (uint16_t)this->m_proxy_handle.m_server_com.service_id,
+                                (uint16_t)this->m_proxy_handle.m_server_com.service_id,
+                                1, // major version
+                                event_id);
 
-                        ara::com::option::Ipv4EndpointOption sub_option = ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(false,
-                                                                                                                                 ara::com::helper::Ipv4Address(127, 0, 0, 1),
-                                                                                                                                 option::Layer4ProtocolType::Udp,
-                                                                                                                                 pport);
+                        ara::com::option::Ipv4EndpointOption sub_option =
+                            ara::com::option::Ipv4EndpointOption::CreateSdEndpoint(
+                                false,
+                                ara::com::helper::Ipv4Address(127, 0, 0, 1),
+                                option::Layer4ProtocolType::Udp,
+                                pport);
 
                         event_gr_entry.AddFirstOption(&sub_option);
                         m_info.AddEntry(&event_gr_entry);
@@ -402,11 +410,6 @@ namespace ara
                         std::vector<uint8_t> _payload = m_info.Serializer();
                         uint32_t _payload_size = _payload.size();
 
-                        // event_info e_info;
-                        // e_info.operation = 1;
-                        // e_info.event_id = event_id;
-                        // e_info.service_id = m_proxy_handle.m_server_com.service_id;
-                        // e_info.data_size = (sizeof(pport));
                         service_proxy_udp.OpenSocket();
                         service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
                         service_proxy_udp.UDPSendTo((void *)&_payload[0], _payload_size, (sockaddr *)&serv_addr);
@@ -414,8 +417,8 @@ namespace ara
                     }
                     /**
                      * @brief EventUnsubscribe
-                     * 
-                     * @param event_id 
+                     *
+                     * @param event_id
                      */
                     void EventUnsubscribe(int event_id)
                     {
@@ -443,21 +446,16 @@ namespace ara
                         std::vector<uint8_t> _payload = m_info.Serializer();
                         uint32_t _payload_size = _payload.size();
 
-                        // event_info e_info;
-                        // e_info.operation = 2;
-                        // e_info.event_id = event_id;
-                        // e_info.service_id = m_proxy_handle.m_server_com.service_id;
-                        // e_info.data_size = 0;
                         service_proxy_udp.OpenSocket();
                         service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
                         service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
                         service_proxy_udp.CloseSocket();
                     }
                     /**
-                     * @brief Field_get 
-                     * 
-                     * @param f_get 
-                     * @param data 
+                     * @brief Field_get
+                     *
+                     * @param f_get
+                     * @param data
                      */
                     void Field_get(ara::com::proxy_skeleton::event_info &f_get, std::vector<uint8_t> &data)
                     {
@@ -477,9 +475,7 @@ namespace ara
                                                                   ara::com::SOMEIP_MESSAGE::MessageType::REQUEST);
                         std::vector<uint8_t> _payload = get_msg.Serializer();
                         uint32_t _payload_size = _payload.size();
-                        // service_proxy_udp.OpenSocket();
-                        // service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
-                        // service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
+
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();
@@ -492,17 +488,14 @@ namespace ara
                         service_proxy_tcp.ClientRead((void *)_payload.data(), _payload_size);
                         service_proxy_tcp.CloseSocket();
 
-                        // service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
-                        // _payload.resize(_payload_size);
-                        // service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
                         ara::com::SOMEIP_MESSAGE::Message R_get_msg = ara::com::SOMEIP_MESSAGE::Message::Deserialize(_payload);
                         data = R_get_msg.GetPayload();
                     }
                     /**
                      * @brief Field_set
-                     * 
-                     * @param f_set 
-                     * @param data 
+                     *
+                     * @param f_set
+                     * @param data
                      */
                     void Field_set(ara::com::proxy_skeleton::event_info &f_set, std::vector<uint8_t> &data)
                     {
@@ -523,14 +516,7 @@ namespace ara
                         set_msg.SetPayload(data);
                         std::vector<uint8_t> _payload = set_msg.Serializer();
                         uint32_t _payload_size = _payload.size();
-                        // service_proxy_udp.OpenSocket();
-                        // service_proxy_udp.UDPSendTo((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr);
-                        // service_proxy_udp.UDPSendTo((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr);
-                        // _payload.clear();
-                        // service_proxy_udp.UDPRecFrom((void *)&_payload_size, sizeof(_payload_size), (sockaddr *)&serv_addr, &slen);
-                        // _payload.resize(_payload_size);
-                        // service_proxy_udp.UDPRecFrom((void *)_payload.data(), _payload_size, (sockaddr *)&serv_addr, &slen);
-                        // service_proxy_udp.CloseSocket();
+
                         service_proxy_tcp.OpenSocket();
                         service_proxy_tcp.GetHost("127.0.0.1", this->m_proxy_handle.m_server_com.port_number);
                         service_proxy_tcp.ClientConnect();

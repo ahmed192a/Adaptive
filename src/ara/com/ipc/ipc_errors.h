@@ -10,7 +10,9 @@
 #ifndef ERRORS_H
 #define ERRORS_H
 
-/// @brief sockets error code 
+/**
+ * @brief error_kind error codes for sockets
+*/
 enum error_kind		
 {
 	SUCCEEDED,			//!< (value 0x00 or 0) not set => Means no error

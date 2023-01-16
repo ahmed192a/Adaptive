@@ -1,6 +1,7 @@
 /**
  * @file socket_Server.hpp
  * @author Flashing Adapter Graduation Project Team
+ * @brief CServer class for any tcp or udp server sockets
  * @version 0.1
  * @date 2022-03-07
  * 
@@ -11,13 +12,21 @@
 #define CSERVER_H
 #include "ara/com/ipc/server/socket.h"
 
+/**
+ * @brief CServer class for any tcp or udp server sockets
+ * 
+ */
 class CServer
 {
 private:
-	socklen_t clientlen;
-	struct sockaddr_in serv_addr, cli_addr;
+	socklen_t clientlen;			/*!< client length */
+	struct sockaddr_in serv_addr;	/*!< server address */
+	struct sockaddr_in cli_addr;	/*!< client address */
 public:
-	int sockfd,newsockfd,portno,type;
+	int sockfd;						/*!< socket file descriptor */
+	int newsockfd;					/*!< new socket file descriptor */
+	int portno;						/*!< port number */
+	int type;						/*!< type of socket (UDP-SOCK_DGRAM or TCP - SOCK_STREAM) */
 
 	/**
 	 * @brief Construct a new CServer object

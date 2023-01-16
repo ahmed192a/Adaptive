@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include <gtest/gtest.h>
 #include <variant>
-extern int fg_num;
+// extern int fg_num;
 #define FIFO_NAME "state_client_fifo"
 using namespace std;
 namespace ara
@@ -34,10 +34,10 @@ namespace ara
             mkfifo(FIFO_NAME, 0666);
             int fd = open(FIFO_NAME, O_RDWR);
             StateClient sc;
-            fg_num = 0;
+            // fg_num = 0;
             std::string msg;
             msg.resize(150);
-            const std::string cShortnamePath{"../App/manifest_samples/machine_manifest.json"};
+            const std::string cShortnamePath{"../App/Manifests/machine_manifest.json/MachineFG"};
             
             variant<ara::exec::ExecErrc, FunctionGroup::CtorToken> _functionGroup = FunctionGroup::Preconstruct(cShortnamePath);
             FunctionGroup FG(std::move(get<1>(_functionGroup)));

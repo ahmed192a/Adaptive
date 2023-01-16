@@ -1,7 +1,7 @@
 /**
  * @file field.hpp
  * @author Flashing Adapter Graduation Project Team
- * @brief
+ * @brief Base class for all fields.
  * @version 0.1
  * @date 2022-03-07
  *
@@ -23,7 +23,7 @@ namespace ara
             namespace proxy
             {
                 /**
-                 * @brief Base class for all fields.
+                 * @brief Field Base class for all fields.
                  * 
                  * @tparam T 
                  */
@@ -34,9 +34,9 @@ namespace ara
                     /**
                      * @brief Construct a new Field object
                      * 
-                     * @param service 
-                     * @param name 
-                     * @param field_id 
+                     * @param service   pointer to service proxy
+                     * @param name      name of the field
+                     * @param field_id  id of the field
                      */
                     Field(
                         ServiceProxy *service,
@@ -55,12 +55,8 @@ namespace ara
                     ~Field() {}
 
                     /**
-                     * @brief
+                     * @brief Get the value of the field
                      *
-                     * @todo implemention code
-                     *         - send request to server to Get this field value
-                     *         - msg sent is (m_name + "_Get", value)
-                     *         - this request will return the current value
                      * @return T
                      */
                     T Get()
@@ -77,13 +73,9 @@ namespace ara
                         return value;
                     }
                     /**
-                     * @brief
+                     * @brief Set the value of the field
                      *
-                     * @todo implemention code
-                     *         - send request to server to set this field value
-                     *         - msg sent is (m_name + "_Set", value)
-                     *         - this request will return the updated
-                     * @param value
+                     * @param value     value to be set
                      * @return T
                      */
                     T Set(T &value)
@@ -99,13 +91,12 @@ namespace ara
                     }
 
                 private:
-                    // CClient m_Cient_Server_connection;
-                    ServiceProxy *m_service;
-                    std::string m_name;
-                    uint32_t m_field_id;
+                    ServiceProxy *m_service;       /*!< pointer to service proxy */
+                    std::string m_name;             /*!< name of the field */
+                    uint32_t m_field_id;            /*!< id of the field */
                 };
                 /**
-                 * @brief Class for field with no setter.
+                 * @brief FieldNoSetter Class for field with no setter.
                  * 
                  * @tparam T 
                  */
@@ -113,17 +104,17 @@ namespace ara
                 class FieldNoSetter : public Event<T>
                 {
                 private:
-                    ServiceProxy *m_service;
-                    std::string m_name;
-                    uint32_t m_field_id;
+                    ServiceProxy *m_service;    /*!< pointer to service proxy */
+                    std::string   m_name;       /*!< name of the field */
+                    uint32_t      m_field_id;   /*!< id of the field */
 
                 public:
                     /**
                      * @brief Construct a new Field No Setter object
                      * 
-                     * @param service 
-                     * @param name 
-                     * @param field_id 
+                     * @param service       pointer to service proxy
+                     * @param name          name of the field
+                     * @param field_id      id of the field
                      */
                     FieldNoSetter(
                         ServiceProxy *service,
@@ -160,7 +151,7 @@ namespace ara
                     }
                 };
                 /**
-                 * @brief Class for field with no getter.
+                 * @brief FieldNoGetter Class for field with no getter.
                  * 
                  * @tparam T 
                  */
@@ -198,7 +189,7 @@ namespace ara
                     /**
                      * @brief Set the value of the field
                      * 
-                     * @param value 
+                     * @param value     value to be set
                      * @return T 
                      */
                     T Set(T &value)
@@ -214,7 +205,7 @@ namespace ara
                     }
                 };
                 /**
-                 * @brief Class for field with no getter and no setter.
+                 * @brief FieldNoGetterAndSetter Class for field with no getter and no setter.
                  * 
                  * @tparam T 
                  */
@@ -222,17 +213,17 @@ namespace ara
                 class FieldNoGetterAndSetter : public Event<T>
                 {
                 private:
-                    ServiceProxy *m_service;
-                    std::string m_name;
-                    uint32_t m_field_id;
+                    ServiceProxy *m_service;        /*!< pointer to service proxy */
+                    std::string m_name;             /*!< name of the field */
+                    uint32_t m_field_id;            /*!< id of the field */
 
                 public:
                     /**
                      * @brief Construct a new Field No Getter And Setter object
                      * 
-                     * @param service 
-                     * @param name 
-                     * @param field_id 
+                     * @param service       pointer to service proxy
+                     * @param name          name of the field
+                     * @param field_id      id of the field
                      */
                     FieldNoGetterAndSetter(
                         ServiceProxy *service,
@@ -251,7 +242,7 @@ namespace ara
                     ~FieldNoGetterAndSetter() {}
                 };
                 /**
-                 * @brief Class for field with no getter and no setter.
+                 * @brief FieldNoNotifier Class for field with no getter and no setter.
                  * 
                  * @tparam T 
                  */
@@ -259,17 +250,17 @@ namespace ara
                 class FieldNoNotifier : public Event<T>
                 {
                 private:
-                    ServiceProxy *m_service;
-                    std::string m_name;
-                    uint32_t m_field_id;
+                    ServiceProxy *m_service;    /*!< pointer to service proxy */
+                    std::string m_name;         /*!< name of the field */
+                    uint32_t m_field_id;        /*!< id of the field */
 
                 public:
                     /**
                      * @brief Construct a new Field No Notifier object
                      * 
-                     * @param service 
-                     * @param name 
-                     * @param field_id 
+                     * @param service       pointer to service proxy
+                     * @param name          name of the field
+                     * @param field_id      id of the field
                      */
                     FieldNoNotifier(
                         ServiceProxy *service,
@@ -323,7 +314,7 @@ namespace ara
                     }
                 };
                 /**
-                 * @brief Class for field with no getter and no setter.
+                 * @brief FieldNoNotifierAndSetter Class for field with no getter and no setter.
                  * 
                  * @tparam T 
                  */
@@ -331,17 +322,17 @@ namespace ara
                 class FieldNoNotifierAndSetter : public Event<T>
                 {
                 private:
-                    ServiceProxy *m_service;
-                    std::string m_name;
-                    uint32_t m_field_id;
+                    ServiceProxy *m_service;        /*!< pointer to service proxy */
+                    std::string m_name;             /*!< name of the field */
+                    uint32_t m_field_id;            /*!< id of the field */
 
                 public:
                     /**
                      * @brief Construct a new Field No Notifier And Setter object
                      * 
-                     * @param service 
-                     * @param name 
-                     * @param field_id 
+                     * @param service           pointer to service proxy
+                     * @param name              name of the field
+                     * @param field_id          id of the field
                      */
                     FieldNoNotifierAndSetter(
                         ServiceProxy *service,
@@ -379,7 +370,7 @@ namespace ara
                     }
                 };
                 /**
-                 * @brief Class for field with no getter and no setter.
+                 * @brief FieldNoNotifierAndGetter Class for field with no getter and no setter.
                  * 
                  * @tparam T 
                  */
@@ -433,12 +424,12 @@ namespace ara
                     }
                 };
                 /**
-                 * @brief Class for field.
+                 * @brief FieldType Class for field.
                  * 
-                 * @tparam T 
-                 * @tparam hasGetter 
-                 * @tparam hasSetter 
-                 * @tparam hasNotifier 
+                 * @tparam T            type of the field
+                 * @tparam hasGetter    true if field has getter
+                 * @tparam hasSetter    true if field has setter
+                 * @tparam hasNotifier  true if field has notifier
                  */
                 template <typename T, bool hasGetter, bool hasSetter, bool hasNotifier>
                 struct FieldType
@@ -446,7 +437,7 @@ namespace ara
                     using type = typename FieldType<T, hasNotifier, hasGetter, hasSetter>::type;
                 };
                 /**
-                 * @brief Class for field with getter, setter and notifier.
+                 * @brief FieldType Class for field with getter, setter and notifier.
                  * 
                  * @tparam T 
                  */
@@ -456,7 +447,7 @@ namespace ara
                     using type = Field<T>;
                 };
                 /**
-                 * @brief Class for field with no setter.
+                 * @brief FieldType Class for field with no setter.
                  * 
                  * @tparam T 
                  */
@@ -466,7 +457,7 @@ namespace ara
                     using type = FieldNoSetter<T>;
                 };
                 /**
-                 * @brief Class for field with no getter.
+                 * @brief FieldType Class for field with no getter.
                  * 
                  * @tparam T 
                  */
@@ -476,7 +467,7 @@ namespace ara
                     using type = FieldNoGetter<T>;
                 };
                 /**
-                 * @brief Class for field with no getter and setter.
+                 * @brief FieldType Class for field with no getter and setter.
                  * 
                  * @tparam T 
                  */
@@ -486,7 +477,7 @@ namespace ara
                     using type = FieldNoGetterAndSetter<T>;
                 };
                 /**
-                 * @brief Class for field with no notifier.
+                 * @brief FieldType Class for field with no notifier.
                  * 
                  * @tparam T 
                  */
@@ -496,7 +487,7 @@ namespace ara
                     using type = FieldNoNotifier<T>;
                 };
                 /**
-                 * @brief Class for field with no notifier and setter.
+                 * @brief FieldType Class for field with no notifier and setter.
                  * 
                  * @tparam T 
                  */
@@ -506,7 +497,7 @@ namespace ara
                     using type = FieldNoNotifierAndSetter<T>;
                 };
                 /**
-                 * @brief Class for field with no getter and notifier.
+                 * @brief FieldType Class for field with no getter and notifier.
                  * 
                  * @tparam T 
                  */

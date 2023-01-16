@@ -11,7 +11,7 @@
 
 #include "ara/SD_s/skeleton.h"
 #include "ara/com/proxy_skeleton/definitions.h"
-#include "ara/com/proxy_skeleton/skeleton/data_type.h"
+#include "ara/com/proxy_skeleton/data_type.h"
 
 #include <future>
 

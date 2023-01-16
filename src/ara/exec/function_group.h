@@ -69,6 +69,7 @@ namespace ara
              *
              * @param[in] metaModelIdentifier   stringified meta model identifier (short name path)
              *                                  where path separator is ’/’.
+             *                                  (assume it's the path to the machine manifest and the last element is the function group name)
              *
              * @return std::variant<ara::exec::ExecErrc, FunctionGroup::CtorToken>     
              *                              a construction token from which an instance of
