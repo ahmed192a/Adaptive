@@ -1,11 +1,13 @@
 # Note that headers are optional, and do not affect add_library, but they will not
 # show up in IDEs unless they are listed in add_library.
 
-
 # https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html
 # https://gitlab.com/CLIUtils/modern-cmake/tree/master/examples/extended-project
 # https://cliutils.gitlab.io/modern-cmake/chapters/basics/example.html
 
+#####################################################################################
+#                         SETUP THE ARA LIBS                                        #
+#####################################################################################
 
 set(source_ara_core_dir "${CMAKE_SOURCE_DIR}/src/ara/core")
 set(source_ara_com_dir "${CMAKE_SOURCE_DIR}/src/ara/com")
@@ -15,6 +17,7 @@ set(source_ara_sm_dir "${CMAKE_SOURCE_DIR}/src/ara/sm")
 set(source_ara_crypto_dir "${CMAKE_SOURCE_DIR}/src/ara/crypto")
 set(source_ara_ucm_dir "${CMAKE_SOURCE_DIR}/src/ara/ucm")
 
+file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.h")
 
 file (GLOB_RECURSE source_ara_core_files "${source_ara_core_dir}/*.cpp" "${source_ara_core_dir}/*.h")
 file (GLOB_RECURSE source_ara_com_files "${source_ara_com_dir}/*.cpp" "${source_ara_com_dir}/*.h")
@@ -141,44 +144,11 @@ target_link_libraries(
 )
 
 
-file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.h")
-# file(GLOB_RECURSE SOURCE_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 
-
-# add_library(
-#   ara_lib
-#   ${SOURCE_LIST}
-#   ${HEADER_LIST}
-# )
-# target_include_directories(
-#   ara_lib 
-#   PUBLIC 
-#   "${PROJECT_SOURCE_DIR}/src"
-# )
-# target_link_libraries(
-#   ara_lib 
-#   PUBLIC 
-#   nlohmann_json::nlohmann_json
-#   # -lcryptopp
-#   # -lcrypto++
-#   # Boost::bind
-#   # Boost::asio
-#   # Boost::uuid
-#   # Boost::variant2
-#   pthread
-#   cryptopp::cryptopp
-#   stduuid
-# )
-
-# target_compile_features(
-#   ara_lib 
-#   PUBLIC 
-#   cxx_std_17
-# )
-
-
-###########################################################################
+#####################################################################################
+#                         SETUP THE EXTRA LIBS                                      #
+#####################################################################################
 set(source_ota_dir "${PROJECT_SOURCE_DIR}/src/OTA")
 set(source_sdc_dir "${PROJECT_SOURCE_DIR}/src/SD_c")
 set(source_sds_dir "${PROJECT_SOURCE_DIR}/src/SD_s")
@@ -219,6 +189,11 @@ target_include_directories(
   PUBLIC 
   "${PROJECT_SOURCE_DIR}/src"
 )
+target_link_libraries(
+  ota_lib
+  PUBLIC
+  nlohmann_json::nlohmann_json
+)
 
 target_link_libraries(
   sdc_lib
@@ -232,15 +207,20 @@ target_link_libraries(
   ara_com_lib
 )
 
-##########3
-
-
-
-
+# here we are adding the header files to the project tree in visual studio
 source_group(
   TREE "${PROJECT_SOURCE_DIR}/src"
   PREFIX "Header Files"
-  FILES ${HEADER_LIST}) 
+  FILES ${HEADER_LIST})  
+
+
+#####################################################################################
+#                         SETUP THE INSTALLATION TARGETS                            #
+#####################################################################################
+
+
+
+
 
 # copy headers to build directory with same structure
 foreach(HEADER ${HEADER_LIST})
@@ -250,26 +230,27 @@ foreach(HEADER ${HEADER_LIST})
 endforeach()
 
 
+# install the libraries in the CMAKE_INSTALL_LIBDIR
+install(
+  TARGETS
+  ara_core_lib
+  ara_com_lib
+  ara_exec_lib
+  ara_log_lib
+  ara_sm_lib
+  ara_crypto_lib
+  ara_ucm_lib
+  ota_lib
+  sdc_lib
+  sds_lib
+  EXPORT ara_libs
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
-
-
-# # disable install for all dependencies 
-# set(CMAKE_INSTALL_DO_STRIP 1)
-# set(CMAKE_INSTALL_DO_STRIP_RUNTIME 1)
-# set(CMAKE_INSTALL_DO_STRIP_LIBRARY 1)
-# set(CMAKE_INSTALL_DO_STRIP_ARCHIVE 1)
-
-# # install the library
-# install(
-#   TARGETS ara_lib
-#   EXPORT ara_lib
-#   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-#   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-# )
-# # install the headers
-# install(
-#   DIRECTORY ${CMAKE_BINARY_DIR}/include/ara/
-#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/
-# )
+# install the headers
+install(
+  DIRECTORY ${CMAKE_BINARY_DIR}/include/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/
+)

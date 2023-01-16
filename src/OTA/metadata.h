@@ -2,8 +2,10 @@
 #define METADATA_H
 
 #include "updateversion.h"
-#include "json/value.h"
-#include "json/json.h"
+#include "nlohmann/json.hpp"
+
+// #include "json/value.h"
+// #include "json/json.h"
 class MetaData
 {
     //MetaData variables
